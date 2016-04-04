@@ -35,21 +35,61 @@
 package org.jgrapht.alg.flow;
 
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.Graphs;
 import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedMultigraph;
+import org.jgrapht.graph.SimpleWeightedGraph;
 
 import java.util.Map;
 
 
-public class EdmondsKarpMaximumFlowTest extends MaximumFlowAlgorithmTestBase
+public class EdmondsKarpMaximumFlowTestV2 extends MaximumFlowAlgorithmTestBase
 {
     @Override
     MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> createSolver(DirectedGraph<Integer, DefaultWeightedEdge> network) {
-        return new EdmondsKarpMaximumFlow<>(network);
+        return new EdmondsKarpMaximumFlowV2<>(network);
     }
 
     //~ Methods ----------------------------------------------------------------
+
+    public void testUndirectedGraph(){
+        //Undirected graph
+        SimpleWeightedGraph<Integer, DefaultWeightedEdge> graph=new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        for(int i=0; i<9; i++)
+            graph.addVertex(i);
+        Graphs.addEdge(graph, 0, 1, 12);
+        Graphs.addEdge(graph, 0, 2, 15);
+        Graphs.addEdge(graph, 0, 3, 20);
+        Graphs.addEdge(graph, 1, 5, 5);
+        Graphs.addEdge(graph, 1, 6, 2);
+        Graphs.addEdge(graph, 1, 2, 5);
+        Graphs.addEdge(graph, 2, 6, 6);
+        Graphs.addEdge(graph, 2, 4, 3);
+        Graphs.addEdge(graph, 2, 3, 11);
+        Graphs.addEdge(graph, 3, 4, 4);
+        Graphs.addEdge(graph, 3, 7, 8);
+        Graphs.addEdge(graph, 4, 6, 6);
+        Graphs.addEdge(graph, 4, 7, 1);
+        Graphs.addEdge(graph, 5, 6, 9);
+        Graphs.addEdge(graph, 5, 8, 18);
+        Graphs.addEdge(graph, 6, 7, 7);
+        Graphs.addEdge(graph, 6, 8, 13);
+        Graphs.addEdge(graph, 7, 8, 10);
+        EdmondsKarpMaximumFlowV2<Integer, DefaultWeightedEdge> maxFlowAlgorithm=new EdmondsKarpMaximumFlowV2<>(graph);
+        MaximumFlowAlgorithm.MaximumFlow<Integer, DefaultWeightedEdge> maxFlow=maxFlowAlgorithm.buildMaximumFlow(0, 8);
+        //Verify that the maximum flow value
+        assertEquals(
+                28,
+                maxFlow.getValue(),
+                EdmondsKarpMaximumFlow.DEFAULT_EPSILON);
+        //Verify that the flow on every arc is between [-DEFAULT_EPSILON, edge_capacity]
+        for (DefaultWeightedEdge e : maxFlow.getFlow().keySet()) {
+            assertTrue(graph.containsEdge(e));
+            assertTrue(maxFlow.getFlow().get(e) >= -EdmondsKarpMaximumFlow.DEFAULT_EPSILON);
+            assertTrue(maxFlow.getFlow().get(e)<= (graph.getEdgeWeight(e)+ EdmondsKarpMaximumFlow.DEFAULT_EPSILON));
+        }
+    }
 
     public void testCornerCases()
     {

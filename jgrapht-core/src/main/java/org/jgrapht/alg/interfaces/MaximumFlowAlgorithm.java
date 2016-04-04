@@ -53,16 +53,16 @@ public interface MaximumFlowAlgorithm<V, E> {
          * Returns value of the maximum-flow for the given network
          * @return value of th maximum-flow
          */
-        public Double getValue();
+        Double getValue();
 
         /**
          * Returns mapping from edge to flow value through this particular edge
          * @return maximum flow
          */
-        public Map<E, Double> getFlow();
+        Map<E, Double> getFlow();
     }
 
-    class MaximumFlowImpl<V, E> implements MaximumFlow {
+    class MaximumFlowImpl<V, E> implements MaximumFlow<V, E> {
 
         private Double value;
         private Map<E, Double> flow;
@@ -81,6 +81,11 @@ public interface MaximumFlowAlgorithm<V, E> {
         @Override
         public Map<E, Double> getFlow() {
             return flow;
+        }
+
+        @Override
+        public String toString(){
+            return "Flow Value: "+value+"\nFlow map:\n"+flow;
         }
     }
 

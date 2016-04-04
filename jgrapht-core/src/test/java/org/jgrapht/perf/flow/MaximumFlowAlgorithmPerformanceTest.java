@@ -37,7 +37,6 @@ package org.jgrapht.perf.flow;
 
 import junit.framework.TestCase;
 import org.jgrapht.DirectedGraph;
-import org.jgrapht.EdgeFactory;
 import org.jgrapht.VertexFactory;
 import org.jgrapht.alg.flow.EdmondsKarpMaximumFlow;
 import org.jgrapht.alg.flow.PushRelabelMaximumFlow;
@@ -74,14 +73,11 @@ public class MaximumFlowAlgorithmPerformanceTest extends TestCase {
         @Setup
         public void setup() {
             RandomGraphGenerator<Integer, DefaultWeightedEdge> rgg
-                = new RandomGraphGenerator<Integer, DefaultWeightedEdge>(PERF_BENCHMARK_VERTICES_COUNT, PERF_BENCHMARK_EDGES_COUNT, SEED);
+                = new RandomGraphGenerator<>(PERF_BENCHMARK_VERTICES_COUNT, PERF_BENCHMARK_EDGES_COUNT, SEED);
 
             SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> network
-                = new SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge>(new EdgeFactory<Integer, DefaultWeightedEdge>() {
-                @Override
-                public DefaultWeightedEdge createEdge(Integer sourceVertex, Integer targetVertex) {
-                    return new DefaultWeightedEdge();
-                }
+                = new SimpleDirectedWeightedGraph<>((sourceVertex, targetVertex) -> {
+                return new DefaultWeightedEdge();
             });
 
             rgg.generateGraph(
@@ -113,14 +109,14 @@ public class MaximumFlowAlgorithmPerformanceTest extends TestCase {
     public static class EdmondsKarpMaximumFlowRandomGraphBenchmark extends RandomGraphBenchmarkBase {
         @Override
         MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> createSolver(DirectedGraph<Integer, DefaultWeightedEdge> network) {
-            return new EdmondsKarpMaximumFlow<Integer, DefaultWeightedEdge>(network);
+            return new EdmondsKarpMaximumFlow<>(network);
         }
     }
 
     public static class PushRelabelMaximumFlowRandomGraphBenchmark extends RandomGraphBenchmarkBase {
         @Override
         MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> createSolver(DirectedGraph<Integer, DefaultWeightedEdge> network) {
-            return new PushRelabelMaximumFlow<Integer, DefaultWeightedEdge>(network);
+            return new PushRelabelMaximumFlow<>(network);
         }
     }
 

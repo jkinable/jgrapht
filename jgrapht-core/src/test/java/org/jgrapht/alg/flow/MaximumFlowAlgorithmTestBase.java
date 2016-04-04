@@ -38,6 +38,7 @@ package org.jgrapht.alg.flow;
 import junit.framework.TestCase;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.EdgeFactory;
+import org.jgrapht.Graphs;
 import org.jgrapht.VertexFactory;
 import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm;
 import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm.MaximumFlow;
@@ -134,6 +135,28 @@ public abstract class MaximumFlowAlgorithmTestBase extends TestCase {
         );
     }
 
+    public void testN8(){
+        runTest(
+                new int[]{0, 0, 1, 1, 2, 2, 3, 3, 4, 4},
+                new int[]{1, 2, 2, 3, 1, 4, 2, 5, 3, 5},
+                new double[]{16, 13, 10, 12, 4, 14, 9, 20, 7, 4},
+                new int[]{0},
+                new int[]{5},
+                new double[]{23}
+        );
+    }
+
+    public void testN9(){
+        runTest(
+                new int[]{0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 5, 5, 6, 6, 7, 7},
+                new int[]{1, 2, 3, 5, 6, 2, 6, 4, 3, 2, 4, 7, 7, 6, 8, 4, 8, 6, 8},
+                new double[]{12, 8, 11, 7, 6, 5, 9, 4, 2, 13, 6, 12, 7, 4, 3, 15, 9, 8, 10},
+                new int[]{0},
+                new int[]{8},
+                new double[]{22}
+        );
+    }
+
     private void runTest(
         int [] tails,
         int [] heads,
@@ -144,53 +167,51 @@ public abstract class MaximumFlowAlgorithmTestBase extends TestCase {
     {
         assertTrue(tails.length == heads.length);
         assertTrue(tails.length == capacities.length);
-        DirectedWeightedMultigraph<Integer, DefaultWeightedEdge> network =
-            new DirectedWeightedMultigraph<Integer, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
-        int m = tails.length;
-        for (int i = 0; i < m; i++) {
-            network.addVertex(tails[i]);
-            network.addVertex(heads[i]);
-            DefaultWeightedEdge e = network.addEdge(tails[i], heads[i]);
-            network.setEdgeWeight(e, capacities[i]);
-        }
         assertTrue(sources.length == sinks.length);
-        int q = sources.length;
-        for (int i = 0; i < q; i++) {
+
+        //Construct directed capacity graph
+        DirectedWeightedMultigraph<Integer, DefaultWeightedEdge> network = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+        int m = tails.length;
+        for (int i = 0; i < m; i++)
+            Graphs.addEdgeWithVertices(network, tails[i], heads[i], capacities[i]);
+        for (int i = 0; i < sources.length; i++) {
             network.addVertex(sources[i]);
             network.addVertex(sinks[i]);
         }
-
         MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver = createSolver(network);
 
-        for (int i = 0; i < q; i++) {
+        //Calculate the max flow for each source/sink pair
+        for (int i = 0; i < sources.length; i++) {
             verify(sources[i], sinks[i], expectedResults[i], network, solver.buildMaximumFlow(sources[i], sinks[i]));
         }
     }
 
     static void verify(int source, int sink, double expectedResult, DirectedGraph<Integer, DefaultWeightedEdge> network, MaximumFlowAlgorithm.MaximumFlow<Integer, DefaultWeightedEdge> maxFlow) {
-        assertEquals(
-            expectedResult,
-            maxFlow.getValue(),
-            EdmondsKarpMaximumFlow.DEFAULT_EPSILON);
-
         Double flowValue = maxFlow.getValue();
         Map<DefaultWeightedEdge, Double> flow = maxFlow.getFlow();
 
+        //Verify that the maximum flow value
+        assertEquals(
+            expectedResult,
+            flowValue,
+            EdmondsKarpMaximumFlow.DEFAULT_EPSILON);
+
+        //Verify that every edge is contained in the flow map
         for (DefaultWeightedEdge e : network.edgeSet()) {
             assertTrue(flow.containsKey(e));
         }
 
+        //Verify that the flow on every arc is between [-DEFAULT_EPSILON, edge_capacity]
         for (DefaultWeightedEdge e : flow.keySet()) {
             assertTrue(network.containsEdge(e));
             assertTrue(
                 flow.get(e) >= -EdmondsKarpMaximumFlow.DEFAULT_EPSILON);
             assertTrue(
                 flow.get(e)
-                    <= (network.getEdgeWeight(e)
-                    + EdmondsKarpMaximumFlow.DEFAULT_EPSILON));
+                    <= (network.getEdgeWeight(e)+ EdmondsKarpMaximumFlow.DEFAULT_EPSILON));
         }
 
+        //Verify flow preservation: amount of incoming flow must equal amount of outgoing flow (exception for the source/sink vertices)
         for (Integer v : network.vertexSet()) {
             double balance = 0.0;
             for (DefaultWeightedEdge e : network.outgoingEdgesOf(v)) {
@@ -220,17 +241,18 @@ public abstract class MaximumFlowAlgorithmTestBase extends TestCase {
 
     // Randomized tests
 
+    /**
+     * Randomized test. Solve a maximum flow on a randomly created graph. The only way this test can fail is when the algorithm which calculates
+     * the maximum flow throws some exception.
+     */
     public void testRandomGraph() {
         RandomGraphGenerator<Integer, DefaultWeightedEdge> rgg
-            = new RandomGraphGenerator<Integer, DefaultWeightedEdge>(10, 30, 1446604632765594013l);
+            = new RandomGraphGenerator<>(10, 30, 1446604632765594013l);
 
         SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> network
-            = new SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge>(new EdgeFactory<Integer, DefaultWeightedEdge>() {
-            @Override
-            public DefaultWeightedEdge createEdge(Integer sourceVertex, Integer targetVertex) {
+            = new SimpleDirectedWeightedGraph<>((sourceVertex, targetVertex) -> {
                 return new DefaultWeightedEdge();
-            }
-        });
+            });
 
         rgg.generateGraph(
             network,
@@ -249,63 +271,6 @@ public abstract class MaximumFlowAlgorithmTestBase extends TestCase {
         Integer source = (Integer) vs[0];
         Integer sink = (Integer) vs[vs.length - 1];
 
-        MaximumFlow<Integer, DefaultWeightedEdge> maxFlow = createSolver(network).buildMaximumFlow(source, sink);
-
-        if (false) {
-            check(maxFlow, source, sink, network);
-        }
-    }
-
-    private static void check(MaximumFlow<Integer, DefaultWeightedEdge> maxFlow, int source, int sink, DirectedGraph<Integer, DefaultWeightedEdge> network) {
-        MaximumFlowAlgorithmTestBase.verify(source, sink, maxFlow.getValue(), network, maxFlow);
-        dumpFlow(maxFlow);
-    }
-
-    private static void dumpFlow(MaximumFlow<Integer, DefaultWeightedEdge> maxFlow) {
-        System.out.println("\n=== FLOW ===\n");
-        System.out.println("VALUE:  " + maxFlow.getValue());
-
-        System.out.println("FLOW:   ");
-        System.out.println("    Count:  " + maxFlow.getFlow().size());
-        System.out.println("            " + maxFlow.getFlow());
-        System.out.println("    Hash:   " + maxFlow.getFlow().hashCode());
-    }
-
-    private static void dumpGraph(DirectedGraph<Integer, DefaultWeightedEdge> g, Integer source, Integer sink) {
-        List<Integer> heads = new ArrayList<Integer>(g.edgeSet().size());
-        List<Integer> tails = new ArrayList<Integer>(g.edgeSet().size());
-
-        List<Double> weights = new ArrayList<Double>(g.edgeSet().size());
-
-        for (DefaultWeightedEdge e : g.edgeSet()) {
-            heads.add(g.getEdgeSource(e));
-            tails.add(g.getEdgeTarget(e));
-
-            weights.add(g.getEdgeWeight(e));
-        }
-
-        StringBuilder hs = new StringBuilder();
-        for (int h : heads) {
-            hs.append(h).append(", ");
-        }
-
-        System.out.println(hs);
-
-        StringBuilder ts = new StringBuilder();
-        for (int t : tails) {
-            ts.append(t).append(", ");
-        }
-
-        System.out.println(ts);
-
-        StringBuilder ws = new StringBuilder();
-        for (double w : weights) {
-            ws.append(w).append(", ");
-        }
-
-        System.out.println(ws);
-
-        System.out.println(source);
-        System.out.println(sink);
+        createSolver(network).buildMaximumFlow(source, sink);
     }
 }

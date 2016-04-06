@@ -1,10 +1,8 @@
 package org.jgrapht.alg.flow;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.UndirectedGraph;
+import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm;
+import org.jgrapht.generate.RandomGraphGenerator;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
@@ -44,7 +42,7 @@ import java.util.Map;
 public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E> {
 
     private Graph<V, E> graph; // our network
-    private SimpleDirectedWeightedGraph<V,DefaultWeightedEdge> residualNetwork;
+    private QuickLookupGraph residualNetwork;
     private final double EPSILON;     // tolerance (DEFAULT_EPSILON or user-defined)
 
     private final boolean DIRECTED_GRAPH; //indicates whether the input graph is directed or not
@@ -116,20 +114,34 @@ public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E
      * Construct a residual network graph which is used to compute the flows.
      */
     private void initialize(){
-        residualNetwork =new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        residualNetwork =new QuickLookupGraph(DefaultWeightedEdge.class);
         Graphs.addAllVertices(residualNetwork, graph.vertexSet());
         for(E e : graph.edgeSet()){
             V u=graph.getEdgeSource(e);
             V v=graph.getEdgeTarget(e);
             double weight=graph.getEdgeWeight(e);
-            Graphs.addEdge(residualNetwork, u, v, weight);
-            if(DIRECTED_GRAPH) { //Directed Graph
-                if(!graph.containsEdge(v, u))
-                    Graphs.addEdge(residualNetwork, v, u, 0);
-            }else //Undirected graph
-                Graphs.addEdge(residualNetwork, v, u, weight);
+            if(!residualNetwork.containsEdge(u, v)){
+                Graphs.addEdge(residualNetwork, u, v, weight); //Forward edge
+                Graphs.addEdge(residualNetwork, v, u, DIRECTED_GRAPH ? 0 : weight); //Backward edge
+            }else
+                residualNetwork.setEdgeWeight(residualNetwork.getEdge(u,v), weight);
         }
     }
+//    private void initialize(){
+//        residualNetwork =new QuickLookupGraph(DefaultWeightedEdge.class);
+//        Graphs.addAllVertices(residualNetwork, graph.vertexSet());
+//        for(E e : graph.edgeSet()){
+//            V u=graph.getEdgeSource(e);
+//            V v=graph.getEdgeTarget(e);
+//            double weight=graph.getEdgeWeight(e);
+//            Graphs.addEdge(residualNetwork, u, v, weight);
+//            if(DIRECTED_GRAPH) { //Directed Graph
+//                if(!graph.containsEdge(v, u))
+//                    Graphs.addEdge(residualNetwork, v, u, 0);
+//            }else //Undirected graph
+//                Graphs.addEdge(residualNetwork, v, u, weight);
+//        }
+//    }
 
     /**
      * Calculates a maximum flow from <tt>source</tt>, to <tt>sink</tt>. Note,
@@ -277,7 +289,10 @@ public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E
 
 
 
+
     public static void main(String[] args){
+
+
         /*SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> g1=new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
         for(int i=0; i<6; i++)
             g1.addVertex(i);
@@ -340,7 +355,7 @@ public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E
         System.out.println("Max flow: "+maxFlow3.buildMaximumFlow(0,8));*/
 
 
-        SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> g4=new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        /*SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> g4=new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
         for(int i=0; i<9; i++)
             g4.addVertex(i);
         Graphs.addEdge(g4, 0, 1, 12);
@@ -365,6 +380,167 @@ public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E
         EdmondsKarpMaximumFlowV2<Integer, DefaultWeightedEdge> maxFlow1=new EdmondsKarpMaximumFlowV2<>(g4);
         System.out.println("Max flow: "+maxFlow1.buildMaximumFlow(0,8));
         EdmondsKarpMaximumFlow<Integer, DefaultWeightedEdge> maximumFlow1b=new EdmondsKarpMaximumFlow<>(g4);
-        System.out.println("Max flow: "+maximumFlow1b.buildMaximumFlow(0,8));
+        System.out.println("Max flow: "+maximumFlow1b.buildMaximumFlow(0,8));*/
+
+        RandomGraphGenerator<Integer, DefaultWeightedEdge> rgg= new RandomGraphGenerator<>(10000, 1000000, 0);
+
+        SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> network
+                = new SimpleDirectedWeightedGraph<>((sourceVertex, targetVertex) -> {
+            return new DefaultWeightedEdge();
+        });
+
+        rgg.generateGraph(
+                network,
+                new VertexFactory<Integer>() {
+                    int i;
+                    @Override
+                    public Integer createVertex() {
+                        return ++i;
+                    }
+                },
+                null
+        );
+        Object[] vs = network.vertexSet().toArray();
+        Integer source  = (Integer) vs[0];
+        Integer sink    = (Integer) vs[vs.length - 1];
+
+        System.out.println("Finished creating random graph");
+
+        //TEMP: create a copy of the graph
+        long time=System.currentTimeMillis();
+        SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> test=new SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        Graphs.addAllVertices(test, network.vertexSet());
+        for(DefaultWeightedEdge e : network.edgeSet()){
+            int i=network.getEdgeSource(e);
+            int j=network.getEdgeTarget(e);
+            test.addEdge(i,j);
+        }
+        time=System.currentTimeMillis()-time;
+        System.out.println("Creating a copy of the network took: "+time+" edges in 2: "+test.edgeSet().size());
+
+        time=System.currentTimeMillis();
+        SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> test2=new SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        for(int u : network.vertexSet()){
+            test2.addVertex(u);
+            for(DefaultWeightedEdge e : network.outgoingEdgesOf(u)){
+                int v=network.getEdgeTarget(e);
+                test2.addVertex(v);
+                test2.addEdge(u,v);
+            }
+        }
+        time=System.currentTimeMillis()-time;
+        System.out.println("Creating a copy 2 of the network took: "+time+" edges in 2: "+test2.edgeSet().size());
+
+
+
+        //end TEMP
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Starting");
+
+        time=System.currentTimeMillis();
+        EdmondsKarpMaximumFlow<Integer, DefaultWeightedEdge> solver1=new EdmondsKarpMaximumFlow<>(network);
+        time=System.currentTimeMillis()-time;
+        System.out.println("Construction took: "+time);
+        time=System.currentTimeMillis();
+        MaximumFlow<Integer, DefaultWeightedEdge> maximumFlow1 =solver1.buildMaximumFlow(source, sink);
+        time=System.currentTimeMillis()-time;
+        System.out.println("Found flow with value: "+maximumFlow1.getValue()+" in: "+time+"ms");
+
+        time=System.currentTimeMillis();
+        EdmondsKarpMaximumFlowV2<Integer, DefaultWeightedEdge> solver2=new EdmondsKarpMaximumFlowV2<>(network);
+        time=System.currentTimeMillis()-time;
+        System.out.println("Construction took: "+time);
+        time=System.currentTimeMillis();
+        //MaximumFlow<Integer, DefaultWeightedEdge> maximumFlow2 =solver2.buildMaximumFlow(source, sink);
+        double maximumFlow2 =solver2.getMaximumFlowValue(source, sink);
+        time=System.currentTimeMillis()-time;
+        System.out.println("(new)Found flow with value: "+maximumFlow2+" in: "+time+"ms");
+        //System.out.println("(new)Found flow with value: "+maximumFlow2.getValue()+" in: "+time+"ms");
+    }
+
+    protected class QuickLookupGraph extends SimpleDirectedWeightedGraph<V, DefaultWeightedEdge>{
+        Map<V, Map<V,DefaultWeightedEdge>> edgeCache=new HashMap<>();
+
+        public QuickLookupGraph(Class<? extends DefaultWeightedEdge> edgeClass) {
+            super(edgeClass);
+        }
+
+        @Override
+        public boolean addVertex(V v){
+            boolean result=super.addVertex(v);
+            if(result)
+                edgeCache.put(v, new HashMap<>());
+            return result;
+        }
+        @Override
+        public boolean removeVertex(V v){
+            boolean result=super.removeVertex(v);
+            if(result)
+                edgeCache.remove(v);
+            return result;
+        }
+
+
+        @Override
+        public boolean addEdge(V v1, V v2, DefaultWeightedEdge e){
+            boolean result=super.addEdge(v1, v2, e);
+            if(result)
+                edgeCache.get(v1).put(v2, e);
+            return result;
+        }
+
+        @Override
+        public DefaultWeightedEdge addEdge(V v1, V v2){
+            EdgeFactory<V, DefaultWeightedEdge> edgeFactory=super.getEdgeFactory();
+            DefaultWeightedEdge e=edgeFactory.createEdge(v1, v2);
+            this.addEdge(v1, v2, e);
+            return e;
+        }
+
+        @Override
+        public boolean containsEdge(V v1, V v2){
+            return getEdge(v1, v2)!=null;
+        }
+        @Override
+        public boolean containsEdge(DefaultWeightedEdge e){
+            return containsEdge(this.getEdgeSource(e), this.getEdgeTarget(e));
+        }
+
+        @Override
+        public DefaultWeightedEdge removeEdge(V v1, V v2){
+            DefaultWeightedEdge edge=super.removeEdge(v1, v2);
+            if(edge!=null)
+                edgeCache.get(v1).remove(v2);
+            return edge;
+        }
+        @Override
+        public boolean removeEdge(DefaultWeightedEdge e){
+            V source=this.getEdgeSource(e);
+            V target=this.getEdgeTarget(e);
+            boolean result=super.removeEdge(e);
+            if(result)
+                edgeCache.get(source).remove(target);
+            return result;
+        }
+
+        @Override
+        public DefaultWeightedEdge getEdge(V v1, V v2){
+            if(!edgeCache.containsKey(v1) || !edgeCache.get(v1).containsKey(v2))
+                return null;
+            else
+                return edgeCache.get(v1).get(v2);
+        }
     }
 }
+
+//public class EdgeHashMap<V,E> extends HashMap<V,E>{
+//    @Override
+//    public boolean containsKey(Object o){
+//        return table[5]==1;
+//        //return true;
+//    }
+//}

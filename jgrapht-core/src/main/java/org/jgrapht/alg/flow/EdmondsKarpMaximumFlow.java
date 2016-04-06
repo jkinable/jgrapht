@@ -149,7 +149,10 @@ public final class EdmondsKarpMaximumFlow<V, E> extends MaximumFlowAlgorithmBase
      */
     public MaximumFlow<V, E> buildMaximumFlow(V source, V sink)
     {
+        long time=System.currentTimeMillis();
         super.init(vertexExtensionsFactory, edgeExtensionsFactory);
+        time=System.currentTimeMillis()-time;
+        System.out.println("old init: "+time);
 
         if (!network.containsVertex(source)) {
             throw new IllegalArgumentException(

@@ -212,6 +212,7 @@ public abstract class MaximumFlowAlgorithmBase<V, E> implements MaximumFlowAlgor
         } else {
             ex.capacity -= f;
             iex.flow    -= f;
+            System.out.println("Test pushFlowThrough");
         }
     }
 

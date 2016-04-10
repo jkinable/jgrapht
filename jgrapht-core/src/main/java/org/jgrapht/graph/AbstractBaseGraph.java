@@ -50,6 +50,7 @@ import java.util.*;
 
 import org.jgrapht.*;
 import org.jgrapht.graph.specifics.FastLookupDirectedSpecifics;
+import org.jgrapht.graph.specifics.FastLookupDirectedSpecifics_experimental;
 import org.jgrapht.graph.specifics.FastLookupUndirectedSpecifics;
 import org.jgrapht.graph.specifics.Specifics;
 import org.jgrapht.util.*;
@@ -540,7 +541,7 @@ public abstract class AbstractBaseGraph<V, E>
 
     protected Specifics<V,E> createDirectedSpecifics()
     {
-        return new FastLookupDirectedSpecifics<>(this);
+        return new FastLookupDirectedSpecifics<V, E>(this);
     }
 
     private static class ArrayListFactory<VV, EE>

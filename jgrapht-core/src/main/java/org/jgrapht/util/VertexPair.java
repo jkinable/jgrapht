@@ -48,8 +48,8 @@ import java.util.Objects;
 public class VertexPair<V> implements Serializable
 {
     private static final long serialVersionUID = -852258620031566794L;
-    private V n1;
-    private V n2;
+    protected V n1;
+    protected V n2;
 
     public VertexPair(V n1, V n2)
     {

@@ -44,6 +44,7 @@ import org.jgrapht.generate.RandomGraphGenerator;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.jgrapht.graph.specifics.DirectedSpecifics;
+import org.jgrapht.graph.specifics.FastLookupDirectedSpecifics_experimental;
 import org.openjdk.jmh.annotations.*;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.Runner;
@@ -66,7 +67,7 @@ public class GraphPerformanceTest extends TestCase{
     public static final int PERF_BENCHMARK_VERTICES_COUNT   = 1000;
     public static final int PERF_BENCHMARK_EDGES_COUNT      = 100000;
     public static final long SEED = 1446523573696201013l;
-    public static final int NR_GRAPHS=5; //Number of unique graphs on which the tests are repeated
+    public static final int NR_GRAPHS=100; //Number of unique graphs on which the tests are repeated
 
     @State(Scope.Benchmark)
     private static abstract class DirectedGraphBenchmarkBase {
@@ -201,15 +202,39 @@ public class GraphPerformanceTest extends TestCase{
         }
     }
 
+    /**
+     * Graph class which relies on the (legacy) DirectedSpecifics implementation. This class is optimized for low memory
+     * usage, but performs edge retrieval operations fairly slow.
+     */
+    public static class FastLookupDirectedGraphBenchmark_indexVertexPair extends DirectedGraphBenchmarkBase {
+        @Override
+        SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> constructGraph() {
+            SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge> graph=new IndexVertexPairDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+            rgg.generateGraph(
+                    graph,
+                    new VertexFactory<Integer>() {
+                        int i;
+                        @Override
+                        public Integer createVertex() {
+                            return ++i;
+                        }
+                    },
+                    null
+            );
+            return graph;
+        }
+    }
+
+
     public void testRandomGraphBenchmark() throws RunnerException {
         Options opt = new OptionsBuilder()
-                .include(".*" + MemoryEfficientDirectedGraphBenchmark.class.getSimpleName() + ".*")
+//                .include(".*" + MemoryEfficientDirectedGraphBenchmark.class.getSimpleName() + ".*")
                 .include(".*" + FastLookupDirectedGraphBenchmark.class.getSimpleName() + ".*")
-
+                .include(".*" + FastLookupDirectedGraphBenchmark_indexVertexPair.class.getSimpleName() + ".*")
                 .mode(Mode.AverageTime)
                 .timeUnit(TimeUnit.MILLISECONDS)
 //                .warmupTime(TimeValue.seconds(1))
-                .warmupIterations(3)
+                .warmupIterations(5)
 //                .measurementTime(TimeValue.seconds(1))
                 .measurementIterations(5)
                 .forks(1)
@@ -235,6 +260,23 @@ public class GraphPerformanceTest extends TestCase{
         @Override
         protected DirectedSpecifics<V,E> createDirectedSpecifics() {
             return new DirectedSpecifics<>(this);
+        }
+    }
+
+    /**
+     * Creates an memory efficient graph implementation.
+     * @param <V>
+     * @param <E>
+     */
+    public static class IndexVertexPairDirectedWeightedGraph<V,E> extends SimpleDirectedWeightedGraph<V,E> {
+
+        public IndexVertexPairDirectedWeightedGraph(Class<? extends E> edgeClass) {
+            super(edgeClass);
+        }
+
+        @Override
+        protected DirectedSpecifics<V,E> createDirectedSpecifics() {
+            return new FastLookupDirectedSpecifics_experimental<V, E>(this);
         }
     }
 }

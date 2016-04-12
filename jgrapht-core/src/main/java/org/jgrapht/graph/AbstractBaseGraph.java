@@ -70,13 +70,9 @@ public abstract class AbstractBaseGraph<V, E>
         Cloneable,
         Serializable
 {
-
-
     private static final long serialVersionUID = -1263088497616142427L;
 
     private static final String LOOPS_NOT_ALLOWED = "loops not allowed";
-
-
 
     boolean allowingLoops;
 
@@ -89,8 +85,6 @@ public abstract class AbstractBaseGraph<V, E>
     private boolean allowingMultipleEdges;
 
     private transient TypeUtil<V> vertexTypeDecl = null;
-
-
 
     /**
      * Construct a new graph. The graph can either be directed or undirected,
@@ -121,8 +115,6 @@ public abstract class AbstractBaseGraph<V, E>
 
         this.edgeSetFactory = new ArrayListFactory<V, E>();
     }
-
-
 
     /**
      * @see Graph#getAllEdges(Object, Object)
@@ -534,8 +526,6 @@ public abstract class AbstractBaseGraph<V, E>
     {
         return new DirectedSpecifics();
     }
-
-
 
     /**
      * .

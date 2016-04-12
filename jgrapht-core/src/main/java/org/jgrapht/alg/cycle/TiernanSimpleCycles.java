@@ -55,11 +55,7 @@ import org.jgrapht.*;
 public class TiernanSimpleCycles<V, E>
     implements DirectedSimpleCycles<V, E>
 {
-
-
     private DirectedGraph<V, E> graph;
-
-
 
     /**
      * Create a simple cycle finder with an unspecified graph.
@@ -83,8 +79,6 @@ public class TiernanSimpleCycles<V, E>
         }
         this.graph = graph;
     }
-
-
 
     /**
      * {@inheritDoc}
@@ -113,15 +107,15 @@ public class TiernanSimpleCycles<V, E>
         if (graph == null) {
             throw new IllegalArgumentException("Null graph.");
         }
-        Map<V, Integer> indices = new HashMap<V, Integer>();
-        List<V> path = new ArrayList<V>();
-        Set<V> pathSet = new HashSet<V>();
-        Map<V, Set<V>> blocked = new HashMap<V, Set<V>>();
-        List<List<V>> cycles = new LinkedList<List<V>>();
+        Map<V, Integer> indices = new HashMap<>();
+        List<V> path = new ArrayList<>();
+        Set<V> pathSet = new HashSet<>();
+        Map<V, Set<V>> blocked = new HashMap<>();
+        List<List<V>> cycles = new LinkedList<>();
 
         int index = 0;
         for (V v : graph.vertexSet()) {
-            blocked.put(v, new HashSet<V>());
+            blocked.put(v, new HashSet<>());
             indices.put(v, index++);
         }
 
@@ -130,11 +124,11 @@ public class TiernanSimpleCycles<V, E>
             return cycles;
         }
 
-        V startOfPath = null;
-        V endOfPath = null;
-        V temp = null;
-        int endIndex = 0;
-        boolean extensionFound = false;
+        V startOfPath;
+        V endOfPath;
+        V temp;
+        int endIndex;
+        boolean extensionFound;
 
         endOfPath = vertexIterator.next();
         path.add(endOfPath);
@@ -168,7 +162,7 @@ public class TiernanSimpleCycles<V, E>
             // circuit confirmation
             startOfPath = path.get(0);
             if (graph.containsEdge(endOfPath, startOfPath)) {
-                List<V> cycle = new ArrayList<V>();
+                List<V> cycle = new ArrayList<>();
                 cycle.addAll(path);
                 cycles.add(cycle);
             }

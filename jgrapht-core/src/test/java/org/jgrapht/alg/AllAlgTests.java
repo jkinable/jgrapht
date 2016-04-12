@@ -49,7 +49,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     AStarShortestPathTest.class,
-    AllDirectedPaths.class,
+    AllDirectedPathsTest.class,
     BellmanFordShortestPathTest.class,
     BiconnectivityInspectorTest.class,
     BlockCutpointGraphTest.class,

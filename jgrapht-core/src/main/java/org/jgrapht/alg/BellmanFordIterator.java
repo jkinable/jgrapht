@@ -49,16 +49,12 @@ import org.jgrapht.*;
 class BellmanFordIterator<V, E>
     implements Iterator<List<V>>
 {
-
-
     /**
      * Error message.
      */
     protected final static String NEGATIVE_UNDIRECTED_EDGE =
         "Negative"
         + "edge-weights are not allowed in an unidrected graph!";
-
-
 
     /**
      * Graph on which shortest paths are searched.
@@ -74,7 +70,7 @@ class BellmanFordIterator<V, E>
      * Vertices whose shortest path cost have been improved during the previous
      * pass.
      */
-    private List<V> prevImprovedVertices = new ArrayList<V>();
+    private List<V> prevImprovedVertices = new ArrayList<>();
 
     private Map<V, BellmanFordPathElement<V, E>> prevVertexData;
 
@@ -87,8 +83,6 @@ class BellmanFordIterator<V, E>
     private Map<V, BellmanFordPathElement<V, E>> vertexData;
 
     private double epsilon;
-
-
 
     /**
      * @param graph
@@ -106,8 +100,6 @@ class BellmanFordIterator<V, E>
         this.startVertex = startVertex;
         this.epsilon = epsilon;
     }
-
-
 
     /**
      * Returns the path element of the shortest path with less than <code>
@@ -148,7 +140,7 @@ class BellmanFordIterator<V, E>
         }
 
         if (hasNext()) {
-            List<V> improvedVertices = new ArrayList<V>();
+            List<V> improvedVertices = new ArrayList<>();
             for (int i = this.prevImprovedVertices.size() - 1; i >= 0; i--) {
                 V vertex = this.prevImprovedVertices.get(i);
                 for (
@@ -305,7 +297,7 @@ class BellmanFordIterator<V, E>
     {
         if (this.prevVertexData == null) {
             this.prevVertexData =
-                new HashMap<V, BellmanFordPathElement<V, E>>();
+                    new HashMap<>();
         }
 
         return this.prevVertexData.put(vertex, data);
@@ -326,7 +318,7 @@ class BellmanFordIterator<V, E>
         BellmanFordPathElement<V, E> data)
     {
         if (this.vertexData == null) {
-            this.vertexData = new HashMap<V, BellmanFordPathElement<V, E>>();
+            this.vertexData = new HashMap<>();
         }
 
         return this.vertexData.put(vertex, data);
@@ -358,23 +350,20 @@ class BellmanFordIterator<V, E>
             getPrevSeenData(
                 Graphs.getOppositeVertex(graph, edge, vertex));
 
-        BellmanFordPathElement<V, E> data =
-            new BellmanFordPathElement<V, E>(
+        return new BellmanFordPathElement<>(
                 graph,
                 prevPathElement,
                 edge,
                 cost,
                 epsilon);
-
-        return data;
     }
 
     private void encounterStartVertex()
     {
         BellmanFordPathElement<V, E> data =
-            new BellmanFordPathElement<V, E>(
-                this.startVertex,
-                epsilon);
+                new BellmanFordPathElement<>(
+                        this.startVertex,
+                        epsilon);
 
         // first the only vertex considered as improved is the start vertex.
         this.prevImprovedVertices.add(this.startVertex);
@@ -434,7 +423,7 @@ class BellmanFordIterator<V, E>
         for (V vertex : improvedVertices) {
             BellmanFordPathElement<V, E> orig = getSeenData(vertex);
             BellmanFordPathElement<V, E> clonedData =
-                new BellmanFordPathElement<V, E>(orig);
+                    new BellmanFordPathElement<>(orig);
             putPrevSeenData(vertex, clonedData);
         }
 

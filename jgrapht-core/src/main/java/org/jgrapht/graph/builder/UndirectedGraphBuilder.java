@@ -46,8 +46,6 @@ import org.jgrapht.*;
 public final class UndirectedGraphBuilder<V, E, G extends UndirectedGraph<V, E>>
     extends UndirectedGraphBuilderBase<V, E, G, UndirectedGraphBuilder<V, E, G>>
 {
-
-
     /**
      * Creates a builder based on {@code baseGraph}. {@code baseGraph} must be
      * mutable.
@@ -65,8 +63,6 @@ public final class UndirectedGraphBuilder<V, E, G extends UndirectedGraph<V, E>>
     {
         super(baseGraph);
     }
-
-
 
     @Override protected UndirectedGraphBuilder<V, E, G> self()
     {

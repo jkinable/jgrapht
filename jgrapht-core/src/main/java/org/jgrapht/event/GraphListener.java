@@ -51,21 +51,19 @@ package org.jgrapht.event;
 public interface GraphListener<V, E>
     extends VertexSetListener<V>
 {
-
-
     /**
      * Notifies that an edge has been added to the graph.
      *
      * @param e the edge event.
      */
-    public void edgeAdded(GraphEdgeChangeEvent<V, E> e);
+    void edgeAdded(GraphEdgeChangeEvent<V, E> e);
 
     /**
      * Notifies that an edge has been removed from the graph.
      *
      * @param e the edge event.
      */
-    public void edgeRemoved(GraphEdgeChangeEvent<V, E> e);
+    void edgeRemoved(GraphEdgeChangeEvent<V, E> e);
 }
 
 // End GraphListener.java

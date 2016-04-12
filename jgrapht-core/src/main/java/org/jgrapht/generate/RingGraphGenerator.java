@@ -53,11 +53,7 @@ import org.jgrapht.*;
 public class RingGraphGenerator<V, E>
     implements GraphGenerator<V, E, V>
 {
-
-
     private int size;
-
-
 
     /**
      * Construct a new RingGraphGenerator.
@@ -75,8 +71,6 @@ public class RingGraphGenerator<V, E>
         this.size = size;
     }
 
-
-
     /**
      * {@inheritDoc}
      */
@@ -90,8 +84,8 @@ public class RingGraphGenerator<V, E>
         }
 
         LinearGraphGenerator<V, E> linearGenerator =
-            new LinearGraphGenerator<V, E>(size);
-        Map<String, V> privateMap = new HashMap<String, V>();
+                new LinearGraphGenerator<>(size);
+        Map<String, V> privateMap = new HashMap<>();
         linearGenerator.generateGraph(target, vertexFactory, privateMap);
 
         V startVertex = privateMap.get(LinearGraphGenerator.START_VERTEX);

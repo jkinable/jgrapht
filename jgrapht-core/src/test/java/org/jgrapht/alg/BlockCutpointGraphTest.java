@@ -35,13 +35,12 @@
  */
 package org.jgrapht.alg;
 
-import java.util.*;
-
-import junit.framework.*;
-
-import org.jgrapht.*;
-import org.jgrapht.generate.*;
-import org.jgrapht.graph.*;
+import junit.framework.TestCase;
+import org.jgrapht.UndirectedGraph;
+import org.jgrapht.generate.LinearGraphGenerator;
+import org.jgrapht.graph.ClassBasedVertexFactory;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
 
 /**
@@ -70,27 +69,20 @@ public class BlockCutpointGraphTest
 
     public void testGetBlock(BlockCutpointGraph blockCutpointGraph)
     {
-        for (
-            Iterator iter = blockCutpointGraph.vertexSet().iterator();
-            iter.hasNext();)
-        {
-            UndirectedGraph component = (UndirectedGraph) iter.next();
+        for (Object o : blockCutpointGraph.vertexSet()) {
+            UndirectedGraph component = (UndirectedGraph) o;
             if (!component.edgeSet().isEmpty()) {
-                for (
-                    Iterator iterator = component.vertexSet().iterator();
-                    iterator.hasNext();)
-                {
-                    Object vertex = iterator.next();
+                for (Object vertex : component.vertexSet()) {
                     if (!blockCutpointGraph.getCutpoints().contains(vertex)) {
                         assertEquals(
-                            component,
-                            blockCutpointGraph.getBlock(vertex));
+                                component,
+                                blockCutpointGraph.getBlock(vertex));
                     }
                 }
             } else {
                 assertTrue(
-                    blockCutpointGraph.getCutpoints().contains(
-                        component.vertexSet().iterator().next()));
+                        blockCutpointGraph.getCutpoints().contains(
+                                component.vertexSet().iterator().next()));
             }
         }
     }
@@ -108,8 +100,8 @@ public class BlockCutpointGraphTest
         LinearGraphGenerator generator = new LinearGraphGenerator(nbVertices);
         generator.generateGraph(
             graph,
-            new ClassBasedVertexFactory<Object>(
-                Object.class),
+                new ClassBasedVertexFactory<>(
+                        Object.class),
             null);
 
         BlockCutpointGraph blockCutpointGraph = new BlockCutpointGraph(graph);

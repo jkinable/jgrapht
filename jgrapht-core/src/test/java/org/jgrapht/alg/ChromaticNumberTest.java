@@ -61,14 +61,14 @@ public class ChromaticNumberTest
     public void testChromaticNumber()
     {
         UndirectedGraph<Object, DefaultEdge> completeGraph =
-            new SimpleGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new SimpleGraph<>(
+                        DefaultEdge.class);
         CompleteGraphGenerator<Object, DefaultEdge> completeGenerator =
-            new CompleteGraphGenerator<Object, DefaultEdge>(
-                7);
+                new CompleteGraphGenerator<>(
+                        7);
         completeGenerator.generateGraph(
             completeGraph,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
 
         // A complete graph has a chromatic number equal to its order
@@ -82,14 +82,14 @@ public class ChromaticNumberTest
             coloring.keySet().size());
 
         UndirectedGraph<Object, DefaultEdge> linearGraph =
-            new SimpleGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new SimpleGraph<>(
+                        DefaultEdge.class);
         LinearGraphGenerator<Object, DefaultEdge> linearGenerator =
-            new LinearGraphGenerator<Object, DefaultEdge>(
-                50);
+                new LinearGraphGenerator<>(
+                        50);
         linearGenerator.generateGraph(
             linearGraph,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
 
         // A linear graph is a tree, and a greedy algorithm for chromatic number

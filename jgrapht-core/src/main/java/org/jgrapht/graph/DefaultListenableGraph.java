@@ -70,21 +70,15 @@ public class DefaultListenableGraph<V, E>
     implements ListenableGraph<V, E>,
         Cloneable
 {
-
-
     private static final long serialVersionUID = 3977575900898471984L;
 
-
-
     private List<GraphListener<V, E>> graphListeners =
-        new ArrayList<GraphListener<V, E>>();
+            new ArrayList<>();
     private List<VertexSetListener<V>> vertexSetListeners =
-        new ArrayList<VertexSetListener<V>>();
+            new ArrayList<>();
     private FlyweightEdgeEvent<V, E> reuseableEdgeEvent;
     private FlyweightVertexEvent<V> reuseableVertexEvent;
     private boolean reuseEvents;
-
-
 
     /**
      * Creates a new listenable graph.
@@ -114,8 +108,8 @@ public class DefaultListenableGraph<V, E>
     {
         super(g);
         this.reuseEvents = reuseEvents;
-        reuseableEdgeEvent = new FlyweightEdgeEvent<V, E>(this, -1, null);
-        reuseableVertexEvent = new FlyweightVertexEvent<V>(this, -1, null);
+        reuseableEdgeEvent = new FlyweightEdgeEvent<>(this, -1, null);
+        reuseableVertexEvent = new FlyweightVertexEvent<>(this, -1, null);
 
         // the following restriction could be probably relaxed in the future.
         if (g instanceof ListenableGraph<?, ?>) {
@@ -123,8 +117,6 @@ public class DefaultListenableGraph<V, E>
                 "base graph cannot be listenable");
         }
     }
-
-
 
     /**
      * If the <code>reuseEvents</code> flag is set to <code>true</code> this
@@ -218,12 +210,10 @@ public class DefaultListenableGraph<V, E>
     @Override public Object clone()
     {
         try {
-            TypeUtil<DefaultListenableGraph<V, E>> typeDecl = null;
-
             DefaultListenableGraph<V, E> g =
-                TypeUtil.uncheckedCast(super.clone(), typeDecl);
-            g.graphListeners = new ArrayList<GraphListener<V, E>>();
-            g.vertexSetListeners = new ArrayList<VertexSetListener<V>>();
+                TypeUtil.uncheckedCast(super.clone(), null);
+            g.graphListeners = new ArrayList<>();
+            g.vertexSetListeners = new ArrayList<>();
 
             return g;
         } catch (CloneNotSupportedException e) {
@@ -281,7 +271,7 @@ public class DefaultListenableGraph<V, E>
             Set<E> touchingEdgesList = edgesOf(v);
 
             // copy set to avoid ConcurrentModificationException
-            removeAllEdges(new ArrayList<E>(touchingEdgesList));
+            removeAllEdges(new ArrayList<>(touchingEdgesList));
 
             super.removeVertex(v); // remove the vertex itself
 
@@ -408,12 +398,12 @@ public class DefaultListenableGraph<V, E>
 
             return reuseableEdgeEvent;
         } else {
-            return new GraphEdgeChangeEvent<V, E>(
-                this,
-                eventType,
-                edge,
-                source,
-                target);
+            return new GraphEdgeChangeEvent<>(
+                    this,
+                    eventType,
+                    edge,
+                    source,
+                    target);
         }
     }
 
@@ -427,11 +417,9 @@ public class DefaultListenableGraph<V, E>
 
             return reuseableVertexEvent;
         } else {
-            return new GraphVertexChangeEvent<V>(this, eventType, vertex);
+            return new GraphVertexChangeEvent<>(this, eventType, vertex);
         }
     }
-
-
 
     /**
      * A reuseable edge event.
@@ -445,7 +433,7 @@ public class DefaultListenableGraph<V, E>
         private static final long serialVersionUID = 3907207152526636089L;
 
         /**
-         * @see GraphEdgeChangeEvent#GraphEdgeChangeEvent(Object, int, Edge)
+         * @see GraphEdgeChangeEvent
          */
         public FlyweightEdgeEvent(Object eventSource, int type, EE e)
         {

@@ -94,8 +94,6 @@ import org.jgrapht.graph.*;
  */
 public class DOTImporter<V, E>
 {
-
-
     // Constants for the state machine
     private static final int HEADER = 1;
     private static final int NODE = 2;
@@ -107,13 +105,9 @@ public class DOTImporter<V, E>
     private static final int NEXT = 8;
     private static final int DONE = 32;
 
-
-
     private VertexProvider<V> vertexProvider;
     private VertexUpdater<V> vertexUpdater;
     private EdgeProvider<V, E> edgeProvider;
-
-
 
     /**
      * Constructs a new DOTImporter with the given providers
@@ -147,8 +141,6 @@ public class DOTImporter<V, E>
         this.edgeProvider = edgeProvider;
     }
 
-
-
     /**
      * Read a dot formatted string and populate the provided graph.
      *
@@ -164,7 +156,7 @@ public class DOTImporter<V, E>
             throw new ImportException("Dot string was empty");
         }
 
-        Map<String, V> vertexes = new HashMap<String, V>();
+        Map<String, V> vertexes = new HashMap<>();
 
         int state = HEADER;
         int lastState = HEADER;
@@ -478,6 +470,7 @@ public class DOTImporter<V, E>
         StringBuilder sectionBuffer,
         AbstractBaseGraph<V, E> graph,
         Map<String, V> vertexes)
+        throws ImportException
     {
         if (isStartOfLineComment(input, position)) {
             return LINE_COMMENT;
@@ -613,6 +606,7 @@ public class DOTImporter<V, E>
         String edge,
         AbstractBaseGraph<V, E> graph,
         Map<String, V> vertexes)
+        throws ImportException
     {
         Map<String, String> attributes = extractAttributes(edge);
 
@@ -639,7 +633,7 @@ public class DOTImporter<V, E>
     {
         V v = vertexes.get(id);
         if (v == null) {
-            v = vertexProvider.buildVertex(id, new HashMap<String, String>());
+            v = vertexProvider.buildVertex(id, new HashMap<>());
             graph.addVertex(v);
             vertexes.put(id, v);
         }
@@ -657,7 +651,7 @@ public class DOTImporter<V, E>
             idChunk = idChunk.substring(0, bracketIndex).trim();
         }
         int index = 0;
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         while (index < idChunk.length()) {
             int nextSpace = idChunk.indexOf(' ', index);
             String chunk;
@@ -677,8 +671,9 @@ public class DOTImporter<V, E>
     }
 
     private Map<String, String> extractAttributes(String line)
+        throws ImportException
     {
-        Map<String, String> attributes = new HashMap<String, String>();
+        Map<String, String> attributes = new HashMap<>();
         int bracketIndex = line.indexOf("[");
         if (bracketIndex > 0) {
             attributes =
@@ -690,19 +685,73 @@ public class DOTImporter<V, E>
     }
 
     private Map<String, String> splitAttributes(String input)
+        throws ImportException
     {
         int index = 0;
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         while (index < input.length()) {
-            int nextEquals = input.indexOf('=', index);
-            String key = input.substring(index, nextEquals).trim();
-            int firstQuote = input.indexOf('\"', nextEquals) + 1;
-            int secondQuote = findNextQuote(input, firstQuote);
-            String value = input.substring(firstQuote, secondQuote);
+            // skip any leading white space
+            index = skipWhiteSpace(input, index);
+
+            // Now check for quotes
+            int endOfKey = findEndOfSection(input, index, '=');
+            if (endOfKey < 0) {
+                throw new ImportException("Invalid attributes");
+            }
+            if (input.charAt(endOfKey) == '"') {
+                index = index + 1;
+            }
+
+            String key = input.substring(index, endOfKey).trim();
+
+            if ((endOfKey + 1) >= input.length()) {
+                throw new ImportException("Invalid attributes");
+            }
+
+            // Attribute value may be quoted or a single word.
+            // First ignore any white space before the start
+            int start = skipWhiteSpace(input, endOfKey + 1);
+
+            int endChar = findEndOfSection(input, start, ' ');
+            if (input.charAt(start) == '"') {
+                start = start + 1;
+            }
+
+            if (endChar < 0) {
+                endChar = input.length();
+            }
+
+            String value = input.substring(start, endChar);
             result.put(key, value);
-            index = secondQuote + 1;
+            index = endChar + 1;
         }
         return result;
+    }
+
+    private int skipWhiteSpace(String input, int start)
+        throws ImportException
+    {
+        int i = 0;
+        while (
+            Character.isWhitespace(input.charAt(start + i))
+            || (input.charAt(start + i) == '='))
+        {
+            i = i + 1;
+            if ((start + i) >= input.length()) {
+                throw new ImportException("Invalid attributes");
+            }
+        }
+
+        return start + i;
+    }
+
+    private int findEndOfSection(String input, int start, char terminator)
+    {
+        if (input.charAt(start) == '"') {
+            return findNextQuote(input, start);
+        } else {
+            return input.indexOf(terminator, start);
+        }
     }
 
     private int findNextQuote(String input, int start)

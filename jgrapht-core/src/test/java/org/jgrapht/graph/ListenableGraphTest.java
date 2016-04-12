@@ -79,10 +79,10 @@ public class ListenableGraphTest
         init();
 
         ListenableGraph<Object, DefaultEdge> g =
-            new ListenableUndirectedGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new ListenableUndirectedGraph<>(
+                        DefaultEdge.class);
         GraphListener<Object, DefaultEdge> listener =
-            new MyGraphListner<DefaultEdge>();
+                new MyGraphListner<>();
         g.addGraphListener(listener);
 
         String v1 = "v1";
@@ -140,10 +140,10 @@ public class ListenableGraphTest
         init();
 
         ListenableGraph<Object, DefaultEdge> g =
-            new ListenableUndirectedGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new ListenableUndirectedGraph<>(
+                        DefaultEdge.class);
         VertexSetListener<Object> listener =
-            new MyGraphListner<DefaultEdge>();
+                new MyGraphListner<>();
         g.addVertexSetListener(listener);
 
         String v1 = "v1";
@@ -201,10 +201,10 @@ public class ListenableGraphTest
         init();
 
         ListenableDirectedWeightedGraph<Object, DefaultWeightedEdge> g =
-            new ListenableDirectedWeightedGraph<Object, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+                new ListenableDirectedWeightedGraph<>(
+                        DefaultWeightedEdge.class);
         GraphListener<Object, DefaultWeightedEdge> listener =
-            new MyGraphListner<DefaultWeightedEdge>();
+                new MyGraphListner<>();
         g.addGraphListener(listener);
 
         String v1 = "v1";

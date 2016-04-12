@@ -33,16 +33,10 @@ import org.jgrapht.graph.*;
 public class JGraphXAdapterDemo
     extends JApplet
 {
-
-
     private static final long serialVersionUID = 2202072534703043194L;
     private static final Dimension DEFAULT_SIZE = new Dimension(530, 320);
 
-
-
     private JGraphXAdapter<String, DefaultEdge> jgxAdapter;
-
-
 
     /**
      * An alternative starting point for this demo, to also allow running this
@@ -74,7 +68,7 @@ public class JGraphXAdapterDemo
                 DefaultEdge.class);
 
         // create a visualization using JGraph, via an adapter
-        jgxAdapter = new JGraphXAdapter<String, DefaultEdge>(g);
+        jgxAdapter = new JGraphXAdapter<>(g);
 
         getContentPane().add(new mxGraphComponent(jgxAdapter));
         resize(DEFAULT_SIZE);

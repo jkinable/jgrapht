@@ -20,11 +20,7 @@ import org.jgrapht.*;
 public class SimpleWeightedGraphMatrixGenerator<V, E>
     extends WeightedGraphGeneratorAdapter<V, E, V>
 {
-
-
     protected List<V> vertices;
-
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 

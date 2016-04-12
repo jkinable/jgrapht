@@ -5,7 +5,7 @@
 	<artifactId>jgrapht</artifactId>
 	<packaging>pom</packaging>
 	<name>JGraphT - Parent</name>
-	<version>0.9.2-SNAPSHOT</version>
+	<version>0.9.3-SNAPSHOT</version>
 	<description>A Java class library for graph-theory data structures and algorithms.</description>
 	<url>http://www.jgrapht.org</url>
     <parent>
@@ -160,8 +160,8 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.1</version>
 					<configuration>
-						<source>1.7</source>
-						<target>1.7</target>
+						<source>1.8</source>
+						<target>1.8</target>
 					</configuration>
 				</plugin> 
 				<plugin>

@@ -52,7 +52,6 @@ public class GenericGraphsTest
     Graph<Object, ? extends DefaultEdge> objectGraph;
     Graph<FooVertex, FooEdge> fooFooGraph;
     Graph<BarVertex, BarEdge> barBarGraph;
-    Graph<FooVertex, BarEdge> fooBarGraph;
 
     //~ Constructors -----------------------------------------------------------
 
@@ -122,7 +121,7 @@ public class GenericGraphsTest
     public void testAlissaHacker()
     {
         DirectedGraph<String, CustomEdge> g =
-            new DefaultDirectedGraph<String, CustomEdge>(CustomEdge.class);
+                new DefaultDirectedGraph<>(CustomEdge.class);
         g.addVertex("a");
         g.addVertex("b");
         g.addEdge("a", "b");
@@ -150,10 +149,10 @@ public class GenericGraphsTest
     protected void setUp()
     {
         objectGraph =
-            new DefaultDirectedGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
-        fooFooGraph = new SimpleGraph<FooVertex, FooEdge>(FooEdge.class);
-        barBarGraph = new SimpleGraph<BarVertex, BarEdge>(BarEdge.class);
+                new DefaultDirectedGraph<>(
+                        DefaultEdge.class);
+        fooFooGraph = new SimpleGraph<>(FooEdge.class);
+        barBarGraph = new SimpleGraph<>(BarEdge.class);
     }
 
     //~ Inner Classes ----------------------------------------------------------
@@ -197,8 +196,8 @@ public class GenericGraphsTest
         public EquivGraph()
         {
             super(
-                new ClassBasedEdgeFactory<EquivVertex, DefaultEdge>(
-                    DefaultEdge.class),
+                    new ClassBasedEdgeFactory<>(
+                            DefaultEdge.class),
                 true,
                 true);
         }
@@ -240,10 +239,6 @@ public class GenericGraphsTest
             super("empty bar");
         }
 
-        public BarVertex(String s)
-        {
-            super(s);
-        }
     }
 }
 

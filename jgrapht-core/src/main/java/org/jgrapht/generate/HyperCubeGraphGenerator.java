@@ -54,11 +54,7 @@ import org.jgrapht.*;
 public class HyperCubeGraphGenerator<V, E>
     implements GraphGenerator<V, E, V>
 {
-
-
     private int dim;
-
-
 
     /**
      * Creates a new HyperCubeGraphGenerator object.
@@ -69,8 +65,6 @@ public class HyperCubeGraphGenerator<V, E>
     {
         this.dim = dim;
     }
-
-
 
     /**
      * This will generate the hypercube graph
@@ -83,7 +77,7 @@ public class HyperCubeGraphGenerator<V, E>
         //Vertices are created, and they are included in the resultmap as their
         //bitstring representation
         int order = (int) Math.pow(2, dim);
-        LinkedList<V> vertices = new LinkedList<V>();
+        LinkedList<V> vertices = new LinkedList<>();
         for (int i = 0; i < order; i++) {
             V newVertex = vertexFactory.createVertex();
             target.addVertex(newVertex);

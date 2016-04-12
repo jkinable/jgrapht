@@ -56,12 +56,8 @@ import org.jgrapht.generate.*;
 public class PartiteRandomGraphGenerator<V, E>
     implements GraphGenerator<V, E, Object[]>
 {
-
-
     private final int [] numVertices;
     private final int numEdges;
-
-
 
     /**
      * Construct a new PartiteRandomGraphGenerator for a bipartite graph.
@@ -85,11 +81,10 @@ public class PartiteRandomGraphGenerator<V, E>
             throw new IllegalArgumentException("illegal number of edges");
         }
 
-        final int [] numVertices = {
+        this.numVertices = new int[]{
             numVertices1,
             numVertices2
         };
-        this.numVertices = numVertices;
         this.numEdges = numEdges;
     }
 
@@ -124,8 +119,6 @@ public class PartiteRandomGraphGenerator<V, E>
         this.numVertices = numVertices;
         this.numEdges = numEdges;
     }
-
-
 
     /**
      * TODO hb 30-nov-05: document me

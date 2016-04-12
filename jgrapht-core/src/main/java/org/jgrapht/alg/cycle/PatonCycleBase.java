@@ -55,11 +55,7 @@ import org.jgrapht.*;
 public class PatonCycleBase<V, E>
     implements UndirectedCycleBase<V, E>
 {
-
-
     private UndirectedGraph<V, E> graph;
-
-
 
     /**
      * Create a cycle base finder with an unspecified graph.
@@ -83,8 +79,6 @@ public class PatonCycleBase<V, E>
         }
         this.graph = graph;
     }
-
-
 
     /**
      * {@inheritDoc}
@@ -113,10 +107,10 @@ public class PatonCycleBase<V, E>
         if (graph == null) {
             throw new IllegalArgumentException("Null graph.");
         }
-        Map<V, Set<V>> used = new HashMap<V, Set<V>>();
-        Map<V, V> parent = new HashMap<V, V>();
-        ArrayDeque<V> stack = new ArrayDeque<V>();
-        List<List<V>> cycles = new ArrayList<List<V>>();
+        Map<V, Set<V>> used = new HashMap<>();
+        Map<V, V> parent = new HashMap<>();
+        ArrayDeque<V> stack = new ArrayDeque<>();
+        List<List<V>> cycles = new ArrayList<>();
 
         for (V root : graph.vertexSet()) {
             // Loop over the connected
@@ -131,7 +125,7 @@ public class PatonCycleBase<V, E>
 
             // Prepare to walk the spanning tree.
             parent.put(root, root);
-            used.put(root, new HashSet<V>());
+            used.put(root, new HashSet<>());
             stack.push(root);
 
             // Do the walk. It is a BFS with
@@ -149,19 +143,19 @@ public class PatonCycleBase<V, E>
                     if (!used.containsKey(neighbor)) {
                         // found a new node
                         parent.put(neighbor, current);
-                        Set<V> neighbourUsed = new HashSet<V>();
+                        Set<V> neighbourUsed = new HashSet<>();
                         neighbourUsed.add(current);
                         used.put(neighbor, neighbourUsed);
                         stack.push(neighbor);
                     } else if (neighbor.equals(current)) {
                         // found a self loop
-                        List<V> cycle = new ArrayList<V>();
+                        List<V> cycle = new ArrayList<>();
                         cycle.add(current);
                         cycles.add(cycle);
                     } else if (!currentUsed.contains(neighbor)) {
                         // found a cycle
                         Set<V> neighbourUsed = used.get(neighbor);
-                        List<V> cycle = new ArrayList<V>();
+                        List<V> cycle = new ArrayList<>();
                         cycle.add(neighbor);
                         cycle.add(current);
                         V p = parent.get(current);

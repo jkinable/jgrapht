@@ -25,13 +25,9 @@ import org.jgrapht.*;
  */
 public abstract class IntArrayGraphAlgorithm<V, E>
 {
-
-
     protected final List<V> _vertices;
     protected final int [][] _neighbors;
     protected final Map<V, Integer> _vertexToPos;
-
-
 
     /**
      * @param g
@@ -39,9 +35,9 @@ public abstract class IntArrayGraphAlgorithm<V, E>
     public IntArrayGraphAlgorithm(final Graph<V, E> g)
     {
         final int numVertices = g.vertexSet().size();
-        _vertices = new ArrayList<V>(numVertices);
+        _vertices = new ArrayList<>(numVertices);
         _neighbors = new int[numVertices][];
-        _vertexToPos = new HashMap<V, Integer>(numVertices);
+        _vertexToPos = new HashMap<>(numVertices);
         for (V vertex : g.vertexSet()) {
             _neighbors[_vertices.size()] = new int[g.edgesOf(vertex).size()];
             _vertexToPos.put(vertex, _vertices.size());

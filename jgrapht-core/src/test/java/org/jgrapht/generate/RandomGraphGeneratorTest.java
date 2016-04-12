@@ -54,11 +54,11 @@ public class RandomGraphGeneratorTest
     public void testGenerateDirectedGraph()
     {
         List<Graph<Integer, DefaultEdge>> graphArray =
-            new ArrayList<Graph<Integer, DefaultEdge>>();
+                new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
             graphArray.add(
-                new SimpleDirectedGraph<Integer, DefaultEdge>(
-                    DefaultEdge.class));
+                    new SimpleDirectedGraph<>(
+                            DefaultEdge.class));
         }
 
         generateGraphs(graphArray, 11, 100);
@@ -73,11 +73,11 @@ public class RandomGraphGeneratorTest
     public void testGenerateListenableUndirectedGraph()
     {
         List<Graph<Integer, DefaultEdge>> graphArray =
-            new ArrayList<Graph<Integer, DefaultEdge>>();
+                new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
             graphArray.add(
-                new ListenableUndirectedGraph<Integer, DefaultEdge>(
-                    DefaultEdge.class));
+                    new ListenableUndirectedGraph<>(
+                            DefaultEdge.class));
         }
 
         generateGraphs(graphArray, 11, 50);
@@ -89,15 +89,15 @@ public class RandomGraphGeneratorTest
     public void testBadVertexFactory()
     {
         RandomGraphGenerator<String, DefaultEdge> randomGen =
-            new RandomGraphGenerator<String, DefaultEdge>(
-                10,
-                3);
+                new RandomGraphGenerator<>(
+                        10,
+                        3);
         Graph<String, DefaultEdge> graph =
-            new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         try {
             randomGen.generateGraph(
                 graph,
-                new ClassBasedVertexFactory<String>(String.class),
+                    new ClassBasedVertexFactory<>(String.class),
                 null);
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException ex) {
@@ -120,9 +120,9 @@ public class RandomGraphGeneratorTest
         int numOfEdges)
     {
         RandomGraphGenerator<Integer, DefaultEdge> randomGen =
-            new RandomGraphGenerator<Integer, DefaultEdge>(
-                numOfVertex,
-                numOfEdges);
+                new RandomGraphGenerator<>(
+                        numOfVertex,
+                        numOfEdges);
 
         randomGen.generateGraph(
             graphs.get(0),
@@ -137,9 +137,9 @@ public class RandomGraphGeneratorTest
 
         // use new randomGen here
         RandomGraphGenerator<Integer, DefaultEdge> newRandomGen =
-            new RandomGraphGenerator<Integer, DefaultEdge>(
-                numOfVertex,
-                numOfEdges);
+                new RandomGraphGenerator<>(
+                        numOfVertex,
+                        numOfEdges);
 
         newRandomGen.generateGraph(
             graphs.get(2),
@@ -159,7 +159,7 @@ public class RandomGraphGeneratorTest
         @SuppressWarnings("unchecked")
         public static boolean compare(Graph g1, Graph g2)
         {
-            boolean result = false;
+            boolean result;
             VertexOrdering lg1 = new VertexOrdering(g1);
             VertexOrdering lg2 = new VertexOrdering(g2);
             result = lg1.equalsByEdgeOrder(lg2);
@@ -193,7 +193,7 @@ public class RandomGraphGeneratorTest
         public Integer createVertex()
         {
             this.counter++;
-            return new Integer(this.counter);
+            return this.counter;
         }
     }
 
@@ -248,11 +248,11 @@ public class RandomGraphGeneratorTest
             // create a map between vertex value to its order(1st,2nd,etc)
             // "CAT"=1 "DOG"=2 "RHINO"=3
 
-            this.mapVertexToOrder = new HashMap<V, Integer>(vertexSet.size());
+            this.mapVertexToOrder = new HashMap<>(vertexSet.size());
 
             int counter = 0;
             for (V vertex : vertexSet) {
-                mapVertexToOrder.put(vertex, new Integer(counter));
+                mapVertexToOrder.put(vertex, counter);
                 counter++;
             }
 
@@ -262,13 +262,12 @@ public class RandomGraphGeneratorTest
             // on directed graph, edge A->B must be (A,B)
             // on undirected graph, edge A-B can be (A,B) or (B,A)
 
-            this.labelsEdgesSet = new HashSet<LabelsEdge>(edgeSet.size());
+            this.labelsEdgesSet = new HashSet<>(edgeSet.size());
             for (E edge : edgeSet) {
                 V sourceVertex = g.getEdgeSource(edge);
-                Integer sourceOrder = mapVertexToOrder.get(sourceVertex);
-                int sourceLabel = sourceOrder.intValue();
+                int sourceLabel = mapVertexToOrder.get(sourceVertex);
                 int targetLabel =
-                    (mapVertexToOrder.get(g.getEdgeTarget(edge))).intValue();
+                        mapVertexToOrder.get(g.getEdgeTarget(edge));
 
                 LabelsEdge lablesEdge = new LabelsEdge(sourceLabel, targetLabel);
                 this.labelsEdgesSet.add(lablesEdge);
@@ -286,10 +285,8 @@ public class RandomGraphGeneratorTest
          */
         public boolean equalsByEdgeOrder(VertexOrdering otherGraph)
         {
-            boolean result =
-                this.getLabelsEdgesSet().equals(otherGraph.getLabelsEdgesSet());
 
-            return result;
+            return this.getLabelsEdgesSet().equals(otherGraph.getLabelsEdgesSet());
         }
 
         public Set<LabelsEdge> getLabelsEdgesSet()
@@ -306,7 +303,7 @@ public class RandomGraphGeneratorTest
          */
         @Override public String toString()
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("mapVertexToOrder=");
 
             // vertex will be printed in their order
@@ -314,7 +311,7 @@ public class RandomGraphGeneratorTest
             Set<V> keySet = this.mapVertexToOrder.keySet();
             for (V currVertex : keySet) {
                 Integer index = this.mapVertexToOrder.get(currVertex);
-                vertexArray[index.intValue()] = currVertex;
+                vertexArray[index] = currVertex;
             }
             sb.append(Arrays.toString(vertexArray));
             sb.append("labelsOrder=").append(this.labelsEdgesSet.toString());
@@ -334,7 +331,7 @@ public class RandomGraphGeneratorTest
                 this.source = aSource;
                 this.target = aTarget;
                 this.hashCode =
-                    new String(this.source + "" + this.target).hashCode();
+                    (this.source + "" + this.target).hashCode();
             }
 
             /**
@@ -345,14 +342,13 @@ public class RandomGraphGeneratorTest
              */
             @Override public boolean equals(Object obj)
             {
-                LabelsEdge otherEdge = (LabelsEdge) obj;
-                if ((this.source == otherEdge.source)
-                    && (this.target == otherEdge.target))
-                {
+                if(this == obj)
                     return true;
-                } else {
+                else if(!(obj instanceof VertexOrdering.LabelsEdge))
                     return false;
-                }
+                LabelsEdge otherEdge = (LabelsEdge) obj;
+                return (this.source == otherEdge.source)
+                        && (this.target == otherEdge.target);
             }
 
             /**

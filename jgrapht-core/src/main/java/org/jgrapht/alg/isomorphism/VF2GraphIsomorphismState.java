@@ -42,8 +42,6 @@ import java.util.*;
 class VF2GraphIsomorphismState<V, E>
     extends VF2State<V, E>
 {
-
-
     public VF2GraphIsomorphismState(
         GraphOrdering<V, E> g1,
         GraphOrdering<V, E> g2,
@@ -57,8 +55,6 @@ class VF2GraphIsomorphismState<V, E>
     {
         super(s);
     }
-
-
 
     /**
      * @return true, if the already matched vertices of graph1 plus the first

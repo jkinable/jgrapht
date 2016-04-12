@@ -42,21 +42,19 @@ import java.util.*;
  */
 public interface MinimumSpanningTree<V, E>
 {
-
-
     /**
      * Returns edges set constituting the minimum spanning tree/forest
      *
      * @return minimum spanning-tree edges set
      */
-    public Set<E> getMinimumSpanningTreeEdgeSet();
+    Set<E> getMinimumSpanningTreeEdgeSet();
 
     /**
      * Returns total weight of the minimum spanning tree/forest.
      *
      * @return minimum spanning-tree total weight
      */
-    public double getMinimumSpanningTreeTotalWeight();
+    double getMinimumSpanningTreeTotalWeight();
 }
 
 // End MinimumSpanningTree.java

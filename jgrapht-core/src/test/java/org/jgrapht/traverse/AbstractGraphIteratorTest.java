@@ -97,8 +97,8 @@ public abstract class AbstractGraphIteratorTest
     DirectedGraph<String, DefaultEdge> createDirectedGraph()
     {
         DirectedGraph<String, DefaultEdge> graph =
-            new DefaultDirectedWeightedGraph<String, DefaultEdge>(
-                DefaultWeightedEdge.class);
+                new DefaultDirectedWeightedGraph<>(
+                        DefaultWeightedEdge.class);
 
         //
         String v1 = "1";
@@ -204,7 +204,7 @@ public abstract class AbstractGraphIteratorTest
          * @see TraversalListener#edgeTraversed(EdgeTraversalEvent)
          */
         @Override
-        public void edgeTraversed(EdgeTraversalEvent<String, DefaultEdge> e)
+        public void edgeTraversed(EdgeTraversalEvent<DefaultEdge> e)
         {
             // to be tested...
         }

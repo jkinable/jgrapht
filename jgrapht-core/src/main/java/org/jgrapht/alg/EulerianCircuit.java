@@ -54,8 +54,6 @@ import org.jgrapht.graph.*;
  */
 public abstract class EulerianCircuit
 {
-
-
     /**
      * This method will check whether the graph passed in is Eulerian or not.
      *
@@ -66,15 +64,13 @@ public abstract class EulerianCircuit
     public static <V, E> boolean isEulerian(UndirectedGraph<V, E> g)
     {
         // If the graph is not connected, then no Eulerian circuit exists
-        if (!(new ConnectivityInspector<V, E>(g)).isGraphConnected()) {
+        if (!(new ConnectivityInspector<>(g)).isGraphConnected()) {
             return false;
         }
 
         // A graph is Eulerian if and only if all vertices have even degree
         // So, this code will check for that
-        Iterator<V> iter = g.vertexSet().iterator();
-        while (iter.hasNext()) {
-            V v = iter.next();
+        for (V v : g.vertexSet()) {
             if ((g.degreeOf(v) % 2) == 1) {
                 return false;
             }
@@ -101,8 +97,8 @@ public abstract class EulerianCircuit
         }
 
         // The circuit will be represented by a linked list
-        List<V> path = new LinkedList<V>();
-        UndirectedGraph<V, E> sg = new UndirectedSubgraph<V, E>(g, null, null);
+        List<V> path = new LinkedList<>();
+        UndirectedGraph<V, E> sg = new UndirectedSubgraph<>(g, null, null);
         path.add(sg.vertexSet().iterator().next());
 
         // Algorithm for finding an Eulerian circuit Basically this will find an
@@ -124,11 +120,7 @@ public abstract class EulerianCircuit
             // Finds an arbitrary circuit of the current vertex and
             // appends this into the circuit list
             while (sg.degreeOf(v) > 0) {
-                for (
-                    Iterator<V> iter = sg.vertexSet().iterator();
-                    iter.hasNext();)
-                {
-                    V temp = iter.next();
+                for (V temp : sg.vertexSet()) {
                     if (sg.containsEdge(v, temp)) {
                         path.add(index, temp);
                         sg.removeEdge(v, temp);

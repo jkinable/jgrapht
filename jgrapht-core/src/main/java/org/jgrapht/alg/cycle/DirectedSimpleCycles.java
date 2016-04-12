@@ -51,8 +51,6 @@ import org.jgrapht.*;
  */
 public interface DirectedSimpleCycles<V, E>
 {
-
-
     /**
      * Returns the graph on which the simple cycle search algorithm is executed
      * by this object.

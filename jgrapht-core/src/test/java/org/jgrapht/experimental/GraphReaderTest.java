@@ -67,16 +67,16 @@ public class GraphReaderTest
         GraphReader<Integer, DefaultEdge> reader;
         try {
             reader =
-                new GraphReader<Integer, DefaultEdge>(
-                    new StringReader(_unweighted));
+                    new GraphReader<>(
+                            new StringReader(_unweighted));
             Graph<Integer, DefaultEdge> g =
-                new SimpleGraph<Integer, DefaultEdge>(
-                    DefaultEdge.class);
+                    new SimpleGraph<>(
+                            DefaultEdge.class);
             VertexFactory<Integer> vf = new IntVertexFactory();
             reader.generateGraph(g, vf, null);
             Graph<Integer, DefaultEdge> g2 =
-                new SimpleGraph<Integer, DefaultEdge>(
-                    DefaultEdge.class);
+                    new SimpleGraph<>(
+                            DefaultEdge.class);
             g2.addVertex(0);
             g2.addVertex(1);
             g2.addVertex(2);
@@ -94,17 +94,17 @@ public class GraphReaderTest
     {
         try {
             GraphReader<Integer, DefaultWeightedEdge> reader =
-                new GraphReader<Integer, DefaultWeightedEdge>(
-                    new StringReader(_weighted),
-                    1);
+                    new GraphReader<>(
+                            new StringReader(_weighted),
+                            1);
             Graph<Integer, DefaultWeightedEdge> g =
-                new SimpleWeightedGraph<Integer, DefaultWeightedEdge>(
-                    DefaultWeightedEdge.class);
+                    new SimpleWeightedGraph<>(
+                            DefaultWeightedEdge.class);
             VertexFactory<Integer> vf = new IntVertexFactory();
             reader.generateGraph(g, vf, null);
             WeightedGraph<Integer, DefaultWeightedEdge> g2 =
-                new SimpleWeightedGraph<Integer, DefaultWeightedEdge>(
-                    DefaultWeightedEdge.class);
+                    new SimpleWeightedGraph<>(
+                            DefaultWeightedEdge.class);
             g2.addVertex(0);
             g2.addVertex(1);
             g2.addVertex(2);

@@ -74,7 +74,7 @@ public class BreadthFirstIteratorTest
         String vertex)
     {
         AbstractGraphIterator<String, DefaultEdge> i =
-            new BreadthFirstIterator<String, DefaultEdge>(g, vertex);
+                new BreadthFirstIterator<>(g, vertex);
         i.setCrossComponentTraversal(true);
 
         return i;

@@ -47,14 +47,10 @@ import org.jgrapht.graph.*;
  */
 public class TransitiveClosure
 {
-
-
     /**
      * Singleton instance.
      */
     public static final TransitiveClosure INSTANCE = new TransitiveClosure();
-
-
 
     /**
      * Private Constructor.
@@ -62,8 +58,6 @@ public class TransitiveClosure
     private TransitiveClosure()
     {
     }
-
-
 
     /**
      * Computes the transitive closure of the given graph.
@@ -74,7 +68,7 @@ public class TransitiveClosure
     {
         Set<V> vertexSet = graph.vertexSet();
 
-        Set<V> newEdgeTargets = new HashSet<V>();
+        Set<V> newEdgeTargets = new HashSet<>();
 
         // At every iteration of the outer loop, we add a path of length 1
         // between nodes that originally had a path of length 2. In the worst

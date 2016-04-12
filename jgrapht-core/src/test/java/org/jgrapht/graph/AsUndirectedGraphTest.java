@@ -170,9 +170,9 @@ public class AsUndirectedGraphTest
     protected void setUp()
     {
         directed =
-            new DefaultDirectedGraph<String, DefaultEdge>(
-                DefaultEdge.class);
-        undirected = new AsUndirectedGraph<String, DefaultEdge>(directed);
+                new DefaultDirectedGraph<>(
+                        DefaultEdge.class);
+        undirected = new AsUndirectedGraph<>(directed);
 
         directed.addVertex(v1);
         directed.addVertex(v2);

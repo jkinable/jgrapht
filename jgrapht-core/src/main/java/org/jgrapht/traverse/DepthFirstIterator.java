@@ -64,8 +64,6 @@ import org.jgrapht.util.*;
 public class DepthFirstIterator<V, E>
     extends CrossComponentIterator<V, E, CrossComponentIterator.VisitColor>
 {
-
-
     /**
      * Sentinel object. Unfortunately, we can't use null, because ArrayDeque
      * won't accept those. And we don't want to rely on the caller to provide a
@@ -73,16 +71,12 @@ public class DepthFirstIterator<V, E>
      */
     public static final Object SENTINEL = new Object();
 
-
-
     /**
      * @see #getStack
      */
-    private Deque<Object> stack = new ArrayDeque<Object>();
+    private Deque<Object> stack = new ArrayDeque<>();
 
     private transient TypeUtil<V> vertexTypeDecl = null;
-
-
 
     /**
      * Creates a new depth-first iterator for the specified graph.
@@ -108,8 +102,6 @@ public class DepthFirstIterator<V, E>
     {
         super(g, startVertex);
     }
-
-
 
     /**
      * @see CrossComponentIterator#isConnectedComponentExhausted()

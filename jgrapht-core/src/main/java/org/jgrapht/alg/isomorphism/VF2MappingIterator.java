@@ -44,8 +44,6 @@ import org.jgrapht.*;
 abstract class VF2MappingIterator<V, E>
     implements Iterator<GraphMapping<V, E>>
 {
-
-
     protected Comparator<V> vertexComparator;
     protected Comparator<E> edgeComparator;
 
@@ -55,8 +53,6 @@ abstract class VF2MappingIterator<V, E>
     protected GraphOrdering<V, E> ordering1, ordering2;
 
     protected ArrayDeque<VF2State<V, E>> stateStack;
-
-
 
     public VF2MappingIterator(
         GraphOrdering<V, E> ordering1,
@@ -68,10 +64,8 @@ abstract class VF2MappingIterator<V, E>
         this.ordering2 = ordering2;
         this.vertexComparator = vertexComparator;
         this.edgeComparator = edgeComparator;
-        this.stateStack = new ArrayDeque<VF2State<V, E>>();
+        this.stateStack = new ArrayDeque<>();
     }
-
-
 
     /**
      * This function moves over all mappings between graph1 and graph2. It
@@ -90,13 +84,9 @@ abstract class VF2MappingIterator<V, E>
         return rel;
     }
 
-    @Override public boolean hasNext()
-    {
-        if (nextMapping != null) {
-            return true;
-        }
+    @Override public boolean hasNext() {
+        return nextMapping != null || (nextMapping = matchAndCheck()) != null;
 
-        return (nextMapping = matchAndCheck()) != null;
     }
 
     @Override public IsomorphicGraphMapping<V, E> next()

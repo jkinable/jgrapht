@@ -52,8 +52,6 @@ import org.jgrapht.event.*;
 public interface GraphIterator<V, E>
     extends Iterator<V>
 {
-
-
     /**
      * Test whether this iterator is set to traverse the grpah across connected
      * components.
@@ -61,7 +59,7 @@ public interface GraphIterator<V, E>
      * @return <code>true</code> if traverses across connected components,
      * otherwise <code>false</code>.
      */
-    public boolean isCrossComponentTraversal();
+    boolean isCrossComponentTraversal();
 
     /**
      * Sets a value the <code>reuseEvents</code> flag. If the <code>
@@ -73,7 +71,7 @@ public interface GraphIterator<V, E>
      * @param reuseEvents whether to reuse previously fired event objects
      * instead of creating a new event object for each event.
      */
-    public void setReuseEvents(boolean reuseEvents);
+    void setReuseEvents(boolean reuseEvents);
 
     /**
      * Tests whether the <code>reuseEvents</code> flag is set. If the flag is
@@ -84,28 +82,28 @@ public interface GraphIterator<V, E>
      *
      * @return the value of the <code>reuseEvents</code> flag.
      */
-    public boolean isReuseEvents();
+    boolean isReuseEvents();
 
     /**
      * Adds the specified traversal listener to this iterator.
      *
      * @param l the traversal listener to be added.
      */
-    public void addTraversalListener(TraversalListener<V, E> l);
+    void addTraversalListener(TraversalListener<V, E> l);
 
     /**
      * Unsupported.
      *
      * @throws UnsupportedOperationException
      */
-    @Override public void remove();
+    @Override void remove();
 
     /**
      * Removes the specified traversal listener from this iterator.
      *
      * @param l the traversal listener to be removed.
      */
-    public void removeTraversalListener(TraversalListener<V, E> l);
+    void removeTraversalListener(TraversalListener<V, E> l);
 }
 
 // End GraphIterator.java

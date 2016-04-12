@@ -43,12 +43,8 @@ import java.util.*;
 public class IntegerEdgeNameProvider<E>
     implements EdgeNameProvider<E>
 {
-
-
     private int nextID = 1;
-    private final Map<E, Integer> idMap = new HashMap<E, Integer>();
-
-
+    private final Map<E, Integer> idMap = new HashMap<>();
 
     /**
      * Clears all cached identifiers, and resets the unique identifier counter.

@@ -57,14 +57,10 @@ import org.jgrapht.*;
 public class HawickJamesSimpleCycles<V, E>
     implements DirectedSimpleCycles<V, E>
 {
-
-
     private enum Operation
     {
         ENUMERATE, PRINT_ONLY, COUNT_ONLY
     }
-
-
 
     // The graph
     private DirectedGraph<V, E> graph = null;
@@ -88,8 +84,6 @@ public class HawickJamesSimpleCycles<V, E>
     // Giving an index to every V
     private V [] iToV = null;
     private Map<V, Integer> vToI = null;
-
-
 
     /**
      * Create a simple cycle finder with an unspecified graph.
@@ -115,27 +109,25 @@ public class HawickJamesSimpleCycles<V, E>
         this.graph = graph;
     }
 
-
-
     @SuppressWarnings("unchecked")
     private void initState(Operation o)
     {
         nCycles = 0;
         nVertices = graph.vertexSet().size();
         if (o == Operation.ENUMERATE) {
-            cycles = new ArrayList<List<V>>();
+            cycles = new ArrayList<>();
         }
         blocked = new boolean[nVertices];
-        stack = new ArrayDeque<Integer>(nVertices);
+        stack = new ArrayDeque<>(nVertices);
 
         B = new ArrayList[nVertices];
         for (int i = 0; i < nVertices; i++) {
             //B[i] = new ArrayList<Integer>(nVertices);
-            B[i] = new ArrayList<Integer>();
+            B[i] = new ArrayList<>();
         }
 
         iToV = (V []) graph.vertexSet().toArray();
-        vToI = new HashMap<V, Integer>();
+        vToI = new HashMap<>();
         for (int i = 0; i < iToV.length; i++) {
             vToI.put(iToV[i], i);
         }
@@ -155,9 +147,8 @@ public class HawickJamesSimpleCycles<V, E>
             List<V> s = Graphs.successorListOf(graph, v);
             Ak[j] = new ArrayList<Integer>(s.size());
 
-            Iterator<V> iterator = s.iterator();
-            while (iterator.hasNext()) {
-                Ak[j].add(vToI.get(iterator.next()));
+            for (V value : s) {
+                Ak[j].add(vToI.get(value));
             }
         }
 
@@ -173,11 +164,6 @@ public class HawickJamesSimpleCycles<V, E>
         iToV = null;
         vToI = null;
 
-        for (int i = 0; i < nVertices; i++) {
-            Ak[i] = null;
-            B[i] = null;
-        }
-
         Ak = null;
         B = null;
     }
@@ -189,17 +175,14 @@ public class HawickJamesSimpleCycles<V, E>
         stack.push(v);
         blocked[v] = true;
 
-        Iterator<Integer> iteratorAk = Ak[v].iterator();
-        while (iteratorAk.hasNext()) {
-            Integer w = iteratorAk.next();
-
+        for (Integer w : Ak[v]) {
             if (w < start) {
                 continue;
             }
 
             if (w == start) {
                 if (o == Operation.ENUMERATE) {
-                    List<V> cycle = new ArrayList<V>(stack.size());
+                    List<V> cycle = new ArrayList<>(stack.size());
 
                     Iterator<Integer> iteratorStack = stack.iterator();
                     while (iteratorStack.hasNext()) {
@@ -229,10 +212,7 @@ public class HawickJamesSimpleCycles<V, E>
         if (f) {
             unblock(v);
         } else {
-            iteratorAk = Ak[v].iterator();
-            while (iteratorAk.hasNext()) {
-                Integer w = iteratorAk.next();
-
+            for (Integer w : Ak[v]) {
                 if (w < start) {
                     continue;
                 }
@@ -267,8 +247,7 @@ public class HawickJamesSimpleCycles<V, E>
      * Remove all occurrences of a value from the list.
      *
      * @param u the Integer to be removed.
-     * @param list  the list from which all the occurrences of u must be
-     * removed.
+     * @param list the list from which all the occurrences of u must be removed.
      */
     private int removeFromList(List<Integer> list, Integer u)
     {

@@ -50,11 +50,7 @@ public class SimpleDirectedGraph<V, E>
     extends AbstractBaseGraph<V, E>
     implements DirectedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 4049358608472879671L;
-
-
 
     /**
      * Creates a new simple directed graph.
@@ -63,7 +59,7 @@ public class SimpleDirectedGraph<V, E>
      */
     public SimpleDirectedGraph(Class<? extends E> edgeClass)
     {
-        this(new ClassBasedEdgeFactory<V, E>(edgeClass));
+        this(new ClassBasedEdgeFactory<>(edgeClass));
     }
 
     /**
@@ -76,21 +72,19 @@ public class SimpleDirectedGraph<V, E>
         super(ef, false, false);
     }
 
-
-
     public static <V, E> DirectedGraphBuilderBase<V,
         E, ? extends SimpleDirectedGraph<V, E>, ?> builder(
         Class<? extends E> edgeClass)
     {
-        return new DirectedGraphBuilder<V, E, SimpleDirectedGraph<V, E>>(
-            new SimpleDirectedGraph<V, E>(edgeClass));
+        return new DirectedGraphBuilder<>(
+                new SimpleDirectedGraph<>(edgeClass));
     }
 
     public static <V, E> DirectedGraphBuilderBase<V,
         E, ? extends SimpleDirectedGraph<V, E>, ?> builder(EdgeFactory<V, E> ef)
     {
-        return new DirectedGraphBuilder<V, E, SimpleDirectedGraph<V, E>>(
-            new SimpleDirectedGraph<V, E>(ef));
+        return new DirectedGraphBuilder<>(
+                new SimpleDirectedGraph<>(ef));
     }
 }
 

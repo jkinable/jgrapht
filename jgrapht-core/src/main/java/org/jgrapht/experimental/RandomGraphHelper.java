@@ -53,11 +53,7 @@ import org.jgrapht.*;
  */
 public final class RandomGraphHelper
 {
-
-
     private static final Random randSingleton = new Random();
-
-
 
     /**
      * .
@@ -65,8 +61,6 @@ public final class RandomGraphHelper
     private RandomGraphHelper()
     {
     }
-
-
 
     /**
      * @see org.jgrapht.generate.GraphGenerator#generateGraph

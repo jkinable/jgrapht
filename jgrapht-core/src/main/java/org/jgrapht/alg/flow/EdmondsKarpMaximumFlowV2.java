@@ -156,7 +156,7 @@ public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E
      * @return object which stores both the max flow value, as well as the flow on each edge/arc
      */
     @Override
-    public MaximumFlow<V, E> buildMaximumFlow(V source, V sink) {
+    public MaximumFlow<E> buildMaximumFlow(V source, V sink) {
         if(currentSource != source || currentSink != sink)
             calculateMaxFlow(source, sink);
         Map<E, Double> flowMap=new LinkedHashMap<>();
@@ -446,7 +446,7 @@ public class EdmondsKarpMaximumFlowV2<V, E> implements MaximumFlowAlgorithm<V, E
         time=System.currentTimeMillis()-time;
         System.out.println("Construction took: "+time);
         time=System.currentTimeMillis();
-        MaximumFlow<Integer, DefaultWeightedEdge> maximumFlow1 =solver1.buildMaximumFlow(source, sink);
+        MaximumFlow<DefaultWeightedEdge> maximumFlow1 =solver1.buildMaximumFlow(source, sink);
         time=System.currentTimeMillis()-time;
         System.out.println("Found flow with value: "+maximumFlow1.getValue()+" in: "+time+"ms");
 

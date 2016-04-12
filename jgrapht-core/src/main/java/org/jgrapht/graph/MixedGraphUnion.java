@@ -45,42 +45,36 @@
  */
 package org.jgrapht.graph;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.Graph;
-import org.jgrapht.UndirectedGraph;
-import org.jgrapht.util.WeightCombiner;
+import java.util.*;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import org.jgrapht.*;
+import org.jgrapht.util.*;
 
 
 public class MixedGraphUnion<V, E>
     extends GraphUnion<V, E, Graph<V, E>>
     implements DirectedGraph<V, E>
 {
-
+    private static final long serialVersionUID = -1961714127770731054L;
     private final UndirectedGraph<V, E> undirectedGraph;
     private final DirectedGraph<V, E> directedGraph;
 
     public MixedGraphUnion(
-            UndirectedGraph<V, E> g1,
-            DirectedGraph<V, E> g2,
-            WeightCombiner operator)
+        UndirectedGraph<V, E> g1,
+        DirectedGraph<V, E> g2,
+        WeightCombiner operator)
     {
         super(g1, g2, operator);
-        this.undirectedGraph=g1;
-        this.directedGraph=g2;
+        this.undirectedGraph = g1;
+        this.directedGraph = g2;
     }
 
     public MixedGraphUnion(UndirectedGraph<V, E> g1, DirectedGraph<V, E> g2)
     {
         super(g1, g2);
-        this.undirectedGraph=g1;
-        this.directedGraph=g2;
+        this.undirectedGraph = g1;
+        this.directedGraph = g2;
     }
-
-
 
     @Override public int inDegreeOf(V vertex)
     {
@@ -90,7 +84,7 @@ public class MixedGraphUnion<V, E>
 
     @Override public Set<E> incomingEdgesOf(V vertex)
     {
-        Set<E> res = new LinkedHashSet<E>();
+        Set<E> res = new LinkedHashSet<>();
         if (directedGraph.containsVertex(vertex)) {
             res.addAll(directedGraph.incomingEdgesOf(vertex));
         }
@@ -108,7 +102,7 @@ public class MixedGraphUnion<V, E>
 
     @Override public Set<E> outgoingEdgesOf(V vertex)
     {
-        Set<E> res = new LinkedHashSet<E>();
+        Set<E> res = new LinkedHashSet<>();
         if (directedGraph.containsVertex(vertex)) {
             res.addAll(directedGraph.outgoingEdgesOf(vertex));
         }

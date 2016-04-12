@@ -36,11 +36,10 @@
  */
 package org.jgrapht.ext;
 
-import java.io.*;
+import org.jgrapht.Graph;
 
-import java.util.*;
-
-import org.jgrapht.*;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 
 /**
@@ -60,11 +59,7 @@ import org.jgrapht.*;
  */
 public class VisioExporter<V, E>
 {
-
-
     private VertexNameProvider<V> vertexNameProvider;
-
-
 
     /**
      * Creates a new VisioExporter object with the specified naming policy.
@@ -82,10 +77,8 @@ public class VisioExporter<V, E>
      */
     public VisioExporter()
     {
-        this(new StringNameProvider<V>());
+        this(new StringNameProvider<>());
     }
-
-
 
     /**
      * Exports the specified graph into a Visio csv file format.
@@ -97,12 +90,12 @@ public class VisioExporter<V, E>
     {
         PrintStream out = new PrintStream(output);
 
-        for (Iterator<V> i = g.vertexSet().iterator(); i.hasNext();) {
-            exportVertex(out, i.next());
+        for (V v : g.vertexSet()) {
+            exportVertex(out, v);
         }
 
-        for (Iterator<E> i = g.edgeSet().iterator(); i.hasNext();) {
-            exportEdge(out, i.next(), g);
+        for (E e : g.edgeSet()) {
+            exportEdge(out, e, g);
         }
 
         out.flush();

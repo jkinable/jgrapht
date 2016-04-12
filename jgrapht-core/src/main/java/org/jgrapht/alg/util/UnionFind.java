@@ -52,12 +52,8 @@ import java.util.*;
  */
 public class UnionFind<T>
 {
-
-
     private Map<T, T> parentMap;
     private Map<T, Integer> rankMap;
-
-
 
     /**
      * Creates a UnionFind instance with all of the elements of elements in
@@ -65,15 +61,13 @@ public class UnionFind<T>
      */
     public UnionFind(Set<T> elements)
     {
-        parentMap = new HashMap<T, T>();
-        rankMap = new HashMap<T, Integer>();
+        parentMap = new HashMap<>();
+        rankMap = new HashMap<>();
         for (T element : elements) {
             parentMap.put(element, element);
             rankMap.put(element, 0);
         }
     }
-
-
 
     /**
      * Adds a new element to the data structure in its own set.

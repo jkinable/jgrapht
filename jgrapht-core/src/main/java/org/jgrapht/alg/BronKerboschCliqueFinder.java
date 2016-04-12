@@ -52,13 +52,9 @@ import org.jgrapht.*;
  */
 public class BronKerboschCliqueFinder<V, E>
 {
-
-
     private final Graph<V, E> graph;
 
     private Collection<Set<V>> cliques;
-
-
 
     /**
      * Creates a new clique finder.
@@ -70,8 +66,6 @@ public class BronKerboschCliqueFinder<V, E>
     {
         this.graph = graph;
     }
-
-
 
     /**
      * Finds all maximal cliques of the graph. A clique is maximal if it is
@@ -85,10 +79,10 @@ public class BronKerboschCliqueFinder<V, E>
     {
         // TODO jvs 26-July-2005:  assert that graph is simple
 
-        cliques = new ArrayList<Set<V>>();
-        List<V> potential_clique = new ArrayList<V>();
-        List<V> candidates = new ArrayList<V>();
-        List<V> already_found = new ArrayList<V>();
+        cliques = new ArrayList<>();
+        List<V> potential_clique = new ArrayList<>();
+        List<V> candidates = new ArrayList<>();
+        List<V> already_found = new ArrayList<>();
         candidates.addAll(graph.vertexSet());
         findCliques(potential_clique, candidates, already_found);
         return cliques;
@@ -106,7 +100,7 @@ public class BronKerboschCliqueFinder<V, E>
         getAllMaximalCliques();
 
         int maximum = 0;
-        Collection<Set<V>> biggest_cliques = new ArrayList<Set<V>>();
+        Collection<Set<V>> biggest_cliques = new ArrayList<>();
         for (Set<V> clique : cliques) {
             if (maximum < clique.size()) {
                 maximum = clique.size();
@@ -125,12 +119,12 @@ public class BronKerboschCliqueFinder<V, E>
         List<V> candidates,
         List<V> already_found)
     {
-        List<V> candidates_array = new ArrayList<V>(candidates);
+        List<V> candidates_array = new ArrayList<>(candidates);
         if (!end(candidates, already_found)) {
             // for each candidate_node in candidates do
             for (V candidate : candidates_array) {
-                List<V> new_candidates = new ArrayList<V>();
-                List<V> new_already_found = new ArrayList<V>();
+                List<V> new_candidates = new ArrayList<>();
+                List<V> new_already_found = new ArrayList<>();
 
                 // move candidate node to potential_clique
                 potential_clique.add(candidate);
@@ -155,7 +149,7 @@ public class BronKerboschCliqueFinder<V, E>
                 // if new_candidates and new_already_found are empty
                 if (new_candidates.isEmpty() && new_already_found.isEmpty()) {
                     // potential_clique is maximal_clique
-                    cliques.add(new HashSet<V>(potential_clique));
+                    cliques.add(new HashSet<>(potential_clique));
                 } // of if
                 else {
                     // recursive call

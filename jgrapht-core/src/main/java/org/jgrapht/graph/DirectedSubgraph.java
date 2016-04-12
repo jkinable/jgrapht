@@ -53,11 +53,7 @@ public class DirectedSubgraph<V, E>
     extends Subgraph<V, E, DirectedGraph<V, E>>
     implements DirectedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 3616445700507054133L;
-
-
 
     /**
      * Creates a new directed subgraph.
@@ -66,8 +62,8 @@ public class DirectedSubgraph<V, E>
      * @param vertexSubset vertices to include in the subgraph. If <code>
      * null</code> then all vertices are included.
      * @param edgeSubset edges to in include in the subgraph. If <code>
-     * null</code> then all the edges whose vertices found in the graph
-     * are included.
+     * null</code> then all the edges whose vertices found in the graph are
+     * included.
      */
     public DirectedSubgraph(
         DirectedGraph<V, E> base,
@@ -76,8 +72,6 @@ public class DirectedSubgraph<V, E>
     {
         super(base, vertexSubset, edgeSubset);
     }
-
-
 
     /**
      * @see DirectedGraph#inDegreeOf(Object)
@@ -104,7 +98,7 @@ public class DirectedSubgraph<V, E>
     {
         assertVertexExist(vertex);
 
-        Set<E> edges = new ArrayUnenforcedSet<E>();
+        Set<E> edges = new ArrayUnenforcedSet<>();
 
         for (E e : getBase().incomingEdgesOf(vertex)) {
             if (containsEdge(e)) {
@@ -140,7 +134,7 @@ public class DirectedSubgraph<V, E>
     {
         assertVertexExist(vertex);
 
-        Set<E> edges = new ArrayUnenforcedSet<E>();
+        Set<E> edges = new ArrayUnenforcedSet<>();
 
         for (E e : getBase().outgoingEdgesOf(vertex)) {
             if (containsEdge(e)) {

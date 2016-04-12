@@ -50,11 +50,7 @@ public class SimpleWeightedGraph<V, E>
     extends SimpleGraph<V, E>
     implements WeightedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 3906088949100655922L;
-
-
 
     /**
      * Creates a new simple weighted graph with the specified edge factory.
@@ -73,26 +69,22 @@ public class SimpleWeightedGraph<V, E>
      */
     public SimpleWeightedGraph(Class<? extends E> edgeClass)
     {
-        this(new ClassBasedEdgeFactory<V, E>(edgeClass));
+        this(new ClassBasedEdgeFactory<>(edgeClass));
     }
-
-
 
     public static <V, E> UndirectedWeightedGraphBuilderBase<V,
         E, ? extends SimpleWeightedGraph<V, E>, ?> builder(
         Class<? extends E> edgeClass)
     {
-        return new UndirectedWeightedGraphBuilder<V,
-            E, SimpleWeightedGraph<V, E>>(
-                new SimpleWeightedGraph<V, E>(edgeClass));
+        return new UndirectedWeightedGraphBuilder<>(
+                new SimpleWeightedGraph<>(edgeClass));
     }
 
     public static <V, E> UndirectedWeightedGraphBuilderBase<V,
         E, ? extends SimpleWeightedGraph<V, E>, ?> builder(EdgeFactory<V, E> ef)
     {
-        return new UndirectedWeightedGraphBuilder<V,
-            E, SimpleWeightedGraph<V, E>>(
-                new SimpleWeightedGraph<V, E>(ef));
+        return new UndirectedWeightedGraphBuilder<>(
+                new SimpleWeightedGraph<>(ef));
     }
 }
 

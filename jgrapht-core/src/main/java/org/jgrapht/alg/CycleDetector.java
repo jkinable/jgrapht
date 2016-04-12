@@ -40,7 +40,7 @@ package org.jgrapht.alg;
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
+import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.traverse.*;
 
 
@@ -54,14 +54,10 @@ import org.jgrapht.traverse.*;
  */
 public class CycleDetector<V, E>
 {
-
-
     /**
      * Graph on which cycle detection is being performed.
      */
     DirectedGraph<V, E> graph;
-
-
 
     /**
      * Creates a cycle detector for the specified graph. Currently only directed
@@ -73,8 +69,6 @@ public class CycleDetector<V, E>
     {
         this.graph = graph;
     }
-
-
 
     /**
      * Performs yes/no cycle detection on the entire graph.
@@ -121,14 +115,14 @@ public class CycleDetector<V, E>
         // ProbeIterator can't be used to handle this case,
         // so use StrongConnectivityAlgorithm instead.
         StrongConnectivityAlgorithm<V, E> inspector =
-            new KosarajuStrongConnectivityInspector<V, E>(graph);
+                new KosarajuStrongConnectivityInspector<>(graph);
         List<Set<V>> components = inspector.stronglyConnectedSets();
 
         // A vertex participates in a cycle if either of the following is
         // true:  (a) it is in a component whose size is greater than 1
         // or (b) it is a self-loop
 
-        Set<V> set = new HashSet<V>();
+        Set<V> set = new HashSet<>();
         for (Set<V> component : components) {
             if (component.size() > 1) {
                 // cycle
@@ -161,7 +155,7 @@ public class CycleDetector<V, E>
      */
     public Set<V> findCyclesContainingVertex(V v)
     {
-        Set<V> set = new HashSet<V>();
+        Set<V> set = new HashSet<>();
         execute(set, v);
 
         return set;
@@ -175,8 +169,6 @@ public class CycleDetector<V, E>
             iter.next();
         }
     }
-
-
 
     /**
      * Exception thrown internally when a cycle is detected during a yes/no
@@ -204,7 +196,7 @@ public class CycleDetector<V, E>
             super(graph, startVertex);
             root = startVertex;
             this.cycleSet = cycleSet;
-            path = new ArrayList<V>();
+            path = new ArrayList<>();
         }
 
         /**

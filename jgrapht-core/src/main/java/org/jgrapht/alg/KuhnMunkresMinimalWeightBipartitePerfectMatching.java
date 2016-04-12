@@ -54,8 +54,6 @@ import org.jgrapht.alg.interfaces.*;
 public class KuhnMunkresMinimalWeightBipartitePerfectMatching<V, E>
     implements WeightedMatchingAlgorithm<V, E>
 {
-
-
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
     private final WeightedGraph<V, E> graph;
@@ -64,8 +62,6 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatching<V, E>
     private final List<? extends V> secondPartition;
 
     private final int [] matching;
-
-
 
     /**
      * @param G target weighted bipartite graph to find matching in
@@ -100,16 +96,14 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatching<V, E>
             matching = new int[] {};
         } else {
             matching =
-                new KuhnMunkresMatrixImplementation<V, E>(G, S, T)
+                    new KuhnMunkresMatrixImplementation<>(G, S, T)
                 .buildMatching();
         }
     }
 
-
-
     @Override public Set<E> getMatching()
     {
-        Set<E> edges = new HashSet<E>();
+        Set<E> edges = new HashSet<>();
 
         for (int i = 0; i < matching.length; ++i) {
             edges.add(
@@ -131,8 +125,6 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatching<V, E>
 
         return weight;
     }
-
-
 
     /**
      * ...

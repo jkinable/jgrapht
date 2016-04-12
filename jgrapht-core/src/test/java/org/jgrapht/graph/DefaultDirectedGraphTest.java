@@ -64,9 +64,9 @@ public class DefaultDirectedGraphTest
     public void testEdgeSetFactory()
     {
         DirectedMultigraph<String, DefaultEdge> g =
-            new DirectedMultigraph<String, DefaultEdge>(
-                DefaultEdge.class);
-        g.setEdgeSetFactory(new LinkedHashSetFactory<String, DefaultEdge>());
+                new DirectedMultigraph<>(
+                        DefaultEdge.class);
+        g.setEdgeSetFactory(new LinkedHashSetFactory<>());
         initMultiTriangle(g);
     }
 
@@ -76,8 +76,8 @@ public class DefaultDirectedGraphTest
     public void testEdgeOrderDeterminism()
     {
         DirectedGraph<String, DefaultEdge> g =
-            new DirectedMultigraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new DirectedMultigraph<>(
+                        DefaultEdge.class);
         g.addVertex(v1);
         g.addVertex(v2);
         g.addVertex(v3);
@@ -159,8 +159,8 @@ public class DefaultDirectedGraphTest
     createMultiTriangle()
     {
         DirectedGraph<String, DefaultEdge> g =
-            new DirectedMultigraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new DirectedMultigraph<>(
+                        DefaultEdge.class);
         initMultiTriangle(g);
 
         return g;
@@ -194,7 +194,7 @@ public class DefaultDirectedGraphTest
         @Override
         public Set<E> createEdgeSet(V vertex)
         {
-            return new LinkedHashSet<E>();
+            return new LinkedHashSet<>();
         }
     }
 }

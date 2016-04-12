@@ -51,8 +51,6 @@ import org.jgrapht.*;
 class VF2GraphMappingIterator<V, E>
     extends VF2MappingIterator<V, E>
 {
-
-
     /**
      * @param ordering1
      * @param ordering2
@@ -68,8 +66,6 @@ class VF2GraphMappingIterator<V, E>
         super(ordering1, ordering2, vertexComparator, edgeComparator);
     }
 
-
-
     @Override protected IsomorphicGraphMapping<V, E> match()
     {
         VF2State<V, E> s;
@@ -83,11 +79,11 @@ class VF2GraphMappingIterator<V, E>
                 return null;
             }
 
-            s = new VF2GraphIsomorphismState<V, E>(
-                ordering1,
-                ordering2,
-                vertexComparator,
-                edgeComparator);
+            s = new VF2GraphIsomorphismState<>(
+                    ordering1,
+                    ordering2,
+                    vertexComparator,
+                    edgeComparator);
 
             if (g2.vertexSet().isEmpty()) {
                 return (hadOneMapping != null) ? null : s.getCurrentMapping();
@@ -101,7 +97,7 @@ class VF2GraphMappingIterator<V, E>
             while (s.nextPair()) {
                 if (s.isFeasiblePair()) {
                     stateStack.push(s);
-                    s = new VF2GraphIsomorphismState<V, E>(s);
+                    s = new VF2GraphIsomorphismState<>(s);
                     s.addPair();
 
                     if (s.isGoal()) {

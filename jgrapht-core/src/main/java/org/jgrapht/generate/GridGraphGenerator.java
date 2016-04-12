@@ -56,20 +56,14 @@ import org.jgrapht.*;
 public class GridGraphGenerator<V, E>
     implements GraphGenerator<V, E, V>
 {
-
-
     /**
      * Role for the vertices at the corners.
      */
     public static final String CORNER_VERTEX = "Corner Vertex";
 
-
-
     private int rows;
 
     private int cols;
-
-
 
     /**
      * Creates a new GridGraphGenerator object with rows x cols dimension.
@@ -93,8 +87,6 @@ public class GridGraphGenerator<V, E>
         this.cols = cols;
     }
 
-
-
     /**
      * {@inheritDoc}
      */
@@ -103,7 +95,7 @@ public class GridGraphGenerator<V, E>
         VertexFactory<V> vertexFactory,
         Map<String, V> resultMap)
     {
-        Map<Integer, V> map = new TreeMap<Integer, V>();
+        Map<Integer, V> map = new TreeMap<>();
 
         // Adding all vertices to the set
         int cornerCtr = 0;
@@ -128,7 +120,7 @@ public class GridGraphGenerator<V, E>
         for (int i : map.keySet()) {
             for (int j : map.keySet()) {
                 if ((((i % cols) > 0)
-                        && ((i + 1) == Integer.valueOf(j)))
+                        && ((i + 1) == j))
                     || ((i + cols) == j))
                 {
                     target.addEdge(map.get(i), map.get(j));

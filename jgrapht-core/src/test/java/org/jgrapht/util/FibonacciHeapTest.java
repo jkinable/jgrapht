@@ -49,8 +49,8 @@ public class FibonacciHeapTest
     public void testAddRemoveOne()
     {
         String s = "A";
-        FibonacciHeapNode<String> n = new FibonacciHeapNode<String>(s);
-        FibonacciHeap<String> h = new FibonacciHeap<String>();
+        FibonacciHeapNode<String> n = new FibonacciHeapNode<>(s);
+        FibonacciHeap<String> h = new FibonacciHeap<>();
         assertTrue(h.isEmpty());
         h.insert(n, 1.0);
         assertFalse(h.isEmpty());
@@ -65,13 +65,13 @@ public class FibonacciHeapTest
         int k = 10000;
         String s = "A";
         double t = 0;
-        FibonacciHeap<String> h = new FibonacciHeap<String>();
+        FibonacciHeap<String> h = new FibonacciHeap<>();
         for (int i = 0; i < (k * 3); ++i) {
             // during first two-thirds, insert
             if (i < (k * 2)) {
                 double d = r.nextDouble();
                 t += d;
-                FibonacciHeapNode<String> n = new FibonacciHeapNode<String>(s);
+                FibonacciHeapNode<String> n = new FibonacciHeapNode<>(s);
                 h.insert(n, d);
             }
 

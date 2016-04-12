@@ -47,12 +47,8 @@ import org.jgrapht.*;
 final class BellmanFordPathElement<V, E>
     extends AbstractPathElement<V, E>
 {
-
-
     private double cost = 0;
     private double epsilon;
-
-
 
     /**
      * Creates a path element by concatenation of an edge to a path element.
@@ -100,8 +96,6 @@ final class BellmanFordPathElement<V, E>
         this.cost = 0;
         this.epsilon = epsilon;
     }
-
-
 
     /**
      * Returns the total cost of the path element.

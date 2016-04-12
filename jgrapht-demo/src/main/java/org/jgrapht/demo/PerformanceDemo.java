@@ -63,8 +63,6 @@ import org.jgrapht.traverse.*;
  */
 public final class PerformanceDemo
 {
-
-
     /**
      * The starting point for the demo.
      *
@@ -77,7 +75,7 @@ public final class PerformanceDemo
         reportPerformanceFor("starting at", time);
 
         Graph<Object, DefaultEdge> g =
-            new Pseudograph<Object, DefaultEdge>(DefaultEdge.class);
+                new Pseudograph<>(DefaultEdge.class);
         Object prev;
         Object curr;
 
@@ -109,7 +107,7 @@ public final class PerformanceDemo
 
         for (
             Iterator<Object> i =
-                new BreadthFirstIterator<Object, DefaultEdge>(g);
+            new BreadthFirstIterator<>(g);
             i.hasNext();)
         {
             i.next();
@@ -120,7 +118,7 @@ public final class PerformanceDemo
         time = System.currentTimeMillis();
 
         for (
-            Iterator<Object> i = new DepthFirstIterator<Object, DefaultEdge>(g);
+            Iterator<Object> i = new DepthFirstIterator<>(g);
             i.hasNext();)
         {
             i.next();

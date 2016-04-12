@@ -36,12 +36,9 @@
  */
 package org.jgrapht.alg;
 
-import java.util.*;
-
-import junit.framework.*;
-
-import org.jgrapht.*;
-import org.jgrapht.util.*;
+import junit.framework.TestCase;
+import org.jgrapht.Graph;
+import org.jgrapht.util.MathUtil;
 
 
 /**
@@ -127,20 +124,11 @@ public class KShortestPathKValuesTest
                 graph.vertexSet().size());
         int maxSize = Integer.MAX_VALUE;
 
-        for (
-            Iterator sourceIterator = graph.vertexSet().iterator();
-            sourceIterator.hasNext();)
-        {
-            Object sourceVertex = sourceIterator.next();
-
+        for (Object sourceVertex : graph.vertexSet()) {
             KShortestPaths finder =
-                new KShortestPaths(graph, sourceVertex,
-                    maxSize);
-            for (
-                Iterator targetIterator = graph.vertexSet().iterator();
-                targetIterator.hasNext();)
-            {
-                Object targetVertex = targetIterator.next();
+                    new KShortestPaths(graph, sourceVertex,
+                            maxSize);
+            for (Object targetVertex : graph.vertexSet()) {
                 if (targetVertex != sourceVertex) {
                     assertEquals(finder.getPaths(targetVertex).size(), nbPaths);
                 }

@@ -49,27 +49,19 @@ import java.util.*;
  */
 abstract class VF2State<V, E>
 {
-
-
     public static final int NULL_NODE = -1;
 
     protected static final boolean DEBUG = false;
 
-
-
     protected int [] core1, core2, in1, in2, out1, out2;
 
-    protected int coreLen,
-        n1, n2,
-        t1BothLen, t2BothLen, t1InLen, t2InLen, t1OutLen, t2OutLen,
-        addedVertex1, addVertex1, addVertex2;
+    protected int coreLen, n1, n2, t1BothLen, t2BothLen, t1InLen, t2InLen,
+        t1OutLen, t2OutLen, addedVertex1, addVertex1, addVertex2;
 
     protected GraphOrdering<V, E> g1, g2;
 
     protected Comparator<V> vertexComparator;
     protected Comparator<E> edgeComparator;
-
-
 
     /**
      * @param g1 GraphOrdering on first graph
@@ -142,8 +134,6 @@ abstract class VF2State<V, E>
         addVertex2 = s.addVertex2;
         addedVertex1 = s.addedVertex1;
     }
-
-
 
     /**
      * calculates a pair of nodes which may be added to the current matching,
@@ -450,7 +440,7 @@ abstract class VF2State<V, E>
 
     public IsomorphicGraphMapping<V, E> getCurrentMapping()
     {
-        return new IsomorphicGraphMapping<V, E>(g1, g2, core1, core2);
+        return new IsomorphicGraphMapping<>(g1, g2, core1, core2);
     }
 
     public void resetAddVertexes()

@@ -107,11 +107,7 @@ import org.jgrapht.event.*;
 public class JGraphModelAdapter<V, E>
     extends DefaultGraphModel
 {
-
-
     private static final long serialVersionUID = 3256722883706302515L;
-
-
 
     /**
      * The following (jCells|jtElement)Being(Added|Removed) sets are used to
@@ -173,8 +169,6 @@ public class JGraphModelAdapter<V, E>
      */
     private final Map<V, GraphCell> vertexToCell = new HashMap<V, GraphCell>();
     private final ShieldedGraph jtGraph;
-
-
 
     /**
      * Constructs a new JGraph model adapter for the specified JGraphT graph.
@@ -265,8 +259,6 @@ public class JGraphModelAdapter<V, E>
 
         this.addGraphModelListener(new JGraphListener());
     }
-
-
 
     /**
      * Creates and returns a map of attributes to be used as defaults for edge
@@ -779,8 +771,6 @@ public class JGraphModelAdapter<V, E>
         jCellsBeingRemoved.remove(cell);
     }
 
-
-
     /**
      * Creates the JGraph cells that reflect the respective JGraphT elements.
      *
@@ -807,8 +797,6 @@ public class JGraphModelAdapter<V, E>
          */
         public DefaultGraphCell createVertexCell(VV jGraphTVertex);
     }
-
-
 
     /**
      * A simple default cell factory.

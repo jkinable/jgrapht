@@ -48,8 +48,6 @@ import org.jgrapht.alg.interfaces.*;
 public class PrimMinimumSpanningTree<V, E>
     implements MinimumSpanningTree<V, E>
 {
-
-
     /**
      * Minimum Spanning-Tree/Forest edge set
      */
@@ -60,13 +58,11 @@ public class PrimMinimumSpanningTree<V, E>
      */
     private final double minimumSpanningTreeTotalWeight;
 
-
-
     public PrimMinimumSpanningTree(final Graph<V, E> g)
     {
-        this.minimumSpanningTreeEdgeSet = new HashSet<E>(g.vertexSet().size());
+        this.minimumSpanningTreeEdgeSet = new HashSet<>(g.vertexSet().size());
 
-        Set<V> unspanned = new HashSet<V>(g.vertexSet());
+        Set<V> unspanned = new HashSet<>(g.vertexSet());
 
         while (!unspanned.isEmpty()) {
             Iterator<V> ri = unspanned.iterator();
@@ -79,15 +75,10 @@ public class PrimMinimumSpanningTree<V, E>
             // already spanned vertices
 
             PriorityQueue<E> dangling =
-                new PriorityQueue<E>(
-                    g.edgeSet().size(),
-                    new Comparator<E>() {
-                        @Override public int compare(E lop, E rop)
-                        {
-                            return Double.valueOf(g.getEdgeWeight(lop))
-                                .compareTo(g.getEdgeWeight(rop));
-                        }
-                    });
+                    new PriorityQueue<>(
+                            g.edgeSet().size(),
+                            (lop, rop) -> Double.valueOf(g.getEdgeWeight(lop))
+                                    .compareTo(g.getEdgeWeight(rop)));
 
             dangling.addAll(g.edgesOf(root));
 
@@ -127,8 +118,6 @@ public class PrimMinimumSpanningTree<V, E>
 
         this.minimumSpanningTreeTotalWeight = spanningTreeWeight;
     }
-
-
 
     @Override public Set<E> getMinimumSpanningTreeEdgeSet()
     {

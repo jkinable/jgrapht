@@ -64,15 +64,15 @@ public class NeighborIndexTest
         // in order to cover the case in
         // https://sourceforge.net/tracker/index.php?func=detail&aid=3486775&group_id=86459&atid=579687
         ListenableUndirectedGraph<String, Object> g =
-            new ListenableUndirectedGraph<String, Object>(
-                Object.class);
+                new ListenableUndirectedGraph<>(
+                        Object.class);
         g.addVertex(V1);
         g.addVertex(V2);
 
         g.addEdge(V1, V2);
 
         NeighborIndex<String, Object> index =
-            new NeighborIndex<String, Object>(g);
+                new NeighborIndex<>(g);
         g.addGraphListener(index);
 
         Set neighbors1 = index.neighborsOf(V1);
@@ -106,15 +106,15 @@ public class NeighborIndexTest
     public void testDirectedNeighborSet()
     {
         ListenableDirectedGraph<String, Object> g =
-            new ListenableDirectedGraph<String, Object>(
-                Object.class);
+                new ListenableDirectedGraph<>(
+                        Object.class);
         g.addVertex(V1);
         g.addVertex(V2);
 
         g.addEdge(V1, V2);
 
         DirectedNeighborIndex<String, Object> index =
-            new DirectedNeighborIndex<String, Object>(g);
+                new DirectedNeighborIndex<>(g);
         g.addGraphListener(index);
 
         Set p = index.predecessorsOf(V1);

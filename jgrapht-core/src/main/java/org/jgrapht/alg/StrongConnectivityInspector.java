@@ -37,36 +37,32 @@
  */
 package org.jgrapht.alg;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
-import org.jgrapht.graph.DirectedSubgraph;
-import org.jgrapht.graph.EdgeReversedGraph;
-
 import java.util.*;
+
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
 
 
 /**
- * <p>Complements the {@link ConnectivityInspector} class with
- * the capability to compute the strongly connected components of a directed
- * graph. The algorithm is implemented after "Cormen et al: Introduction to
- * algorithms", Chapter 22.5. It has a running time of O(V + E).</p>
+ * <p>Complements the {@link ConnectivityInspector} class with the capability to
+ * compute the strongly connected components of a directed graph. The algorithm
+ * is implemented after "Cormen et al: Introduction to algorithms", Chapter
+ * 22.5. It has a running time of O(V + E).</p>
  *
- * <p>Unlike {@link ConnectivityInspector}, this class does not
- * implement incremental inspection. The full algorithm is executed at the first
- * call of {@link StrongConnectivityInspector#stronglyConnectedSets()} or {@link
+ * <p>Unlike {@link ConnectivityInspector}, this class does not implement
+ * incremental inspection. The full algorithm is executed at the first call of
+ * {@link StrongConnectivityInspector#stronglyConnectedSets()} or {@link
  * StrongConnectivityInspector#isStronglyConnected()}.</p>
  *
  * @author Christian Soltenborn
  * @author Christian Hammer
  * @since Feb 2, 2005
- *
  * @deprecated Use {@link KosarajuStrongConnectivityInspector} instead.
  */
-@Deprecated
-public class StrongConnectivityInspector<V, E> implements StrongConnectivityAlgorithm<V,E>
+@Deprecated public class StrongConnectivityInspector<V, E>
+    implements StrongConnectivityAlgorithm<V, E>
 {
-
-
     // the graph to compute the strongly connected sets for
     private final DirectedGraph<V, E> graph;
 
@@ -81,8 +77,6 @@ public class StrongConnectivityInspector<V, E> implements StrongConnectivityAlgo
 
     // maps vertices to their VertexData object
     private Map<V, VertexData<V>> vertexToVertexData;
-
-
 
     /**
      * The constructor of the StrongConnectivityAlgorithm class.
@@ -103,8 +97,6 @@ public class StrongConnectivityInspector<V, E> implements StrongConnectivityAlgo
         stronglyConnectedSets = null;
         stronglyConnectedSubgraphs = null;
     }
-
-
 
     /**
      * Returns the graph inspected by the StrongConnectivityAlgorithm.
@@ -283,8 +275,6 @@ public class StrongConnectivityInspector<V, E> implements StrongConnectivityAlgo
             data.setFinished(false);
         }
     }
-
-
 
     /*
      * Lightweight class storing some data for every vertex.

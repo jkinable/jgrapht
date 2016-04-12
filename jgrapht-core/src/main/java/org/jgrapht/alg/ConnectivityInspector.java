@@ -52,7 +52,8 @@ import org.jgrapht.traverse.*;
  * graph</i> is specified at construction time and cannot be modified.
  * Currently, the inspector supports connected components for an undirected
  * graph and weakly connected components for a directed graph. To find strongly
- * connected components, use {@link KosarajuStrongConnectivityInspector} instead.
+ * connected components, use {@link KosarajuStrongConnectivityInspector}
+ * instead.
  *
  * <p>The inspector methods work in a lazy fashion: no computation is performed
  * unless immediately necessary. Computation are done once and results and
@@ -73,13 +74,9 @@ import org.jgrapht.traverse.*;
 public class ConnectivityInspector<V, E>
     implements GraphListener<V, E>
 {
-
-
     List<Set<V>> connectedSets;
     Map<V, Set<V>> vertexToConnectedSet;
     private Graph<V, E> graph;
-
-
 
     /**
      * Creates a connectivity inspector for the specified undirected graph.
@@ -100,10 +97,8 @@ public class ConnectivityInspector<V, E>
     public ConnectivityInspector(DirectedGraph<V, E> g)
     {
         init();
-        this.graph = new AsUndirectedGraph<V, E>(g);
+        this.graph = new AsUndirectedGraph<>(g);
     }
-
-
 
     /**
      * Test if the inspected graph is connected. An empty graph is <i>not</i>
@@ -133,10 +128,10 @@ public class ConnectivityInspector<V, E>
         Set<V> connectedSet = vertexToConnectedSet.get(vertex);
 
         if (connectedSet == null) {
-            connectedSet = new HashSet<V>();
+            connectedSet = new HashSet<>();
 
             BreadthFirstIterator<V, E> i =
-                new BreadthFirstIterator<V, E>(graph, vertex);
+                    new BreadthFirstIterator<>(graph, vertex);
 
             while (i.hasNext()) {
                 connectedSet.add(i.next());
@@ -228,19 +223,19 @@ public class ConnectivityInspector<V, E>
     private void init()
     {
         connectedSets = null;
-        vertexToConnectedSet = new HashMap<V, Set<V>>();
+        vertexToConnectedSet = new HashMap<>();
     }
 
     private List<Set<V>> lazyFindConnectedSets()
     {
         if (connectedSets == null) {
-            connectedSets = new ArrayList<Set<V>>();
+            connectedSets = new ArrayList<>();
 
             Set<V> vertexSet = graph.vertexSet();
 
             if (vertexSet.size() > 0) {
                 BreadthFirstIterator<V, E> i =
-                    new BreadthFirstIterator<V, E>(graph, null);
+                        new BreadthFirstIterator<>(graph, null);
                 i.addTraversalListener(new MyTraversalListener());
 
                 while (i.hasNext()) {
@@ -251,8 +246,6 @@ public class ConnectivityInspector<V, E>
 
         return connectedSets;
     }
-
-
 
     /**
      * A traversal listener that groups all vertices according to to their
@@ -281,7 +274,7 @@ public class ConnectivityInspector<V, E>
         @Override public void connectedComponentStarted(
             ConnectedComponentTraversalEvent e)
         {
-            currentConnectedSet = new HashSet<V>();
+            currentConnectedSet = new HashSet<>();
         }
 
         /**

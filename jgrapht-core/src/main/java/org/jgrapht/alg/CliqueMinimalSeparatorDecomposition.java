@@ -66,8 +66,6 @@ import org.jgrapht.graph.*;
  */
 public class CliqueMinimalSeparatorDecomposition<V, E>
 {
-
-
     /**
      * Source graph to operate on
      */
@@ -108,9 +106,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
      * Map for each separator how many components it produces.
      */
     private Map<Set<V>, Integer> fullComponentCount =
-        new HashMap<Set<V>, Integer>();
-
-
+            new HashMap<>();
 
     /**
      * Setup a clique minimal separator decomposition on undirected graph <code>
@@ -122,10 +118,8 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
     public CliqueMinimalSeparatorDecomposition(UndirectedGraph<V, E> g)
     {
         this.graph = g;
-        this.fillEdges = new HashSet<E>();
+        this.fillEdges = new HashSet<>();
     }
-
-
 
     /**
      * Compute the minimal triangulation of the graph. Implementation of
@@ -136,7 +130,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
     private void computeMinimalTriangulation()
     {
         // initialize chordGraph with same vertices as graph
-        chordalGraph = new SimpleGraph<V, E>(graph.getEdgeFactory());
+        chordalGraph = new SimpleGraph<>(graph.getEdgeFactory());
         for (V v : graph.vertexSet()) {
             chordalGraph.addVertex(v);
         }
@@ -144,18 +138,18 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
         // initialize g' as subgraph of graph (same vertices and edges)
         final UndirectedGraph<V, E> gprime = copyAsSimpleGraph(graph);
         int s = -1;
-        generators = new ArrayList<V>();
-        meo = new LinkedList<V>();
+        generators = new ArrayList<>();
+        meo = new LinkedList<>();
 
-        final Map<V, Integer> vertexLabels = new HashMap<V, Integer>();
+        final Map<V, Integer> vertexLabels = new HashMap<>();
         for (V v : gprime.vertexSet()) {
             vertexLabels.put(v, 0);
         }
         for (int i = 1, n = graph.vertexSet().size(); i <= n; i++) {
             V v = getMaxLabelVertex(vertexLabels);
             LinkedList<V> Y =
-                new LinkedList<V>(
-                    Graphs.neighborListOf(gprime, v));
+                    new LinkedList<>(
+                            Graphs.neighborListOf(gprime, v));
 
             if (vertexLabels.get(v) <= s) {
                 generators.add(v);
@@ -164,12 +158,12 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
             s = vertexLabels.get(v);
 
             // Mark x reached and all other vertices of gprime unreached
-            HashSet<V> reached = new HashSet<V>();
+            HashSet<V> reached = new HashSet<>();
             reached.add(v);
 
             // mark neighborhood of x reached and add to reach(label(y))
             HashMap<Integer, HashSet<V>> reach =
-                new HashMap<Integer, HashSet<V>>();
+                    new HashMap<>();
 
             // mark y reached and add y to reach
             for (V y : Y) {
@@ -249,7 +243,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
         if (r.containsKey(k)) {
             r.get(k).add(v);
         } else {
-            HashSet<V> set = new HashSet<V>();
+            HashSet<V> set = new HashSet<>();
             set.add(v);
             r.put(k, set);
         }
@@ -267,7 +261,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
             computeMinimalTriangulation();
         }
 
-        separators = new HashSet<Set<V>>();
+        separators = new HashSet<>();
 
         // initialize g' as subgraph of graph (same vertices and edges)
         UndirectedGraph<V, E> gprime = copyAsSimpleGraph(graph);
@@ -275,16 +269,16 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
         // initialize h' as subgraph of chordalGraph (same vertices and edges)
         UndirectedGraph<V, E> hprime = copyAsSimpleGraph(chordalGraph);
 
-        atoms = new HashSet<Set<V>>();
+        atoms = new HashSet<>();
 
         Iterator<V> iterator = meo.descendingIterator();
         while (iterator.hasNext()) {
             V v = iterator.next();
             if (generators.contains(v)) {
                 Set<V> separator =
-                    new HashSet<V>(Graphs.neighborListOf(
-                            hprime,
-                            v));
+                        new HashSet<>(Graphs.neighborListOf(
+                                hprime,
+                                v));
 
                 if (isClique(graph, separator)) {
                     if (separator.size() > 0) {
@@ -301,7 +295,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
 
                     tmpGraph.removeAllVertices(separator);
                     ConnectivityInspector<V, E> con =
-                        new ConnectivityInspector<V, E>(tmpGraph);
+                            new ConnectivityInspector<>(tmpGraph);
                     if (con.isGraphConnected()) {
                         throw new RuntimeException(
                             "separator did not separate the graph");
@@ -310,7 +304,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
                         if (component.contains(v)) {
                             gprime.removeAllVertices(component);
                             component.addAll(separator);
-                            atoms.add(new HashSet<V>(component));
+                            atoms.add(new HashSet<>(component));
                             assert (component.size() > 0);
                             break;
                         }
@@ -322,7 +316,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
         }
 
         if (gprime.vertexSet().size() > 0) {
-            atoms.add(new HashSet<V>(gprime.vertexSet()));
+            atoms.add(new HashSet<>(gprime.vertexSet()));
         }
     }
 
@@ -360,8 +354,8 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
         UndirectedGraph<V, E> graph)
     {
         UndirectedGraph<V, E> copy =
-            new SimpleGraph<V, E>(
-                graph.getEdgeFactory());
+                new SimpleGraph<>(
+                        graph.getEdgeFactory());
 
         if (graph instanceof SimpleGraph) {
             Graphs.addGraph(copy, graph);

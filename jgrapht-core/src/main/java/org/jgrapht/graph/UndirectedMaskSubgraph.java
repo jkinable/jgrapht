@@ -48,8 +48,6 @@ public class UndirectedMaskSubgraph<V, E>
     extends MaskSubgraph<V, E>
     implements UndirectedGraph<V, E>
 {
-
-
     public UndirectedMaskSubgraph(
         UndirectedGraph<V, E> base,
         MaskFunctor<V, E> mask)

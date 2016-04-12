@@ -44,8 +44,6 @@ package org.jgrapht;
  */
 public interface GraphMapping<V, E>
 {
-
-
     /**
      * Gets the mapped value where the key is <code>vertex</code>
      *
@@ -55,7 +53,7 @@ public interface GraphMapping<V, E>
      *
      * @return corresponding vertex in other graph, or null if none
      */
-    public V getVertexCorrespondence(V vertex, boolean forward);
+    V getVertexCorrespondence(V vertex, boolean forward);
 
     /**
      * Gets the mapped value where the key is <code>edge</code>
@@ -66,7 +64,7 @@ public interface GraphMapping<V, E>
      *
      * @return corresponding edge in other graph, or null if none
      */
-    public E getEdgeCorrespondence(E edge, boolean forward);
+    E getEdgeCorrespondence(E edge, boolean forward);
 }
 
 // End GraphMapping.java

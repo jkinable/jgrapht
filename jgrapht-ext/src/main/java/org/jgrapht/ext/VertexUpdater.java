@@ -40,8 +40,6 @@ import java.util.*;
  */
 public interface VertexUpdater<V>
 {
-
-
     /**
      * Update vertex with the extra attributes.
      *

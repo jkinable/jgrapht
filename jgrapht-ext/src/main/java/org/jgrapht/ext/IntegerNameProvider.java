@@ -51,12 +51,8 @@ import org.jgrapht.event.*;
 public class IntegerNameProvider<V>
     implements VertexNameProvider<V>
 {
-
-
     private int nextID = 1;
-    private final Map<V, Integer> idMap = new HashMap<V, Integer>();
-
-
+    private final Map<V, Integer> idMap = new HashMap<>();
 
     /**
      * Clears all cached identifiers, and resets the unique identifier counter.

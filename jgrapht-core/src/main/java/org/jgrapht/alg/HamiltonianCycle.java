@@ -51,8 +51,6 @@ import org.jgrapht.graph.*;
  */
 public class HamiltonianCycle
 {
-
-
     /**
      * This method will return an approximate minimal traveling salesman tour
      * (hamiltonian cycle). This algorithm requires that the graph be complete
@@ -72,7 +70,7 @@ public class HamiltonianCycle
     public static <V, E> List<V> getApproximateOptimalForCompleteGraph(
         SimpleWeightedGraph<V, E> g)
     {
-        List<V> vertices = new LinkedList<V>(g.vertexSet());
+        List<V> vertices = new LinkedList<>(g.vertexSet());
 
         // If the graph is not complete then return null since this algorithm
         // requires the graph be complete
@@ -82,7 +80,7 @@ public class HamiltonianCycle
             return null;
         }
 
-        List<V> tour = new LinkedList<V>();
+        List<V> tour = new LinkedList<>();
 
         // Each iteration a new vertex will be added to the tour until all
         // vertices have been added

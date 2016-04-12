@@ -52,13 +52,9 @@ import org.jgrapht.*;
 public class IsomorphicGraphMapping<V, E>
     implements GraphMapping<V, E>
 {
-
-
     GraphOrdering<V, E> g1, g2;
 
     int [] core1, core2;
-
-
 
     /**
      * @param g1 the first graph
@@ -77,8 +73,6 @@ public class IsomorphicGraphMapping<V, E>
         this.core1 = core1.clone();
         this.core2 = core2.clone();
     }
-
-
 
     @Override public V getVertexCorrespondence(V v, boolean forward)
     {
@@ -155,7 +149,7 @@ public class IsomorphicGraphMapping<V, E>
     {
         String str = "[";
         Set<V> vertexSet = g1.getGraph().vertexSet();
-        Map<String, V> vertexMap = new TreeMap<String, V>();
+        Map<String, V> vertexMap = new TreeMap<>();
 
         for (V v : vertexSet) {
             vertexMap.put(v.toString(), v);

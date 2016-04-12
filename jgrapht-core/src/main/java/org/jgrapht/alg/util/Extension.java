@@ -37,53 +37,108 @@ package org.jgrapht.alg.util;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
- * Abstract extension manager allowing to extend given class-types with supplied
- * extension's class-type saving source class object references
+ * Abstract extension/encapsulation manager.
+ * This class creates and manages objects extensions and encapsulations. An object, from here on denoted as prototype,
+ * can be encapsulated in or extended by another object. An example would be the relation between an edge (prototype) and an annotated edge. The
+ * annotated edge encapsulates/extends an edge, thereby augmenting it with additional data.
+ * In symbolic form, if b is the prototype class, than a(b) would be its extension. This concept is similar to java's extension where
+ * one class is derived from (extends) another class (prototype).
  *
- * @param <T> class-type to be extended
- * @param <E> extension concept class-type
- */
-public class Extension<T, E> {
+ * @param <T> class-type to be extended (class-type of prototype)
+ * @param <E> class-type of extension
+ *
+ *
+ *
+ * NOTE JK: This seems to be a poor name. This class is more of an ExtensionManager than an Extension by itself
+ * */
+public class Extension<T, E>
+{
+    /* Factory class to create new extensions */
     private ExtensionFactory<E> extensionFactory;
-    private Map<T, E>           extensions = new HashMap<T, E>();
+    /* Mapping of prototypes to their extensions */
+    private Map<T, E> prototypeToExtensionMap = new HashMap<>();
 
-    /**
-     * Factory capable of producing given extension objects
-     * of the given class-type
-     *
-     * @param <E> extension concept class-type
-     */
-    public interface ExtensionFactory<E> {
-        E create();
-    }
-
-    public Extension(ExtensionFactory<E> factory) {
+    public Extension(ExtensionFactory<E> factory)
+    {
         this.extensionFactory = factory;
     }
 
-    public static abstract class BaseExtension {
-        public BaseExtension() {}
-    }
-
-    public E createInstance() {
+    /**
+     * Creates and returns an extension object. Note that the returned object cannot be retrieved by the get(T t)
+     * function in this class as no reference to t is provided during object creation.
+     * @return Extension object
+     */
+    public E createInstance()
+    {
         return extensionFactory.create();
     }
 
+    /**
+     * For a given prototype t, this function returns t's extension. If no encapsulation/extension
+     * for t exists, a new one is created and returned.
+     *
+     * NOTE: JK - Do we need want/this? There is no equivalent set(T t). Furthermore, it gets quite ambigous if in some cases
+     * an Extension is created without a prototype (createInstance()) and sometimes an Extension is created through the get(T t) function.
+     * Only the Extentions associated with a prototype t will be stored by the Manager.
+     *
+     * @param t prototype
+     * @return Extension of prototype
+     */
     public E get(T t)
     {
-        if (extensions.containsKey(t))
-            return extensions.get(t);
+        if (prototypeToExtensionMap.containsKey(t)) {
+            return prototypeToExtensionMap.get(t);
+        }
 
         E x = createInstance();
-        extensions.put(t, x);
+        prototypeToExtensionMap.put(t, x);
         return x;
     }
 
-    public static class ExtensionManagerInstantiationException extends RuntimeException {
+    /**
+     * Factory capable of producing extension objects of the given
+     * class-type
+     *
+     * @param <E> class-type of extension
+     *
+     * NOTE: JK - Why is this class a subclass of the Extension/ExtensionManager class, instead of a class on its own.
+     */
+    public interface ExtensionFactory<E>
+    {
+        E create();
+    }
+
+    /**
+     * Comments/Description missing
+     *
+     * NOTE: JK - Why do we want or need this? The only function this would offer is that all extensions have some common
+     * super type. However, none of the code requires that E extends BaseExtension. Furthermore, I'm not sure why this
+     * class is a subclass of the Extension/ExtensionManager class, instead of a class on its own.
+     */
+    public static abstract class BaseExtension
+    {
+        public BaseExtension()
+        {
+        }
+    }
+
+    /**
+     * Comments/Description missing
+     *
+     * NOTE: JK - Do we really need this? This seems well beyond what any user would require.
+     */
+    public static class ExtensionManagerInstantiationException
+        extends RuntimeException
+    {
         Exception exception;
-        public ExtensionManagerInstantiationException(Exception e) {
+
+        public ExtensionManagerInstantiationException(Exception e)
+        {
             exception = e;
         }
     }
 }
+
+// End Extension.java

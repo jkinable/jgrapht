@@ -124,13 +124,13 @@ public abstract class ShortestPathTestCase
         if (negate) {
             // negative-weight edges are being tested, so only a directed graph
             // makes sense
-            g = new SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+            g = new SimpleDirectedWeightedGraph<>(
+                    DefaultWeightedEdge.class);
             bias = -1;
         } else {
             // by default, use an undirected graph
-            g = new SimpleWeightedGraph<String, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+            g = new SimpleWeightedGraph<>(
+                    DefaultWeightedEdge.class);
         }
 
         g.addVertex(V1);

@@ -190,22 +190,12 @@ public class KShortestPathCostTest
     {
         int maxSize = 20;
 
-        for (
-            Iterator sourceIterator = graph.vertexSet().iterator();
-            sourceIterator.hasNext();)
-        {
-            Object sourceVertex = sourceIterator.next();
-
-            for (
-                Iterator targetIterator = graph.vertexSet().iterator();
-                targetIterator.hasNext();)
-            {
-                Object targetVertex = targetIterator.next();
-
+        for (Object sourceVertex : graph.vertexSet()) {
+            for (Object targetVertex : graph.vertexSet()) {
                 if (targetVertex != sourceVertex) {
                     KShortestPaths pathFinder =
-                        new KShortestPaths(graph,
-                            sourceVertex, maxSize);
+                            new KShortestPaths(graph,
+                                    sourceVertex, maxSize);
 
                     List pathElements = pathFinder.getPaths(targetVertex);
                     if (pathElements == null) {
@@ -231,24 +221,14 @@ public class KShortestPathCostTest
     {
         int maxSizeLimit = 10;
 
-        for (
-            Iterator sourceIterator = graph.vertexSet().iterator();
-            sourceIterator.hasNext();)
-        {
-            Object sourceVertex = sourceIterator.next();
-
-            for (
-                Iterator targetIterator = graph.vertexSet().iterator();
-                targetIterator.hasNext();)
-            {
-                Object targetVertex = targetIterator.next();
-
+        for (Object sourceVertex : graph.vertexSet()) {
+            for (Object targetVertex : graph.vertexSet()) {
                 if (targetVertex != sourceVertex) {
                     KShortestPaths pathFinder =
-                        new KShortestPaths(graph,
-                            sourceVertex, 1);
+                            new KShortestPaths(graph,
+                                    sourceVertex, 1);
                     List<GraphPath> prevPathElementsResults =
-                        pathFinder.getPaths(targetVertex);
+                            pathFinder.getPaths(targetVertex);
 
                     if (prevPathElementsResults == null) {
                         // no path exists between the start vertex and the
@@ -258,14 +238,14 @@ public class KShortestPathCostTest
 
                     for (int maxSize = 2; maxSize < maxSizeLimit; maxSize++) {
                         pathFinder =
-                            new KShortestPaths(graph, sourceVertex,
-                                maxSize);
+                                new KShortestPaths(graph, sourceVertex,
+                                        maxSize);
                         List<GraphPath> pathElementsResults =
-                            pathFinder.getPaths(targetVertex);
+                                pathFinder.getPaths(targetVertex);
 
                         verifyWeightsConsistency(
-                            prevPathElementsResults,
-                            pathElementsResults);
+                                prevPathElementsResults,
+                                pathElementsResults);
                     }
                 }
             }
@@ -287,9 +267,9 @@ public class KShortestPathCostTest
     {
         for (int i = 0; i < prevPathElementsResults.size(); i++) {
             GraphPath pathElementResult =
-                (GraphPath) pathElementsResults.get(i);
+                    pathElementsResults.get(i);
             GraphPath prevPathElementResult =
-                (GraphPath) prevPathElementsResults.get(i);
+                    prevPathElementsResults.get(i);
             assertTrue(
                 pathElementResult.getWeight()
                 == prevPathElementResult.getWeight());
@@ -308,8 +288,8 @@ public class KShortestPathCostTest
         throws Exception
     {
         SimpleWeightedGraph<String, DefaultWeightedEdge> graph =
-            new SimpleWeightedGraph<String, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+                new SimpleWeightedGraph<>(
+                        DefaultWeightedEdge.class);
 
 
         InputStream fstream = getClass().getClassLoader().getResourceAsStream(
@@ -336,9 +316,9 @@ public class KShortestPathCostTest
         DefaultWeightedEdge src = graph.getEdge("M013", "M014");
 
         KShortestPaths<String, DefaultWeightedEdge> kPaths =
-            new KShortestPaths<String, DefaultWeightedEdge>(
-                graph, graph.getEdgeSource(src), 5);
-        List<GraphPath<String, DefaultWeightedEdge>> paths = null;
+                new KShortestPaths<>(
+                        graph, graph.getEdgeSource(src), 5);
+        List<GraphPath<String, DefaultWeightedEdge>> paths;
 
         try {
             paths = kPaths.getPaths(graph.getEdgeTarget(src));

@@ -45,22 +45,17 @@ public class UndirectedGraphUnion<V, E>
     extends GraphUnion<V, E, UndirectedGraph<V, E>>
     implements UndirectedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = -740199233080172450L;
 
-
     UndirectedGraphUnion(
-            UndirectedGraph<V, E> g1,
-            UndirectedGraph<V, E> g2,
-            WeightCombiner operator)
+        UndirectedGraph<V, E> g1,
+        UndirectedGraph<V, E> g2,
+        WeightCombiner operator)
     {
         super(g1, g2, operator);
     }
 
-    UndirectedGraphUnion(
-            UndirectedGraph<V, E> g1,
-            UndirectedGraph<V, E> g2)
+    UndirectedGraphUnion(UndirectedGraph<V, E> g1, UndirectedGraph<V, E> g2)
     {
         super(g1, g2);
     }
@@ -81,8 +76,6 @@ public class UndirectedGraphUnion<V, E>
     {
         super(g1, g2);
     }
-
-
 
     @Override public int degreeOf(V vertex)
     {

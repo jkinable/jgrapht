@@ -55,15 +55,15 @@ public class DirectedSimpleCyclesTest
     public void test()
     {
         TiernanSimpleCycles<Integer, DefaultEdge> tiernanFinder =
-            new TiernanSimpleCycles<Integer, DefaultEdge>();
+                new TiernanSimpleCycles<>();
         TarjanSimpleCycles<Integer, DefaultEdge> tarjanFinder =
-            new TarjanSimpleCycles<Integer, DefaultEdge>();
+                new TarjanSimpleCycles<>();
         JohnsonSimpleCycles<Integer, DefaultEdge> johnsonFinder =
-            new JohnsonSimpleCycles<Integer, DefaultEdge>();
+                new JohnsonSimpleCycles<>();
         SzwarcfiterLauerSimpleCycles<Integer, DefaultEdge> szwarcfiterLauerFinder =
-            new SzwarcfiterLauerSimpleCycles<Integer, DefaultEdge>();
+                new SzwarcfiterLauerSimpleCycles<>();
         HawickJamesSimpleCycles<Integer, DefaultEdge> hawickJamesFinder =
-                new HawickJamesSimpleCycles<Integer, DefaultEdge>();
+                new HawickJamesSimpleCycles<>();
 
         testAlgorithm(tiernanFinder);
         testAlgorithm(tarjanFinder);
@@ -76,13 +76,13 @@ public class DirectedSimpleCyclesTest
                                DirectedSimpleCycles<Integer, DefaultEdge>
                                finder)
     {
-        DirectedGraph<Integer, DefaultEdge> graph = new DefaultDirectedGraph<Integer, DefaultEdge>
-            (
-             new ClassBasedEdgeFactory<Integer, DefaultEdge>
-             (
-              DefaultEdge.class
-             )
-            );
+        DirectedGraph<Integer, DefaultEdge> graph = new DefaultDirectedGraph<>
+                (
+                        new ClassBasedEdgeFactory<>
+                                (
+                                        DefaultEdge.class
+                                )
+                );
         for (int i = 0; i < 7; i++) {
             graph.addVertex(i);
         }
@@ -102,13 +102,13 @@ public class DirectedSimpleCyclesTest
         checkResult(finder, 5);
 
         for (int size = 1; size <= MAX_SIZE; size++) {
-            graph = new DefaultDirectedGraph<Integer, DefaultEdge>
-                (
-                 new ClassBasedEdgeFactory<Integer, DefaultEdge>
-                 (
-                  DefaultEdge.class
-                 )
-                );
+            graph = new DefaultDirectedGraph<>
+                    (
+                            new ClassBasedEdgeFactory<>
+                                    (
+                                            DefaultEdge.class
+                                    )
+                    );
             for (int i = 0; i < size; i++) {
                 graph.addVertex(i);
             }

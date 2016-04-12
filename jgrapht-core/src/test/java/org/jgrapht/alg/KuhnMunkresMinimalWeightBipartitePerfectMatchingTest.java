@@ -13,7 +13,6 @@
 package org.jgrapht.alg;
 
 import junit.framework.TestCase;
-import org.jgrapht.EdgeFactory;
 import org.jgrapht.WeightedGraph;
 import org.jgrapht.generate.SimpleWeightedBipartiteGraphMatrixGenerator;
 import org.jgrapht.generate.WeightedGraphGeneratorAdapter;
@@ -21,9 +20,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleWeightedGraph;
 import org.jgrapht.util.VertexPair;
 import org.junit.Assert;
-import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -96,12 +93,9 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatchingTest extends TestCa
         List<? extends V> second    = secondPartition.subList(0, partitionCardinality);
 
         WeightedGraph<V, WeightedEdge> target =
-          new SimpleWeightedGraph<V, WeightedEdge>(new EdgeFactory<V, WeightedEdge>() {
-            @Override
-            public WeightedEdge createEdge(V sourceVertex, V targetVertex) {
-              return WeightedEdge.make(sourceVertex, targetVertex);
-            }
-          });
+                new SimpleWeightedGraph<>((sourceVertex, targetVertex) -> {
+                    return WeightedEdge.make(sourceVertex, targetVertex);
+                });
 
         WeightedGraphGeneratorAdapter<V, WeightedEdge, V> generator =
           new SimpleWeightedBipartiteGraphMatrixGenerator<V, WeightedEdge>()
@@ -111,7 +105,7 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatchingTest extends TestCa
 
         generator.generateGraph(target, null, null);
 
-        return new KuhnMunkresMinimalWeightBipartitePerfectMatching<V, WeightedEdge>(target, first, second);
+        return new KuhnMunkresMinimalWeightBipartitePerfectMatching<>(target, first, second);
 
     }
 
@@ -120,14 +114,14 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatchingTest extends TestCa
     public void testForEmptyGraph() {
 
         WeightedGraph<V, WeightedEdge> graph =
-                new SimpleWeightedGraph<V, WeightedEdge>(WeightedEdge.class);
+                new SimpleWeightedGraph<>(WeightedEdge.class);
 
         List<? extends V> emptyList = Collections.emptyList();
 
-        Assert.assertTrue(new KuhnMunkresMinimalWeightBipartitePerfectMatching<V, WeightedEdge>(
-                graph,
-                emptyList,
-                emptyList).getMatching().isEmpty()
+        Assert.assertTrue(new KuhnMunkresMinimalWeightBipartitePerfectMatching<>(
+                        graph,
+                        emptyList,
+                        emptyList).getMatching().isEmpty()
         );
     }
 

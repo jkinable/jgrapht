@@ -50,7 +50,7 @@ public class SimpleGraphPathTest
     @Override
     public void setUp()
     {
-        graph = new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+        graph = new SimpleGraph<>(DefaultEdge.class);
         graph.addVertex("v1");
         graph.addVertex("v2");
         graph.addVertex("v3");
@@ -60,12 +60,12 @@ public class SimpleGraphPathTest
         graph.addEdge("v3", "v4");
         graph.addEdge("v2", "v4");
 
-        pathVertices = new ArrayList<String>();
+        pathVertices = new ArrayList<>();
         pathVertices.add("v1");
         pathVertices.add("v2");
         pathVertices.add("v4");
 
-        path = new SimpleGraphPath<String, DefaultEdge>(graph, pathVertices, 1);
+        path = new SimpleGraphPath<>(graph, pathVertices, 1);
     }
 
     public void testEdgeList()
@@ -77,22 +77,22 @@ public class SimpleGraphPathTest
     }
 
     public void testInvalidVertexList() {
-        List<String> invalidPath = new ArrayList<String>();
+        List<String> invalidPath = new ArrayList<>();
         invalidPath.add("v1");
         invalidPath.add("v2");
         invalidPath.add("v3");
         try {
-            new SimpleGraphPath<String, DefaultEdge>(graph, invalidPath, 1);
+            new SimpleGraphPath<>(graph, invalidPath, 1);
         } catch (IllegalArgumentException e) {
             assertTrue();
         }
     }
 
     public void testSingleVertexList() {
-        List<String> invalidPath = new ArrayList<String>();
+        List<String> invalidPath = new ArrayList<>();
         invalidPath.add("v1");
         try {
-            new SimpleGraphPath<String, DefaultEdge>(graph, invalidPath, 1);
+            new SimpleGraphPath<>(graph, invalidPath, 1);
         } catch (IllegalArgumentException e) {
             assertTrue();
         }

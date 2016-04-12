@@ -56,8 +56,6 @@ import org.jgrapht.*;
  */
 public class GmlExporter<V, E>
 {
-
-
     private static final String creator = "JGraphT GML Exporter";
     private static final String version = "1";
 
@@ -87,16 +85,12 @@ public class GmlExporter<V, E>
      */
     public static final Integer PRINT_VERTEX_LABELS = 4;
 
-
-
     private Integer printLabels = PRINT_NO_LABELS;
 
     private VertexNameProvider<V> vertexIDProvider;
     private VertexNameProvider<V> vertexLabelProvider;
     private EdgeNameProvider<E> edgeIDProvider;
     private EdgeNameProvider<E> edgeLabelProvider;
-
-
 
     /**
      * Creates a new GmlExporter object with integer name providers for the
@@ -105,9 +99,9 @@ public class GmlExporter<V, E>
     public GmlExporter()
     {
         this(
-            new IntegerNameProvider<V>(),
+                new IntegerNameProvider<>(),
             null,
-            new IntegerEdgeNameProvider<E>(),
+                new IntegerEdgeNameProvider<>(),
             null);
     }
 
@@ -134,8 +128,6 @@ public class GmlExporter<V, E>
         this.edgeIDProvider = edgeIDProvider;
         this.edgeLabelProvider = edgeLabelProvider;
     }
-
-
 
     private String quoted(final String s)
     {

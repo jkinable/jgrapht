@@ -34,29 +34,28 @@
  */
 package org.jgrapht.alg;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
+
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
 
 /**
  * @deprecated Use {@link org.jgrapht.alg.flow.EdmondsKarpMaximumFlow} instead
  */
-@Deprecated
-public final class EdmondsKarpMaximumFlow<V, E> implements MaximumFlowAlgorithm<V, E>
+@Deprecated public final class EdmondsKarpMaximumFlow<V, E>
+    implements MaximumFlowAlgorithm<V, E>
 {
-    private org.jgrapht.alg.flow.EdmondsKarpMaximumFlow<V, E> engine;
-
-    private MaximumFlowAlgorithm.MaximumFlow<V, E> maxFlow;
-
-    private V currentSource;
-    private V currentSink;
-
     /**
      * Default tolerance.
      */
     public static final double DEFAULT_EPSILON = 0.000000001;
+    private org.jgrapht.alg.flow.EdmondsKarpMaximumFlow<V, E> engine;
+
+    private MaximumFlowAlgorithm.MaximumFlow<E> maxFlow;
+
+    private V currentSource;
+    private V currentSink;
 
     /**
      * Constructs <tt>MaximumFlow</tt> instance to work with <i>a copy of</i>
@@ -83,7 +82,10 @@ public final class EdmondsKarpMaximumFlow<V, E> implements MaximumFlowAlgorithm<
      */
     public EdmondsKarpMaximumFlow(DirectedGraph<V, E> network, double epsilon)
     {
-        engine = new org.jgrapht.alg.flow.EdmondsKarpMaximumFlow<V, E>(network, epsilon);
+        engine =
+            new org.jgrapht.alg.flow.EdmondsKarpMaximumFlow<V, E>(
+                network,
+                epsilon);
     }
 
     private void build()
@@ -104,8 +106,8 @@ public final class EdmondsKarpMaximumFlow<V, E> implements MaximumFlowAlgorithm<
         V source,
         V sink)
     {
-        currentSource   = source;
-        currentSink     = sink;
+        currentSource = source;
+        currentSink = sink;
 
         build();
     }
@@ -156,10 +158,10 @@ public final class EdmondsKarpMaximumFlow<V, E> implements MaximumFlowAlgorithm<
         return currentSink;
     }
 
-    @Override
-    public MaximumFlow<V, E> buildMaximumFlow(V source, V sink) {
-        currentSource   = source;
-        currentSink     = sink;
+    @Override public MaximumFlow<E> buildMaximumFlow(V source, V sink)
+    {
+        currentSource = source;
+        currentSink = sink;
 
         build();
 

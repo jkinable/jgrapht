@@ -52,15 +52,9 @@ import org.jgrapht.*;
 public class StarGraphGenerator<V, E>
     implements GraphGenerator<V, E, V>
 {
-
-
     public static final String CENTER_VERTEX = "Center Vertex";
 
-
-
     private int order;
-
-
 
     /**
      * Creates a new StarGraphGenerator object.
@@ -71,8 +65,6 @@ public class StarGraphGenerator<V, E>
     {
         this.order = order;
     }
-
-
 
     /**
      * Generates a star graph with the designated order from the constructor
@@ -100,9 +92,7 @@ public class StarGraphGenerator<V, E>
         }
 
         //Add one edge between the center vertex and every other vertex
-        Iterator<V> iter = target.vertexSet().iterator();
-        while (iter.hasNext()) {
-            V v = iter.next();
+        for (V v : target.vertexSet()) {
             if (v != centerVertex) {
                 target.addEdge(v, centerVertex);
             }

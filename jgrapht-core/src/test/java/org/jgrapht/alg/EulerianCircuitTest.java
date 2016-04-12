@@ -59,14 +59,14 @@ public class EulerianCircuitTest
     public void testEulerianCircuit()
     {
         UndirectedGraph<Object, DefaultEdge> completeGraph1 =
-            new SimpleGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new SimpleGraph<>(
+                        DefaultEdge.class);
         CompleteGraphGenerator<Object, DefaultEdge> completeGenerator1 =
-            new CompleteGraphGenerator<Object, DefaultEdge>(
-                6);
+                new CompleteGraphGenerator<>(
+                        6);
         completeGenerator1.generateGraph(
             completeGraph1,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
 
         // A complete graph of order 6 will have all vertices with degree 5
@@ -76,14 +76,14 @@ public class EulerianCircuitTest
             EulerianCircuit.getEulerianCircuitVertices(completeGraph1) == null);
 
         UndirectedGraph<Object, DefaultEdge> completeGraph2 =
-            new SimpleGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new SimpleGraph<>(
+                        DefaultEdge.class);
         CompleteGraphGenerator<Object, DefaultEdge> completeGenerator2 =
-            new CompleteGraphGenerator<Object, DefaultEdge>(
-                5);
+                new CompleteGraphGenerator<>(
+                        5);
         completeGenerator2.generateGraph(
             completeGraph2,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
         assertTrue(EulerianCircuit.isEulerian(completeGraph2));
 

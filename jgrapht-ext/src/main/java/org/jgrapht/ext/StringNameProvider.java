@@ -48,13 +48,9 @@ import org.jgrapht.event.*;
 public class StringNameProvider<V>
     implements VertexNameProvider<V>
 {
-
-
     public StringNameProvider()
     {
     }
-
-
 
     /**
      * Returns the String representation of the unique integer representing a

@@ -62,11 +62,11 @@ public class DijkstraShortestPathTest
         Graph<String, DefaultWeightedEdge> g = create();
 
         path =
-            new DijkstraShortestPath<String, DefaultWeightedEdge>(
-                g,
-                V3,
-                V4,
-                Double.POSITIVE_INFINITY);
+                new DijkstraShortestPath<>(
+                        g,
+                        V3,
+                        V4,
+                        Double.POSITIVE_INFINITY);
         assertEquals(
             Arrays.asList(
                 new DefaultEdge[] {
@@ -78,11 +78,11 @@ public class DijkstraShortestPathTest
         assertEquals(10.0, path.getPathLength(), 0);
 
         path =
-            new DijkstraShortestPath<String, DefaultWeightedEdge>(
-                g,
-                V3,
-                V4,
-                7);
+                new DijkstraShortestPath<>(
+                        g,
+                        V3,
+                        V4,
+                        7);
         assertNull(path.getPathEdgeList());
         assertEquals(Double.POSITIVE_INFINITY, path.getPathLength(), 0);
     }

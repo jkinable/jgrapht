@@ -1,7 +1,6 @@
 package org.jgrapht.alg;
 
 import org.jgrapht.DirectedGraph;
-import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
@@ -12,7 +11,7 @@ public class NaiveLcaFinderTest {
 
     @Test
     public void testNormalCases() {
-	SimpleDirectedGraph<String, DefaultEdge> g = new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	SimpleDirectedGraph<String, DefaultEdge> g = new SimpleDirectedGraph<>(DefaultEdge.class);
 
 	g.addVertex("a");
 	g.addVertex("b");
@@ -32,7 +31,7 @@ public class NaiveLcaFinderTest {
 	g.addEdge("f", "e");
 	g.addEdge("e", "h");
 
-	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<String, DefaultEdge>(g);
+	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<>(g);
 
 	Assert.assertEquals("f", finder.findLca("f", "h"));
 	Assert.assertEquals("f", finder.findLca("h", "f"));
@@ -43,7 +42,7 @@ public class NaiveLcaFinderTest {
 
     @Test
     public void testNoLca() {
-	SimpleDirectedGraph<String, DefaultEdge> g = new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	SimpleDirectedGraph<String, DefaultEdge> g = new SimpleDirectedGraph<>(DefaultEdge.class);
 
 	g.addVertex("a");
 	g.addVertex("b");
@@ -64,14 +63,14 @@ public class NaiveLcaFinderTest {
 	g.addEdge("g", "i");
 	g.addEdge("h", "i");
 
-	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<String, DefaultEdge>(g);
+	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<>(g);
 
 	Assert.assertEquals(null, finder.findLca("i", "e"));
     }
 
     @Test
     public void testLoops() {
-	DirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	DirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
 	g.addVertex("a");
 	g.addVertex("b");
@@ -94,7 +93,7 @@ public class NaiveLcaFinderTest {
 	g.addEdge("h", "e");
 	g.addEdge("h", "h");
 	g.addEdge("i", "i");
-	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<String, DefaultEdge>(g);
+	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<>(g);
 
 	Assert.assertEquals("f", finder.findLca("h", "f"));
 	Assert.assertEquals(null, finder.findLca("a", "i"));
@@ -102,7 +101,7 @@ public class NaiveLcaFinderTest {
 
     @Test
     public void testArrivalOrder() {
-	DirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	DirectedGraph<String, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
 	g.addVertex("a");
 	g.addVertex("b");
@@ -117,7 +116,7 @@ public class NaiveLcaFinderTest {
 	g.addEdge("b", "g");
 	g.addEdge("g", "e");
 	g.addEdge("e", "h");
-	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<String, DefaultEdge>(g);
+	NaiveLcaFinder<String, DefaultEdge> finder = new NaiveLcaFinder<>(g);
 
 	Assert.assertEquals("b", finder.findLca("b", "h"));
 	Assert.assertEquals("b", finder.findLca("c", "e"));

@@ -51,11 +51,7 @@ public class UndirectedWeightedSubgraph<V, E>
     extends UndirectedSubgraph<V, E>
     implements WeightedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 3689346615735236409L;
-
-
 
     /**
      * Creates a new undirected weighted subgraph.
@@ -64,8 +60,8 @@ public class UndirectedWeightedSubgraph<V, E>
      * @param vertexSubset vertices to include in the subgraph. If <code>
      * null</code> then all vertices are included.
      * @param edgeSubset edges to in include in the subgraph. If <code>
-     * null</code> then all the edges whose vertices found in the graph
-     * are included.
+     * null</code> then all the edges whose vertices found in the graph are
+     * included.
      */
     public UndirectedWeightedSubgraph(
         WeightedGraph<V, E> base,

@@ -51,8 +51,6 @@ import org.jgrapht.*;
  */
 public interface UndirectedCycleBase<V, E>
 {
-
-
     /**
      * Returns the graph on which the cycle base search algorithm is executed by
      * this object.

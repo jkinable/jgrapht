@@ -51,8 +51,6 @@ import org.jgrapht.*;
 
 class GraphOrdering<V, E>
 {
-
-
     private Graph<V, E> graph;
 
     private Map<V, Integer> mapVertexToOrder;
@@ -64,8 +62,6 @@ class GraphOrdering<V, E>
     private Boolean [][] adjMatrix;
 
     private boolean cacheEdges;
-
-
 
     /**
      * @param graph the graph to be ordered
@@ -82,16 +78,16 @@ class GraphOrdering<V, E>
         this.graph = graph;
         this.cacheEdges = cacheEdges;
 
-        List<V> vertexSet = new ArrayList<V>(graph.vertexSet());
+        List<V> vertexSet = new ArrayList<>(graph.vertexSet());
         if (orderByDegree) {
             java.util.Collections.sort(
                 vertexSet,
-                new GeneralVertexDegreeComparator<V>(graph));
+                    new GeneralVertexDegreeComparator<>(graph));
         }
 
         vertexCount = vertexSet.size();
-        mapVertexToOrder = new HashMap<V, Integer>();
-        mapOrderToVertex = new ArrayList<V>(vertexCount);
+        mapVertexToOrder = new HashMap<>();
+        mapOrderToVertex = new ArrayList<>(vertexCount);
 
         if (cacheEdges) {
             outgoingEdges = new int[vertexCount][];
@@ -113,8 +109,6 @@ class GraphOrdering<V, E>
     {
         this(graph, false, true);
     }
-
-
 
     /**
      * @return returns the number of vertices in the graph.
@@ -138,7 +132,7 @@ class GraphOrdering<V, E>
         }
 
         V v = getVertex(vertexNumber);
-        Set<E> edgeSet = null;
+        Set<E> edgeSet;
 
         if (graph instanceof DirectedGraph<?, ?>) {
             edgeSet = ((DirectedGraph<V, E>) graph).outgoingEdgesOf(v);
@@ -177,7 +171,7 @@ class GraphOrdering<V, E>
         }
 
         V v = getVertex(vertexNumber);
-        Set<E> edgeSet = null;
+        Set<E> edgeSet;
 
         if (graph instanceof DirectedGraph<?, ?>) {
             edgeSet = ((DirectedGraph<V, E>) graph).incomingEdgesOf(v);
@@ -257,7 +251,7 @@ class GraphOrdering<V, E>
 
     public int getVertexNumber(V v)
     {
-        return mapVertexToOrder.get(v).intValue();
+        return mapVertexToOrder.get(v);
     }
 
     public int [] getEdgeNumbers(E e)
@@ -275,8 +269,6 @@ class GraphOrdering<V, E>
     {
         return graph;
     }
-
-
 
     private static class GeneralVertexDegreeComparator<V2>
         implements Comparator<V2>

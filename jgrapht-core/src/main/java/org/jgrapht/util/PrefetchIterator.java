@@ -88,8 +88,6 @@ public class PrefetchIterator<E>
     implements Iterator<E>,
         Enumeration<E>
 {
-
-
     private NextElementFunctor<E> innerEnum;
     private E getNextLastResult;
     private boolean isGetNextLastResultUpToDate = false;
@@ -97,14 +95,10 @@ public class PrefetchIterator<E>
     private boolean flagIsEnumerationStartedEmpty = true;
     private int innerFunctorUsageCounter = 0;
 
-
-
     public PrefetchIterator(NextElementFunctor<E> aEnum)
     {
         innerEnum = aEnum;
     }
-
-
 
     /**
      * Serves as one contact place to the functor; all must use it and not
@@ -128,7 +122,7 @@ public class PrefetchIterator<E>
      */
     @Override public E nextElement()
     {
-        E result = null;
+        E result;
         if (this.isGetNextLastResultUpToDate) {
             result = this.getNextLastResult;
         } else {
@@ -172,11 +166,7 @@ public class PrefetchIterator<E>
     public boolean isEnumerationStartedEmpty()
     {
         if (this.innerFunctorUsageCounter == 0) {
-            if (hasMoreElements()) {
-                return false;
-            } else {
-                return true;
-            }
+            return !hasMoreElements();
         } else // it is not the first time , so use the saved value
                // which was initilaizeed during a call to
                // getNextElementFromInnerFunctor
@@ -204,15 +194,13 @@ public class PrefetchIterator<E>
         throw new UnsupportedOperationException();
     }
 
-
-
     public interface NextElementFunctor<EE>
     {
         /**
          * You must implement that NoSuchElementException is thrown on
          * nextElement() if it is out of bound.
          */
-        public EE nextElement()
+        EE nextElement()
             throws NoSuchElementException;
     }
 }

@@ -52,8 +52,6 @@ import org.jgrapht.*;
 class KShortestPathsIterator<V, E>
     implements Iterator<Set<V>>
 {
-
-
     /**
      * End vertex.
      */
@@ -99,8 +97,6 @@ class KShortestPathsIterator<V, E>
      */
     private int passNumber = 1;
 
-
-
     /**
      * @param graph graph on which shortest paths are searched.
      * @param startVertex start vertex of the calculated paths.
@@ -121,14 +117,12 @@ class KShortestPathsIterator<V, E>
 
         this.k = maxSize;
 
-        this.seenDataContainer = new HashMap<V, RankingPathElementList<V, E>>();
+        this.seenDataContainer = new HashMap<>();
         this.prevSeenDataContainer =
-            new HashMap<V, RankingPathElementList<V, E>>();
+                new HashMap<>();
 
-        this.prevImprovedVertices = new HashSet<V>();
+        this.prevImprovedVertices = new HashSet<>();
     }
-
-
 
     /**
      * @return <code>true</code> if at least one path has been improved during
@@ -163,13 +157,9 @@ class KShortestPathsIterator<V, E>
 
         // at the i-th pass the shortest paths with i edges are calculated.
         if (hasNext()) {
-            Set<V> improvedVertices = new HashSet<V>();
+            Set<V> improvedVertices = new HashSet<>();
 
-            for (
-                Iterator<V> iter = this.prevImprovedVertices.iterator();
-                iter.hasNext();)
-            {
-                V vertex = iter.next();
+            for (V vertex : this.prevImprovedVertices) {
                 if (!vertex.equals(this.endVertex)) {
                     updateOutgoingVertices(vertex, improvedVertices);
                 }
@@ -234,15 +224,13 @@ class KShortestPathsIterator<V, E>
 
         // endVertex in argument to ensure that stored paths do not disconnect
         // the end-vertex
-        RankingPathElementList<V, E> data =
-            new RankingPathElementList<V, E>(
+
+        return new RankingPathElementList<>(
                 this.graph,
                 this.k,
                 oppositeData,
                 edge,
                 this.endVertex);
-
-        return data;
     }
 
     /**
@@ -269,11 +257,11 @@ class KShortestPathsIterator<V, E>
     private void encounterStartVertex()
     {
         RankingPathElementList<V, E> data =
-            new RankingPathElementList<V, E>(
-                this.graph,
-                this.k,
-                new RankingPathElement<V, E>(
-                    this.startVertex));
+                new RankingPathElementList<>(
+                        this.graph,
+                        this.k,
+                        new RankingPathElement<>(
+                                this.startVertex));
 
         this.seenDataContainer.put(this.startVertex, data);
         this.prevSeenDataContainer.put(this.startVertex, data);
@@ -287,24 +275,17 @@ class KShortestPathsIterator<V, E>
 
     private void savePassData(Set<V> improvedVertices)
     {
-        for (Iterator<V> iter = improvedVertices.iterator(); iter.hasNext();) {
-            V vertex = iter.next();
-
+        for (V vertex : improvedVertices) {
             RankingPathElementList<V, E> pathElementList =
-                this.seenDataContainer.get(vertex);
+                    this.seenDataContainer.get(vertex);
 
             RankingPathElementList<V, E> improvedPaths =
-                new RankingPathElementList<V, E>(
-                    this.graph,
-                    pathElementList.maxSize,
-                    vertex);
+                    new RankingPathElementList<>(
+                            this.graph,
+                            pathElementList.maxSize,
+                            vertex);
 
-            for (
-                Iterator<RankingPathElement<V, E>> pathIter =
-                    pathElementList.iterator();
-                pathIter.hasNext();)
-            {
-                RankingPathElement<V, E> path = pathIter.next();
+            for (RankingPathElement<V, E> path : pathElementList) {
                 if (path.getHopCount() == this.passNumber) {
                     // the path has just been computed.
                     improvedPaths.pathElements.add(path);

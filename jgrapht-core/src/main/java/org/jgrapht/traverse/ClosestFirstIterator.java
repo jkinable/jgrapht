@@ -61,13 +61,11 @@ public class ClosestFirstIterator<V, E>
     extends CrossComponentIterator<V,
         E, FibonacciHeapNode<ClosestFirstIterator.QueueEntry<V, E>>>
 {
-
-
     /**
      * Priority queue of fringe vertices.
      */
     private FibonacciHeap<QueueEntry<V, E>> heap =
-        new FibonacciHeap<QueueEntry<V, E>>();
+            new FibonacciHeap<>();
 
     /**
      * Maximum distance to search.
@@ -75,8 +73,6 @@ public class ClosestFirstIterator<V, E>
     private double radius = Double.POSITIVE_INFINITY;
 
     private boolean initialized = false;
-
-
 
     /**
      * Creates a new closest-first iterator for the specified graph.
@@ -123,8 +119,6 @@ public class ClosestFirstIterator<V, E>
         checkRadiusTraversal(isCrossComponentTraversal());
         initialized = true;
     }
-
-
 
     // override AbstractGraphIterator
     @Override public void setCrossComponentTraversal(
@@ -298,14 +292,12 @@ public class ClosestFirstIterator<V, E>
         V vertex,
         E edge)
     {
-        QueueEntry<V, E> entry = new QueueEntry<V, E>();
+        QueueEntry<V, E> entry = new QueueEntry<>();
         entry.vertex = vertex;
         entry.spanningTreeEdge = edge;
 
-        return new FibonacciHeapNode<QueueEntry<V, E>>(entry);
+        return new FibonacciHeapNode<>(entry);
     }
-
-
 
     /**
      * Private data to associate with each entry in the priority queue.

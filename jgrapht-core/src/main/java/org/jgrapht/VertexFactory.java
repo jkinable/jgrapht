@@ -47,14 +47,12 @@ package org.jgrapht;
  */
 public interface VertexFactory<V>
 {
-
-
     /**
      * Creates a new vertex.
      *
      * @return the new vertex
      */
-    public V createVertex();
+    V createVertex();
 }
 
 // End VertexFactory.java

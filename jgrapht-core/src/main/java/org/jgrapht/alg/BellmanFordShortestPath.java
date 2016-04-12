@@ -49,11 +49,7 @@ import org.jgrapht.*;
  */
 public class BellmanFordShortestPath<V, E>
 {
-
-
     private static final double DEFAULT_EPSILON = 0.000000001;
-
-
 
     /**
      * Graph on which shortest paths are searched.
@@ -75,8 +71,6 @@ public class BellmanFordShortestPath<V, E>
     private int passNumber;
 
     private double epsilon;
-
-
 
     /**
      * Creates an object to calculate shortest paths between the start vertex
@@ -127,8 +121,6 @@ public class BellmanFordShortestPath<V, E>
         this.passNumber = 1;
         this.epsilon = epsilon;
     }
-
-
 
     /**
      * @param endVertex end vertex.
@@ -191,10 +183,10 @@ public class BellmanFordShortestPath<V, E>
     {
         if (this.iter == null) {
             this.iter =
-                new BellmanFordIterator<V, E>(
-                    this.graph,
-                    this.startVertex,
-                    epsilon);
+                    new BellmanFordIterator<>(
+                            this.graph,
+                            this.startVertex,
+                            epsilon);
         }
 
         // at the i-th pass the shortest paths with less (or equal) than i edges
@@ -225,9 +217,9 @@ public class BellmanFordShortestPath<V, E>
         V endVertex)
     {
         BellmanFordShortestPath<V, E> alg =
-            new BellmanFordShortestPath<V, E>(
-                graph,
-                startVertex);
+                new BellmanFordShortestPath<>(
+                        graph,
+                        startVertex);
 
         return alg.getPathEdgeList(endVertex);
     }

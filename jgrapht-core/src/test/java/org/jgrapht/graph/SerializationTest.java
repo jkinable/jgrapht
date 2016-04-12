@@ -75,8 +75,8 @@ public class SerializationTest
         throws Exception
     {
         DirectedMultigraph<String, DefaultEdge> graph =
-            new DirectedMultigraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new DirectedMultigraph<>(
+                        DefaultEdge.class);
         graph.addVertex(v1);
         graph.addVertex(v2);
         graph.addVertex(v3);

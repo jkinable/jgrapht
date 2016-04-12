@@ -19,13 +19,9 @@ import org.jgrapht.*;
 
 public final class GraphTests<V, E>
 {
-
-
     private GraphTests()
     {
     }
-
-
 
     public static <V, E> boolean isEmpty(Graph<V, E> g)
     {
@@ -53,8 +49,8 @@ public final class GraphTests<V, E>
             return true;
         }
 
-        Set<V> known = new HashSet<V>();
-        LinkedList<V> queue = new LinkedList<V>();
+        Set<V> known = new HashSet<>();
+        LinkedList<V> queue = new LinkedList<>();
         V v = g.vertexSet().iterator().next();
 
         queue.add(v); // start with node 1
@@ -62,11 +58,8 @@ public final class GraphTests<V, E>
 
         while (!queue.isEmpty()) {
             v = queue.removeFirst();
-            for (
-                Iterator<V> it = Graphs.neighborListOf(g, v).iterator();
-                it.hasNext();)
-            {
-                v = it.next();
+            for (V v1 : Graphs.neighborListOf(g, v)) {
+                v = v1;
                 if (!known.contains(v)) {
                     known.add(v);
                     queue.add(v);
@@ -93,10 +86,10 @@ public final class GraphTests<V, E>
             return true;
         }
 
-        Set<V> unknown = new HashSet<V>(g.vertexSet());
-        LinkedList<V> queue = new LinkedList<V>();
+        Set<V> unknown = new HashSet<>(g.vertexSet());
+        LinkedList<V> queue = new LinkedList<>();
         V v = unknown.iterator().next();
-        Set<V> odd = new HashSet<V>();
+        Set<V> odd = new HashSet<>();
 
         queue.add(v);
 
@@ -108,11 +101,7 @@ public final class GraphTests<V, E>
             v = queue.removeFirst();
             unknown.remove(v);
 
-            for (
-                Iterator<V> it = Graphs.neighborListOf(g, v).iterator();
-                it.hasNext();)
-            {
-                V n = it.next();
+            for (V n : Graphs.neighborListOf(g, v)) {
                 if (unknown.contains(n)) {
                     queue.add(n);
                     if (!odd.contains(v)) {

@@ -37,17 +37,20 @@ package org.jgrapht.alg.interfaces;
 /**
  * Interface for an admissible heuristic used in A* search.
  *
+ * @param <V> vertex type
+ *
  * @author Joris Kinable
  * @author Jon Robison
  * @author Thomas Breitbart
- *
- * @param <V> vertex type
  */
-public interface AStarAdmissibleHeuristic<V>{
-
+public interface AStarAdmissibleHeuristic<V>
+{
     /**
-     * An admissible "heuristic estimate" of the distance from x, the sourceVertex, to the goal
-     * (usually denoted h(x)). This is the good guess function.
+     * An admissible "heuristic estimate" of the distance from x, the
+     * sourceVertex, to the goal (usually denoted h(x)). This is the good guess
+     * function.
      */
-    public double getCostEstimate(V sourceVertex, V targetVertex);
+    double getCostEstimate(V sourceVertex, V targetVertex);
 }
+
+// End AStarAdmissibleHeuristic.java

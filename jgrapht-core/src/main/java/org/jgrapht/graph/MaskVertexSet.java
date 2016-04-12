@@ -50,35 +50,32 @@ import org.jgrapht.util.PrefetchIterator.*;
 class MaskVertexSet<V, E>
     extends AbstractSet<V>
 {
-
-
     private MaskFunctor<V, E> mask;
-
-    private int size;
 
     private Set<V> vertexSet;
 
     private transient TypeUtil<V> vertexTypeDecl = null;
 
-
-
     public MaskVertexSet(Set<V> vertexSet, MaskFunctor<V, E> mask)
     {
         this.vertexSet = vertexSet;
         this.mask = mask;
-        this.size = -1;
     }
-
-
 
     /**
      * @see java.util.Collection#contains(java.lang.Object)
      */
     @Override public boolean contains(Object o)
     {
-        return
-            !this.mask.isVertexMasked(TypeUtil.uncheckedCast(o, vertexTypeDecl))
-            && this.vertexSet.contains(o);
+        // Force a cast to type V. This is nonsense, of course, but
+        // it's erased by the compiler anyway.
+        V v = (V) o;
+
+        // If o isn't a V, the first check will fail and
+        // short-circuit, so we never try to test the mask on
+        // non-vertex object inputs.
+        return vertexSet.contains(v)
+            && !mask.isVertexMasked(v);
     }
 
     /**
@@ -94,17 +91,8 @@ class MaskVertexSet<V, E>
      */
     @Override public int size()
     {
-        if (this.size == -1) {
-            this.size = 0;
-            for (Iterator<V> iter = iterator(); iter.hasNext();) {
-                iter.next();
-                this.size++;
-            }
-        }
-        return this.size;
+        return (int) vertexSet.stream().filter(v -> contains(v)).count();
     }
-
-
 
     private class MaskVertexSetNextElementFunctor
         implements NextElementFunctor<V>

@@ -154,7 +154,7 @@ public class TransitiveReductionTest {
     @Test
     public void testReduceNoVertexNoEdge() {
         SimpleDirectedGraph<String, DefaultEdge> graph =
-                new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         TransitiveReduction.INSTANCE.reduce(graph);
         assertEquals(graph.vertexSet().size(), 0);
         assertEquals(graph.edgeSet().size(), 0);
@@ -163,7 +163,7 @@ public class TransitiveReductionTest {
     @Test
     public void testReduceSomeVerticesNoEdge() {
         SimpleDirectedGraph<String, DefaultEdge> graph =
-                new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("x");
         graph.addVertex("y");
         graph.addVertex("z");
@@ -175,7 +175,7 @@ public class TransitiveReductionTest {
     @Test
     public void testReduceAlreadyReduced() {
         SimpleDirectedGraph<String, DefaultEdge> graph =
-                new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("x");
         graph.addVertex("y");
         graph.addVertex("z");
@@ -199,7 +199,7 @@ public class TransitiveReductionTest {
     @Test
     public void testReduceBasic() {
         SimpleDirectedGraph<String, DefaultEdge> graph =
-                new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("x");
         graph.addVertex("y");
         graph.addVertex("z");
@@ -224,7 +224,7 @@ public class TransitiveReductionTest {
     @Test
     public void testReduceFarAway() {
         SimpleDirectedGraph<String, DefaultEdge> graph =
-                new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("a");
         graph.addVertex("b");
         graph.addVertex("c");
@@ -287,7 +287,7 @@ public class TransitiveReductionTest {
 
     static private DirectedGraph<Integer, DefaultEdge> fromMatrixToDirectedGraph(final int[][] matrix) {
         final SimpleDirectedGraph<Integer, DefaultEdge> graph =
-                new SimpleDirectedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         for (int i = 0; i < matrix.length; i++) {
             graph.addVertex(i);
         }
@@ -303,7 +303,7 @@ public class TransitiveReductionTest {
     }
 
     private int[][] fromDirectedGraphToMatrix( final DirectedGraph<Integer, DefaultEdge> directedGraph) {
-        final List<Integer> vertices = new ArrayList<Integer>(directedGraph.vertexSet());
+        final List<Integer> vertices = new ArrayList<>(directedGraph.vertexSet());
         final int n = vertices.size();
         final int[][] matrix = new int[n][n];
 

@@ -59,8 +59,6 @@ import org.jgrapht.graph.*;
  */
 public abstract class VertexCovers
 {
-
-
     /**
      * Finds a 2-approximation for a minimal vertex cover of the specified
      * graph. The algorithm promises a cover that is at most double the size of
@@ -80,14 +78,14 @@ public abstract class VertexCovers
     public static <V, E> Set<V> find2ApproximationCover(Graph<V, E> g)
     {
         // C <-- {}
-        Set<V> cover = new HashSet<V>();
+        Set<V> cover = new HashSet<>();
 
         // G'=(V',E') <-- G(V,E)
         Subgraph<V, E, Graph<V, E>> sg =
-            new Subgraph<V, E, Graph<V, E>>(
-                g,
-                null,
-                null);
+                new Subgraph<>(
+                        g,
+                        null,
+                        null);
 
         // while E' is non-empty
         while (sg.edgeSet().size() > 0) {
@@ -126,14 +124,14 @@ public abstract class VertexCovers
     public static <V, E> Set<V> findGreedyCover(UndirectedGraph<V, E> g)
     {
         // C <-- {}
-        Set<V> cover = new HashSet<V>();
+        Set<V> cover = new HashSet<>();
 
         // G' <-- G
-        UndirectedGraph<V, E> sg = new UndirectedSubgraph<V, E>(g, null, null);
+        UndirectedGraph<V, E> sg = new UndirectedSubgraph<>(g, null, null);
 
         // compare vertices in descending order of degree
         VertexDegreeComparator<V, E> comp =
-            new VertexDegreeComparator<V, E>(sg);
+                new VertexDegreeComparator<>(sg);
 
         // while G' != {}
         while (sg.edgeSet().size() > 0) {

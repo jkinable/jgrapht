@@ -53,8 +53,6 @@ abstract class AbstractPathElementList<V,
     E, T extends AbstractPathElement<V, E>>
     extends AbstractList<T>
 {
-
-
     protected Graph<V, E> graph;
 
     /**
@@ -65,14 +63,12 @@ abstract class AbstractPathElementList<V,
     /**
      * Stored paths, list of <code>AbstractPathElement</code>.
      */
-    protected ArrayList<T> pathElements = new ArrayList<T>();
+    protected ArrayList<T> pathElements = new ArrayList<>();
 
     /**
      * Target vertex of the paths.
      */
     protected V vertex;
-
-
 
     /**
      * Creates paths obtained by concatenating the specified edge to the
@@ -161,8 +157,6 @@ abstract class AbstractPathElementList<V,
         this.maxSize = maxSize;
         this.vertex = vertex;
     }
-
-
 
     /**
      * Returns path <code>AbstractPathElement</code> stored at the specified

@@ -52,13 +52,9 @@ import org.jgrapht.util.*;
  */
 public class MatrixExporter<V, E>
 {
-
-
     private String delimiter = " ";
     private String prefix = "";
     private String suffix = "";
-
-
 
     /**
      * Creates a new MatrixExporter object.
@@ -66,8 +62,6 @@ public class MatrixExporter<V, E>
     public MatrixExporter()
     {
     }
-
-
 
     private void println(
         PrintWriter out,
@@ -124,7 +118,7 @@ public class MatrixExporter<V, E>
     {
         PrintWriter out = new PrintWriter(output);
 
-        VertexNameProvider<V> nameProvider = new IntegerNameProvider<V>();
+        VertexNameProvider<V> nameProvider = new IntegerNameProvider<>();
         for (V from : g.vertexSet()) {
             // assign ids in vertex set iteration order
             nameProvider.getVertexName(from);
@@ -149,7 +143,7 @@ public class MatrixExporter<V, E>
     {
         String fromName = nameProvider.getVertexName(from);
         Map<String, ModifiableInteger> counts =
-            new LinkedHashMap<String, ModifiableInteger>();
+                new LinkedHashMap<>();
         for (V to : neighbors) {
             String toName = nameProvider.getVertexName(to);
             ModifiableInteger count = counts.get(toName);
@@ -187,7 +181,7 @@ public class MatrixExporter<V, E>
     {
         PrintWriter out = new PrintWriter(output);
 
-        VertexNameProvider<V> nameProvider = new IntegerNameProvider<V>();
+        VertexNameProvider<V> nameProvider = new IntegerNameProvider<>();
         for (V from : g.vertexSet()) {
             // assign ids in vertex set iteration order
             nameProvider.getVertexName(from);
@@ -230,7 +224,7 @@ public class MatrixExporter<V, E>
     {
         PrintWriter out = new PrintWriter(output);
 
-        VertexNameProvider<V> nameProvider = new IntegerNameProvider<V>();
+        VertexNameProvider<V> nameProvider = new IntegerNameProvider<>();
         for (V from : g.vertexSet()) {
             // assign ids in vertex set iteration order
             nameProvider.getVertexName(from);
@@ -239,7 +233,7 @@ public class MatrixExporter<V, E>
         for (V from : g.vertexSet()) {
             String fromName = nameProvider.getVertexName(from);
             Set<V> neighbors =
-                new LinkedHashSet<V>(Graphs.neighborListOf(g, from));
+                new LinkedHashSet<>(Graphs.neighborListOf(g, from));
             if (neighbors.isEmpty()) {
                 println(out, fromName, fromName, "0");
             } else {

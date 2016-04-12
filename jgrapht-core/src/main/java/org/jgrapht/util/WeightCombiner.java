@@ -40,75 +40,41 @@ package org.jgrapht.util;
  */
 public interface WeightCombiner
 {
-
-
     /**
      * Sum of weights.
      */
-    public WeightCombiner SUM =
-        new WeightCombiner() {
-            @Override public double combine(double a, double b)
-            {
-                return a + b;
-            }
-        };
+    WeightCombiner SUM =
+            (a, b) -> a + b;
 
     /**
      * Multiplication of weights.
      */
-    public WeightCombiner MULT =
-        new WeightCombiner() {
-            @Override public double combine(double a, double b)
-            {
-                return a * b;
-            }
-        };
+    WeightCombiner MULT =
+            (a, b) -> a * b;
 
     /**
      * Minimum weight.
      */
-    public WeightCombiner MIN =
-        new WeightCombiner() {
-            @Override public double combine(double a, double b)
-            {
-                return Math.min(a, b);
-            }
-        };
+    WeightCombiner MIN =
+            (a, b) -> Math.min(a, b);
 
     /**
      * Maximum weight.
      */
-    public WeightCombiner MAX =
-        new WeightCombiner() {
-            @Override public double combine(double a, double b)
-            {
-                return Math.max(a, b);
-            }
-        };
+    WeightCombiner MAX =
+            (a, b) -> Math.max(a, b);
 
     /**
      * First weight.
      */
-    public WeightCombiner FIRST =
-        new WeightCombiner() {
-            @Override public double combine(double a, double b)
-            {
-                return a;
-            }
-        };
+    WeightCombiner FIRST =
+            (a, b) -> a;
 
     /**
      * Second weight.
      */
-    public WeightCombiner SECOND =
-        new WeightCombiner() {
-            @Override public double combine(double a, double b)
-            {
-                return b;
-            }
-        };
-
-
+    WeightCombiner SECOND =
+            (a, b) -> b;
 
     /**
      * Combines two weights.

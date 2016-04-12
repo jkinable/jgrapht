@@ -40,14 +40,12 @@ import java.util.*;
  * @param <V> vertex concept type
  * @param <E> edge concept type
  */
-public abstract interface MatchingAlgorithm<V, E>
+public interface MatchingAlgorithm<V, E>
 {
-
-
     /**
      * Returns set of edges making up the matching
      */
-    public Set<E> getMatching();
+    Set<E> getMatching();
 }
 
 // End MatchingAlgorithm.java

@@ -60,7 +60,7 @@ public class BellmanFordShortestPathTest
         BellmanFordShortestPath<String, DefaultWeightedEdge> path;
         Graph<String, DefaultWeightedEdge> g = create();
 
-        path = new BellmanFordShortestPath<String, DefaultWeightedEdge>(g, V3);
+        path = new BellmanFordShortestPath<>(g, V3);
 
         // find best path with no constraint on number of hops
         assertEquals(
@@ -76,10 +76,10 @@ public class BellmanFordShortestPathTest
 
         // find best path within 2 hops (less than optimal)
         path =
-            new BellmanFordShortestPath<String, DefaultWeightedEdge>(
-                g,
-                V3,
-                2);
+                new BellmanFordShortestPath<>(
+                        g,
+                        V3,
+                        2);
         assertEquals(
             Arrays.asList(
                 new DefaultEdge[] {
@@ -91,10 +91,10 @@ public class BellmanFordShortestPathTest
 
         // find best path within 1 hop (doesn't exist!)
         path =
-            new BellmanFordShortestPath<String, DefaultWeightedEdge>(
-                g,
-                V3,
-                1);
+                new BellmanFordShortestPath<>(
+                        g,
+                        V3,
+                        1);
         assertNull(path.getPathEdgeList(V5));
         assertEquals(Double.POSITIVE_INFINITY, path.getCost(V5));
     }

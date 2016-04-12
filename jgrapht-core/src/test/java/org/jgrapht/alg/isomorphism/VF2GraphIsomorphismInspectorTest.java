@@ -69,7 +69,7 @@ public class VF2GraphIsomorphismInspectorTest
          *      v3
          */
         SimpleGraph<String, DefaultEdge> g1 =
-            new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
 
         String v1 = "v1",
                v2 = "v2",
@@ -85,17 +85,17 @@ public class VF2GraphIsomorphismInspectorTest
 
 
         VF2GraphIsomorphismInspector<String, DefaultEdge> vf2 =
-            new VF2GraphIsomorphismInspector<String, DefaultEdge>(g1, g1);
+                new VF2GraphIsomorphismInspector<>(g1, g1);
 
         Iterator<GraphMapping<String, DefaultEdge>> iter = vf2.getMappings();
 
         Set<String> mappings =
-            new HashSet<String>(Arrays.asList("[v1=v1 v2=v2 v3=v3]",
-                                              "[v1=v1 v2=v3 v3=v2]",
-                                              "[v1=v2 v2=v1 v3=v3]",
-                                              "[v1=v2 v2=v3 v3=v1]",
-                                              "[v1=v3 v2=v1 v3=v2]",
-                                              "[v1=v3 v2=v2 v3=v1]"));
+                new HashSet<>(Arrays.asList("[v1=v1 v2=v2 v3=v3]",
+                        "[v1=v1 v2=v3 v3=v2]",
+                        "[v1=v2 v2=v1 v3=v3]",
+                        "[v1=v2 v2=v3 v3=v1]",
+                        "[v1=v3 v2=v1 v3=v2]",
+                        "[v1=v3 v2=v2 v3=v1]"));
         assertEquals(true, mappings.remove(iter.next().toString()));
         assertEquals(true, mappings.remove(iter.next().toString()));
         assertEquals(true, mappings.remove(iter.next().toString()));
@@ -109,7 +109,7 @@ public class VF2GraphIsomorphismInspectorTest
          *   1 ---> 2 <--- 3
          */
         DefaultDirectedGraph<Integer, DefaultEdge> g2 =
-            new DefaultDirectedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new DefaultDirectedGraph<>(DefaultEdge.class);
 
         g2.addVertex(1);
         g2.addVertex(2);
@@ -120,13 +120,13 @@ public class VF2GraphIsomorphismInspectorTest
 
 
         VF2GraphIsomorphismInspector<Integer, DefaultEdge> vf3 =
-            new VF2GraphIsomorphismInspector<Integer, DefaultEdge>(g2, g2);
+                new VF2GraphIsomorphismInspector<>(g2, g2);
 
         Iterator<GraphMapping<Integer, DefaultEdge>> iter2 = vf3.getMappings();
 
         Set<String> mappings2 =
-            new HashSet<String>(Arrays.asList("[1=1 2=2 3=3]",
-                                              "[1=3 2=2 3=1]"));
+                new HashSet<>(Arrays.asList("[1=1 2=2 3=3]",
+                        "[1=3 2=2 3=1]"));
         assertEquals(true, mappings2.remove(iter2.next().toString()));
         assertEquals(true, mappings2.remove(iter2.next().toString()));
         assertEquals(false, iter2.hasNext());
@@ -140,7 +140,7 @@ public class VF2GraphIsomorphismInspectorTest
             SubgraphIsomorphismTestUtils.randomSubgraph(g1, 7, 54321);
 
         VF2GraphIsomorphismInspector<Integer, DefaultEdge> vf2 =
-            new VF2GraphIsomorphismInspector<Integer, DefaultEdge>(g1, g2);
+                new VF2GraphIsomorphismInspector<>(g1, g2);
         assertEquals(false, vf2.isomorphismExists());
     }
 
@@ -148,7 +148,7 @@ public class VF2GraphIsomorphismInspectorTest
     public void testSubgraph2() {
 
         ListenableUndirectedGraph<Integer, DefaultEdge> g1 =
-            new ListenableUndirectedGraph<Integer, DefaultEdge>
+                new ListenableUndirectedGraph<>
                         (DefaultEdge.class);
 
         g1.addVertex(0);
@@ -166,7 +166,7 @@ public class VF2GraphIsomorphismInspectorTest
         g1.addEdge(3, 4);
 
         ListenableUndirectedGraph<Integer, DefaultEdge> g2 =
-            new ListenableUndirectedGraph<Integer, DefaultEdge>
+                new ListenableUndirectedGraph<>
                         (DefaultEdge.class);
 
         g2.addVertex(0);
@@ -185,7 +185,7 @@ public class VF2GraphIsomorphismInspectorTest
         g2.addEdge(1, 4);
 
         ListenableUndirectedGraph<Integer, DefaultEdge> g3 =
-            new ListenableUndirectedGraph<Integer, DefaultEdge>
+                new ListenableUndirectedGraph<>
                         (DefaultEdge.class);
 
         g3.addVertex(0);
@@ -204,7 +204,7 @@ public class VF2GraphIsomorphismInspectorTest
         g3.addEdge(5, 4);
 
         ListenableUndirectedGraph<Integer, DefaultEdge> g4 =
-            new ListenableUndirectedGraph<Integer, DefaultEdge>
+                new ListenableUndirectedGraph<>
                         (DefaultEdge.class);
 
         g4.addVertex(0);
@@ -223,11 +223,11 @@ public class VF2GraphIsomorphismInspectorTest
         g4.addEdge(5, 3);
 
         VF2GraphIsomorphismInspector<Integer, DefaultEdge> vf2 =
-            new VF2GraphIsomorphismInspector<Integer, DefaultEdge>(g2, g1),
+                new VF2GraphIsomorphismInspector<>(g2, g1),
                                                            vf3 =
-            new VF2GraphIsomorphismInspector<Integer, DefaultEdge>(g1, g2),
+                                                                   new VF2GraphIsomorphismInspector<>(g1, g2),
                                                            vf4 =
-            new VF2GraphIsomorphismInspector<Integer, DefaultEdge>(g3, g4);
+                                                                   new VF2GraphIsomorphismInspector<>(g3, g4);
 
         assertEquals(false, vf2.isomorphismExists());
         assertEquals(false, vf3.isomorphismExists());

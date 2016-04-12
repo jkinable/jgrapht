@@ -52,8 +52,6 @@ import org.jgrapht.*;
 public class VertexDegreeComparator<V, E>
     implements java.util.Comparator<V>
 {
-
-
     /**
      * The graph that contains the vertices to be compared.
      */
@@ -64,8 +62,6 @@ public class VertexDegreeComparator<V, E>
      * order (smaller degrees first), <code>false</code> for descending.
      */
     private boolean ascendingOrder;
-
-
 
     /**
      * Creates a comparator for comparing the degrees of vertices in the
@@ -95,8 +91,6 @@ public class VertexDegreeComparator<V, E>
         graph = g;
         this.ascendingOrder = ascendingOrder;
     }
-
-
 
     /**
      * Compare the degrees of <code>v1</code> and <code>v2</code>, taking into

@@ -48,8 +48,6 @@ package org.jgrapht.event;
 public class TraversalListenerAdapter<V, E>
     implements TraversalListener<V, E>
 {
-
-
     /**
      * @see TraversalListener#connectedComponentFinished(ConnectedComponentTraversalEvent)
      */
@@ -69,7 +67,7 @@ public class TraversalListenerAdapter<V, E>
     /**
      * @see TraversalListener#edgeTraversed(EdgeTraversalEvent)
      */
-    @Override public void edgeTraversed(EdgeTraversalEvent<V, E> e)
+    @Override public void edgeTraversed(EdgeTraversalEvent<E> e)
     {
     }
 

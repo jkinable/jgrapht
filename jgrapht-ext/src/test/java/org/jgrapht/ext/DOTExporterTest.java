@@ -71,7 +71,7 @@ public class DOTExporterTest
     public void testUndirected()
     {
         UndirectedGraph<String, DefaultEdge> g =
-            new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
         g.addVertex(V1);
         g.addVertex(V2);
         g.addEdge(V1, V2);
@@ -85,21 +85,25 @@ public class DOTExporterTest
                 public Map<String, String> getComponentAttributes(String v)
                 {
                     Map<String, String> map =
-                        new LinkedHashMap<String, String>();
-                    if (v.equals(V1)) {
-                        map.put("label", "a");
-                    } else if (v.equals(V2)) {
-                        map.put("x", "y");
-                    } else {
-                        map = null;
+                            new LinkedHashMap<>();
+                    switch (v) {
+                        case V1:
+                            map.put("label", "a");
+                            break;
+                        case V2:
+                            map.put("x", "y");
+                            break;
+                        default:
+                            map = null;
+                            break;
                     }
                     return map;
                 }
             };
 
         DOTExporter<String, DefaultEdge> exporter =
-            new DOTExporter<String, DefaultEdge>(
-                new IntegerNameProvider<String>(),
+            new DOTExporter<>(
+                new IntegerNameProvider<>(),
                 null,
                 null,
                 vertexAttributeProvider,
@@ -111,9 +115,9 @@ public class DOTExporterTest
     public void testValidNodeIDs()
     {
         DOTExporter<String, DefaultEdge> exporter =
-            new DOTExporter<String, DefaultEdge>(
-                new StringNameProvider<String>(),
-                new StringNameProvider<String>(),
+            new DOTExporter<>(
+                new StringNameProvider<>(),
+                new StringNameProvider<>(),
                 null);
 
         List<String> validVertices =
@@ -127,8 +131,8 @@ public class DOTExporterTest
                 "\"--34asdf\"");
         for (String vertex : validVertices) {
             Graph<String, DefaultEdge> graph =
-                new DefaultDirectedGraph<String, DefaultEdge>(
-                    DefaultEdge.class);
+                    new DefaultDirectedGraph<>(
+                            DefaultEdge.class);
             graph.addVertex(vertex);
 
             exporter.export(new StringWriter(), graph);
@@ -138,8 +142,8 @@ public class DOTExporterTest
             Arrays.asList("2test", "--4", "foo-bar", "", "t:32");
         for (String vertex : invalidVertices) {
             Graph<String, DefaultEdge> graph =
-                new DefaultDirectedGraph<String, DefaultEdge>(
-                    DefaultEdge.class);
+                    new DefaultDirectedGraph<>(
+                            DefaultEdge.class);
             graph.addVertex(vertex);
 
             try {

@@ -40,8 +40,6 @@ import java.util.*;
  */
 public interface EdgeProvider<V, E>
 {
-
-
     /**
      * Construct an edge
      *

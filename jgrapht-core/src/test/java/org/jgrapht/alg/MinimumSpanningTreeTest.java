@@ -78,19 +78,19 @@ public class MinimumSpanningTreeTest
     public void testKruskal() {
 
         testMinimumSpanningTreeBuilding(
-                new KruskalMinimumSpanningTree<String, DefaultWeightedEdge>(createSimpleConnectedWeightedGraph()),
+                new KruskalMinimumSpanningTree<>(createSimpleConnectedWeightedGraph()),
                 Arrays.asList(AB, AC, BD, DE),
                 15.0
         );
 
         testMinimumSpanningTreeBuilding(
-                new KruskalMinimumSpanningTree<String, DefaultWeightedEdge>(createSimpleDisconnectedWeightedGraph()),
+                new KruskalMinimumSpanningTree<>(createSimpleDisconnectedWeightedGraph()),
                 Arrays.asList(AB, AC, BD, EG, GH, FH),
                 60.0
         );
 
         testKruskalMinimumSpanningTreeBuildingBackwardCompatibility(
-                new KruskalMinimumSpanningTree<String, DefaultWeightedEdge>(createSimpleConnectedWeightedGraph()),
+                new KruskalMinimumSpanningTree<>(createSimpleConnectedWeightedGraph()),
                 Arrays.asList(AB, AC, BD, DE),
                 15.0
         );
@@ -100,13 +100,13 @@ public class MinimumSpanningTreeTest
     public void testPrim() {
 
         testMinimumSpanningTreeBuilding(
-                new PrimMinimumSpanningTree<String, DefaultWeightedEdge>(createSimpleConnectedWeightedGraph()),
+                new PrimMinimumSpanningTree<>(createSimpleConnectedWeightedGraph()),
                 Arrays.asList(AB, AC, BD, DE),
                 15.0
         );
 
         testMinimumSpanningTreeBuilding(
-                new PrimMinimumSpanningTree<String, DefaultWeightedEdge>(createSimpleDisconnectedWeightedGraph()),
+                new PrimMinimumSpanningTree<>(createSimpleDisconnectedWeightedGraph()),
                 Arrays.asList(AB, AC, BD, EG, GH, FH),
                 60.0
         );
@@ -137,7 +137,7 @@ public class MinimumSpanningTreeTest
     protected Graph<String, DefaultWeightedEdge> createSimpleDisconnectedWeightedGraph() {
 
         Graph<String, DefaultWeightedEdge> g =
-                new SimpleWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+                new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         /**
          *
@@ -173,7 +173,7 @@ public class MinimumSpanningTreeTest
     protected Graph<String, DefaultWeightedEdge> createSimpleConnectedWeightedGraph() {
 
         Graph<String, DefaultWeightedEdge> g =
-            new SimpleWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+                new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         double bias = 1;
 

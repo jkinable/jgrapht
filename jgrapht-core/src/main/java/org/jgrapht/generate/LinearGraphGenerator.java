@@ -51,8 +51,6 @@ import org.jgrapht.*;
 public class LinearGraphGenerator<V, E>
     implements GraphGenerator<V, E, V>
 {
-
-
     /**
      * Role for the first vertex generated.
      */
@@ -63,11 +61,7 @@ public class LinearGraphGenerator<V, E>
      */
     public static final String END_VERTEX = "End Vertex";
 
-
-
     private int size;
-
-
 
     /**
      * Construct a new LinearGraphGenerator.
@@ -84,8 +78,6 @@ public class LinearGraphGenerator<V, E>
 
         this.size = size;
     }
-
-
 
     /**
      * {@inheritDoc}

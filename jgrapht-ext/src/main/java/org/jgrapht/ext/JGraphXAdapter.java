@@ -44,8 +44,6 @@ public class JGraphXAdapter<V, E>
     extends mxGraph
     implements GraphListener<V, E>
 {
-
-
     /**
      * The graph to be drawn. Has vertices "V" and edges "E".
      */
@@ -55,27 +53,25 @@ public class JGraphXAdapter<V, E>
      * Maps the JGraphT-Vertices onto JGraphX-mxICells. {@link #cellToVertexMap}
      * is for the opposite direction.
      */
-    private HashMap<V, mxICell> vertexToCellMap = new HashMap<V, mxICell>();
+    private HashMap<V, mxICell> vertexToCellMap = new HashMap<>();
 
     /**
      * Maps the JGraphT-Edges onto JGraphX-mxICells. {@link #cellToEdgeMap} is
      * for the opposite direction.
      */
-    private HashMap<E, mxICell> edgeToCellMap = new HashMap<E, mxICell>();
+    private HashMap<E, mxICell> edgeToCellMap = new HashMap<>();
 
     /**
      * Maps the JGraphX-mxICells onto JGraphT-Edges. {@link #edgeToCellMap} is
      * for the opposite direction.
      */
-    private HashMap<mxICell, V> cellToVertexMap = new HashMap<mxICell, V>();
+    private HashMap<mxICell, V> cellToVertexMap = new HashMap<>();
 
     /**
      * Maps the JGraphX-mxICells onto JGraphT-Vertices. {@link #vertexToCellMap}
      * is for the opposite direction.
      */
-    private HashMap<mxICell, E> cellToEdgeMap = new HashMap<mxICell, E>();
-
-
+    private HashMap<mxICell, E> cellToEdgeMap = new HashMap<>();
 
     /**
      * Constructs and draws a new ListenableGraph. If the graph changes through
@@ -117,8 +113,6 @@ public class JGraphXAdapter<V, E>
 
         setAutoSizeCells(true);
     }
-
-
 
     /**
      * Returns Hashmap which maps the vertices onto their visualization
@@ -177,7 +171,7 @@ public class JGraphXAdapter<V, E>
         vertexToCellMap.remove(e.getVertex());
 
         // remove all edges that connected to the vertex
-        ArrayList<E> removedEdges = new ArrayList<E>();
+        ArrayList<E> removedEdges = new ArrayList<>();
 
         // first, generate a list of all edges that have to be deleted
         // so we don't change the cellToEdgeMap.values by deleting while

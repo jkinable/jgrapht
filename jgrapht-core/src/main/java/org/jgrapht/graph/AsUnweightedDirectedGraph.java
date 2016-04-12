@@ -36,8 +36,6 @@
  */
 package org.jgrapht.graph;
 
-import java.io.*;
-
 import org.jgrapht.*;
 
 
@@ -75,7 +73,6 @@ public class AsUnweightedDirectedGraph<V, E>
     {
         super(g);
     }
-
 }
 
 // End AsUnweightedDirectedGraph.java

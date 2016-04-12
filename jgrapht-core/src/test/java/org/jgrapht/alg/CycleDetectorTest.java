@@ -98,17 +98,17 @@ public class CycleDetectorTest
     public void testDirectedWithCycle()
     {
         DirectedGraph<String, DefaultEdge> g =
-            new DefaultDirectedGraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new DefaultDirectedGraph<>(
+                        DefaultEdge.class);
         createGraph(g);
 
-        Set<String> cyclicSet = new HashSet<String>();
+        Set<String> cyclicSet = new HashSet<>();
         cyclicSet.add(V1);
         cyclicSet.add(V2);
         cyclicSet.add(V3);
         cyclicSet.add(V4);
 
-        Set<String> acyclicSet = new HashSet<String>();
+        Set<String> acyclicSet = new HashSet<>();
         acyclicSet.add(V5);
         acyclicSet.add(V6);
         acyclicSet.add(V7);
@@ -122,8 +122,8 @@ public class CycleDetectorTest
     public void testDirectedWithDoubledCycle()
     {
         DirectedGraph<String, DefaultEdge> g =
-            new DefaultDirectedGraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new DefaultDirectedGraph<>(
+                        DefaultEdge.class);
 
         // build the graph:  vertex order is chosen specifically
         // to exercise old bug-cases in CycleDetector
@@ -136,12 +136,12 @@ public class CycleDetectorTest
         g.addEdge(V3, V1);
         g.addEdge(V2, V1);
 
-        Set<String> cyclicSet = new HashSet<String>();
+        Set<String> cyclicSet = new HashSet<>();
         cyclicSet.add(V1);
         cyclicSet.add(V2);
         cyclicSet.add(V3);
 
-        Set<String> acyclicSet = new HashSet<String>();
+        Set<String> acyclicSet = new HashSet<>();
 
         runTest(g, cyclicSet, acyclicSet);
     }
@@ -153,8 +153,8 @@ public class CycleDetectorTest
     public void testDirectedWithoutCycle()
     {
         DirectedGraph<String, DefaultEdge> g =
-            new DefaultDirectedGraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new DefaultDirectedGraph<>(
+                        DefaultEdge.class);
         createGraph(g);
         g.removeVertex(V2);
 
@@ -172,7 +172,7 @@ public class CycleDetectorTest
         Set<String> acyclicSet)
     {
         CycleDetector<String, DefaultEdge> detector =
-            new CycleDetector<String, DefaultEdge>(g);
+                new CycleDetector<>(g);
 
         Set emptySet = Collections.EMPTY_SET;
 
@@ -194,12 +194,12 @@ public class CycleDetectorTest
     public void testVertexEquals()
     {
         DefaultDirectedGraph<String, DefaultEdge> graph =
-            new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new DefaultDirectedGraph<>(DefaultEdge.class);
         assertEquals(0, graph.edgeSet().size());
 
         String vertexA = "A";
         String vertexB = "B";
-        String vertexC = new StringBuffer("A").toString();
+        String vertexC = new String("A");
 
         assertNotSame(vertexA, vertexC);
 
@@ -213,7 +213,7 @@ public class CycleDetectorTest
         assertEquals(2, graph.vertexSet().size());
 
         CycleDetector<String, DefaultEdge> cycleDetector =
-            new CycleDetector<String, DefaultEdge>(graph);
+                new CycleDetector<>(graph);
         Set<String> cycleVertices = cycleDetector.findCycles();
 
         boolean foundCycle =

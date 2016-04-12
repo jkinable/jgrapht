@@ -36,16 +36,17 @@
  */
 package org.jgrapht.graph;
 
-import org.jgrapht.DirectedGraph;
+import java.util.*;
 
-import java.util.Map;
+import org.jgrapht.*;
+
 
 /**
  * <p>A weighted view of the backing graph specified in the constructor. This
- * allows you to apply algorithms designed for weighted graphs to an
- * unweighted graph by providing an explicit edge weight mapping. The
- * implementation also allows for "masking" weights for a subset of the edges in
- * an existing weighted graph.</p>
+ * allows you to apply algorithms designed for weighted graphs to an unweighted
+ * graph by providing an explicit edge weight mapping. The implementation also
+ * allows for "masking" weights for a subset of the edges in an existing
+ * weighted graph.</p>
  *
  * <p>Query operations on this graph "read through" to the backing graph. Vertex
  * addition/removal and edge addition/removal are all supported (and immediately
@@ -66,20 +67,26 @@ import java.util.Map;
  * @since Aug 20, 2015
  */
 public class AsWeightedDirectedGraph<V, E>
-        extends AsWeightedGraph<V, E>
-        implements DirectedGraph<V, E> {
-
+    extends AsWeightedGraph<V, E>
+    implements DirectedGraph<V, E>
+{
+    private static final long serialVersionUID = -6264605187276749471L;
 
     /**
      * Constructor for AsWeightedGraph.
      *
-     * @param g         the backing graph over which a weighted view is to be created.
+     * @param g the backing graph over which a weighted view is to be created.
      * @param weightMap A mapping of edges to weights. If an edge is not present
-     *                  in the weight map, the edge weight for the underlying graph is returned.
-     *                  Note that a live reference to this map is retained, so if the caller
-     *                  changes the map after construction, the changes will affect the
+     * in the weight map, the edge weight for the underlying graph is returned.
+     * Note that a live reference to this map is retained, so if the caller
+     * changes the map after construction, the changes will affect the
      */
-    public AsWeightedDirectedGraph(DirectedGraph<V, E> g, Map<E, Double> weightMap) {
+    public AsWeightedDirectedGraph(
+        DirectedGraph<V, E> g,
+        Map<E, Double> weightMap)
+    {
         super(g, weightMap);
     }
 }
+
+// End AsWeightedDirectedGraph.java

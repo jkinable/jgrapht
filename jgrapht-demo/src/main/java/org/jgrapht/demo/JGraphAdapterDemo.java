@@ -62,18 +62,12 @@ import org.jgrapht.graph.DefaultEdge;
 public class JGraphAdapterDemo
     extends JApplet
 {
-
-
     private static final long serialVersionUID = 3256444702936019250L;
     private static final Color DEFAULT_BG_COLOR = Color.decode("#FAFBFF");
     private static final Dimension DEFAULT_SIZE = new Dimension(530, 320);
 
-
-
     //
     private JGraphModelAdapter<String, DefaultEdge> jgAdapter;
-
-
 
     /**
      * An alternative starting point for this demo, to also allow running this
@@ -101,11 +95,11 @@ public class JGraphAdapterDemo
     {
         // create a JGraphT graph
         ListenableGraph<String, DefaultEdge> g =
-            new ListenableDirectedMultigraph<String, DefaultEdge>(
-                DefaultEdge.class);
+                new ListenableDirectedMultigraph<>(
+                        DefaultEdge.class);
 
         // create a visualization using JGraph, via an adapter
-        jgAdapter = new JGraphModelAdapter<String, DefaultEdge>(g);
+        jgAdapter = new JGraphModelAdapter<>(g);
 
         JGraph jgraph = new JGraph(jgAdapter);
 
@@ -179,8 +173,6 @@ public class JGraphAdapterDemo
         jgAdapter.edit(cellAttr, null, null, null);
     }
 
-
-
     /**
      * a listenable directed multigraph that allows loops and parallel edges.
      */
@@ -192,7 +184,7 @@ public class JGraphAdapterDemo
 
         ListenableDirectedMultigraph(Class<E> edgeClass)
         {
-            super(new DirectedMultigraph<V, E>(edgeClass));
+            super(new DirectedMultigraph<>(edgeClass));
         }
     }
 }

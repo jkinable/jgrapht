@@ -53,11 +53,7 @@ public class ArrayUnenforcedSet<E>
     extends ArrayList<E>
     implements Set<E>
 {
-
-
     private static final long serialVersionUID = -7413250161201811238L;
-
-
 
     public ArrayUnenforcedSet()
     {
@@ -74,8 +70,6 @@ public class ArrayUnenforcedSet<E>
         super(n);
     }
 
-
-
     @Override public boolean equals(Object o)
     {
         return new SetForEquality().equals(o);
@@ -85,8 +79,6 @@ public class ArrayUnenforcedSet<E>
     {
         return new SetForEquality().hashCode();
     }
-
-
 
     /**
      * Multiple inheritance helper.

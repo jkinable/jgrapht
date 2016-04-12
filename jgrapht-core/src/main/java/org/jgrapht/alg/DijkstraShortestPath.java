@@ -55,11 +55,7 @@ import org.jgrapht.traverse.*;
  */
 public final class DijkstraShortestPath<V, E>
 {
-
-
     private GraphPath<V, E> path;
-
-
 
     /**
      * Creates and executes a new DijkstraShortestPath algorithm instance. An
@@ -100,7 +96,7 @@ public final class DijkstraShortestPath<V, E>
         }
 
         ClosestFirstIterator<V, E> iter =
-            new ClosestFirstIterator<V, E>(graph, startVertex, radius);
+                new ClosestFirstIterator<>(graph, startVertex, radius);
 
         while (iter.hasNext()) {
             V vertex = iter.next();
@@ -113,8 +109,6 @@ public final class DijkstraShortestPath<V, E>
 
         path = null;
     }
-
-
 
     /**
      * Return the edges making up the path found.
@@ -171,10 +165,10 @@ public final class DijkstraShortestPath<V, E>
         V endVertex)
     {
         DijkstraShortestPath<V, E> alg =
-            new DijkstraShortestPath<V, E>(
-                graph,
-                startVertex,
-                endVertex);
+                new DijkstraShortestPath<>(
+                        graph,
+                        startVertex,
+                        endVertex);
 
         return alg.getPathEdgeList();
     }
@@ -185,7 +179,7 @@ public final class DijkstraShortestPath<V, E>
         V startVertex,
         V endVertex)
     {
-        List<E> edgeList = new ArrayList<E>();
+        List<E> edgeList = new ArrayList<>();
 
         V v = endVertex;
 
@@ -203,12 +197,12 @@ public final class DijkstraShortestPath<V, E>
         Collections.reverse(edgeList);
         double pathLength = iter.getShortestPathLength(endVertex);
         path =
-            new GraphPathImpl<V, E>(
-                graph,
-                startVertex,
-                endVertex,
-                edgeList,
-                pathLength);
+                new GraphPathImpl<>(
+                        graph,
+                        startVertex,
+                        endVertex,
+                        edgeList,
+                        pathLength);
     }
 }
 

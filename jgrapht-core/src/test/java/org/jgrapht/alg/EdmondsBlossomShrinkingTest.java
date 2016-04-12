@@ -53,7 +53,7 @@ public final class EdmondsBlossomShrinkingTest extends TestCase
     {
         // create an undirected graph
         UndirectedGraph<Integer, DefaultEdge> g =
-            new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
 
         Integer v1 = 1;
         Integer v2 = 2;
@@ -66,13 +66,11 @@ public final class EdmondsBlossomShrinkingTest extends TestCase
         g.addVertex(v4);
 
         DefaultEdge e12 = g.addEdge(v1, v2);
-        DefaultEdge e23 = g.addEdge(v2, v3);
-        DefaultEdge e24 = g.addEdge(v2, v4);
         DefaultEdge e34 = g.addEdge(v3, v4);
 
         // compute max match
         EdmondsBlossomShrinking<Integer, DefaultEdge> matcher =
-            new EdmondsBlossomShrinking<Integer, DefaultEdge>(g);
+                new EdmondsBlossomShrinking<>(g);
         Set<DefaultEdge> match = matcher.getMatching();
         assertEquals(2, match.size());
         assertTrue(match.contains(e12));
@@ -82,7 +80,7 @@ public final class EdmondsBlossomShrinkingTest extends TestCase
     public void testCrash()
     {
         UndirectedGraph<Integer, DefaultEdge> g =
-            new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
 
         Integer v1 = 1;
         Integer v2 = 2;
@@ -97,15 +95,10 @@ public final class EdmondsBlossomShrinkingTest extends TestCase
         g.addVertex(v5);
 
         DefaultEdge e12 = g.addEdge(v1, v2);
-        DefaultEdge e13 = g.addEdge(v1, v3);
-        DefaultEdge e23 = g.addEdge(v2, v3);
-        DefaultEdge e24 = g.addEdge(v2, v4);
         DefaultEdge e34 = g.addEdge(v3, v4);
-        DefaultEdge e35 = g.addEdge(v3, v5);
-        DefaultEdge e45 = g.addEdge(v4, v5);
 
         EdmondsBlossomShrinking<Integer, DefaultEdge> matcher =
-            new EdmondsBlossomShrinking<Integer, DefaultEdge>(g);
+                new EdmondsBlossomShrinking<>(g);
 
         Set<DefaultEdge> match = matcher.getMatching();
 
@@ -119,7 +112,7 @@ public final class EdmondsBlossomShrinkingTest extends TestCase
     public void testCrash2()
     {
         UndirectedGraph<Integer, DefaultEdge> g =
-            new SimpleGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
 
         Integer vs[] = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 
@@ -128,23 +121,14 @@ public final class EdmondsBlossomShrinkingTest extends TestCase
         }
 
         DefaultEdge e12 = g.addEdge(vs[1], vs[2]);
-        DefaultEdge e23 = g.addEdge(vs[2], vs[3]);
         DefaultEdge e34 = g.addEdge(vs[3], vs[4]);
-        DefaultEdge e45 = g.addEdge(vs[4], vs[5]);
-        DefaultEdge e53 = g.addEdge(vs[5], vs[3]);
         DefaultEdge e56 = g.addEdge(vs[5], vs[6]);
-        DefaultEdge e67 = g.addEdge(vs[6], vs[7]);
         DefaultEdge e78 = g.addEdge(vs[7], vs[8]);
-        DefaultEdge e89 = g.addEdge(vs[8], vs[9]);
-        DefaultEdge e97 = g.addEdge(vs[9], vs[7]);
         DefaultEdge e910 = g.addEdge(vs[9], vs[10]);
-        DefaultEdge e1011 = g.addEdge(vs[10], vs[11]);
         DefaultEdge e1112 = g.addEdge(vs[11], vs[12]);
-        DefaultEdge e1213 = g.addEdge(vs[12], vs[13]);
-        DefaultEdge e1311 = g.addEdge(vs[13], vs[11]);
 
         EdmondsBlossomShrinking<Integer, DefaultEdge> matcher =
-            new EdmondsBlossomShrinking<Integer, DefaultEdge>(g);
+                new EdmondsBlossomShrinking<>(g);
 
         Set<DefaultEdge> match = matcher.getMatching();
 

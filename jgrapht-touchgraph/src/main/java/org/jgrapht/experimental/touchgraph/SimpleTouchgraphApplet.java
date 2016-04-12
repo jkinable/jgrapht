@@ -69,7 +69,7 @@ public class SimpleTouchgraphApplet
     public static Graph<String, DefaultEdge> createSamplegraph()
     {
         UndirectedGraph<String, DefaultEdge> g =
-            new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
 
         String v1 = "v1";
         String v2 = "v2";
@@ -102,7 +102,7 @@ public class SimpleTouchgraphApplet
         setLayout(new BorderLayout());
         setSize(800, 600);
         add(
-            new TouchgraphPanel<String, DefaultEdge>(g, selfReferencesAllowed),
+                new TouchgraphPanel<>(g, selfReferencesAllowed),
             BorderLayout.CENTER);
     }
 
@@ -113,7 +113,7 @@ public class SimpleTouchgraphApplet
 
         JFrame frame = new JFrame();
         frame.getContentPane().add(
-            new TouchgraphPanel<String, DefaultEdge>(g, selfReferencesAllowed));
+                new TouchgraphPanel<>(g, selfReferencesAllowed));
         frame.setPreferredSize(new Dimension(800, 800));
         frame.setTitle("JGraphT to Touchgraph Converter Demo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

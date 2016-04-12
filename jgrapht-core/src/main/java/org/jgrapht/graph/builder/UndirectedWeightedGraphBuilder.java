@@ -48,8 +48,6 @@ public final class UndirectedWeightedGraphBuilder<V,
     extends UndirectedWeightedGraphBuilderBase<V,
         E, G, UndirectedWeightedGraphBuilder<V, E, G>>
 {
-
-
     /**
      * Creates a builder based on {@code baseGraph}. {@code baseGraph} must be
      * mutable.
@@ -67,8 +65,6 @@ public final class UndirectedWeightedGraphBuilder<V,
     {
         super(baseGraph);
     }
-
-
 
     @Override protected UndirectedWeightedGraphBuilder<V, E, G> self()
     {

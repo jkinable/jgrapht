@@ -60,7 +60,7 @@ public class GraphOrderingTest {
 		 *
 		 */
 		UndirectedGraph<String, DefaultEdge> g1 =
-				new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+				new SimpleGraph<>(DefaultEdge.class);
 		
 		String v1 = "v1",
 			   v2 = "v2",
@@ -80,7 +80,7 @@ public class GraphOrderingTest {
 		g1.addEdge(v2, v4);
 		
 		GraphOrdering<String, DefaultEdge> g1Ordering =
-				new GraphOrdering<String, DefaultEdge>(g1);
+				new GraphOrdering<>(g1);
 		
 		assertEquals(5, g1Ordering.getVertexCount());
 		
@@ -189,7 +189,7 @@ public class GraphOrderingTest {
 		 *
 		 */
 		DirectedGraph<String, DefaultEdge> g1 =
-				new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+				new DefaultDirectedGraph<>(DefaultEdge.class);
 		
 		String v1 = "v1",
 			   v2 = "v2",
@@ -210,7 +210,7 @@ public class GraphOrderingTest {
 		
 		
 		GraphOrdering<String, DefaultEdge> g1Ordering =
-				new GraphOrdering<String, DefaultEdge>(g1);
+				new GraphOrdering<>(g1);
 		
 		assertEquals(5, g1Ordering.getVertexCount());
 		

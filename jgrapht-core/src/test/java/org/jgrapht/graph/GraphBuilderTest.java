@@ -59,8 +59,8 @@ public class GraphBuilderTest
 
     public void testAddVertex() {
         Graph<String, DefaultEdge> g =
-                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
+                new DirectedGraphBuilder<>
+                        (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addVertex(v1)
                 .addVertices(v2, v3)
                 .build();
@@ -72,8 +72,8 @@ public class GraphBuilderTest
 
     public void testAddEdge() {
         UnmodifiableGraph<String, DefaultWeightedEdge> g =
-                new DirectedWeightedGraphBuilder<String, DefaultWeightedEdge, DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>>
-                (new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class))
+                new DirectedWeightedGraphBuilder<>
+                        (new DefaultDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class))
                 .addEdge(v1, v2)
                 .addEdgeChain(v3, v4, v5, v6)
                 .addEdge(v7, v8, 10.0)
@@ -93,15 +93,13 @@ public class GraphBuilderTest
     public void testAddGraph() {
         Graph<String, DefaultEdge> g1 =
                 DefaultDirectedGraph.<String, DefaultEdge>builder(DefaultEdge.class)
-//                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-//                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addVertex(v1)
                 .addEdge(v2, v3)
                 .buildUnmodifiable();
 
         Graph<String, DefaultEdge> g2 =
-                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
+                new DirectedGraphBuilder<>
+                        (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addGraph(g1)
                 .addEdge(v1, v4)
                 .build();
@@ -115,15 +113,15 @@ public class GraphBuilderTest
 
     public void testRemoveVertex() {
         Graph<String, DefaultEdge> g1 =
-                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
+                new DirectedGraphBuilder<>
+                        (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addEdge(v1, v3)
                 .addEdgeChain(v2, v3, v4, v5)
                 .buildUnmodifiable();
 
         Graph<String, DefaultEdge> g2 =
-                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
+                new DirectedGraphBuilder<>
+                        (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addGraph(g1)
                 .removeVertex(v2)
                 .removeVertices(v4, v5)
@@ -137,14 +135,14 @@ public class GraphBuilderTest
 
     public void testRemoveEdge() {
         Graph<String, DefaultEdge> g1 =
-                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
+                new DirectedGraphBuilder<>
+                        (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addEdgeChain(v1, v2, v3, v4)
                 .buildUnmodifiable();
 
         Graph<String, DefaultEdge> g2 =
-                new DirectedGraphBuilder<String, DefaultEdge, DefaultDirectedGraph<String, DefaultEdge>>
-                (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
+                new DirectedGraphBuilder<>
+                        (new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class))
                 .addGraph(g1)
                 .removeEdge(v2, v3)
                 .build();

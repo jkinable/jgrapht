@@ -53,8 +53,6 @@ import org.jgrapht.graph.*;
 final class RankingPathElementList<V, E>
     extends AbstractPathElementList<V, E, RankingPathElement<V, E>>
 {
-
-
     /**
      * Vertex that paths of the list must not disconnect.
      */
@@ -62,8 +60,6 @@ final class RankingPathElementList<V, E>
 
     private Map<RankingPathElement<V, E>, Boolean> path2disconnect =
         new HashMap<RankingPathElement<V, E>, Boolean>();
-
-
 
     /**
      * Creates a list with an empty path. The list size is 1.
@@ -128,11 +124,11 @@ final class RankingPathElementList<V, E>
 
             double weight = calculatePathWeight(prevPathElement, edge);
             RankingPathElement<V, E> newPathElement =
-                new RankingPathElement<V, E>(
-                    this.graph,
-                    prevPathElement,
-                    edge,
-                    weight);
+                    new RankingPathElement<>(
+                            this.graph,
+                            prevPathElement,
+                            edge,
+                            weight);
 
             // the new path is inserted at the end of the list.
             this.pathElements.add(newPathElement);
@@ -148,8 +144,6 @@ final class RankingPathElementList<V, E>
     {
         super(graph, maxSize, vertex);
     }
-
-
 
     /**
      * <p>Adds paths in the list at vertex y. Candidate paths are obtained by
@@ -203,11 +197,11 @@ final class RankingPathElementList<V, E>
             }
             double newPathWeight = calculatePathWeight(prevPathElement, edge);
             RankingPathElement<V, E> newPathElement =
-                new RankingPathElement<V, E>(
-                    this.graph,
-                    prevPathElement,
-                    edge,
-                    newPathWeight);
+                    new RankingPathElement<>(
+                            this.graph,
+                            prevPathElement,
+                            edge,
+                            newPathWeight);
 
             // loop over the paths of the list at vertex y from yIndex to the
             // end.
@@ -315,23 +309,23 @@ final class RankingPathElementList<V, E>
         MaskFunctor<V, E> connectivityMask;
 
         if (this.graph instanceof DirectedGraph<?, ?>) {
-            connectivityMask = new PathMask<V, E>(prevPathElement);
+            connectivityMask = new PathMask<>(prevPathElement);
             DirectedMaskSubgraph<V, E> connectivityGraph =
-                new DirectedMaskSubgraph<V, E>(
-                    (DirectedGraph<V, E>) this.graph,
-                    connectivityMask);
+                    new DirectedMaskSubgraph<>(
+                            (DirectedGraph<V, E>) this.graph,
+                            connectivityMask);
             connectivityInspector =
-                new ConnectivityInspector<V, E>(
-                    connectivityGraph);
+                    new ConnectivityInspector<>(
+                            connectivityGraph);
         } else {
-            connectivityMask = new PathMask<V, E>(prevPathElement);
+            connectivityMask = new PathMask<>(prevPathElement);
             UndirectedMaskSubgraph<V, E> connectivityGraph =
-                new UndirectedMaskSubgraph<V, E>(
-                    (UndirectedGraph<V, E>) this.graph,
-                    connectivityMask);
+                    new UndirectedMaskSubgraph<>(
+                            (UndirectedGraph<V, E>) this.graph,
+                            connectivityMask);
             connectivityInspector =
-                new ConnectivityInspector<V, E>(
-                    connectivityGraph);
+                    new ConnectivityInspector<>(
+                            connectivityGraph);
         }
 
         if (connectivityMask.isVertexMasked(this.guardVertexToNotDisconnect)) {
@@ -394,8 +388,6 @@ final class RankingPathElementList<V, E>
         return true;
     }
 
-
-
     private static class PathMask<V, E>
         implements MaskFunctor<V, E>
     {
@@ -411,8 +403,8 @@ final class RankingPathElementList<V, E>
          */
         PathMask(RankingPathElement<V, E> pathElement)
         {
-            this.maskedEdges = new HashSet<E>();
-            this.maskedVertices = new HashSet<V>();
+            this.maskedEdges = new HashSet<>();
+            this.maskedVertices = new HashSet<>();
 
             while (pathElement.getPrevEdge() != null) {
                 this.maskedEdges.add(pathElement.getPrevEdge());

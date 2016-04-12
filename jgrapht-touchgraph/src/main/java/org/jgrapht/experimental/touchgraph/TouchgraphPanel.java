@@ -143,12 +143,12 @@ public class TouchgraphPanel<V, E>
                  * Add users graph
                  */
                 TouchgraphConverter<V, E> converter =
-                    new TouchgraphConverter<V, E>();
+                        new TouchgraphConverter<>();
                 Node n =
-                    (Node) converter.convertToTouchGraph(
-                        this.graph,
-                        tgPanel,
-                        this.selfReferencesAllowed);
+                        converter.convertToTouchGraph(
+                            this.graph,
+                            tgPanel,
+                            this.selfReferencesAllowed);
                 getHVScroll().slowScrollToCenter(n);
                 tgPanel.setLocale(n, Integer.MAX_VALUE);
             }

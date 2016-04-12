@@ -51,15 +51,11 @@ import org.jgrapht.*;
 public class DefaultGraphMapping<V, E>
     implements GraphMapping<V, E>
 {
-
-
     private Map<V, V> graphMappingForward;
     private Map<V, V> graphMappingReverse;
 
     private Graph<V, E> graph1;
     private Graph<V, E> graph2;
-
-
 
     /**
      * The maps themselves are used. There is no defensive-copy. Assumption: The
@@ -82,8 +78,6 @@ public class DefaultGraphMapping<V, E>
         this.graphMappingForward = g1ToG2;
         this.graphMappingReverse = g2ToG1;
     }
-
-
 
     @Override public E getEdgeCorrespondence(E currEdge, boolean forward)
     {

@@ -58,19 +58,13 @@ public class GraphUnion<V, E, G extends Graph<V, E>>
     extends AbstractGraph<V, E>
     implements Serializable
 {
-
-
     private static final long serialVersionUID = -740199233080172450L;
 
     private static final String READ_ONLY = "union of graphs is read-only";
 
-
-
     private G g1;
     private G g2;
     private WeightCombiner operator;
-
-
 
     public GraphUnion(G g1, G g2, WeightCombiner operator)
     {
@@ -93,11 +87,9 @@ public class GraphUnion<V, E, G extends Graph<V, E>>
         this(g1, g2, WeightCombiner.SUM);
     }
 
-
-
     @Override public Set<E> getAllEdges(V sourceVertex, V targetVertex)
     {
-        Set<E> res = new LinkedHashSet<E>();
+        Set<E> res = new LinkedHashSet<>();
         if (g1.containsVertex(sourceVertex)
             && g1.containsVertex(targetVertex))
         {
@@ -176,7 +168,7 @@ public class GraphUnion<V, E, G extends Graph<V, E>>
 
     @Override public Set<E> edgeSet()
     {
-        Set<E> res = new LinkedHashSet<E>();
+        Set<E> res = new LinkedHashSet<>();
         res.addAll(g1.edgeSet());
         res.addAll(g2.edgeSet());
         return Collections.unmodifiableSet(res);
@@ -184,7 +176,7 @@ public class GraphUnion<V, E, G extends Graph<V, E>>
 
     @Override public Set<E> edgesOf(V vertex)
     {
-        Set<E> res = new LinkedHashSet<E>();
+        Set<E> res = new LinkedHashSet<>();
         if (g1.containsVertex(vertex)) {
             res.addAll(g1.edgesOf(vertex));
         }
@@ -223,7 +215,7 @@ public class GraphUnion<V, E, G extends Graph<V, E>>
 
     @Override public Set<V> vertexSet()
     {
-        Set<V> res = new HashSet<V>();
+        Set<V> res = new HashSet<>();
         res.addAll(g1.vertexSet());
         res.addAll(g2.vertexSet());
         return Collections.unmodifiableSet(res);

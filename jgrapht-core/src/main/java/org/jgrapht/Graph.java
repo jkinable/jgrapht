@@ -77,8 +77,6 @@ import java.util.*;
  */
 public interface Graph<V, E>
 {
-
-
     /**
      * Returns a set of all edges connecting source vertex to target vertex if
      * such vertices exist in this graph. If any of the vertices does not exist
@@ -94,7 +92,7 @@ public interface Graph<V, E>
      *
      * @return a set of all edges connecting source vertex to target vertex.
      */
-    public Set<E> getAllEdges(V sourceVertex, V targetVertex);
+    Set<E> getAllEdges(V sourceVertex, V targetVertex);
 
     /**
      * Returns an edge connecting source vertex to target vertex if such
@@ -110,7 +108,7 @@ public interface Graph<V, E>
      *
      * @return an edge connecting source vertex to target vertex.
      */
-    public E getEdge(V sourceVertex, V targetVertex);
+    E getEdge(V sourceVertex, V targetVertex);
 
     /**
      * Returns the edge factory using which this graph creates new edges. The
@@ -119,7 +117,7 @@ public interface Graph<V, E>
      *
      * @return the edge factory using which this graph creates new edges.
      */
-    public EdgeFactory<V, E> getEdgeFactory();
+    EdgeFactory<V, E> getEdgeFactory();
 
     /**
      * Creates a new edge in this graph, going from the source vertex to the
@@ -154,7 +152,7 @@ public interface Graph<V, E>
      *
      * @see #getEdgeFactory()
      */
-    public E addEdge(V sourceVertex, V targetVertex);
+    E addEdge(V sourceVertex, V targetVertex);
 
     /**
      * Adds the specified edge to this graph, going from the source vertex to
@@ -190,7 +188,7 @@ public interface Graph<V, E>
      * @see #addEdge(Object, Object)
      * @see #getEdgeFactory()
      */
-    public boolean addEdge(V sourceVertex, V targetVertex, E e);
+    boolean addEdge(V sourceVertex, V targetVertex, E e);
 
     /**
      * Adds the specified vertex to this graph if not already present. More
@@ -209,7 +207,7 @@ public interface Graph<V, E>
      * @throws NullPointerException if the specified vertex is <code>
      * null</code>.
      */
-    public boolean addVertex(V v);
+    boolean addVertex(V v);
 
     /**
      * Returns <tt>true</tt> if and only if this graph contains an edge going
@@ -223,7 +221,7 @@ public interface Graph<V, E>
      *
      * @return <tt>true</tt> if this graph contains the specified edge.
      */
-    public boolean containsEdge(V sourceVertex, V targetVertex);
+    boolean containsEdge(V sourceVertex, V targetVertex);
 
     /**
      * Returns <tt>true</tt> if this graph contains the specified edge. More
@@ -235,7 +233,7 @@ public interface Graph<V, E>
      *
      * @return <tt>true</tt> if this graph contains the specified edge.
      */
-    public boolean containsEdge(E e);
+    boolean containsEdge(E e);
 
     /**
      * Returns <tt>true</tt> if this graph contains the specified vertex. More
@@ -247,7 +245,7 @@ public interface Graph<V, E>
      *
      * @return <tt>true</tt> if this graph contains the specified vertex.
      */
-    public boolean containsVertex(V v);
+    boolean containsVertex(V v);
 
     /**
      * Returns a set of the edges contained in this graph. The set is backed by
@@ -262,7 +260,7 @@ public interface Graph<V, E>
      *
      * @return a set of the edges contained in this graph.
      */
-    public Set<E> edgeSet();
+    Set<E> edgeSet();
 
     /**
      * Returns a set of all edges touching the specified vertex. If no edges are
@@ -276,7 +274,7 @@ public interface Graph<V, E>
      * @throws IllegalArgumentException if vertex is not found in the graph.
      * @throws NullPointerException if vertex is <code>null</code>.
      */
-    public Set<E> edgesOf(V vertex);
+    Set<E> edgesOf(V vertex);
 
     /**
      * Removes all the edges in this graph that are also contained in the
@@ -294,7 +292,7 @@ public interface Graph<V, E>
      * @see #removeEdge(Object)
      * @see #containsEdge(Object)
      */
-    public boolean removeAllEdges(Collection<? extends E> edges);
+    boolean removeAllEdges(Collection<? extends E> edges);
 
     /**
      * Removes all the edges going from the specified source vertex to the
@@ -310,7 +308,7 @@ public interface Graph<V, E>
      * @return the removed edges, or <code>null</code> if either vertex is not
      * part of graph
      */
-    public Set<E> removeAllEdges(V sourceVertex, V targetVertex);
+    Set<E> removeAllEdges(V sourceVertex, V targetVertex);
 
     /**
      * Removes all the vertices in this graph that are also contained in the
@@ -328,7 +326,7 @@ public interface Graph<V, E>
      * @see #removeVertex(Object)
      * @see #containsVertex(Object)
      */
-    public boolean removeAllVertices(Collection<? extends V> vertices);
+    boolean removeAllVertices(Collection<? extends V> vertices);
 
     /**
      * Removes an edge going from source vertex to target vertex, if such
@@ -340,7 +338,7 @@ public interface Graph<V, E>
      *
      * @return The removed edge, or <code>null</code> if no edge removed.
      */
-    public E removeEdge(V sourceVertex, V targetVertex);
+    E removeEdge(V sourceVertex, V targetVertex);
 
     /**
      * Removes the specified edge from the graph. Removes the specified edge
@@ -357,7 +355,7 @@ public interface Graph<V, E>
      * @return <code>true</code> if and only if the graph contained the
      * specified edge.
      */
-    public boolean removeEdge(E e);
+    boolean removeEdge(E e);
 
     /**
      * Removes the specified vertex from this graph including all its touching
@@ -376,7 +374,7 @@ public interface Graph<V, E>
      * @return <code>true</code> if the graph contained the specified vertex;
      * <code>false</code> otherwise.
      */
-    public boolean removeVertex(V v);
+    boolean removeVertex(V v);
 
     /**
      * Returns a set of the vertices contained in this graph. The set is backed
@@ -391,7 +389,7 @@ public interface Graph<V, E>
      *
      * @return a set view of the vertices contained in this graph.
      */
-    public Set<V> vertexSet();
+    Set<V> vertexSet();
 
     /**
      * Returns the source vertex of an edge. For an undirected graph, source and
@@ -402,7 +400,7 @@ public interface Graph<V, E>
      *
      * @return source vertex
      */
-    public V getEdgeSource(E e);
+    V getEdgeSource(E e);
 
     /**
      * Returns the target vertex of an edge. For an undirected graph, source and
@@ -413,7 +411,7 @@ public interface Graph<V, E>
      *
      * @return target vertex
      */
-    public V getEdgeTarget(E e);
+    V getEdgeTarget(E e);
 
     /**
      * Returns the weight assigned to a given edge. Unweighted graphs return 1.0
@@ -426,7 +424,7 @@ public interface Graph<V, E>
      *
      * @see WeightedGraph
      */
-    public double getEdgeWeight(E e);
+    double getEdgeWeight(E e);
 }
 
 // End Graph.java

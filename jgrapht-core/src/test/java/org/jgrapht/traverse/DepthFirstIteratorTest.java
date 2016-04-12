@@ -82,7 +82,7 @@ public class DepthFirstIteratorTest
         String vertex)
     {
         AbstractGraphIterator<String, DefaultEdge> i =
-            new DepthFirstIterator<String, DefaultEdge>(g, vertex);
+                new DepthFirstIterator<>(g, vertex);
         i.setCrossComponentTraversal(true);
 
         return i;
@@ -95,7 +95,7 @@ public class DepthFirstIteratorTest
     public void testBug1169182()
     {
         DirectedGraph<String, DefaultEdge> dg =
-            new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new DefaultDirectedGraph<>(DefaultEdge.class);
 
         String a = "A";
         String b = "B";
@@ -139,7 +139,7 @@ public class DepthFirstIteratorTest
         dg.addEdge(j, k);
         dg.addEdge(k, l);
 
-        Iterator<String> dfs = new DepthFirstIterator<String, DefaultEdge>(dg);
+        Iterator<String> dfs = new DepthFirstIterator<>(dg);
         String actual = "";
         while (dfs.hasNext()) {
             String v = dfs.next();

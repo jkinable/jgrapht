@@ -121,9 +121,9 @@ public class SubgraphIsomorphismTestUtils
                     int vertexCount,
                     long seed)
     {
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> map = new HashMap<>();
         DirectedGraph<Integer, DefaultEdge> g2 =
-            new DefaultDirectedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new DefaultDirectedGraph<>(DefaultEdge.class);
         Set<Integer> vertexSet = g1.vertexSet();
         int n = vertexSet.size();
 
@@ -160,7 +160,7 @@ public class SubgraphIsomorphismTestUtils
     {
         Integer[] vertexes = new Integer[vertexCount];
         DirectedGraph<Integer, DefaultEdge> g =
-            new DefaultDirectedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new DefaultDirectedGraph<>(DefaultEdge.class);
 
         for (int i = 0; i < vertexCount; i++)
             g.addVertex(vertexes[i] = i);

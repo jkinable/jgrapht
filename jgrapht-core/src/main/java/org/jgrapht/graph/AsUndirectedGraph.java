@@ -77,15 +77,11 @@ public class AsUndirectedGraph<V, E>
     implements Serializable,
         UndirectedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 3257845485078065462L; // @todo renew
     private static final String NO_EDGE_ADD =
         "this graph does not support edge addition";
     private static final String UNDIRECTED =
         "this graph only supports undirected operations";
-
-
 
     /**
      * Constructor for AsUndirectedGraph.
@@ -97,8 +93,6 @@ public class AsUndirectedGraph<V, E>
     {
         super(g);
     }
-
-
 
     /**
      * @see Graph#getAllEdges(Object, Object)
@@ -114,8 +108,8 @@ public class AsUndirectedGraph<V, E>
 
         Set<E> reverseList = super.getAllEdges(targetVertex, sourceVertex);
         Set<E> list =
-            new ArrayUnenforcedSet<E>(
-                forwardList.size() + reverseList.size());
+                new ArrayUnenforcedSet<>(
+                        forwardList.size() + reverseList.size());
         list.addAll(forwardList);
         list.addAll(reverseList);
 

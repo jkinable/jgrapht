@@ -55,12 +55,8 @@ import org.jgrapht.generate.*;
 public class UniformRandomGraphGenerator
     implements GraphGenerator
 {
-
-
     private final int numEdges;
     private final int numVertices;
-
-
 
     /**
      * Construct a new UniformRandomGraphGenerator.
@@ -85,8 +81,6 @@ public class UniformRandomGraphGenerator
         this.numVertices = numVertices;
         this.numEdges = numEdges;
     }
-
-
 
     /**
      * @see GraphGenerator#generateGraph

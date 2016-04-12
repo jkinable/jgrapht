@@ -49,11 +49,7 @@ import org.jgrapht.graph.*;
 public abstract class AbstractGraphBuilder<V,
     E, G extends Graph<V, E>, B extends AbstractGraphBuilder<V, E, G, B>>
 {
-
-
     protected final G graph;
-
-
 
     /**
      * Creates a builder based on {@code baseGraph}. {@code baseGraph} must be
@@ -65,8 +61,6 @@ public abstract class AbstractGraphBuilder<V,
     {
         this.graph = baseGraph;
     }
-
-
 
     /**
      * @return the {@code this} object.
@@ -228,7 +222,7 @@ public abstract class AbstractGraphBuilder<V,
      */
     public UnmodifiableGraph<V, E> buildUnmodifiable()
     {
-        return new UnmodifiableGraph<V, E>(this.graph);
+        return new UnmodifiableGraph<>(this.graph);
     }
 }
 

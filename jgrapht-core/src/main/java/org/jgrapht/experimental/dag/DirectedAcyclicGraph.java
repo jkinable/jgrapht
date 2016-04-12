@@ -72,11 +72,7 @@ import org.jgrapht.graph.*;
 public class DirectedAcyclicGraph<V, E>
     extends SimpleDirectedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 4522128427004938150L;
-
-
 
     private TopoComparator<V> topoComparator;
 
@@ -97,8 +93,6 @@ public class DirectedAcyclicGraph<V, E>
      * Pluggable TopoOrderMappingFactory implementation
      */
     private TopoOrderMappingFactory<V> topoOrderFactory = new TopoVertexBiMap();
-
-
 
     public DirectedAcyclicGraph(Class<? extends E> arg0)
     {
@@ -127,8 +121,6 @@ public class DirectedAcyclicGraph<V, E>
         initialize();
     }
 
-
-
     /**
      * set the topoOrderMap based on the current factory, and create the
      * comparator;
@@ -136,7 +128,7 @@ public class DirectedAcyclicGraph<V, E>
     private void initialize()
     {
         topoOrderMap = topoOrderFactory.getTopoOrderMapping();
-        topoComparator = new TopoComparator<V>(topoOrderMap);
+        topoComparator = new TopoComparator<>(topoOrderMap);
     }
 
     /**
@@ -235,7 +227,7 @@ public class DirectedAcyclicGraph<V, E>
      */
     @Override public E addEdge(V sourceVertex, V targetVertex)
     {
-        E result = null;
+        E result;
         try {
             result = addDagEdge(sourceVertex, targetVertex);
         } catch (CycleFoundException e) {
@@ -287,8 +279,8 @@ public class DirectedAcyclicGraph<V, E>
         }
 
         if (lb < ub) {
-            Set<V> df = new HashSet<V>();
-            Set<V> db = new HashSet<V>();
+            Set<V> df = new HashSet<>();
+            Set<V> db = new HashSet<>();
 
             // Discovery
             Region affectedRegion = new Region(lb, ub);
@@ -405,7 +397,7 @@ public class DirectedAcyclicGraph<V, E>
             Integer nextVertexTopoIndex =
                 topoOrderMap.getTopologicalIndex(nextVertex);
 
-            if (nextVertexTopoIndex.intValue() == affectedRegion.finish) {
+            if (nextVertexTopoIndex == affectedRegion.finish) {
                 // reset visited
                 try {
                     for (V visitedVertex : df) {
@@ -477,15 +469,15 @@ public class DirectedAcyclicGraph<V, E>
     @SuppressWarnings("unchecked")
     private void reorder(Set<V> df, Set<V> db, Visited visited)
     {
-        List<V> topoDf = new ArrayList<V>(df);
-        List<V> topoDb = new ArrayList<V>(db);
+        List<V> topoDf = new ArrayList<>(df);
+        List<V> topoDb = new ArrayList<>(db);
 
         Collections.sort(topoDf, topoComparator);
         Collections.sort(topoDb, topoComparator);
 
         // merge these suckers together in topo order
 
-        SortedSet<Integer> availableTopoIndices = new TreeSet<Integer>();
+        SortedSet<Integer> availableTopoIndices = new TreeSet<>();
 
         // we have to cast to the generic type, can't do "new V[size]" in java
         // 5;
@@ -539,8 +531,6 @@ public class DirectedAcyclicGraph<V, E>
         }
     }
 
-
-
     /**
      * For performance tuning, an interface for storing the topological ordering
      *
@@ -555,7 +545,7 @@ public class DirectedAcyclicGraph<V, E>
          * @param index
          * @param vertex
          */
-        public void putVertex(Integer index, V vertex);
+        void putVertex(Integer index, V vertex);
 
         /**
          * get the vertex at the given topological index.
@@ -564,7 +554,7 @@ public class DirectedAcyclicGraph<V, E>
          *
          * @return vertex
          */
-        public V getVertex(Integer index);
+        V getVertex(Integer index);
 
         /**
          * get the topological index of the given vertex.
@@ -574,7 +564,7 @@ public class DirectedAcyclicGraph<V, E>
          * @return the index that the vertex is at, or null if the vertex isn't
          * in the topological ordering
          */
-        public Integer getTopologicalIndex(V vertex);
+        Integer getTopologicalIndex(V vertex);
 
         /**
          * remove the given vertex from the topological ordering
@@ -584,17 +574,17 @@ public class DirectedAcyclicGraph<V, E>
          * @return the index that the vertex was at, or null if the vertex
          * wasn't in the topological ordering
          */
-        public Integer removeVertex(V vertex);
+        Integer removeVertex(V vertex);
 
         /**
          * remove all vertices from the topological ordering
          */
-        public void removeAllVertices();
+        void removeAllVertices();
     }
 
     public interface TopoOrderMappingFactory<V>
     {
-        public TopoOrderMapping<V> getTopoOrderMapping();
+        TopoOrderMapping<V> getTopoOrderMapping();
     }
 
     /**
@@ -609,14 +599,14 @@ public class DirectedAcyclicGraph<V, E>
          *
          * @param index the topological index
          */
-        public void setVisited(int index);
+        void setVisited(int index);
 
         /**
          * has the given topological index been visited?
          *
          * @param index the topological index
          */
-        public boolean getVisited(int index);
+        boolean getVisited(int index);
 
         /**
          * Clear the visited state of the given topological index
@@ -629,7 +619,7 @@ public class DirectedAcyclicGraph<V, E>
          * state after the search of the Affected Region is done, so an
          * UnsupportedOperationException *should* be thrown.
          */
-        public void clearVisited(int index)
+        void clearVisited(int index)
             throws UnsupportedOperationException;
     }
 
@@ -641,10 +631,8 @@ public class DirectedAcyclicGraph<V, E>
     public interface VisitedFactory
         extends Serializable
     {
-        public Visited getInstance(Region affectedRegion);
+        Visited getInstance(Region affectedRegion);
     }
-
-
 
     /**
      * Note, this is a lazy and incomplete implementation, with assumptions that
@@ -689,8 +677,8 @@ public class DirectedAcyclicGraph<V, E>
          */
         private static final long serialVersionUID = 1L;
 
-        private final Map<Integer, V> topoToVertex = new HashMap<Integer, V>();
-        private final Map<V, Integer> vertexToTopo = new HashMap<V, Integer>();
+        private final Map<Integer, V> topoToVertex = new HashMap<>();
+        private final Map<V, Integer> vertexToTopo = new HashMap<>();
 
         @Override public void putVertex(Integer index, V vertex)
         {
@@ -705,8 +693,7 @@ public class DirectedAcyclicGraph<V, E>
 
         @Override public Integer getTopologicalIndex(V vertex)
         {
-            Integer topoIndex = vertexToTopo.get(vertex);
-            return topoIndex;
+            return vertexToTopo.get(vertex);
         }
 
         @Override public Integer removeVertex(V vertex)
@@ -744,8 +731,8 @@ public class DirectedAcyclicGraph<V, E>
          */
         private static final long serialVersionUID = 1L;
 
-        private final List<V> topoToVertex = new ArrayList<V>();
-        private final Map<V, Integer> vertexToTopo = new HashMap<V, Integer>();
+        private final List<V> topoToVertex = new ArrayList<>();
+        private final Map<V, Integer> vertexToTopo = new HashMap<>();
 
         @Override public void putVertex(Integer index, V vertex)
         {
@@ -800,7 +787,7 @@ public class DirectedAcyclicGraph<V, E>
          *
          * @return the ArrayList index
          */
-        private final int translateIndex(int index)
+        private int translateIndex(int index)
         {
             if (index >= 0) {
                 return 2 * index;
@@ -920,7 +907,7 @@ public class DirectedAcyclicGraph<V, E>
          */
         private static final long serialVersionUID = 1L;
 
-        private final List<Boolean> visited = new ArrayList<Boolean>();
+        private final List<Boolean> visited = new ArrayList<>();
 
         private Region affectedRegion;
 
@@ -946,11 +933,7 @@ public class DirectedAcyclicGraph<V, E>
 
         @Override public boolean getVisited(int index)
         {
-            Boolean result = null;
-
-            result = visited.get(translateIndex(index));
-
-            return result;
+            return visited.get(translateIndex(index));
         }
 
         @Override public void clearVisited(int index)
@@ -991,7 +974,7 @@ public class DirectedAcyclicGraph<V, E>
          */
         private static final long serialVersionUID = 1L;
 
-        private final Set<Integer> visited = new HashSet<Integer>();
+        private final Set<Integer> visited = new HashSet<>();
 
         @Override public Visited getInstance(Region affectedRegion)
         {
@@ -1063,26 +1046,12 @@ public class DirectedAcyclicGraph<V, E>
 
         @Override public void setVisited(int index)
         {
-            try {
-                visited[index - region.start] = true;
-            } catch (ArrayIndexOutOfBoundsException e) {
-                /*
-                log.error("Visited set operation out of region boundaries", e);
-                */
-                throw e;
-            }
+            visited[index - region.start] = true;
         }
 
         @Override public boolean getVisited(int index)
         {
-            try {
-                return visited[index - region.start];
-            } catch (ArrayIndexOutOfBoundsException e) {
-                /*
-                log.error("Visited set operation out of region boundaries", e);
-                */
-                throw e;
-            }
+            return visited[index - region.start];
         }
 
         @Override public void clearVisited(int index)
@@ -1155,7 +1124,7 @@ public class DirectedAcyclicGraph<V, E>
                 throw new ConcurrentModificationException();
             }
 
-            V vertexToRemove = null;
+            V vertexToRemove;
             if (null
                 != (vertexToRemove =
                         topoOrderMap.getVertex(

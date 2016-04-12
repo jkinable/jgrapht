@@ -63,14 +63,14 @@ public class HamiltonianCycleTest
     public void testHamiltonianCycle()
     {
         SimpleWeightedGraph<Object, DefaultWeightedEdge> completeGraph =
-            new SimpleWeightedGraph<Object, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+                new SimpleWeightedGraph<>(
+                        DefaultWeightedEdge.class);
         CompleteGraphGenerator<Object, DefaultWeightedEdge> completeGraphGenerator =
-            new CompleteGraphGenerator<Object, DefaultWeightedEdge>(
-                6);
+                new CompleteGraphGenerator<>(
+                        6);
         completeGraphGenerator.generateGraph(
             completeGraph,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
 
         assertTrue(
@@ -78,7 +78,7 @@ public class HamiltonianCycleTest
                 completeGraph).size() == 6);
 
         List<Object> vertices =
-            new LinkedList<Object>(completeGraph.vertexSet());
+                new LinkedList<>(completeGraph.vertexSet());
         completeGraph.removeEdge(
             completeGraph.getEdge(vertices.get(0),
                 vertices.get(1)));

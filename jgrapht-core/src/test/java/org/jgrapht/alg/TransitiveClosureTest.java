@@ -51,11 +51,11 @@ public class TransitiveClosureTest
     public void testLinearGraph()
     {
         SimpleDirectedGraph<Integer, DefaultEdge> graph =
-            new SimpleDirectedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
 
         int N = 10;
         LinearGraphGenerator<Integer, DefaultEdge> gen =
-            new LinearGraphGenerator<Integer, DefaultEdge>(N);
+                new LinearGraphGenerator<>(N);
 
         VertexFactory<Integer> vf =
             new VertexFactory<Integer>() {
@@ -64,7 +64,7 @@ public class TransitiveClosureTest
                 @Override
                 public Integer createVertex()
                 {
-                    return Integer.valueOf(m_index++);
+                    return m_index++;
                 }
             };
         gen.generateGraph(graph, vf, null);
@@ -75,7 +75,7 @@ public class TransitiveClosureTest
             for (int j = i + 1; j < N; ++j) {
                 assertEquals(
                     true,
-                    graph.getEdge(Integer.valueOf(i), Integer.valueOf(j))
+                    graph.getEdge(i, j)
                     != null);
             }
         }
@@ -84,11 +84,11 @@ public class TransitiveClosureTest
     public void testRingGraph()
     {
         SimpleDirectedGraph<Integer, DefaultEdge> graph =
-            new SimpleDirectedGraph<Integer, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
 
         int N = 10;
         RingGraphGenerator<Integer, DefaultEdge> gen =
-            new RingGraphGenerator<Integer, DefaultEdge>(N);
+                new RingGraphGenerator<>(N);
 
         VertexFactory<Integer> vf =
             new VertexFactory<Integer>() {
@@ -97,7 +97,7 @@ public class TransitiveClosureTest
                 @Override
                 public Integer createVertex()
                 {
-                    return Integer.valueOf(m_index++);
+                    return m_index++;
                 }
             };
         gen.generateGraph(graph, vf, null);
@@ -109,7 +109,7 @@ public class TransitiveClosureTest
                 assertEquals(
                     true,
                     (i == j)
-                    || (graph.getEdge(Integer.valueOf(i), Integer.valueOf(j))
+                    || (graph.getEdge(i, j)
                         != null));
             }
         }

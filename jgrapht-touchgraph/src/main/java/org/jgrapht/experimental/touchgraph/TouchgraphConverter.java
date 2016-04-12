@@ -84,7 +84,7 @@ public class TouchgraphConverter<V, E>
         boolean selfReferencesAllowed)
         throws TGException
     {
-        List<V> jgtNodes = new ArrayList<V>(graph.vertexSet());
+        List<V> jgtNodes = new ArrayList<>(graph.vertexSet());
         Node [] tgNodes = new Node[jgtNodes.size()];
 
         // add all the nodes...

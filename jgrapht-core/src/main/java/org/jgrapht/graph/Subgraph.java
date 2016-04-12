@@ -106,19 +106,15 @@ public class Subgraph<V, E, G extends Graph<V, E>>
     extends AbstractGraph<V, E>
     implements Serializable
 {
-
-
     private static final long serialVersionUID = 3208313055169665387L;
     private static final String NO_SUCH_EDGE_IN_BASE =
         "no such edge in base graph";
     private static final String NO_SUCH_VERTEX_IN_BASE =
         "no such vertex in base graph";
 
-
-
     //
-    Set<E> edgeSet = new LinkedHashSet<E>(); // friendly to improve performance
-    Set<V> vertexSet = new LinkedHashSet<V>(); // friendly to improve
+    Set<E> edgeSet = new LinkedHashSet<>(); // friendly to improve performance
+    Set<V> vertexSet = new LinkedHashSet<>(); // friendly to improve
 
     // performance
 
@@ -128,8 +124,6 @@ public class Subgraph<V, E, G extends Graph<V, E>>
     private G base;
     private boolean isInduced = false;
 
-
-
     /**
      * Creates a new Subgraph.
      *
@@ -137,8 +131,8 @@ public class Subgraph<V, E, G extends Graph<V, E>>
      * @param vertexSubset vertices to include in the subgraph. If <code>
      * null</code> then all vertices are included.
      * @param edgeSubset edges to in include in the subgraph. If <code>
-     * null</code> then all the edges whose vertices found in the graph
-     * are included.
+     * null</code> then all the edges whose vertices found in the graph are
+     * included.
      */
     public Subgraph(G base, Set<V> vertexSubset, Set<E> edgeSubset)
     {
@@ -174,8 +168,6 @@ public class Subgraph<V, E, G extends Graph<V, E>>
         this(base, vertexSubset, null);
     }
 
-
-
     /**
      * @see Graph#getAllEdges(Object, Object)
      */
@@ -184,15 +176,13 @@ public class Subgraph<V, E, G extends Graph<V, E>>
         Set<E> edges = null;
 
         if (containsVertex(sourceVertex) && containsVertex(targetVertex)) {
-            edges = new ArrayUnenforcedSet<E>();
+            edges = new ArrayUnenforcedSet<>();
 
             Set<E> baseEdges = base.getAllEdges(sourceVertex, targetVertex);
 
-            for (Iterator<E> iter = baseEdges.iterator(); iter.hasNext();) {
-                E e = iter.next();
-
+            for (E e : baseEdges) {
                 if (edgeSet.contains(e)) { // add if subgraph also contains
-                                           // it
+                    // it
                     edges.add(e);
                 }
             }
@@ -237,9 +227,7 @@ public class Subgraph<V, E, G extends Graph<V, E>>
 
         Set<E> edges = base.getAllEdges(sourceVertex, targetVertex);
 
-        for (Iterator<E> iter = edges.iterator(); iter.hasNext();) {
-            E e = iter.next();
-
+        for (E e : edges) {
             if (!containsEdge(e)) {
                 edgeSet.add(e);
 
@@ -346,7 +334,7 @@ public class Subgraph<V, E, G extends Graph<V, E>>
     {
         assertVertexExist(vertex);
 
-        Set<E> edges = new ArrayUnenforcedSet<E>();
+        Set<E> edges = new ArrayUnenforcedSet<>();
         Set<E> baseEdges = base.edgesOf(vertex);
 
         for (E e : baseEdges) {
@@ -425,14 +413,14 @@ public class Subgraph<V, E, G extends Graph<V, E>>
         boolean containsVertices;
         boolean edgeIncluded;
 
-        for (Iterator<E> iter = edgeSet.iterator(); iter.hasNext();) {
-            e = iter.next();
+        for (E anEdgeSet : edgeSet) {
+            e = anEdgeSet;
 
             V sourceVertex = base.getEdgeSource(e);
             V targetVertex = base.getEdgeTarget(e);
             containsVertices =
-                containsVertex(sourceVertex)
-                && containsVertex(targetVertex);
+                    containsVertex(sourceVertex)
+                            && containsVertex(targetVertex);
 
             // note the use of short circuit evaluation
             edgeIncluded = (filter == null) || filter.contains(e);
@@ -445,11 +433,7 @@ public class Subgraph<V, E, G extends Graph<V, E>>
 
     private void addVerticesUsingFilter(Set<V> vertexSet, Set<V> filter)
     {
-        V v;
-
-        for (Iterator<V> iter = vertexSet.iterator(); iter.hasNext();) {
-            v = iter.next();
-
+        for (V v : vertexSet) {
             // note the use of short circuit evaluation
             if ((filter == null) || filter.contains(v)) {
                 addVertex(v);
@@ -477,8 +461,6 @@ public class Subgraph<V, E, G extends Graph<V, E>>
     {
         ((WeightedGraph<V, E>) base).setEdgeWeight(e, weight);
     }
-
-
 
     /**
      * An internal listener on the base graph.

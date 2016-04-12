@@ -39,8 +39,6 @@ import java.util.*;
  */
 public interface VertexProvider<V>
 {
-
-
     /**
      * Create a vertex
      *

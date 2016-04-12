@@ -56,8 +56,6 @@ import org.jgrapht.graph.*;
 public class JohnsonSimpleCycles<V, E>
     implements DirectedSimpleCycles<V, E>
 {
-
-
     // The graph.
     private DirectedGraph<V, E> graph;
 
@@ -76,8 +74,6 @@ public class JohnsonSimpleCycles<V, E>
     private Map<V, Integer> vLowlink = null;
     private ArrayDeque<V> path = null;
     private Set<V> pathSet = null;
-
-
 
     /**
      * Create a simple cycle finder with an unspecified graph.
@@ -101,8 +97,6 @@ public class JohnsonSimpleCycles<V, E>
         }
         this.graph = graph;
     }
-
-
 
     /**
      * {@inheritDoc}
@@ -194,9 +188,9 @@ public class JohnsonSimpleCycles<V, E>
         // build a graph for the SCC found
         @SuppressWarnings("unchecked")
         DirectedGraph<V, E> resultGraph =
-            new DefaultDirectedGraph<V, E>(
-                new ClassBasedEdgeFactory<V, E>(
-                    (Class<? extends E>) DefaultEdge.class));
+                new DefaultDirectedGraph<>(
+                        new ClassBasedEdgeFactory<>(
+                                (Class<? extends E>) DefaultEdge.class));
         for (V v : minSCC) {
             resultGraph.addVertex(v);
         }
@@ -274,8 +268,8 @@ public class JohnsonSimpleCycles<V, E>
             }
         }
         if (vLowlink.get(vertex).equals(vIndex.get(vertex))) {
-            Set<V> result = new HashSet<V>();
-            V temp = null;
+            Set<V> result = new HashSet<>();
+            V temp;
             do {
                 temp = path.pop();
                 pathSet.remove(temp);
@@ -308,7 +302,7 @@ public class JohnsonSimpleCycles<V, E>
             V successor = scg.getEdgeTarget(e);
             int successorIndex = toI(successor);
             if (successorIndex == startIndex) {
-                List<V> cycle = new ArrayList<V>();
+                List<V> cycle = new ArrayList<>();
                 cycle.addAll(stack);
                 cycles.add(cycle);
                 foundCycle = true;
@@ -347,12 +341,12 @@ public class JohnsonSimpleCycles<V, E>
     @SuppressWarnings("unchecked")
     private void initState()
     {
-        cycles = new LinkedList<List<V>>();
+        cycles = new LinkedList<>();
         iToV = (V []) graph.vertexSet().toArray();
-        vToI = new HashMap<V, Integer>();
-        blocked = new HashSet<V>();
-        bSets = new HashMap<V, Set<V>>();
-        stack = new ArrayDeque<V>();
+        vToI = new HashMap<>();
+        blocked = new HashSet<>();
+        bSets = new HashMap<>();
+        stack = new ArrayDeque<>();
 
         for (int i = 0; i < iToV.length; i++) {
             vToI.put(iToV[i], i);
@@ -372,11 +366,11 @@ public class JohnsonSimpleCycles<V, E>
     private void initMinSCGState()
     {
         index = 0;
-        SCCs = new ArrayList<Set<V>>();
-        vIndex = new HashMap<V, Integer>();
-        vLowlink = new HashMap<V, Integer>();
-        path = new ArrayDeque<V>();
-        pathSet = new HashSet<V>();
+        SCCs = new ArrayList<>();
+        vIndex = new HashMap<>();
+        vLowlink = new HashMap<>();
+        path = new ArrayDeque<>();
+        pathSet = new HashSet<>();
     }
 
     private void clearMinSCCState()
@@ -405,7 +399,7 @@ public class JohnsonSimpleCycles<V, E>
         // so instantiate lazily.
         Set<V> result = bSets.get(v);
         if (result == null) {
-            result = new HashSet<V>();
+            result = new HashSet<>();
             bSets.put(v, result);
         }
         return result;

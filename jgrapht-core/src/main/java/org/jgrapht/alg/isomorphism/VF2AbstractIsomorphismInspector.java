@@ -45,16 +45,12 @@ import org.jgrapht.graph.*;
 public abstract class VF2AbstractIsomorphismInspector<V, E>
     implements IsomorphismInspector<V, E>
 {
-
-
     protected Graph<V, E> graph1, graph2;
 
     protected Comparator<V> vertexComparator;
     protected Comparator<E> edgeComparator;
 
     protected GraphOrdering<V, E> ordering1, ordering2;
-
-
 
     /**
      * This implementation of the VF2 algorithm does not support graphs with
@@ -101,10 +97,10 @@ public abstract class VF2AbstractIsomorphismInspector<V, E>
         this.graph2 = graph2;
         this.vertexComparator = vertexComparator;
         this.edgeComparator = edgeComparator;
-        this.ordering1 = new GraphOrdering<V, E>(graph1, true,
-            cacheEdges);
-        this.ordering2 = new GraphOrdering<V, E>(graph2, true,
-            cacheEdges);
+        this.ordering1 = new GraphOrdering<>(graph1, true,
+                cacheEdges);
+        this.ordering2 = new GraphOrdering<>(graph2, true,
+                cacheEdges);
     }
 
     public VF2AbstractIsomorphismInspector(
@@ -140,8 +136,6 @@ public abstract class VF2AbstractIsomorphismInspector<V, E>
             graph2,
             true);
     }
-
-
 
     @Override public abstract Iterator<GraphMapping<V, E>> getMappings();
 

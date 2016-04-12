@@ -64,7 +64,7 @@ public class ClosestFirstIteratorTest
         // NOTE:  pick 301 as the radius because it discriminates
         // the boundary case edge between v7 and v9
         AbstractGraphIterator<String, ?> iterator =
-            new ClosestFirstIterator<String, DefaultEdge>(graph, "1", 301);
+                new ClosestFirstIterator<>(graph, "1", 301);
 
         while (iterator.hasNext()) {
             result.append(iterator.next());
@@ -87,7 +87,7 @@ public class ClosestFirstIteratorTest
         DirectedGraph<String, DefaultEdge> graph = createDirectedGraph();
 
         AbstractGraphIterator<String, ?> iterator =
-            new ClosestFirstIterator<String, DefaultEdge>(graph);
+                new ClosestFirstIterator<>(graph);
 
         while (iterator.hasNext()) {
             result.append(iterator.next());
@@ -119,7 +119,7 @@ public class ClosestFirstIteratorTest
         String vertex)
     {
         AbstractGraphIterator<String, DefaultEdge> i =
-            new ClosestFirstIterator<String, DefaultEdge>(g, vertex);
+                new ClosestFirstIterator<>(g, vertex);
         i.setCrossComponentTraversal(true);
 
         return i;

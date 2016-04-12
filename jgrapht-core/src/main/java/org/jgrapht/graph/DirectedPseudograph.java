@@ -52,18 +52,14 @@ public class DirectedPseudograph<V, E>
     extends AbstractBaseGraph<V, E>
     implements DirectedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = -8300409752893486415L;
-
-
 
     /**
      * @see AbstractBaseGraph
      */
     public DirectedPseudograph(Class<? extends E> edgeClass)
     {
-        this(new ClassBasedEdgeFactory<V, E>(edgeClass));
+        this(new ClassBasedEdgeFactory<>(edgeClass));
     }
 
     /**
@@ -74,21 +70,19 @@ public class DirectedPseudograph<V, E>
         super(ef, true, true);
     }
 
-
-
     public static <V, E> DirectedGraphBuilderBase<V,
         E, ? extends DirectedPseudograph<V, E>, ?> builder(
         Class<? extends E> edgeClass)
     {
-        return new DirectedGraphBuilder<V, E, DirectedPseudograph<V, E>>(
-            new DirectedPseudograph<V, E>(edgeClass));
+        return new DirectedGraphBuilder<>(
+                new DirectedPseudograph<>(edgeClass));
     }
 
     public static <V, E> DirectedGraphBuilderBase<V,
         E, ? extends DirectedPseudograph<V, E>, ?> builder(EdgeFactory<V, E> ef)
     {
-        return new DirectedGraphBuilder<V, E, DirectedPseudograph<V, E>>(
-            new DirectedPseudograph<V, E>(ef));
+        return new DirectedGraphBuilder<>(
+                new DirectedPseudograph<>(ef));
     }
 }
 

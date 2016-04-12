@@ -53,11 +53,7 @@ public class WeightedPseudograph<V, E>
     extends Pseudograph<V, E>
     implements WeightedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 3257290244524356152L;
-
-
 
     /**
      * Creates a new weighted pseudograph with the specified edge factory.
@@ -76,26 +72,22 @@ public class WeightedPseudograph<V, E>
      */
     public WeightedPseudograph(Class<? extends E> edgeClass)
     {
-        this(new ClassBasedEdgeFactory<V, E>(edgeClass));
+        this(new ClassBasedEdgeFactory<>(edgeClass));
     }
-
-
 
     public static <V, E> UndirectedWeightedGraphBuilderBase<V,
         E, ? extends WeightedPseudograph<V, E>, ?> builder(
         Class<? extends E> edgeClass)
     {
-        return new UndirectedWeightedGraphBuilder<V,
-            E, WeightedPseudograph<V, E>>(
-                new WeightedPseudograph<V, E>(edgeClass));
+        return new UndirectedWeightedGraphBuilder<>(
+                new WeightedPseudograph<>(edgeClass));
     }
 
     public static <V, E> UndirectedWeightedGraphBuilderBase<V,
         E, ? extends WeightedPseudograph<V, E>, ?> builder(EdgeFactory<V, E> ef)
     {
-        return new UndirectedWeightedGraphBuilder<V,
-            E, WeightedPseudograph<V, E>>(
-                new WeightedPseudograph<V, E>(ef));
+        return new UndirectedWeightedGraphBuilder<>(
+                new WeightedPseudograph<>(ef));
     }
 }
 

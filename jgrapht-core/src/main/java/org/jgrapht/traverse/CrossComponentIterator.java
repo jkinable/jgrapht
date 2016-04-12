@@ -61,13 +61,9 @@ import org.jgrapht.event.*;
 public abstract class CrossComponentIterator<V, E, D>
     extends AbstractGraphIterator<V, E>
 {
-
-
     private static final int CCS_BEFORE_COMPONENT = 1;
     private static final int CCS_WITHIN_COMPONENT = 2;
     private static final int CCS_AFTER_COMPONENT = 3;
-
-
 
     /**
      * Standard vertex visit state enumeration.
@@ -92,8 +88,6 @@ public abstract class CrossComponentIterator<V, E, D>
         BLACK
     }
 
-
-
     //
     private final ConnectedComponentTraversalEvent ccFinishedEvent =
         new ConnectedComponentTraversalEvent(
@@ -114,7 +108,7 @@ public abstract class CrossComponentIterator<V, E, D>
      * Stores the vertices that have been seen during iteration and (optionally)
      * some additional traversal info regarding each vertex.
      */
-    private Map<V, D> seen = new HashMap<V, D>();
+    private Map<V, D> seen = new HashMap<>();
     private V startVertex;
     private Specifics<V, E> specifics;
 
@@ -124,8 +118,6 @@ public abstract class CrossComponentIterator<V, E, D>
      * The connected component state
      */
     private int state = CCS_BEFORE_COMPONENT;
-
-
 
     /**
      * Creates a new iterator for the specified graph. Iteration will start at
@@ -151,8 +143,8 @@ public abstract class CrossComponentIterator<V, E, D>
         vertexIterator = g.vertexSet().iterator();
         setCrossComponentTraversal(startVertex == null);
 
-        reusableEdgeEvent = new FlyweightEdgeEvent<V, E>(this, null);
-        reusableVertexEvent = new FlyweightVertexEvent<V>(this, null);
+        reusableEdgeEvent = new FlyweightEdgeEvent<>(this, null);
+        reusableVertexEvent = new FlyweightVertexEvent<>(this, null);
 
         if (startVertex == null) {
             // pick a start vertex if graph not empty
@@ -168,8 +160,6 @@ public abstract class CrossComponentIterator<V, E, D>
                 "graph must contain the start vertex");
         }
     }
-
-
 
     /**
      * @return the graph being traversed
@@ -295,7 +285,7 @@ public abstract class CrossComponentIterator<V, E, D>
      *
      * @return <tt>true</tt> if vertex has already been seen
      */
-    protected boolean isSeenVertex(Object vertex)
+    protected boolean isSeenVertex(V vertex)
     {
         return seen.containsKey(vertex);
     }
@@ -349,9 +339,9 @@ public abstract class CrossComponentIterator<V, E, D>
     static <V, E> Specifics<V, E> createGraphSpecifics(Graph<V, E> g)
     {
         if (g instanceof DirectedGraph<?, ?>) {
-            return new DirectedSpecifics<V, E>((DirectedGraph<V, E>) g);
+            return new DirectedSpecifics<>((DirectedGraph<V, E>) g);
         } else {
-            return new UndirectedSpecifics<V, E>(g);
+            return new UndirectedSpecifics<>(g);
         }
     }
 
@@ -372,14 +362,14 @@ public abstract class CrossComponentIterator<V, E, D>
         }
     }
 
-    private EdgeTraversalEvent<V, E> createEdgeTraversalEvent(E edge)
+    private EdgeTraversalEvent<E> createEdgeTraversalEvent(E edge)
     {
         if (isReuseEvents()) {
             reusableEdgeEvent.setEdge(edge);
 
             return reusableEdgeEvent;
         } else {
-            return new EdgeTraversalEvent<V, E>(this, edge);
+            return new EdgeTraversalEvent<>(this, edge);
         }
     }
 
@@ -390,7 +380,7 @@ public abstract class CrossComponentIterator<V, E, D>
 
             return reusableVertexEvent;
         } else {
-            return new VertexTraversalEvent<V>(this, vertex);
+            return new VertexTraversalEvent<>(this, vertex);
         }
     }
 
@@ -399,8 +389,6 @@ public abstract class CrossComponentIterator<V, E, D>
         encounterVertex(startVertex, null);
         startVertex = null;
     }
-
-
 
     static interface SimpleContainer<T>
     {
@@ -425,8 +413,6 @@ public abstract class CrossComponentIterator<V, E, D>
          */
         public T remove();
     }
-
-
 
     /**
      * Provides unified interface for operations that are different in directed
@@ -455,12 +441,12 @@ public abstract class CrossComponentIterator<V, E, D>
      * @since Aug 11, 2003
      */
     static class FlyweightEdgeEvent<VV, localE>
-        extends EdgeTraversalEvent<VV, localE>
+        extends EdgeTraversalEvent<localE>
     {
         private static final long serialVersionUID = 4051327833765000755L;
 
         /**
-         * @see EdgeTraversalEvent#EdgeTraversalEvent(Object, Edge)
+         * @see EdgeTraversalEvent
          */
         public FlyweightEdgeEvent(Object eventSource, localE edge)
         {

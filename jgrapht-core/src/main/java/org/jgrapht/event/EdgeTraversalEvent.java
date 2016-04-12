@@ -46,21 +46,15 @@ import java.util.*;
  * @author Barak Naveh
  * @since Aug 11, 2003
  */
-public class EdgeTraversalEvent<V, E>
+public class EdgeTraversalEvent<E>
     extends EventObject
 {
-
-
     private static final long serialVersionUID = 4050768173789820979L;
-
-
 
     /**
      * The traversed edge.
      */
     protected E edge;
-
-
 
     /**
      * Creates a new EdgeTraversalEvent.
@@ -73,8 +67,6 @@ public class EdgeTraversalEvent<V, E>
         super(eventSource);
         this.edge = edge;
     }
-
-
 
     /**
      * Returns the traversed edge.

@@ -48,8 +48,6 @@ public abstract class UndirectedWeightedGraphBuilderBase<V,
     B extends UndirectedWeightedGraphBuilderBase<V, E, G, B>>
     extends UndirectedGraphBuilderBase<V, E, G, B>
 {
-
-
     /**
      * Creates a builder based on {@code baseGraph}. {@code baseGraph} must be
      * mutable.
@@ -60,8 +58,6 @@ public abstract class UndirectedWeightedGraphBuilderBase<V,
     {
         super(baseGraph);
     }
-
-
 
     /**
      * Adds an weighted edge to the graph being built. The source and target

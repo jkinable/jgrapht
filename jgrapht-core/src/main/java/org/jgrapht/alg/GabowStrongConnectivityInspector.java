@@ -35,40 +35,31 @@
  */
 package org.jgrapht.alg;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
-import org.jgrapht.graph.DirectedSubgraph;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+
 
 /**
- * Allows obtaining the strongly connected components of a directed graph.
- *
- *The implemented algorithm follows Cheriyan-Mehlhorn/Gabow's algorithm
- *Presented in Path-based depth-first search for strong and biconnected components by Gabow (2000).
- *The running time is order of O(|V|+|E|)
+ * Allows obtaining the strongly connected components of a directed graph. The
+ * implemented algorithm follows Cheriyan-Mehlhorn/Gabow's algorithm Presented
+ * in Path-based depth-first search for strong and biconnected components by
+ * Gabow (2000). The running time is order of O(|V|+|E|)
  *
  * @author Sarah Komla-Ebri
  * @since September, 2013
  */
 
-public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivityAlgorithm<V,E>
+public class GabowStrongConnectivityInspector<V, E>
+    implements StrongConnectivityAlgorithm<V, E>
 {
-    //~ Instance fields --------------------------------------------------------
-
     // the graph to compute the strongly connected sets
     private final DirectedGraph<V, E> graph;
 
     // stores the vertices
-    private Deque<VertexNumber<V>> stack = new ArrayDeque<VertexNumber<V>>();
-
+    private Deque<VertexNumber<V>> stack = new ArrayDeque<>();
 
     // the result of the computation, cached for future calls
     private List<Set<V>> stronglyConnectedSets;
@@ -80,15 +71,13 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
     private Map<V, VertexNumber<V>> vertexToVertexNumber;
 
     //store the numbers
-    private Deque<Integer> B = new ArrayDeque<Integer>();
+    private Deque<Integer> B = new ArrayDeque<>();
 
     //number of vertices
     private int c;
 
-    //~ Constructors -----------------------------------------------------------
-
     /**
-     * The constructor of  GabowStrongConnectivityInspector class.
+     * The constructor of GabowStrongConnectivityInspector class.
      *
      * @param directedGraph the graph to inspect
      *
@@ -104,10 +93,7 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
         vertexToVertexNumber = null;
 
         stronglyConnectedSets = null;
-
     }
-
-    //~ Methods ----------------------------------------------------------------
 
     /**
      * Returns the graph inspected
@@ -140,25 +126,21 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
     public List<Set<V>> stronglyConnectedSets()
     {
         if (stronglyConnectedSets == null) {
-
-            stronglyConnectedSets = new Vector<Set<V>>();
-
+            stronglyConnectedSets = new Vector<>();
 
             // create VertexData objects for all vertices, store them
             createVertexNumber();
 
             // perform  DFS
             for (VertexNumber<V> data : vertexToVertexNumber.values()) {
-
-                if (data.getNumber()==0) {
+                if (data.getNumber() == 0) {
                     dfsVisit(graph, data);
                 }
             }
 
-
             vertexToVertexNumber = null;
-            stack =null;
-            B=null;
+            stack = null;
+            B = null;
         }
 
         return stronglyConnectedSets;
@@ -171,8 +153,8 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
      * u and v are contained in the strongly connected component.</p>
      *
      * <p>NOTE: Calling this method will first execute {@link
-     * GabowStrongConnectivityInspector#stronglyConnectedSets()}. If you don't need
-     * subgraphs, use that method.</p>
+     * GabowStrongConnectivityInspector#stronglyConnectedSets()}. If you don't
+     * need subgraphs, use that method.</p>
      *
      * @return a list of subgraphs representing the strongly connected
      * components
@@ -182,11 +164,11 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
         if (stronglyConnectedSubgraphs == null) {
             List<Set<V>> sets = stronglyConnectedSets();
             stronglyConnectedSubgraphs =
-                    new Vector<DirectedSubgraph<V, E>>(sets.size());
+                    new Vector<>(sets.size());
 
             for (Set<V> set : sets) {
                 stronglyConnectedSubgraphs.add(
-                        new DirectedSubgraph<V, E>(
+                        new DirectedSubgraph<>(
                                 graph,
                                 set,
                                 null));
@@ -204,57 +186,51 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
 
     private void createVertexNumber()
     {
-        c=graph.vertexSet().size();
-        vertexToVertexNumber =
-                new HashMap<V, VertexNumber<V>>(c);
+        c = graph.vertexSet().size();
+        vertexToVertexNumber = new HashMap<>(c);
 
         for (V vertex : graph.vertexSet()) {
             vertexToVertexNumber.put(
-                    vertex,
-                    new VertexNumber<V>(vertex, 0));
-
+                vertex,
+                    new VertexNumber<>(vertex, 0));
         }
 
-        stack = new ArrayDeque<VertexNumber<V>>(c);
-        B = new ArrayDeque<Integer>(c);
+        stack = new ArrayDeque<>(c);
+        B = new ArrayDeque<>(c);
     }
 
     /*
      * The subroutine of DFS.
      */
-    private void dfsVisit(
-            DirectedGraph<V, E> visitedGraph,
-            VertexNumber<V> v)
+    private void dfsVisit(DirectedGraph<V, E> visitedGraph, VertexNumber<V> v)
     {
         VertexNumber<V> w;
         stack.add(v);
-        B.add(v.setNumber(stack.size()-1));
-
+        B.add(v.setNumber(stack.size() - 1));
 
         // follow all edges
 
         for (E edge : visitedGraph.outgoingEdgesOf(v.getVertex())) {
-            w =  vertexToVertexNumber.get(
-                    visitedGraph.getEdgeTarget(edge));
+            w = vertexToVertexNumber.get(
+                visitedGraph.getEdgeTarget(edge));
 
-
-            if (w.getNumber()==0) {
+            if (w.getNumber() == 0) {
                 dfsVisit(graph, w);
-            }
-            else { /*contract if necessary*/
-                while (w.getNumber() < B.getLast())
+            } else { /*contract if necessary*/
+                while (w.getNumber() < B.getLast()) {
                     B.removeLast();
+                }
             }
         }
-        Set<V> L = new HashSet<V>();
+        Set<V> L = new HashSet<>();
         if (v.getNumber() == (B.getLast())) {
-                	/* number vertices of the next
-                		strong component */
+            /* number vertices of the next
+                strong component */
             B.removeLast();
 
             c++;
-            while (v.getNumber() <= (stack.size()-1)) {
-                VertexNumber<V> r= stack.removeLast();
+            while (v.getNumber() <= (stack.size() - 1)) {
+                VertexNumber<V> r = stack.removeLast();
                 L.add(r.getVertex());
                 r.setNumber(c);
             }
@@ -262,20 +238,17 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
         }
     }
 
-
-
-
     private static final class VertexNumber<V>
     {
         V vertex;
-        int number=0;
+        int number = 0;
 
         private VertexNumber(
-                V vertex,
-                int number)
+            V vertex,
+            int number)
         {
-            this.vertex=vertex;
-            this.number=number;
+            this.vertex = vertex;
+            this.number = number;
         }
 
         int getNumber()
@@ -285,11 +258,14 @@ public class GabowStrongConnectivityInspector<V, E> implements StrongConnectivit
 
         V getVertex()
         {
-            return vertex ;
+            return vertex;
         }
-        Integer setNumber( int n){
-            return number=n;
 
+        Integer setNumber(int n)
+        {
+            return number = n;
         }
     }
 }
+
+// End GabowStrongConnectivityInspector.java

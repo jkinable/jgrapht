@@ -54,21 +54,19 @@ import java.util.*;
 public interface VertexSetListener<V>
     extends EventListener
 {
-
-
     /**
      * Notifies that a vertex has been added to the graph.
      *
      * @param e the vertex event.
      */
-    public void vertexAdded(GraphVertexChangeEvent<V> e);
+    void vertexAdded(GraphVertexChangeEvent<V> e);
 
     /**
      * Notifies that a vertex has been removed from the graph.
      *
      * @param e the vertex event.
      */
-    public void vertexRemoved(GraphVertexChangeEvent<V> e);
+    void vertexRemoved(GraphVertexChangeEvent<V> e);
 }
 
 // End VertexSetListener.java

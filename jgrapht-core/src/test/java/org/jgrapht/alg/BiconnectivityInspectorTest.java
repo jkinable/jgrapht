@@ -76,8 +76,8 @@ public class BiconnectivityInspectorTest
         LinearGraphGenerator generator = new LinearGraphGenerator(nbVertices);
         generator.generateGraph(
             graph,
-            new ClassBasedVertexFactory<Object>(
-                Object.class),
+                new ClassBasedVertexFactory<>(
+                        Object.class),
             null);
 
         BiconnectivityInspector inspector = new BiconnectivityInspector(graph);

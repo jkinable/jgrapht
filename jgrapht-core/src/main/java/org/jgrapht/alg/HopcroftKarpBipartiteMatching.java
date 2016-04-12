@@ -58,8 +58,6 @@ import org.jgrapht.graph.*;
 public class HopcroftKarpBipartiteMatching<V, E>
     implements MatchingAlgorithm<V, E>
 {
-
-
     private final UndirectedGraph<V, E> graph;
     private final Set<V> partition1; //Partitions of bipartite graph
     private final Set<V> partition2;
@@ -69,8 +67,6 @@ public class HopcroftKarpBipartiteMatching<V, E>
                                              //vertices in partition 1
     private final Set<V> unmatchedVertices2;
 
-
-
     public HopcroftKarpBipartiteMatching(
         UndirectedGraph<V, E> graph,
         Set<V> partition1,
@@ -79,16 +75,14 @@ public class HopcroftKarpBipartiteMatching<V, E>
         this.graph = graph;
         this.partition1 = partition1;
         this.partition2 = partition2;
-        matching = new HashSet<E>();
+        matching = new HashSet<>();
 
-        unmatchedVertices1 = new HashSet<V>(partition1);
-        unmatchedVertices2 = new HashSet<V>(partition2);
+        unmatchedVertices1 = new HashSet<>(partition1);
+        unmatchedVertices2 = new HashSet<>(partition2);
 
         assert this.checkInputData();
         this.maxMatching();
     }
-
-
 
     /**
      * Checks whether the input data meets the requirements: simple undirected
@@ -102,7 +96,7 @@ public class HopcroftKarpBipartiteMatching<V, E>
         }
 
         //Test the bipartite-ness
-        Set<V> neighborsSet1 = new HashSet<V>();
+        Set<V> neighborsSet1 = new HashSet<>();
         for (V v : partition1) {
             neighborsSet1.addAll(Graphs.neighborListOf(graph, v));
         }
@@ -110,7 +104,7 @@ public class HopcroftKarpBipartiteMatching<V, E>
             throw new IllegalArgumentException(
                 "There are edges within partition 1, i.e. not a bipartite graph");
         }
-        Set<V> neighborsSet2 = new HashSet<V>();
+        Set<V> neighborsSet2 = new HashSet<>();
         for (V v : partition2) {
             neighborsSet2.addAll(Graphs.neighborListOf(graph, v));
         }
@@ -128,7 +122,7 @@ public class HopcroftKarpBipartiteMatching<V, E>
      */
     private void greedyMatch()
     {
-        HashSet<V> usedVertices = new HashSet<V>();
+        HashSet<V> usedVertices = new HashSet<>();
 
         for (V vertex1 : partition1) {
             for (V vertex2 : Graphs.neighborListOf(graph, vertex1)) {
@@ -197,38 +191,38 @@ public class HopcroftKarpBipartiteMatching<V, E>
 
     private List<LinkedList<V>> getAugmentingPaths()
     {
-        List<LinkedList<V>> augmentingPaths = new ArrayList<LinkedList<V>>();
+        List<LinkedList<V>> augmentingPaths = new ArrayList<>();
 
         //1. Build data structure
-        Map<V, Set<V>> layeredMap = new HashMap<V, Set<V>>();
+        Map<V, Set<V>> layeredMap = new HashMap<>();
         for (V vertex : unmatchedVertices1) {
-            layeredMap.put(vertex, new HashSet<V>());
+            layeredMap.put(vertex, new HashSet<>());
         }
 
-        Set<V> oddLayer = new HashSet<V>(unmatchedVertices1); //Layer L0 contains the unmatchedVertices1.
+        Set<V> oddLayer = new HashSet<>(unmatchedVertices1); //Layer L0 contains the unmatchedVertices1.
         Set<V> evenLayer;
-        Set<V> usedVertices = new HashSet<V>(unmatchedVertices1);
+        Set<V> usedVertices = new HashSet<>(unmatchedVertices1);
 
         while (true) {
             //Create a new even Layer A new layer can ONLY contain vertices
             //which are not used in the previous layers Edges between odd and
             //even layers can NOT be part of the matching
-            evenLayer = new HashSet<V>();
+            evenLayer = new HashSet<>();
             for (V vertex : oddLayer) {
                 //List<V> neighbors=this.getNeighbors(vertex);
                 List<V> neighbors = Graphs.neighborListOf(graph, vertex);
                 for (V neighbor : neighbors) {
-                    if (usedVertices.contains(neighbor)) {
-                        // Vertices placed into odd-layer may not be matched by
-                        // any other vertices except for the one we came from
-                        continue;
-                    } else {
+                    if (!usedVertices.contains(neighbor)) {
                         evenLayer.add(neighbor);
                         if (!layeredMap.containsKey(neighbor)) {
                             layeredMap.put(neighbor, new HashSet<V>());
                         }
                         layeredMap.get(neighbor).add(vertex);
-                    }
+                    }//else{
+                        // Vertices placed into odd-layer may not be matched by
+                        // any other vertices except for the one we came from
+                        //<emtpy body>
+                //  }
                 }
             }
             usedVertices.addAll(evenLayer);
@@ -245,7 +239,7 @@ public class HopcroftKarpBipartiteMatching<V, E>
             //Create a new odd Layer A new layer can ONLY contain vertices which
             //are not used in the previous layers Edges between EVEN and ODD
             //layers SHOULD be part of the matching
-            oddLayer = new HashSet<V>();
+            oddLayer = new HashSet<>();
             for (V vertex : evenLayer) {
                 List<V> neighbors = Graphs.neighborListOf(graph, vertex);
                 for (V neighbor : neighbors) {
@@ -257,7 +251,7 @@ public class HopcroftKarpBipartiteMatching<V, E>
                     } else {
                         oddLayer.add(neighbor);
                         if (!layeredMap.containsKey(neighbor)) {
-                            layeredMap.put(neighbor, new HashSet<V>());
+                            layeredMap.put(neighbor, new HashSet<>());
                         }
                         layeredMap.get(neighbor).add(vertex);
                     }
@@ -302,7 +296,7 @@ public class HopcroftKarpBipartiteMatching<V, E>
         if (!layeredMap.containsKey(startVertex)) {
             return null;
         } else if (unmatchedVertices1.contains(startVertex)) {
-            LinkedList<V> list = new LinkedList<V>();
+            LinkedList<V> list = new LinkedList<>();
             list.add(startVertex);
             return list;
         } else {

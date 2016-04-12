@@ -46,15 +46,13 @@ package org.jgrapht.event;
  */
 public interface TraversalListener<V, E>
 {
-
-
     /**
      * Called to inform listeners that the traversal of the current connected
      * component has finished.
      *
      * @param e the traversal event.
      */
-    public void connectedComponentFinished(
+    void connectedComponentFinished(
         ConnectedComponentTraversalEvent e);
 
     /**
@@ -63,7 +61,7 @@ public interface TraversalListener<V, E>
      *
      * @param e the traversal event.
      */
-    public void connectedComponentStarted(ConnectedComponentTraversalEvent e);
+    void connectedComponentStarted(ConnectedComponentTraversalEvent e);
 
     /**
      * Called to inform the listener that the specified edge have been visited
@@ -72,7 +70,7 @@ public interface TraversalListener<V, E>
      *
      * @param e the edge traversal event.
      */
-    public void edgeTraversed(EdgeTraversalEvent<V, E> e);
+    void edgeTraversed(EdgeTraversalEvent<E> e);
 
     /**
      * Called to inform the listener that the specified vertex have been visited
@@ -81,7 +79,7 @@ public interface TraversalListener<V, E>
      *
      * @param e the vertex traversal event.
      */
-    public void vertexTraversed(VertexTraversalEvent<V> e);
+    void vertexTraversed(VertexTraversalEvent<V> e);
 
     /**
      * Called to inform the listener that the specified vertex have been
@@ -91,7 +89,7 @@ public interface TraversalListener<V, E>
      *
      * @param e the vertex traversal event.
      */
-    public void vertexFinished(VertexTraversalEvent<V> e);
+    void vertexFinished(VertexTraversalEvent<V> e);
 }
 
 // End TraversalListener.java

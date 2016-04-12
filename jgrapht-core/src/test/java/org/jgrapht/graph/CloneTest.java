@@ -67,7 +67,7 @@ public class CloneTest
     public void testCloneSpecificsBug()
     {
         SimpleGraph<String, DefaultEdge> g1 =
-            new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
         String one = "1";
         String two = "2";
         String three = "3";
@@ -99,9 +99,9 @@ public class CloneTest
         BrokenVertex v3 = new BrokenVertex(1);
 
         SimpleGraph<BrokenVertex, DefaultEdge> g =
-            new SimpleGraph<BrokenVertex, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
         ParanoidGraph<BrokenVertex, DefaultEdge> pg =
-            new ParanoidGraph<BrokenVertex, DefaultEdge>(g);
+                new ParanoidGraph<>(g);
         pg.addVertex(v1);
         pg.addVertex(v2);
         try {
@@ -126,12 +126,8 @@ public class CloneTest
         }
 
         @Override
-        public boolean equals(Object other)
-        {
-            if (!(other instanceof BrokenVertex)) {
-                return false;
-            }
-            return x == ((BrokenVertex) other).x;
+        public boolean equals(Object other) {
+            return other instanceof BrokenVertex && x == ((BrokenVertex) other).x;
         }
     }
 }

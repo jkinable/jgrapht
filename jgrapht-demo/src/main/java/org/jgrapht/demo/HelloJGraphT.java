@@ -50,13 +50,9 @@ import org.jgrapht.graph.*;
  */
 public final class HelloJGraphT
 {
-
-
     private HelloJGraphT()
     {
     } // ensure non-instantiability.
-
-
 
     /**
      * The starting point for the demo.
@@ -86,7 +82,7 @@ public final class HelloJGraphT
     private static DirectedGraph<URL, DefaultEdge> createHrefGraph()
     {
         DirectedGraph<URL, DefaultEdge> g =
-            new DefaultDirectedGraph<URL, DefaultEdge>(DefaultEdge.class);
+                new DefaultDirectedGraph<>(DefaultEdge.class);
 
         try {
             URL amazon = new URL("http://www.amazon.com");
@@ -116,7 +112,7 @@ public final class HelloJGraphT
     private static UndirectedGraph<String, DefaultEdge> createStringGraph()
     {
         UndirectedGraph<String, DefaultEdge> g =
-            new SimpleGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleGraph<>(DefaultEdge.class);
 
         String v1 = "v1";
         String v2 = "v2";

@@ -26,11 +26,7 @@ import org.jgrapht.alg.util.*;
 
 public class TarjanLowestCommonAncestor<V, E>
 {
-
-
     private Graph<V, E> g;
-
-
 
     /**
      * Create an instance with a reference to the graph that we will find LCAs
@@ -41,8 +37,6 @@ public class TarjanLowestCommonAncestor<V, E>
         this.g = g;
     }
 
-
-
     /**
      * Calculate the LCM between <code>a</code> and <code>b</code> treating
      * <code>start</code> as the root we want to search from.
@@ -50,8 +44,8 @@ public class TarjanLowestCommonAncestor<V, E>
     public V calculate(V start, V a, V b)
     {
         List<LcaRequestResponse<V>> list =
-            new LinkedList<LcaRequestResponse<V>>();
-        list.add(new LcaRequestResponse<V>(a, b));
+                new LinkedList<>();
+        list.add(new LcaRequestResponse<>(a, b));
         return calculate(start, list).get(0);
     }
 
@@ -65,8 +59,6 @@ public class TarjanLowestCommonAncestor<V, E>
         return new Worker(lrr).calculate(start);
     }
 
-
-
     /* The worker class keeps the state whilst doing calculations. */
     private class Worker
     {
@@ -76,14 +68,14 @@ public class TarjanLowestCommonAncestor<V, E>
         // representative of the set containing u, and Union(u,v) merges the set
         // containing u with the set containing v. </block>
         // (http://en.wikipedia.org/wiki/Tarjan's_off-line_lowest_common_ancestors_algorithm)
-        private UnionFind<V> uf = new UnionFind<V>(Collections.<V>emptySet());
+        private UnionFind<V> uf = new UnionFind<>(Collections.<V>emptySet());
 
         // the ancestors. instead of <code>u.ancestor = x</code> we do
         // <code>ancestors.put(u,x)</code>
-        private Map<V, V> ancestors = new HashMap<V, V>();
+        private Map<V, V> ancestors = new HashMap<>();
 
         // instead of u.colour = black we do black.add(u)
-        private Set<V> black = new HashSet<V>();
+        private Set<V> black = new HashSet<>();
 
         // the two vertex that we want to find the LCA for
         private List<LcaRequestResponse<V>> lrr;
@@ -92,7 +84,7 @@ public class TarjanLowestCommonAncestor<V, E>
         private Worker(List<LcaRequestResponse<V>> lrr)
         {
             this.lrr = lrr;
-            this.lrrMap = new MultiMap<V>();
+            this.lrrMap = new MultiMap<>();
 
             // put in the reverse links from a and b entries back to the
             // LcaRequestReponse they're contained in
@@ -144,7 +136,7 @@ public class TarjanLowestCommonAncestor<V, E>
                 lrrMap.remove(u);
             }
 
-            List<V> result = new LinkedList<V>();
+            List<V> result = new LinkedList<>();
             for (LcaRequestResponse<V> current : lrr) {
                 result.add(current.getLca());
             }
@@ -190,7 +182,7 @@ public class TarjanLowestCommonAncestor<V, E>
         public Set<LcaRequestResponse<V>> getOrCreate(V key)
         {
             if (!containsKey(key)) {
-                put(key, new HashSet<LcaRequestResponse<V>>());
+                put(key, new HashSet<>());
             }
             return get(key);
         }

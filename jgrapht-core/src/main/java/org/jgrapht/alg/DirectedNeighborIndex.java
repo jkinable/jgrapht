@@ -59,13 +59,9 @@ import org.jgrapht.event.*;
 public class DirectedNeighborIndex<V, E>
     implements GraphListener<V, E>
 {
-
-
-    Map<V, Neighbors<V, E>> predecessorMap = new HashMap<V, Neighbors<V, E>>();
-    Map<V, Neighbors<V, E>> successorMap = new HashMap<V, Neighbors<V, E>>();
+    Map<V, Neighbors<V>> predecessorMap = new HashMap<>();
+    Map<V, Neighbors<V>> successorMap = new HashMap<>();
     private DirectedGraph<V, E> graph;
-
-
 
     /**
      * Creates a neighbor index for the specified directed graph.
@@ -76,8 +72,6 @@ public class DirectedNeighborIndex<V, E>
     {
         graph = g;
     }
-
-
 
     /**
      * Returns the set of vertices which are the predecessors of a specified
@@ -174,7 +168,6 @@ public class DirectedNeighborIndex<V, E>
      */
     @Override public void edgeRemoved(GraphEdgeChangeEvent<V, E> e)
     {
-        E edge = e.getEdge();
         V source = e.getEdgeSource();
         V target = e.getEdgeTarget();
         if (successorMap.containsKey(source)) {
@@ -202,25 +195,23 @@ public class DirectedNeighborIndex<V, E>
         successorMap.remove(e.getVertex());
     }
 
-    private Neighbors<V, E> getPredecessors(V v)
+    private Neighbors<V> getPredecessors(V v)
     {
-        Neighbors<V, E> neighbors = predecessorMap.get(v);
+        Neighbors<V> neighbors = predecessorMap.get(v);
         if (neighbors == null) {
             neighbors =
-                new Neighbors<V, E>(v,
-                    Graphs.predecessorListOf(graph, v));
+                    new Neighbors<>(Graphs.predecessorListOf(graph, v));
             predecessorMap.put(v, neighbors);
         }
         return neighbors;
     }
 
-    private Neighbors<V, E> getSuccessors(V v)
+    private Neighbors<V> getSuccessors(V v)
     {
-        Neighbors<V, E> neighbors = successorMap.get(v);
+        Neighbors<V> neighbors = successorMap.get(v);
         if (neighbors == null) {
             neighbors =
-                new Neighbors<V, E>(v,
-                    Graphs.successorListOf(graph, v));
+                    new Neighbors<>(Graphs.successorListOf(graph, v));
             successorMap.put(v, neighbors);
         }
         return neighbors;

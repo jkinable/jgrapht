@@ -58,8 +58,6 @@ import org.jgrapht.*;
  */
 public class KShortestPaths<V, E>
 {
-
-
     /**
      * Graph on which shortest paths are searched.
      */
@@ -70,8 +68,6 @@ public class KShortestPaths<V, E>
     private int nPaths;
 
     private V startVertex;
-
-
 
     /**
      * Creates an object to compute ranking shortest paths between the start
@@ -115,8 +111,6 @@ public class KShortestPaths<V, E>
         this.nMaxHops = nMaxHops;
     }
 
-
-
     /**
      * Returns the k shortest simple paths in increasing order of weight.
      *
@@ -130,11 +124,11 @@ public class KShortestPaths<V, E>
         assertGetPaths(endVertex);
 
         KShortestPathsIterator<V, E> iter =
-            new KShortestPathsIterator<V, E>(
-                this.graph,
-                this.startVertex,
-                endVertex,
-                this.nPaths);
+                new KShortestPathsIterator<>(
+                        this.graph,
+                        this.startVertex,
+                        endVertex,
+                        this.nPaths);
 
         // at the i-th pass the shortest paths with less (or equal) than i edges
         // are calculated.
@@ -153,7 +147,7 @@ public class KShortestPaths<V, E>
             return null;
         }
 
-        List<GraphPath<V, E>> pathList = new ArrayList<GraphPath<V, E>>();
+        List<GraphPath<V, E>> pathList = new ArrayList<>();
 
         for (RankingPathElement<V, E> element : list) {
             pathList.add(new PathWrapper(element));
@@ -196,8 +190,6 @@ public class KShortestPaths<V, E>
             throw new NullPointerException("nMaxHops is negative or 0");
         }
     }
-
-
 
     private class PathWrapper
         implements GraphPath<V, E>

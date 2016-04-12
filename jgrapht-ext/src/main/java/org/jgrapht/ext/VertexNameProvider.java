@@ -41,8 +41,6 @@ package org.jgrapht.ext;
  */
 public interface VertexNameProvider<V>
 {
-
-
     /**
      * Returns a unique name for a vertex. This is useful when exporting a a
      * graph, as it ensures that all vertices are assigned simple, consistent
@@ -52,7 +50,7 @@ public interface VertexNameProvider<V>
      *
      * @return the name of the vertex
      */
-    public String getVertexName(V vertex);
+    String getVertexName(V vertex);
 }
 
 // End VertexNameProvider.java

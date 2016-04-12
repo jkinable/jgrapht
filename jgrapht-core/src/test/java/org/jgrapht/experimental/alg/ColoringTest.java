@@ -60,17 +60,17 @@ public class ColoringTest
     public void testGreedyColoring()
     {
         Graph<Object, DefaultEdge> completeGraph =
-            new SimpleGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new SimpleGraph<>(
+                        DefaultEdge.class);
         CompleteGraphGenerator<Object, DefaultEdge> completeGraphGenerator =
-            new CompleteGraphGenerator<Object, DefaultEdge>(
-                6);
+                new CompleteGraphGenerator<>(
+                        6);
         completeGraphGenerator.generateGraph(
             completeGraph,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
         GreedyColoring<Object, DefaultEdge> colorer =
-            new GreedyColoring<Object, DefaultEdge>(completeGraph);
+                new GreedyColoring<>(completeGraph);
         assertEquals(new Integer(6), colorer.getUpperBound(null));
     }
 
@@ -80,17 +80,17 @@ public class ColoringTest
     public void testBacktrackColoring()
     {
         Graph<Object, DefaultEdge> completeGraph =
-            new SimpleGraph<Object, DefaultEdge>(
-                DefaultEdge.class);
+                new SimpleGraph<>(
+                        DefaultEdge.class);
         CompleteGraphGenerator<Object, DefaultEdge> completeGraphGenerator =
-            new CompleteGraphGenerator<Object, DefaultEdge>(
-                6);
+                new CompleteGraphGenerator<>(
+                        6);
         completeGraphGenerator.generateGraph(
             completeGraph,
-            new ClassBasedVertexFactory<Object>(Object.class),
+                new ClassBasedVertexFactory<>(Object.class),
             null);
         BrownBacktrackColoring<Object, DefaultEdge> colorer =
-            new BrownBacktrackColoring<Object, DefaultEdge>(completeGraph);
+                new BrownBacktrackColoring<>(completeGraph);
         assertEquals(new Integer(6), colorer.getResult(null));
     }
 }

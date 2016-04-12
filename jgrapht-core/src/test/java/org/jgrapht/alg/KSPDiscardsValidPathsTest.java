@@ -57,8 +57,8 @@ public class KSPDiscardsValidPathsTest
         KShortestPaths<String, DefaultWeightedEdge> paths;
 
         graph =
-            new WeightedMultigraph<String, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+                new WeightedMultigraph<>(
+                        DefaultWeightedEdge.class);
         graph.addVertex("S");
         graph.addVertex("T");
         graph.addVertex("A");
@@ -94,9 +94,9 @@ public class KSPDiscardsValidPathsTest
         this.addGraphEdge(graph, "K", "L", 1.0);
         this.addGraphEdge(graph, "L", "S", 1.0);
 
-        paths = new KShortestPaths<String, DefaultWeightedEdge>(graph, "S", 3);
+        paths = new KShortestPaths<>(graph, "S", 3);
 
-        Assert.assertTrue(paths.getPaths("T").size() == 3);
+        assertTrue(paths.getPaths("T").size() == 3);
     }
 
     /**
@@ -110,8 +110,8 @@ public class KSPDiscardsValidPathsTest
         KShortestPaths<String, DefaultWeightedEdge> paths;
 
         graph =
-            new WeightedMultigraph<String, DefaultWeightedEdge>(
-                DefaultWeightedEdge.class);
+                new WeightedMultigraph<>(
+                        DefaultWeightedEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
         graph.addVertex("C");
@@ -126,14 +126,14 @@ public class KSPDiscardsValidPathsTest
         this.addGraphEdge(graph, "B", "E", 1.0);
         this.addGraphEdge(graph, "C", "D", 1.0);
 
-        paths = new KShortestPaths<String, DefaultWeightedEdge>(graph, "A", 2);
-        Assert.assertTrue(paths.getPaths("E").size() == 2);
+        paths = new KShortestPaths<>(graph, "A", 2);
+        assertTrue(paths.getPaths("E").size() == 2);
 
-        paths = new KShortestPaths<String, DefaultWeightedEdge>(graph, "A", 3);
-        Assert.assertTrue(paths.getPaths("E").size() == 3);
+        paths = new KShortestPaths<>(graph, "A", 3);
+        assertTrue(paths.getPaths("E").size() == 3);
 
-        paths = new KShortestPaths<String, DefaultWeightedEdge>(graph, "A", 4);
-        Assert.assertTrue(paths.getPaths("E").size() == 4);
+        paths = new KShortestPaths<>(graph, "A", 4);
+        assertTrue(paths.getPaths("E").size() == 4);
     }
 
     private void addGraphEdge(

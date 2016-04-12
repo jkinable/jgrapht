@@ -56,8 +56,6 @@ import org.jgrapht.graph.*;
  */
 public abstract class ChromaticNumber
 {
-
-
     /**
      * Finds the number of colors required for a greedy coloring of the graph.
      *
@@ -82,20 +80,20 @@ public abstract class ChromaticNumber
     {
         // A copy of the graph is made, so that elements of the graph may be
         // removed to carry out the algorithm
-        UndirectedGraph<V, E> sg = new UndirectedSubgraph<V, E>(g, null, null);
+        UndirectedGraph<V, E> sg = new UndirectedSubgraph<>(g, null, null);
 
         // The Vertices will be sorted in decreasing order by degree, so that
         // higher degree vertices have priority to be colored first
         VertexDegreeComparator<V, E> comp =
-            new VertexDegreeComparator<V, E>(sg);
-        List<V> sortedVertices = new LinkedList<V>(sg.vertexSet());
+                new VertexDegreeComparator<>(sg);
+        List<V> sortedVertices = new LinkedList<>(sg.vertexSet());
         Collections.sort(sortedVertices, comp);
         Collections.reverse(sortedVertices);
 
         int color;
 
         // create a map which will hold color as key and Set<V> as value
-        Map<Integer, Set<V>> coloredGroups = new HashMap<Integer, Set<V>>();
+        Map<Integer, Set<V>> coloredGroups = new HashMap<>();
 
         // We'll attempt to color each vertex with a single color each
         // iteration, and these vertices will be removed from the graph at the
@@ -103,7 +101,7 @@ public abstract class ChromaticNumber
         for (color = 0; sg.vertexSet().size() > 0; color++) {
             // This set will contain vertices that are colored with the
             // current color of this iteration
-            Set<V> currentColor = new HashSet<V>();
+            Set<V> currentColor = new HashSet<>();
             for (
                 Iterator<V> iter = sortedVertices.iterator();
                 iter.hasNext();)
@@ -114,11 +112,7 @@ public abstract class ChromaticNumber
                 // adjacent with any other vertex that has already been colored
                 // with the current color
                 boolean flag = true;
-                for (
-                    Iterator<V> innerIter = currentColor.iterator();
-                    innerIter.hasNext();)
-                {
-                    V temp = innerIter.next();
+                for (V temp : currentColor) {
                     if (sg.containsEdge(temp, v)) {
                         flag = false;
                         break;

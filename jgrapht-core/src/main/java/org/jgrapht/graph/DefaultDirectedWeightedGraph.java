@@ -53,11 +53,7 @@ public class DefaultDirectedWeightedGraph<V, E>
     extends DefaultDirectedGraph<V, E>
     implements WeightedGraph<V, E>
 {
-
-
     private static final long serialVersionUID = 3761405317841171513L;
-
-
 
     /**
      * Creates a new directed weighted graph.
@@ -66,7 +62,7 @@ public class DefaultDirectedWeightedGraph<V, E>
      */
     public DefaultDirectedWeightedGraph(Class<? extends E> edgeClass)
     {
-        this(new ClassBasedEdgeFactory<V, E>(edgeClass));
+        this(new ClassBasedEdgeFactory<>(edgeClass));
     }
 
     /**
@@ -79,24 +75,20 @@ public class DefaultDirectedWeightedGraph<V, E>
         super(ef);
     }
 
-
-
     public static <V, E> DirectedWeightedGraphBuilderBase<V,
         E, ? extends DefaultDirectedWeightedGraph<V, E>, ?> builder(
         Class<? extends E> edgeClass)
     {
-        return new DirectedWeightedGraphBuilder<V,
-            E, DefaultDirectedWeightedGraph<V, E>>(
-                new DefaultDirectedWeightedGraph<V, E>(edgeClass));
+        return new DirectedWeightedGraphBuilder<>(
+                new DefaultDirectedWeightedGraph<>(edgeClass));
     }
 
     public static <V, E> DirectedWeightedGraphBuilderBase<V,
         E, ? extends DefaultDirectedWeightedGraph<V, E>, ?> builder(
         EdgeFactory<V, E> ef)
     {
-        return new DirectedWeightedGraphBuilder<V,
-            E, DefaultDirectedWeightedGraph<V, E>>(
-                new DefaultDirectedWeightedGraph<V, E>(ef));
+        return new DirectedWeightedGraphBuilder<>(
+                new DefaultDirectedWeightedGraph<>(ef));
     }
 }
 

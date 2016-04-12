@@ -408,9 +408,9 @@ public class SimpleDirectedGraphTest
         init();
 
         DirectedGraph<String, DefaultEdge> g =
-            new SimpleDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+                new SimpleDirectedGraph<>(DefaultEdge.class);
         DirectedGraph<String, DefaultEdge> r =
-            new EdgeReversedGraph<String, DefaultEdge>(g);
+                new EdgeReversedGraph<>(g);
 
         g.addVertex(v1);
         g.addVertex(v2);
@@ -477,16 +477,16 @@ public class SimpleDirectedGraphTest
     private void init()
     {
         gEmpty =
-            new SimpleDirectedGraph<String, DefaultEdge>(
+                new SimpleDirectedGraph<>(
+                        DefaultEdge.class);
+        g1 = new SimpleDirectedGraph<>(
                 DefaultEdge.class);
-        g1 = new SimpleDirectedGraph<String, DefaultEdge>(
-            DefaultEdge.class);
-        g2 = new SimpleDirectedGraph<String, DefaultEdge>(
-            DefaultEdge.class);
-        g3 = new SimpleDirectedGraph<String, DefaultEdge>(
-            DefaultEdge.class);
-        g4 = new SimpleDirectedGraph<String, DefaultEdge>(
-            DefaultEdge.class);
+        g2 = new SimpleDirectedGraph<>(
+                DefaultEdge.class);
+        g3 = new SimpleDirectedGraph<>(
+                DefaultEdge.class);
+        g4 = new SimpleDirectedGraph<>(
+                DefaultEdge.class);
 
         eFactory = g1.getEdgeFactory();
         eLoop = eFactory.createEdge(v1, v1);

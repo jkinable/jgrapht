@@ -51,8 +51,6 @@ import org.jgrapht.util.*;
 public class EdmondsBlossomShrinking<V, E>
     implements MatchingAlgorithm<V, E>
 {
-
-
     // ~ Instance fields
     // --------------------------------------------------------
 
@@ -63,8 +61,6 @@ public class EdmondsBlossomShrinking<V, E>
     private Map<V, V> match;
     private Map<V, V> path;
     private Map<V, V> contracted;
-
-
 
     // ~ Constructors
     // ----------------------------------------------------------------
@@ -78,8 +74,6 @@ public class EdmondsBlossomShrinking<V, E>
         this.graph = G;
     }
 
-
-
     // ~ Deprecated Methods
     // ----------------------------------------------------------------
 
@@ -88,7 +82,7 @@ public class EdmondsBlossomShrinking<V, E>
      */
     @Deprecated public Set<E> findMatch(final UndirectedGraph<V, E> g)
     {
-        return new EdmondsBlossomShrinking<V, E>(g).getMatching();
+        return new EdmondsBlossomShrinking<>(g).getMatching();
     }
 
     // ~ Methods
@@ -109,10 +103,10 @@ public class EdmondsBlossomShrinking<V, E>
      */
     private Set<E> findMatch()
     {
-        Set<E> result = new ArrayUnenforcedSet<E>();
-        match = new HashMap<V, V>();
-        path = new HashMap<V, V>();
-        contracted = new HashMap<V, V>();
+        Set<E> result = new ArrayUnenforcedSet<>();
+        match = new HashMap<>();
+        path = new HashMap<>();
+        contracted = new HashMap<>();
 
         for (V i : graph.vertexSet()) {
             // Any augmenting path should start with _exposed_ vertex
@@ -131,7 +125,7 @@ public class EdmondsBlossomShrinking<V, E>
             }
         }
 
-        Set<V> seen = new HashSet<V>();
+        Set<V> seen = new HashSet<>();
         for (V v : graph.vertexSet()) {
             if (!seen.contains(v) && match.containsKey(v)) {
                 seen.add(v);
@@ -145,8 +139,8 @@ public class EdmondsBlossomShrinking<V, E>
 
     private V findPath(V root)
     {
-        Set<V> used = new HashSet<V>();
-        Queue<V> q = new ArrayDeque<V>();
+        Set<V> used = new HashSet<>();
+        Queue<V> q = new ArrayDeque<>();
 
         // Expand graph back from its contracted state
         path.clear();
@@ -182,7 +176,7 @@ public class EdmondsBlossomShrinking<V, E>
                 {
                     V stem = lca(v, to);
 
-                    Set<V> blossom = new HashSet<V>();
+                    Set<V> blossom = new HashSet<>();
 
                     // ?
                     markPath(v, to, stem, blossom);
@@ -234,7 +228,7 @@ public class EdmondsBlossomShrinking<V, E>
 
     private V lca(V a, V b)
     {
-        Set<V> seen = new HashSet<V>();
+        Set<V> seen = new HashSet<>();
         for (;;) {
             a = contracted.get(a);
             seen.add(a);

@@ -34,12 +34,11 @@
  */
 package org.jgrapht.alg;
 
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.flow.EdmondsKarpMaximumFlow;
-import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm.MaximumFlow;
-
 import java.util.*;
+
+import org.jgrapht.*;
+import org.jgrapht.alg.flow.EdmondsKarpMaximumFlow;
+import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm.*;
 
 
 /**
@@ -54,8 +53,6 @@ import java.util.*;
  */
 public class MinSourceSinkCut<V, E>
 {
-
-
     EdmondsKarpMaximumFlow<V, E> ekMaxFlow;
     Set<V> minCut = null;
     DirectedGraph<V, E> graph;
@@ -63,8 +60,6 @@ public class MinSourceSinkCut<V, E>
     V source = null;
     V sink = null;
     double epsilon = EdmondsKarpMaximumFlow.DEFAULT_EPSILON;
-
-
 
     public MinSourceSinkCut(DirectedGraph<V, E> graph)
     {
@@ -79,8 +74,6 @@ public class MinSourceSinkCut<V, E>
         this.epsilon = epsilon;
     }
 
-
-
     /**
      * Compute a minimum s-t cut
      *
@@ -94,7 +87,7 @@ public class MinSourceSinkCut<V, E>
         minCut = new HashSet<>();
 
         //First compute a maxFlow from source to sink
-        MaximumFlow<V, E> maxFlow = ekMaxFlow.buildMaximumFlow(source, sink);
+        MaximumFlow<E> maxFlow = ekMaxFlow.buildMaximumFlow(source, sink);
 
         this.cutWeight = maxFlow.getValue();
 

@@ -48,14 +48,10 @@ import org.jgrapht.*;
 public class SimpleGraphPath<V, E>
     implements GraphPath<V, E>
 {
-
-
     private SimpleGraph<V, E> graph;
     private List<V> vertices;
     private List<E> edges;
     private double weight;
-
-
 
     /**
      * @param simpleGraph The simple graph where the path is.
@@ -71,7 +67,7 @@ public class SimpleGraphPath<V, E>
     {
         this.graph = simpleGraph;
         this.vertices = vertices;
-        this.edges = new ArrayList<E>();
+        this.edges = new ArrayList<>();
         this.weight = weight;
 
         if (vertices.size() < 2) {
@@ -92,8 +88,6 @@ public class SimpleGraphPath<V, E>
             }
         }
     }
-
-
 
     @Override public SimpleGraph<V, E> getGraph()
     {

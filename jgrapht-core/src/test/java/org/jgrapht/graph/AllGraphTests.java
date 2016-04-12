@@ -55,6 +55,8 @@ import org.junit.runners.*;
     EqualsAndHashCodeTest.class,
     GenericGraphsTest.class,
     ListenableGraphTest.class,
+    MaskEdgeSetTest.class,
+    MaskVertexSetTest.class,
     SerializationTest.class,
     SimpleDirectedGraphTest.class,
     SimpleGraphPathTest.class,

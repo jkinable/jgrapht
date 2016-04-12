@@ -103,10 +103,10 @@ public class VertexCoversTest
         Set<Integer> vertexSet,
         Graph<Integer, DefaultEdge> g)
     {
-        Set<DefaultEdge> uncoveredEdges = new HashSet<DefaultEdge>(g.edgeSet());
+        Set<DefaultEdge> uncoveredEdges = new HashSet<>(g.edgeSet());
 
-        for (Iterator<Integer> i = vertexSet.iterator(); i.hasNext();) {
-            uncoveredEdges.removeAll(g.edgesOf(i.next()));
+        for (Integer v : vertexSet) {
+            uncoveredEdges.removeAll(g.edgesOf(v));
         }
 
         return uncoveredEdges.size() == 0;
@@ -122,13 +122,13 @@ public class VertexCoversTest
         // TODO: move random graph generator to be under GraphGenerator
         // framework.
         Pseudograph<Integer, DefaultEdge> g =
-            new Pseudograph<Integer, DefaultEdge>(DefaultEdge.class);
+                new Pseudograph<>(DefaultEdge.class);
 
         for (int i = 0; i < TEST_GRAPH_SIZE; i++) {
-            g.addVertex(new Integer(i));
+            g.addVertex(i);
         }
 
-        List<Integer> vertices = new ArrayList<Integer>(g.vertexSet());
+        List<Integer> vertices = new ArrayList<>(g.vertexSet());
         // join every vertex with a random number of other vertices
         for (int source = 0; source < TEST_GRAPH_SIZE; source++) {
             int numEdgesToCreate = rnd.nextInt(TEST_GRAPH_SIZE / 2) + 1;

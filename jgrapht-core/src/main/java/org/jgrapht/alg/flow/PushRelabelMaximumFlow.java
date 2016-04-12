@@ -50,6 +50,8 @@ import org.jgrapht.alg.util.Extension.*;
  * Andrew V. Goldberg and Robert Tarjan <i>STOC '86: Proceedings of the
  * eighteenth annual ACM symposium on Theory of computing</i></p>
  *
+ * Note: even though the algorithm accepts any kind of graph, currently only Simple directed and undirected graphs are supported (and tested!).
+ *
  * @author Alexey Kudinkin
  */
 public class PushRelabelMaximumFlow<V, E>
@@ -60,7 +62,7 @@ public class PushRelabelMaximumFlow<V, E>
     private static final boolean DIAGNOSTIC_ENABLED = false;
 
     private final ExtensionFactory<VertexExtension> vertexExtensionsFactory;
-    private final ExtensionFactory<EdgeExtension> edgeExtensionsFactory;
+    private final ExtensionFactory<AnnotatedFlowEdge> edgeExtensionsFactory;
 
     // Label pruning helpers
 
@@ -70,25 +72,16 @@ public class PushRelabelMaximumFlow<V, E>
 
     private PushRelabelDiagnostic diagnostic;
 
-    public PushRelabelMaximumFlow(DirectedGraph<V, E> network)
+    public PushRelabelMaximumFlow(Graph<V, E> network){
+        this(network, DEFAULT_EPSILON);
+    }
+    public PushRelabelMaximumFlow(Graph<V, E> network, double epsilon)
     {
-        super(network);
+        super(network, epsilon);
 
-        this.vertexExtensionsFactory =
-            new ExtensionFactory<VertexExtension>() {
-                @Override public VertexExtension create()
-                {
-                    return PushRelabelMaximumFlow.this.new VertexExtension();
-                }
-            };
+        this.vertexExtensionsFactory =() -> new VertexExtension();
 
-        this.edgeExtensionsFactory =
-            new ExtensionFactory<EdgeExtension>() {
-                @Override public EdgeExtension create()
-                {
-                    return PushRelabelMaximumFlow.this.new EdgeExtension();
-                }
-            };
+        this.edgeExtensionsFactory =() -> new AnnotatedFlowEdge();
 
         if (DIAGNOSTIC_ENABLED) {
             this.diagnostic = new PushRelabelDiagnostic();
@@ -99,13 +92,8 @@ public class PushRelabelMaximumFlow<V, E>
     {
         super.init(vertexExtensionsFactory, edgeExtensionsFactory);
 
-        this.labeling = new HashMap<Integer, Integer>();
+        this.labeling = new HashMap<>();
         this.flowBack = false;
-    }
-
-    @Override Graph<V, E> getNetwork()
-    {
-        return network;
     }
 
     public void initialize(
@@ -118,7 +106,7 @@ public class PushRelabelMaximumFlow<V, E>
 
         label(source, sink);
 
-        for (EdgeExtension ex : source.<EdgeExtension>getOutgoing()) {
+        for (AnnotatedFlowEdge ex : source.getOutgoing()) {
             pushFlowThrough(ex, ex.capacity);
 
             if (ex.getTarget().prototype != sink.prototype) {
@@ -129,8 +117,8 @@ public class PushRelabelMaximumFlow<V, E>
 
     private void label(VertexExtension source, VertexExtension sink)
     {
-        Set<VertexExtension> seen = new HashSet<VertexExtension>();
-        Queue<VertexExtension> q = new ArrayDeque<VertexExtension>();
+        Set<VertexExtension> seen = new HashSet<>();
+        Queue<VertexExtension> q = new ArrayDeque<>();
 
         q.offer(sink);
 
@@ -141,7 +129,7 @@ public class PushRelabelMaximumFlow<V, E>
 
         while (!q.isEmpty()) {
             VertexExtension ux = q.poll();
-            for (EdgeExtension ex : ux.<EdgeExtension>getOutgoing()) {
+            for (AnnotatedFlowEdge ex : ux.getOutgoing()) {
                 VertexExtension vx = ex.getTarget();
                 if (!seen.contains(vx)) {
                     seen.add(vx);
@@ -173,19 +161,19 @@ public class PushRelabelMaximumFlow<V, E>
     {
         init();
 
-        Queue<VertexExtension> active = new ArrayDeque<VertexExtension>();
+        Queue<VertexExtension> active = new ArrayDeque<>();
 
-        initialize(extendedVertex(source), extendedVertex(sink), active);
+        initialize(getVertexExtension(source), getVertexExtension(sink), active);
 
         while (!active.isEmpty()) {
             VertexExtension ux = active.poll();
             for (;;) {
-                for (EdgeExtension ex : ux.<EdgeExtension>getOutgoing()) {
+                for (AnnotatedFlowEdge ex : ux.getOutgoing()) {
                     if (isAdmissible(ex)) {
                         if ((ex.getTarget().prototype != sink)
                             && (ex.getTarget().prototype != source))
                         {
-                            active.offer(ex.<VertexExtension>getTarget());
+                            active.offer(ex.getTarget());
                         }
 
                         // Check whether we're rip off the excess
@@ -213,7 +201,7 @@ public class PushRelabelMaximumFlow<V, E>
                     // label <= 1 in the network & therefore no
                     // 'discharging-path' to the _sink_ also signalling that
                     // we're in the flow-back stage of the algorithm
-                    extendedVertex(source).label =
+                    getVertexExtension(source).label =
                         Collections.max(labeling.keySet()) + 1;
                     flowBack = true;
                 }
@@ -232,7 +220,7 @@ public class PushRelabelMaximumFlow<V, E>
             diagnostic.dump();
         }
 
-        return new MaximumFlowImpl<E>(maxFlowValue, maxFlow);
+        return new MaximumFlowImpl<>(maxFlowValue, maxFlow);
     }
 
     private void relabel(VertexExtension vx)
@@ -240,7 +228,7 @@ public class PushRelabelMaximumFlow<V, E>
         assert (vx.hasExcess());
 
         int min = Integer.MAX_VALUE;
-        for (EdgeExtension ex : vx.<EdgeExtension>getOutgoing()) {
+        for (AnnotatedFlowEdge ex : vx.getOutgoing()) {
             if (ex.hasCapacity()) {
                 VertexExtension ux = ex.getTarget();
                 if (min > ux.label) {
@@ -277,7 +265,7 @@ public class PushRelabelMaximumFlow<V, E>
         }
     }
 
-    private boolean discharge(EdgeExtension ex)
+    private boolean discharge(AnnotatedFlowEdge ex)
     {
         VertexExtension ux = ex.getSource();
 
@@ -289,7 +277,7 @@ public class PushRelabelMaximumFlow<V, E>
         return !ux.hasExcess();
     }
 
-    protected void pushFlowThrough(EdgeExtension ex, double f)
+    protected void pushFlowThrough(AnnotatedFlowEdge ex, double f)
     {
         ex.getSource().excess -= f;
         ex.getTarget().excess += f;
@@ -299,36 +287,34 @@ public class PushRelabelMaximumFlow<V, E>
         super.pushFlowThrough(ex, f);
     }
 
-    private boolean isAdmissible(EdgeExtension e)
+    private boolean isAdmissible(AnnotatedFlowEdge e)
     {
         return e.hasCapacity()
             && (e.<VertexExtension>getSource().label
                 == (e.<VertexExtension>getTarget().label + 1));
     }
 
-    private EdgeExtension extendedEdge(E e)
-    {
-        return this.edgeExtended(e);
-    }
 
-    private VertexExtension extendedVertex(V v)
-    {
-        return this.vertexExtended(v);
-    }
+    private VertexExtension getVertexExtension(V v){ return (VertexExtension)vertexExtensionManager.getSingletonInstance(v);}
+
+//    private VertexExtension extendedVertex(V v)
+//    {
+//        return this.vertexExtended(v);
+//    }
 
     private class PushRelabelDiagnostic
     {
         // Discharges
         Map<Pair<V, V>, Integer> discharges =
-            new HashMap<Pair<V, V>, Integer>();
+            new HashMap<>();
         long dischargesCounter = 0;
 
         // Relabels
         Map<Pair<Integer, Integer>, Integer> relabels =
-            new HashMap<Pair<Integer, Integer>, Integer>();
+            new HashMap<>();
         long relabelsCounter = 0;
 
-        private void incrementDischarges(EdgeExtension ex)
+        private void incrementDischarges(AnnotatedFlowEdge ex)
         {
             Pair<V, V> p =
                 Pair.of(ex.getSource().prototype, ex.getTarget().prototype);
@@ -353,10 +339,10 @@ public class PushRelabelMaximumFlow<V, E>
 
         void dump()
         {
-            Map<Integer, Integer> labels = new HashMap<Integer, Integer>();
+            Map<Integer, Integer> labels = new HashMap<>();
 
             for (V v : network.vertexSet()) {
-                VertexExtension vx = extendedVertex(v);
+                VertexExtension vx = getVertexExtension(v);
 
                 if (!labels.containsKey(vx.label)) {
                     labels.put(vx.label, 0);
@@ -370,19 +356,12 @@ public class PushRelabelMaximumFlow<V, E>
             System.out.println(labels);
 
             List<Map.Entry<Pair<Integer, Integer>, Integer>> relabelsSorted =
-                new ArrayList<Map.Entry<Pair<Integer, Integer>, Integer>>(
+                new ArrayList<>(
                     relabels.entrySet());
 
             Collections.sort(
                 relabelsSorted,
-                new Comparator<Map.Entry<Pair<Integer, Integer>, Integer>>() {
-                    @Override public int compare(
-                        Map.Entry<Pair<Integer, Integer>, Integer> o1,
-                        Map.Entry<Pair<Integer, Integer>, Integer> o2)
-                    {
-                        return -(o1.getValue() - o2.getValue());
-                    }
-                });
+                    (o1, o2) -> -(o1.getValue() - o2.getValue()));
 
             System.out.println("RELABELS    ");
             System.out.println("--------    ");
@@ -390,19 +369,12 @@ public class PushRelabelMaximumFlow<V, E>
             System.out.println("            " + relabelsSorted);
 
             List<Map.Entry<Pair<V, V>, Integer>> dischargesSorted =
-                new ArrayList<Map.Entry<Pair<V, V>, Integer>>(
+                new ArrayList<>(
                     discharges.entrySet());
 
             Collections.sort(
                 dischargesSorted,
-                new Comparator<Map.Entry<Pair<V, V>, Integer>>() {
-                    @Override public int compare(
-                        Map.Entry<Pair<V, V>, Integer> one,
-                        Map.Entry<Pair<V, V>, Integer> other)
-                    {
-                        return -(one.getValue() - other.getValue());
-                    }
-                });
+                    (one, other) -> -(one.getValue() - other.getValue()));
 
             System.out.println("DISCHARGES  ");
             System.out.println("----------  ");
@@ -424,21 +396,6 @@ public class PushRelabelMaximumFlow<V, E>
         @Override public String toString()
         {
             return prototype.toString() + String.format(" { LBL: %d } ", label);
-        }
-    }
-
-    public class EdgeExtension
-        extends EdgeExtensionBase
-    {
-        private boolean hasCapacity()
-        {
-            return compareFlowTo(capacity, flow) > 0;
-        }
-
-        @Override public String toString()
-        {
-            return prototype.toString()
-                + String.format(" { F/CAP: %f / %f } ", flow, capacity);
         }
     }
 }

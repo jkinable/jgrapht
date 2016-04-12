@@ -66,11 +66,21 @@ public class Extension<T, E>
     }
 
     /**
-     * Creates and returns an extension object. Note that the returned object cannot be retrieved by the get(T t)
-     * function in this class as no reference to t is provided during object creation.
+     * Creates and returns an extension object.
+     * JK: Renamed this function to 'getInstance' for consistency with the getSingletonInstance function
      * @return Extension object
      */
+    @Deprecated
     public E createInstance()
+    {
+        return extensionFactory.create();
+    }
+
+    /**
+     * Creates and returns an extension object.
+     * @return Extension object
+     */
+    public E getInstance()
     {
         return extensionFactory.create();
     }
@@ -79,14 +89,30 @@ public class Extension<T, E>
      * For a given prototype t, this function returns t's extension. If no encapsulation/extension
      * for t exists, a new one is created and returned.
      *
-     * NOTE: JK - Do we need want/this? There is no equivalent set(T t). Furthermore, it gets quite ambigous if in some cases
+     * NOTE: JK - Do we need want/this? There is no equivalent set(T t). Furthermore, it gets quite ambiguous if in some cases
      * an Extension is created without a prototype (createInstance()) and sometimes an Extension is created through the get(T t) function.
-     * Only the Extentions associated with a prototype t will be stored by the Manager.
+     * Only Extentions associated with a prototype t will be stored by the Manager. This leads to some very hard to track behavior. At the
+     * very least, give the function a proper name such as getSingletonInstance (as in contrast to the createInstance function above.
      *
      * @param t prototype
      * @return Extension of prototype
      */
+    @Deprecated
     public E get(T t)
+    {
+        if (prototypeToExtensionMap.containsKey(t)) {
+            return prototypeToExtensionMap.get(t);
+        }
+
+        E x = createInstance();
+        prototypeToExtensionMap.put(t, x);
+        return x;
+    }
+
+    /**
+     * Creates a new extension object for prototype t if no such object exists, returns the old one otherwise.
+     */
+    public E getSingletonInstance(T t)
     {
         if (prototypeToExtensionMap.containsKey(t)) {
             return prototypeToExtensionMap.get(t);

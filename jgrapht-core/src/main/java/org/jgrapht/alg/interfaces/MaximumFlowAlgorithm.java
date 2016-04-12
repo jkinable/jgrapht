@@ -77,7 +77,7 @@ public interface MaximumFlowAlgorithm<V, E>
     }
 
     class MaximumFlowImpl<E>
-        implements MaximumFlow
+        implements MaximumFlow<E>
     {
         private Double value;
         private Map<E, Double> flow;

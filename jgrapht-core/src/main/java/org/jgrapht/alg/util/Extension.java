@@ -104,7 +104,7 @@ public class Extension<T, E>
             return prototypeToExtensionMap.get(t);
         }
 
-        E x = createInstance();
+        E x = getInstance();
         prototypeToExtensionMap.put(t, x);
         return x;
     }
@@ -118,7 +118,7 @@ public class Extension<T, E>
             return prototypeToExtensionMap.get(t);
         }
 
-        E x = createInstance();
+        E x = getInstance();
         prototypeToExtensionMap.put(t, x);
         return x;
     }
@@ -153,7 +153,7 @@ public class Extension<T, E>
     /**
      * Comments/Description missing
      *
-     * NOTE: JK - Do we really need this? This seems well beyond what any user would require.
+     * NOTE: JK - Do we really need this? This seems well beyond what any user would require. Better to keep the library as concise as possible.
      */
     public static class ExtensionManagerInstantiationException
         extends RuntimeException

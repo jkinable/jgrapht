@@ -206,9 +206,10 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
     protected Map<E, Double> composeFlow()
     {
         Map<E, Double> maxFlow = new HashMap<>();
+
         for (E e : network.edgeSet()) {
             AnnotatedFlowEdge annotatedFlowEdge = edgeExtensionManager.getSingletonInstance(e);
-            maxFlow.put(e, annotatedFlowEdge.flow);
+            maxFlow.put(e, DIRECTED_GRAPH ? annotatedFlowEdge.flow : Math.max(annotatedFlowEdge.flow, annotatedFlowEdge.inverse.flow));
         }
 
         return maxFlow;
@@ -337,23 +338,3 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
 
 
 
-    /*
-@TODO flow directions in undirected graph
-@TODO clean test classes
-@TODO see whether all edgeExtended/extendEdge stuff can be shifted to child classes of MaximumFlowAlgorithmBase
-@TODO combine AnnotatedFlowEdgeExtension/VertexExtention classes from MaxFlowAlgBase, EdmondsKarpMaxFlow, PushRelabelMaxFlow
-@TODO rename createEdge
-
-Implementation is a bit ugly. A 'new' data structure is introduced. where each vertex maintains itself which edges are outgoing/incoming, and each edge maintains a reverse edge. All these
-queries you can do on a SimpleDirectedGraph as well, but currently there's just too much overhead for that to do that efficiently.
-Changelog: documented public functions of Extension class. Added some questions wrt revisions.
--EdmondsKarpMaximumFlow and PushRelabelMaximimumFlow algorithms now also work on undirected graphs
--Extended test base for both directed and undirected graphs
--Rewrote significant parts of the code to make things readable. This was(is) a highly complex implementation of a very simple algorithm.
--Deleted RandomizedTest from Max flow tests: this test did not serve any purpose. The results were never verified. The only way the test could fail is if the algorithm throw some internal exception.
--commented a ton of uncommented code.
--Recommendation: delete the Legacy implementation and corresponding test
--separated flow calculation from actually generating a map representing the flow on each edge individually. The latter often is expensive and unnecessary.
-This is ugly:  protected AnnotatedFlowEdge extendedEdge(E e){return this.edgeExtended(e);} what does that even mean?
-
-    */

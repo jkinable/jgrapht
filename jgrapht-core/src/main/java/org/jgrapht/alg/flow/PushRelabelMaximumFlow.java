@@ -223,9 +223,10 @@ public class PushRelabelMaximumFlow<V, E>
             }
         }
 
-        //for (E e : network.incomingEdgesOf(sink)) {
+        //Calculate the max flow that reaches the sink. There may be more efficient ways to do this.
         for (E e : network.edgesOf(sink)) {
-            maxFlowValue += maxFlow.get(e);
+            AnnotatedFlowEdge edge=edgeExtensionManager.getSingletonInstance(e);
+            maxFlowValue += (DIRECTED_GRAPH ?  edge.flow: edge.flow + edge.getInverse().flow);
         }
 
         if (DIAGNOSTIC_ENABLED) {

@@ -43,6 +43,9 @@ import java.util.*;
  * from the supplied <a href="https://en.wikipedia.org/wiki/Flow_network">flow
  * network</a>
  *
+ * @author Alexey Kudinkin
+ * @author Joris Kinable
+ *
  * @param <V> vertex concept type
  * @param <E> edge concept type
  */

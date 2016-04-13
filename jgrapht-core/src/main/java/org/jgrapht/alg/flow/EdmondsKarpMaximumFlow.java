@@ -38,10 +38,7 @@ package org.jgrapht.alg.flow;
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm;
 import org.jgrapht.alg.util.Extension.*;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleWeightedGraph;
 
 
 /**
@@ -154,6 +151,8 @@ public final class EdmondsKarpMaximumFlow<V, E>
      * then calculates maximum flow from <tt>source</tt> to <tt>sink</tt>. Note,
      * that <tt>source</tt> and <tt>sink</tt> must be vertices of the <tt>
      * network</tt> passed to the constructor, and they must be different.
+     * If desired, a flow map can be queried afterwards; this will not require
+     * a new invocation of the algorithm.
      *
      * @param source source vertex
      * @param sink sink vertex

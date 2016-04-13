@@ -70,6 +70,9 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
     protected Extension<V, ? extends VertexExtensionBase> vertexExtensionManager;
     protected Extension<E, AnnotatedFlowEdge> edgeExtensionManager;
 
+    protected double maxFlowValue=-1; //Max flow established after last invocation of the algorithm.
+    protected Map<E, Double> maxFlow=null; //Mapping of the flow on each edge.
+
     public MaximumFlowAlgorithmBase(Graph<V,E> network, double epsilon){
         this.network=network;
         this.DIRECTED_GRAPH=network instanceof DirectedGraph;
@@ -84,6 +87,8 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
         edgeExtensionManager = new Extension<>(edgeExtensionFactory);
 
         buildInternal();
+        maxFlowValue=0;
+        maxFlow=null;
     }
 
     /**
@@ -210,26 +215,6 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
     }
 
     /**
-     * Returns the direction of the flow on an edge (u,v). In case (u,v) is a directed edge (arc), this function will always
-     * return the edge target v. However, if (u,v) is an edge in an undirected graph, flow may go through the edge in either side.
-     * If the flow goes from u to v, we return v, otherwise u. If the flow on an edge equals 0, the returned value has no meaning.
-     * @param e edge
-     * @return the vertex where the flow leaves the edge
-     */
-    public V getFlowDirection(E e){
-        if(!network.containsEdge(e)) throw new IllegalArgumentException("Cannot query the flow on an edge which does not exist in the input graph!");
-        AnnotatedFlowEdge annotatedFlowEdge = edgeExtensionManager.getSingletonInstance(e);
-
-        if(DIRECTED_GRAPH) return annotatedFlowEdge.getTarget().prototype;
-
-        AnnotatedFlowEdge reverseFlowEdge = annotatedFlowEdge.getInverse();
-        if(annotatedFlowEdge.flow > reverseFlowEdge.flow)
-            return annotatedFlowEdge.getTarget().prototype;
-        else
-            return reverseFlowEdge.getTarget().prototype;
-    }
-
-    /**
      * Compares flow against val. Returns 0 if they are equal, -1 if flow < val, 1 otherwise
      * @param flow
      * @param val
@@ -303,6 +288,49 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
             return "("+(source==null ? null : source.prototype)+","+(target==null ? null : target.prototype)+",c:"+capacity+" f: "+flow+")";
         }
     }
+
+    /**
+     * Returns maximum flow value, that was calculated during last <tt>
+     * calculateMaximumFlow</tt> call.
+     *
+     * @return maximum flow value
+     */
+    public double getMaximumFlowValue(){
+        return maxFlowValue;
+    }
+
+    /**
+     * Returns maximum flow, that was calculated during last <tt>
+     * calculateMaximumFlow</tt> call, or <tt>null</tt>, if there was no <tt>
+     * calculateMaximumFlow</tt> calls.
+     *
+     * @return <i>read-only</i> mapping from edges to doubles - flow values
+     */
+    public Map<E, Double> getMaximumFlow(){
+        if(maxFlow==null) //Lazily calculate the max flow map
+            composeFlow();
+        return maxFlow;
+    }
+
+    /**
+     * Returns the direction of the flow on an edge (u,v). In case (u,v) is a directed edge (arc), this function will always
+     * return the edge target v. However, if (u,v) is an edge in an undirected graph, flow may go through the edge in either side.
+     * If the flow goes from u to v, we return v, otherwise u. If the flow on an edge equals 0, the returned value has no meaning.
+     * @param e edge
+     * @return the vertex where the flow leaves the edge
+     */
+    public V getFlowDirection(E e){
+        if(!network.containsEdge(e)) throw new IllegalArgumentException("Cannot query the flow on an edge which does not exist in the input graph!");
+        AnnotatedFlowEdge annotatedFlowEdge = edgeExtensionManager.getSingletonInstance(e);
+
+        if(DIRECTED_GRAPH) return annotatedFlowEdge.getTarget().prototype;
+
+        AnnotatedFlowEdge reverseFlowEdge = annotatedFlowEdge.getInverse();
+        if(annotatedFlowEdge.flow > reverseFlowEdge.flow)
+            return annotatedFlowEdge.getTarget().prototype;
+        else
+            return reverseFlowEdge.getTarget().prototype;
+    }
 }
 
 // End MaximumFlowAlgorithmBase.java
@@ -325,6 +353,7 @@ Changelog: documented public functions of Extension class. Added some questions 
 -Deleted RandomizedTest from Max flow tests: this test did not serve any purpose. The results were never verified. The only way the test could fail is if the algorithm throw some internal exception.
 -commented a ton of uncommented code.
 -Recommendation: delete the Legacy implementation and corresponding test
+-separated flow calculation from actually generating a map representing the flow on each edge individually. The latter often is expensive and unnecessary.
 This is ugly:  protected AnnotatedFlowEdge extendedEdge(E e){return this.edgeExtended(e);} what does that even mean?
 
     */

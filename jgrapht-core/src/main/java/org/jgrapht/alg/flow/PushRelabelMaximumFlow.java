@@ -159,6 +159,21 @@ public class PushRelabelMaximumFlow<V, E>
 
     @Override public MaximumFlow<E> buildMaximumFlow(V source, V sink)
     {
+        this.calculateMaximumFlow(source, sink);
+        maxFlow = composeFlow();
+        return new MaximumFlowImpl<>(maxFlowValue, maxFlow);
+    }
+
+    /**
+     * Sets current source to <tt>source</tt>, current sink to <tt>sink</tt>,
+     * then calculates maximum flow from <tt>source</tt> to <tt>sink</tt>. Note,
+     * that <tt>source</tt> and <tt>sink</tt> must be vertices of the <tt>
+     * network</tt> passed to the constructor, and they must be different.
+     *
+     * @param source source vertex
+     * @param sink sink vertex
+     */
+    public double calculateMaximumFlow(V source,V sink){
         init();
 
         Queue<VertexExtension> active = new ArrayDeque<>();
@@ -171,7 +186,7 @@ public class PushRelabelMaximumFlow<V, E>
                 for (AnnotatedFlowEdge ex : ux.getOutgoing()) {
                     if (isAdmissible(ex)) {
                         if ((ex.getTarget().prototype != sink)
-                            && (ex.getTarget().prototype != source))
+                                && (ex.getTarget().prototype != source))
                         {
                             active.offer(ex.getTarget());
                         }
@@ -191,8 +206,8 @@ public class PushRelabelMaximumFlow<V, E>
 
                 // Check whether we still have any vertices with the label '1'
                 if (!flowBack
-                    && !labeling.containsKey(0)
-                    && !labeling.containsKey(1))
+                        && !labeling.containsKey(0)
+                        && !labeling.containsKey(1))
                 {
                     // This supposed to drastically improve performance cutting
                     // off the necessity to drive labels of all vertices up to
@@ -202,15 +217,12 @@ public class PushRelabelMaximumFlow<V, E>
                     // 'discharging-path' to the _sink_ also signalling that
                     // we're in the flow-back stage of the algorithm
                     getVertexExtension(source).label =
-                        Collections.max(labeling.keySet()) + 1;
+                            Collections.max(labeling.keySet()) + 1;
                     flowBack = true;
                 }
             }
         }
 
-        Map<E, Double> maxFlow = composeFlow();
-
-        double maxFlowValue = 0.0;
         //for (E e : network.incomingEdgesOf(sink)) {
         for (E e : network.edgesOf(sink)) {
             maxFlowValue += maxFlow.get(e);
@@ -220,7 +232,7 @@ public class PushRelabelMaximumFlow<V, E>
             diagnostic.dump();
         }
 
-        return new MaximumFlowImpl<>(maxFlowValue, maxFlow);
+        return maxFlowValue;
     }
 
     private void relabel(VertexExtension vx)

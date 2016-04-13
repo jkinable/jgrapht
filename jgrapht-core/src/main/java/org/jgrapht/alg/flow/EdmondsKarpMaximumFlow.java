@@ -144,15 +144,30 @@ public final class EdmondsKarpMaximumFlow<V, E>
      */
     public MaximumFlow<E> buildMaximumFlow(V source, V sink)
     {
+        this.calculateMaximumFlow(source, sink);
+        maxFlow = composeFlow();
+        return new MaximumFlowImpl<>(maxFlowValue, maxFlow);
+    }
+
+    /**
+     * Sets current source to <tt>source</tt>, current sink to <tt>sink</tt>,
+     * then calculates maximum flow from <tt>source</tt> to <tt>sink</tt>. Note,
+     * that <tt>source</tt> and <tt>sink</tt> must be vertices of the <tt>
+     * network</tt> passed to the constructor, and they must be different.
+     *
+     * @param source source vertex
+     * @param sink sink vertex
+     */
+    public double calculateMaximumFlow(V source,V sink){
         super.init(vertexExtensionsFactory, edgeExtensionsFactory);
 
         if (!network.containsVertex(source)) {
             throw new IllegalArgumentException(
-                "invalid source (null or not from this network)");
+                    "invalid source (null or not from this network)");
         }
         if (!network.containsVertex(sink)) {
             throw new IllegalArgumentException(
-                "invalid sink (null or not from this network)");
+                    "invalid sink (null or not from this network)");
         }
 
         if (source.equals(sink)) {
@@ -162,24 +177,24 @@ public final class EdmondsKarpMaximumFlow<V, E>
         currentSource = getVertexExtension(source);
         currentSink = getVertexExtension(sink);
 
-        Map<E, Double> maxFlow;
-
-        double maxFlowValue=0;
-
         for (;;) {
             breadthFirstSearch();
 
             if (!currentSink.visited) {
-                maxFlow = composeFlow();
                 break;
             }
 
             maxFlowValue+=augmentFlow();
         }
 
-        return new MaximumFlowImpl<>(maxFlowValue, maxFlow);
+        return maxFlowValue;
     }
 
+    /**
+     * Method which finds a path from source to sink the in the residual graph. Note that this method tries to find multiple
+     * paths at once. Once a single path has been discovered, no new nodes are added to the queue, but nodes which are
+     * already in the queue are fully explored. As such there's a chance that multiple paths are discovered.
+     */
     private void breadthFirstSearch()
     {
         for (V v : network.vertexSet()) {
@@ -230,6 +245,10 @@ public final class EdmondsKarpMaximumFlow<V, E>
         }
     }
 
+    /**
+     * For all paths which end in the sink. trace them back to the source and push flow through them.
+     * @return total increase in flow from source to sink
+     */
     private double augmentFlow()
     {
         double flowIncrease=0;

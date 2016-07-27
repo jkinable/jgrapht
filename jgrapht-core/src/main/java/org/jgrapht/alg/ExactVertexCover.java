@@ -3,7 +3,10 @@ package org.jgrapht.alg;
 import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.alg.util.VertexDegreeComparator;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.SimpleGraph;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.*;
 
 /**
@@ -39,14 +42,14 @@ public class ExactVertexCover<V,E> extends VertexCovers{
         memo=new HashMap<>();
         vertices=new ArrayList<>(graph.vertexSet());
         vertexIDDictionary=new HashMap<>();
-        for(int i=0; i<vertices.size(); i++)
-            vertexIDDictionary.put(vertices.get(i), i);
 
         N=vertices.size();
-        //Sort vertices in ascending degree
-        //TODO JK: check whether this sorts the vertices ascending or descending
+        //Sort vertices based on descending degree
         //TODO JK: does it matter whether we sort the vertices? Are there better sortings?
         Collections.sort(vertices, new VertexDegreeComparator<>(graph, false));
+        for(int i=0; i<vertices.size(); i++)
+            vertexIDDictionary.put(vertices.get(i), i);
+        System.out.println("Vertices: "+vertices);
 
         //Calculate a bound on the maximum depth using heuristics and mathematical bounding procedures.
         //TODO JK: do these 2 heuristics yield different results, does one dominate the other? If so, remove one.
@@ -56,64 +59,98 @@ public class ExactVertexCover<V,E> extends VertexCovers{
                             super.findGreedyCover(graph).size()
                         );
 
+        System.out.println("Bound; "+boundOnVertexCoverWeight);
         //Invoke recursive algorithm
-        VertexCover vertexCover= this.calculateCoverRecursively(0, new BitSet(vertices.size()), 0);
+        VertexCover vertexCover= this.calculateCoverRecursively(0, new BitSet(N), 0);
 
         //Build solution
+        System.out.println("Optimum cover weight: "+vertexCover.weight);
         Set<V> verticesInCover=new LinkedHashSet<>();
-        for (int i = vertexCover.cover.nextSetBit(0); i >= 0; i = vertexCover.cover.nextSetBit(i+1))
+        for (int i = vertexCover.cover.nextSetBit(0); i >= 0 && i<N; i = vertexCover.cover.nextSetBit(i+1))
             verticesInCover.add(vertices.get(i));
         return verticesInCover;
 
     }
 
-    private VertexCover calculateCoverRecursively(int lastVisited, BitSet visited, int depth){
+    private VertexCover calculateCoverRecursively(int lastVisited, BitSet visited, int accumulatedWeight){
+        System.out.println("Solving for: accumulatedWeight: "+accumulatedWeight+" visited: "+printVisited(visited)+" lastVisited: "+vertices.get(lastVisited));
         //Check memo
-        if(memo.containsKey(visited))
-            return (VertexCover)memo.get(visited).clone();
+        if(memo.containsKey(visited)) {
+            System.out.println("Cache hit");
+            return (VertexCover) memo.get(visited).clone();
+        }
 
         //Base case 1: all vertices have been visited
-        if(lastVisited == N) {
-            VertexCover vertexCover=new VertexCover(N, depth);
-            if(vertexCover.weight < boundOnVertexCoverWeight) //Found new, better vertex cover. Update bound
-                boundOnVertexCoverWeight=vertexCover.weight;
-            return vertexCover;
-        }
+//        if(lastVisited == N-1) {
+//            VertexCover vertexCover=new VertexCover(N, accumulatedWeight);
+//            if(vertexCover.weight < boundOnVertexCoverWeight) //Found new, better vertex cover. Update bound
+//                boundOnVertexCoverWeight=vertexCover.weight;
+//            return vertexCover;
+//        }
 
-        //Base case 2: we've exceeded the maximum depth -> add all remaining unvisited vertices to the cover
-        if(depth >= boundOnVertexCoverWeight){
-            VertexCover vertexCover=new VertexCover(N, depth);
-            for(int nextVertexIndex=visited.nextClearBit(lastVisited);
-                nextVertexIndex >=0;
-                nextVertexIndex=visited.nextClearBit(nextVertexIndex+1)){
+        //Base case 2: we've exceeded the maximum accumulatedWeight -> add all remaining unvisited vertices to the cover
+//        if(accumulatedWeight >= boundOnVertexCoverWeight){
+//            VertexCover vertexCover=new VertexCover(N, accumulatedWeight);
+//            for(int nextVertexIndex=visited.nextClearBit(lastVisited);
+//                nextVertexIndex >=0;
+//                nextVertexIndex=visited.nextClearBit(nextVertexIndex+1)){
+//
+//                vertexCover.addVertex(nextVertexIndex, 1);
+//            }
+//            return  vertexCover;
+//        }
 
-                vertexCover.addVertex(nextVertexIndex, 1);
-            }
-            return  vertexCover;
-        }
+        //Base case 2: we've exceeded our bound on the best solution -> just return an expensive cover which will never be selected
+//        if(accumulatedWeight > boundOnVertexCoverWeight){
+//            System.out.println("Pruning");
+//            return new VertexCover(N, Integer.MAX_VALUE);
+//        }
 
 
         //Find the next unvisited vertex WITH neighbors (if a vertex has no neighbors, then we don't need to select it
         //because it doesn't cover any edges)
-        int nextVertexIndex;
+        int nextVertexIndex=-1;
         List<V> neighbors=Collections.emptyList();
-        for(nextVertexIndex=visited.nextClearBit(lastVisited);
-            nextVertexIndex >=0 && neighbors.isEmpty();
-            nextVertexIndex=visited.nextClearBit(nextVertexIndex+1)){
+        for(int index=visited.nextClearBit(lastVisited);
+            index >=0 && index<N;
+            index=visited.nextClearBit(index+1)){
+//            System.out.println("checking neighbors of vertex: "+index);
 
-            neighbors=Graphs.neighborListOf(graph,vertices.get(nextVertexIndex));
-            for(Iterator<V> it=neighbors.iterator(); it.hasNext(); ) //Exclude all visited vertices @TODO: is this implemented correctly?
+            neighbors=Graphs.neighborListOf(graph,vertices.get(index));
+            for(Iterator<V> it=neighbors.iterator(); it.hasNext(); ) //Exclude all visited vertices
                 if(visited.get(vertexIDDictionary.get(it.next())))
                     it.remove();
+            if(!neighbors.isEmpty()) {
+                nextVertexIndex = index;
+                break;
+            }
+//            System.out.println("Neighbors: "+neighbors.size());
         }
+        System.out.println("nextVertex: "+(nextVertexIndex >= 0 ? vertices.get(nextVertexIndex) : nextVertexIndex)+" remaining neighbors: "+neighbors);
 
+        //Base case 1: all vertices have been visited
         if(nextVertexIndex==-1){ //We've visited all vertices, return the base case
-            return new VertexCover(N, depth);
+//            return new VertexCover(N, accumulatedWeight);
+            VertexCover vertexCover=new VertexCover(N, 0);
+            if(accumulatedWeight <= boundOnVertexCoverWeight) { //Found new a solution that matches our bound. Tighten the bound.
+                System.out.println("Found solution with weight: "+accumulatedWeight+" tightening bound to: "+(accumulatedWeight - 1));
+                boundOnVertexCoverWeight = accumulatedWeight - 1;
+            }
+            return vertexCover;
+        }else if(accumulatedWeight >= boundOnVertexCoverWeight){
+            System.out.println("Pruning");
+            return new VertexCover(N, N);
         }
 
         //Recursion
         //@TODO JK: Can we use a lower bound or estimation which of these 2 branches produces a better solution? If one of them is likely to produce a better solution,
         // then that branch should be explored first!
+
+        /* Create 2 branches:
+            Left Branch: vertex v is added to the cover, and we solve for G_{v}
+            Right branch: N(v) are added to the cover, and we solve for G_{N(v) \cup v }.
+            Here N(v) is the set of neighbors of v. G_{v} indicates the graph obtained by removing vertex v and all vertices incident to it.
+         */
 
         //Left branch:
         BitSet visitedLeftBranch= (BitSet) visited.clone();
@@ -125,22 +162,30 @@ public class ExactVertexCover<V,E> extends VertexCovers{
         for(V v : neighbors)
             visitedRightBranch.set(vertexIDDictionary.get(v));
 
-        VertexCover leftCover=calculateCoverRecursively(nextVertexIndex, visitedLeftBranch, depth+1);
-        VertexCover rightCover=calculateCoverRecursively(nextVertexIndex, visitedRightBranch, depth+1);
+        VertexCover leftCover=calculateCoverRecursively(nextVertexIndex, visitedLeftBranch, accumulatedWeight+1);
+        leftCover.addVertex(nextVertexIndex, 1); //Delayed update of the left cover
+        VertexCover rightCover=calculateCoverRecursively(nextVertexIndex, visitedRightBranch, accumulatedWeight+neighbors.size());
+        for(V v : neighbors) //Delayed update of the right cover
+            rightCover.addVertex(vertexIDDictionary.get(v), 1);
 
 
-        //Select the best branch
+        //Return the best branch
         if(leftCover.weight <= rightCover.weight){
-            leftCover.addVertex(nextVertexIndex); //Delayed update of the left cover
             memo.put(visited, leftCover);
             return leftCover;
         }else{
-            for(V v : neighbors) //Delayed update of the right cover
-                rightCover.addVertex(vertexIDDictionary.get(v));
+
             memo.put(visited, rightCover);
             return rightCover;
         }
 
+    }
+
+    public String printVisited(BitSet visited){
+        List<V> visitedVertices=new ArrayList<>();
+        for (int i = visited.nextSetBit(0); i >= 0 && i<N; i = visited.nextSetBit(i+1))
+            visitedVertices.add(vertices.get(i));
+        return visitedVertices.toString();
     }
 
 
@@ -152,6 +197,11 @@ public class ExactVertexCover<V,E> extends VertexCovers{
             cover=new BitSet(size);
             this.weight=weight;
         }
+
+//        public VertexCover(int size){
+//            cover=new BitSet(size);
+////            this.weight=weight;
+//        }
 
         //Copy constructor
         public VertexCover(VertexCover vertexCover){
@@ -172,6 +222,78 @@ public class ExactVertexCover<V,E> extends VertexCovers{
             cover.set(vertexIndex);
             this.weight+=weight;
         }
+    }
+
+    //Temporary code, needs to be deleted
+    public static void main(String[] args){
+//        UndirectedGraph<Integer, DefaultEdge> g1=new SimpleGraph<>(DefaultEdge.class);
+//        Graphs.addAllVertices(g1, Arrays.asList(0,1,2,3));
+//        g1.addEdge(0,1);
+//        g1.addEdge(1,2);
+//        g1.addEdge(2,3);
+//        g1.addEdge(3,0);
+//        ExactVertexCover<Integer, DefaultEdge> c1=new ExactVertexCover<>(g1);
+//        System.out.println("Cover c1: "+c1.getMinimumVertexCover()); //Optimal: 2
+
+
+//        UndirectedGraph<Integer, DefaultEdge> g2=new SimpleGraph<>(DefaultEdge.class);
+//        Graphs.addAllVertices(g2, Arrays.asList(0,1,2,3,4,5,6,7));
+//        g2.addEdge(1,2);
+//        g2.addEdge(2,3);
+//        g2.addEdge(3,4);
+//        g2.addEdge(4,5);
+//        g2.addEdge(5,6);
+//        g2.addEdge(6,7);
+//        g2.addEdge(7,1);
+//        g2.addEdge(0,1);
+//        g2.addEdge(0,2);
+//        g2.addEdge(0,3);
+//        g2.addEdge(0,4);
+//        g2.addEdge(0,5);
+//        g2.addEdge(0,6);
+//        g2.addEdge(0,7);
+//        ExactVertexCover<Integer, DefaultEdge> c2=new ExactVertexCover<>(g2);
+//        System.out.println("Cover c2: "+c2.getMinimumVertexCover()); //Optimal: 5
+
+
+        UndirectedGraph<Integer, DefaultEdge> g3=new SimpleGraph<>(DefaultEdge.class);
+        Graphs.addAllVertices(g3, Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11));
+        g3.addEdge(0,1);
+        g3.addEdge(0,9);
+        g3.addEdge(0,7);
+        g3.addEdge(1,2);
+        g3.addEdge(1,5);
+        g3.addEdge(2,3);
+        g3.addEdge(2,4);
+        g3.addEdge(3,4);
+        g3.addEdge(3,5);
+        g3.addEdge(4,11);
+        g3.addEdge(5,6);
+        g3.addEdge(6,7);
+        g3.addEdge(6,8);
+        g3.addEdge(7,8);
+        g3.addEdge(8,10);
+        g3.addEdge(9,10);
+        g3.addEdge(9,11);
+        g3.addEdge(10,11);
+        ExactVertexCover<Integer, DefaultEdge> c3=new ExactVertexCover<>(g3);
+        System.out.println("Cover c3: "+c3.getMinimumVertexCover()); //Optimal: 7
+
+//        UndirectedGraph<Integer, DefaultEdge> g4=new SimpleGraph<>(DefaultEdge.class);
+//        Graphs.addAllVertices(g4, Arrays.asList(0,1,2,3,4,5));
+//        g4.addEdge(0,2);
+//        g4.addEdge(1,2);
+//        g4.addEdge(2,3);
+//        g4.addEdge(3,4);
+//        g4.addEdge(3,5);
+//        ExactVertexCover<Integer, DefaultEdge> c4=new ExactVertexCover<>(g4);
+//        System.out.println("Cover c4: "+c4.getMinimumVertexCover()); //Optimal: 2
+        
+        
+
+
+//        UndirectedGraph<Integer, DefaultEdge> g3=new SimpleGraph<>(DefaultEdge.class);
+//        Graphs.addAllVertices(g3, Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11));
     }
 }
 

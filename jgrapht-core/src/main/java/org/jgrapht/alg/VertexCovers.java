@@ -147,6 +147,156 @@ public abstract class VertexCovers
 
         return cover;
     }
+
+    public static int counter1=0;
+    public static <V, E> Set<V> findVertexCover(UndirectedGraph<V, E> g)
+    {
+
+        List<V> vertices=new ArrayList<>(g.vertexSet());
+        Collections.sort(vertices, new VertexDegreeComparator<>(g, false));
+        Collections.sort(vertices, (v1, v2) -> Integer.compare(g.degreeOf(v1), g.degreeOf(v2)));
+
+        counter1++;
+
+        V v = null;
+        List<V> neighbors=null;
+        Iterator<V> it=g.vertexSet().iterator();
+        while(v == null && it.hasNext()){
+            V candidate=it.next();
+            neighbors=Graphs.neighborListOf(g, candidate);
+            if(!neighbors.isEmpty())
+                v=candidate;
+        }
+
+        if (v==null) {
+            return new HashSet<>();
+        }
+
+        // G1 = (V',E') <-- G(V,E)
+        UndirectedSubgraph<V, E> g1 =
+                new UndirectedSubgraph<>(
+                        g,
+                        null,
+                        null);
+
+        UndirectedSubgraph<V, E> g2 =
+                new UndirectedSubgraph<>(
+                        g,
+                        null,
+                        null);
+
+        g1.removeVertex(v);
+        g2.removeAllVertices(neighbors);
+        g2.removeVertex(v);
+
+        Set<V> cover1 = findVertexCover(g1);
+        Set<V> cover2 = findVertexCover(g2);
+
+        cover1.add(v);
+        cover2.addAll(neighbors);
+
+        if (cover1.size() < cover2.size()) {
+            return cover1;
+        } else {
+            return cover2;
+        }
+    }
+
+    public static int counter2=0;
+    public static <V, E> Set<V> findVertexCover2(Graph<V, E> g)
+    {
+        counter2++;
+
+        Set<E> edgeSet=g.edgeSet();
+
+        if(edgeSet.isEmpty())
+            return new HashSet<>();
+
+        //Find edge to branch on.
+        E e=edgeSet.iterator().next();
+        V source=g.getEdgeSource(e);
+        V target=g.getEdgeTarget(e);
+
+        // G1 = (V',E') <-- G(V,E)
+        Subgraph<V, E, Graph<V, E>> g1 =
+                new Subgraph<>(
+                        g,
+                        null,
+                        null);
+
+        Subgraph<V, E, Graph<V, E>> g2 =
+                new Subgraph<>(
+                        g,
+                        null,
+                        null);
+
+        g1.removeVertex(source);
+        g2.removeVertex(target);
+
+        Set<V> cover1 = findVertexCover2(g1);
+        Set<V> cover2 = findVertexCover2(g2);
+
+        cover1.add(source);
+        cover2.add(target);
+
+        if (cover1.size() < cover2.size()) {
+            return cover1;
+        } else {
+            return cover2;
+        }
+    }
+
 }
 
 // End VertexCovers.java
+
+/*
+Notation:
+V(G)= set of vertices in graph G
+E(G)= set of edges in graph G
+G\{v1, v2,...}= graph where vertices v1, v2, ... and all edges incident to it have been deleted.
+N(G,v)= set of all neighbor vertices of vertex v in graph G.
+
+
+
+Computing a minimum vertex cover
+
+
+Recursive algorithm 1:
+-Idea: choose a vertex v. Either v is part of the vertex cover, or N(v) are all part of the vertex cover
+
+Set alg1(Graph G){
+   if(E(g) == empty) //Terminate when there are no edges left
+    return {};
+
+   select vertex v in V(G);
+
+   U1=alg1(G\{v}) \cup v;
+   U2=alg1(G\{v \cup N(G,v)}) \cup N(G,v);
+
+   if(|U1| <= |U2|)
+    return U1;
+   else
+    return U2;
+}
+
+Recursive algorithm 2:
+-Idea: for each edge (u,v), at least one of {u,v} must be part of the vertex cover. If we select u, then we can solve for the subgraph obtained by deleting vertex u and all edges incident to it. Alternatively, if we select v, then we can solve for the subgraph obtained by deleting vertex v and all edges incident to it.
+
+-Pseudo code:
+
+Set alg2(Graph G){
+   if(E(G) == empty) //Terminate when there are no edges left
+    return {};
+
+   select edge (u,v) in E(G);
+
+   U1=alg2(G_u) \cup u;
+   U2=alg2(G_v) \cup v;
+
+   if(|U1| <= |U2|)
+    return U1;
+   else
+    return U2;
+}
+*/

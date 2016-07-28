@@ -148,100 +148,230 @@ public abstract class VertexCovers
         return cover;
     }
 
-    public static int counter1=0;
-    public static <V, E> Set<V> findVertexCover(UndirectedGraph<V, E> g)
+//    public static int counter1=0;
+//    public static <V, E> Set<V> findVertexCover(UndirectedGraph<V, E> g)
+//    {
+//
+//        List<V> vertices=new ArrayList<>(g.vertexSet());
+//        Collections.sort(vertices, new VertexDegreeComparator<>(g, false));
+//        Collections.sort(vertices, (v1, v2) -> Integer.compare(g.degreeOf(v1), g.degreeOf(v2)));
+//
+//        counter1++;
+//
+//        V v = null;
+//        List<V> neighbors=null;
+//        Iterator<V> it=g.vertexSet().iterator();
+//        while(v == null && it.hasNext()){
+//            V candidate=it.next();
+//            neighbors=Graphs.neighborListOf(g, candidate);
+//            if(!neighbors.isEmpty())
+//                v=candidate;
+//        }
+//
+//        if (v==null) {
+//            return new HashSet<>();
+//        }
+//
+//        // G1 = (V',E') <-- G(V,E)
+//        UndirectedSubgraph<V, E> g1 =
+//                new UndirectedSubgraph<>(
+//                        g,
+//                        null,
+//                        null);
+//
+//        UndirectedSubgraph<V, E> g2 =
+//                new UndirectedSubgraph<>(
+//                        g,
+//                        null,
+//                        null);
+//
+//        g1.removeVertex(v);
+//        g2.removeAllVertices(neighbors);
+//        g2.removeVertex(v);
+//
+//        Set<V> cover1 = findVertexCover(g1);
+//        Set<V> cover2 = findVertexCover(g2);
+//
+//        cover1.add(v);
+//        cover2.addAll(neighbors);
+//
+//        if (cover1.size() < cover2.size()) {
+//            return cover1;
+//        } else {
+//            return cover2;
+//        }
+//    }
+//
+//    public static int counter2=0;
+//    public static <V, E> Set<V> findVertexCover2(Graph<V, E> g)
+//    {
+//        counter2++;
+//
+//        Set<E> edgeSet=g.edgeSet();
+//
+//        if(edgeSet.isEmpty())
+//            return new HashSet<>();
+//
+//        //Find edge to branch on.
+//        E e=edgeSet.iterator().next();
+//        V source=g.getEdgeSource(e);
+//        V target=g.getEdgeTarget(e);
+//
+//        // G1 = (V',E') <-- G(V,E)
+//        Subgraph<V, E, Graph<V, E>> g1 =
+//                new Subgraph<>(
+//                        g,
+//                        null,
+//                        null);
+//
+//        Subgraph<V, E, Graph<V, E>> g2 =
+//                new Subgraph<>(
+//                        g,
+//                        null,
+//                        null);
+//
+//        g1.removeVertex(source);
+//        g2.removeVertex(target);
+//
+//        Set<V> cover1 = findVertexCover2(g1);
+//        Set<V> cover2 = findVertexCover2(g2);
+//
+//        cover1.add(source);
+//        cover2.add(target);
+//
+//        if (cover1.size() < cover2.size()) {
+//            return cover1;
+//        } else {
+//            return cover2;
+//        }
+//    }
+
+    private static Map<String, BitSet> memo;
+    private static List<List<Integer>> neighbors;
+
+    /**
+     * Finds a minimum vertex cover of a specified graph. At each iteration,
+     * the algorithm picks a random vertex v and distinguishes two cases:
+     * either v has to be added to the vertex cover or all neighbors of v.
+     *
+     * Let k be the size of a minimum vertex cover. Then the algorithm requires
+     * O(2^k * poly(n)) time to terminate. Thus, this algorithm achieves polynomial
+     * running time on graph classes where k = O(log^c n) for any constant c.
+     *
+     * There are more advanced algorithms for the minimum vertex cover problem,
+     * e.g., by Chen, Kanj, Xia (2005) with a running time of O(kn + 1.274^k).
+     *
+     * @param g the graph for which vertex cover approximation is to be found.
+     *
+     * @return a set of vertices which is a minimum vertex cover for the specified
+     * graph.
+     */
+    public static <V, E> Set<V> findMinimumVertexCover(Graph<V, E> g)
     {
+        memo = new HashMap<String, BitSet>();
 
-        List<V> vertices=new ArrayList<>(g.vertexSet());
-        Collections.sort(vertices, new VertexDegreeComparator<>(g, false));
-        Collections.sort(vertices, (v1, v2) -> Integer.compare(g.degreeOf(v1), g.degreeOf(v2)));
+        // sort vertices by descending degree in vertices list
+        List<V> vertices = new ArrayList<V>();
+        List<V> sortHelpList = new ArrayList<V>();
+        sortHelpList.addAll(g.vertexSet());
 
-        counter1++;
+        while (!sortHelpList.isEmpty()) {
+            int maxDegree = 0;
+            int next = 0;
 
-        V v = null;
-        List<V> neighbors=null;
-        Iterator<V> it=g.vertexSet().iterator();
-        while(v == null && it.hasNext()){
-            V candidate=it.next();
-            neighbors=Graphs.neighborListOf(g, candidate);
-            if(!neighbors.isEmpty())
-                v=candidate;
+            for (int i = 0; i < sortHelpList.size(); i++) {
+                V v = sortHelpList.get(i);
+                int degree = Graphs.neighborListOf(g, v).size();
+
+                if (maxDegree < degree) {
+                    maxDegree = degree;
+                    next = i;
+                }
+            }
+            vertices.add(sortHelpList.remove(next));
         }
 
-        if (v==null) {
-            return new HashSet<>();
+        int n = vertices.size();
+
+        // create adjacency list for the whole graph
+        neighbors = new ArrayList<List<Integer>>();
+
+        for (int i = 0; i < n; i++) {
+            neighbors.add(new ArrayList<Integer>());
+
+            for (int j = 0; j < n; j++) {
+                if (Graphs.neighborListOf(g, vertices.get(i)).contains(vertices.get(j))) {
+                    neighbors.get(i).add(j);
+                }
+            }
         }
 
-        // G1 = (V',E') <-- G(V,E)
-        UndirectedSubgraph<V, E> g1 =
-                new UndirectedSubgraph<>(
-                        g,
-                        null,
-                        null);
+        // store subgraph configuration as BitSet of removed vertices
+        BitSet removed = new BitSet(n);
 
-        UndirectedSubgraph<V, E> g2 =
-                new UndirectedSubgraph<>(
-                        g,
-                        null,
-                        null);
+        // findMinimumVertexCoverRecursion returns a BitSet that describes which vertices are in cover
+        BitSet cover = findMinimumVertexCoverRecursion(g, removed);
 
-        g1.removeVertex(v);
-        g2.removeAllVertices(neighbors);
-        g2.removeVertex(v);
-
-        Set<V> cover1 = findVertexCover(g1);
-        Set<V> cover2 = findVertexCover(g2);
-
-        cover1.add(v);
-        cover2.addAll(neighbors);
-
-        if (cover1.size() < cover2.size()) {
-            return cover1;
-        } else {
-            return cover2;
+        // Set<V> result is then constructed from BitSet solution
+        Set<V> result = new HashSet<V>();
+        for (int i = 0; i < n; i++) {
+            if (cover.get(i)) {
+                result.add(vertices.get(i));
+            }
         }
+
+        return result;
     }
 
-    public static int counter2=0;
-    public static <V, E> Set<V> findVertexCover2(Graph<V, E> g)
+    private static <V, E> BitSet findMinimumVertexCoverRecursion(Graph<V, E> g, BitSet removed)
     {
-        counter2++;
+        int n = g.vertexSet().size();
+        String subgraphID = removed.toString();
 
-        Set<E> edgeSet=g.edgeSet();
+        // base case
+        if (removed.cardinality() == n) {
+            return new BitSet(n);
+        }
 
-        if(edgeSet.isEmpty())
-            return new HashSet<>();
+        // check whether subproblem already occurred
+        if (memo.containsKey(subgraphID)) {
+            BitSet best = new BitSet(n);
+            best.or(memo.get(subgraphID));
+            return best;
+        }
 
-        //Find edge to branch on.
-        E e=edgeSet.iterator().next();
-        V source=g.getEdgeSource(e);
-        V target=g.getEdgeTarget(e);
+        // pick arbitrary unconsidered vertex
+        int vIndex = removed.nextClearBit(0);
 
-        // G1 = (V',E') <-- G(V,E)
-        Subgraph<V, E, Graph<V, E>> g1 =
-                new Subgraph<>(
-                        g,
-                        null,
-                        null);
+        // create two subgraphs, one without v and one without v & N(v)
+        BitSet removed1 = new BitSet(n);
+        removed1.or(removed);
+        removed1.set(vIndex);
 
-        Subgraph<V, E, Graph<V, E>> g2 =
-                new Subgraph<>(
-                        g,
-                        null,
-                        null);
+        BitSet removed2 = new BitSet(n);
+        removed2.or(removed1);
 
-        g1.removeVertex(source);
-        g2.removeVertex(target);
+        for (Integer neighborID : neighbors.get(vIndex)) {
+            removed2.set(neighborID);
+        }
 
-        Set<V> cover1 = findVertexCover2(g1);
-        Set<V> cover2 = findVertexCover2(g2);
+        BitSet cover1 = findMinimumVertexCoverRecursion(g, removed1);
+        BitSet cover2 = findMinimumVertexCoverRecursion(g, removed2);
 
-        cover1.add(source);
-        cover2.add(target);
+        cover1.set(vIndex);
 
-        if (cover1.size() < cover2.size()) {
+        for (Integer neighborID : neighbors.get(vIndex)) {
+            if (!removed.get(neighborID)) {
+                cover2.set(neighborID);
+            }
+        }
+
+        //choose the smaller of the two subgraph vertex covers
+        if (cover1.cardinality() < cover2.cardinality()) {
+            memo.put(subgraphID, cover1);
             return cover1;
         } else {
+            memo.put(subgraphID, cover2);
             return cover2;
         }
     }

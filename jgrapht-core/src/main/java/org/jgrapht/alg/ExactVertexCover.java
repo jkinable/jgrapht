@@ -36,6 +36,7 @@
  */
 package org.jgrapht.alg;
 
+import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.VertexFactory;
 import org.jgrapht.alg.util.VertexDegreeComparator;
@@ -167,15 +168,15 @@ public class ExactVertexCover<V,E> extends VertexCovers{
         for(V v : neighbors)
             visitedRightBranch.set(vertexIDDictionary.get(v));
 
-        VertexCover rightCover=calculateCoverRecursively(indexNextVertex, visitedRightBranch, accumulatedWeight+neighbors.size());
-        for(V v : neighbors) //Delayed update of the right cover
+        VertexCover rightCover=calculateCoverRecursively(indexNextVertex+1, visitedRightBranch, accumulatedWeight+neighbors.size());
+        for(V v : neighbors)
             rightCover.addVertex(vertexIDDictionary.get(v), 1);
 
         //Left branch (vertex v is added to the cover, and we solve for G_{v}):
         BitSet visitedLeftBranch= (BitSet) visited.clone();
         visitedLeftBranch.set(indexNextVertex);
 
-        VertexCover leftCover=calculateCoverRecursively(indexNextVertex, visitedLeftBranch, accumulatedWeight+1);
+        VertexCover leftCover=calculateCoverRecursively(indexNextVertex+1, visitedLeftBranch, accumulatedWeight+1);
         leftCover.addVertex(indexNextVertex, 1); //Delayed update of the left cover
 
 
@@ -221,7 +222,7 @@ public class ExactVertexCover<V,E> extends VertexCovers{
 
 //        4-cyle graph (optimal=2):
 //        UndirectedGraph<Integer, DefaultEdge> g1=new SimpleGraph<>(DefaultEdge.class);
-//        Graphs.addAllVertices(g1, Arrays.asList(0,1,2,3));
+//        Graphs.addAllVertices(g1, Arrays.asList(0, 1, 2, 3));
 //        g1.addEdge(0,1);
 //        g1.addEdge(1,2);
 //        g1.addEdge(2,3);
@@ -288,25 +289,25 @@ public class ExactVertexCover<V,E> extends VertexCovers{
 //        System.out.println("Cover c4: "+c4.getMinimumVertexCover()); //Optimal: 2
 
 
-        RandomGraphGenerator<Integer, DefaultEdge> gen =
-                new RandomGraphGenerator<>(
-                        200,
-                        15000);
-        VertexFactory<Integer> f =
-                new VertexFactory<Integer>() {
-                    int gid;
-
-                    @Override
-                    public Integer createVertex()
-                    {
-                        return gid++;
-                    }
-                };
-
-        UndirectedGraph<Integer, DefaultEdge> g5 = new SimpleGraph<>(DefaultEdge.class);
-        gen.generateGraph(g5, f, new HashMap<>());
-        ExactVertexCover<Integer, DefaultEdge> c5=new ExactVertexCover<>(g5);
-        System.out.println("Cover c5: "+c5.getMinimumVertexCover());
+//        RandomGraphGenerator<Integer, DefaultEdge> gen =
+//                new RandomGraphGenerator<>(
+//                        200,
+//                        15000);
+//        VertexFactory<Integer> f =
+//                new VertexFactory<Integer>() {
+//                    int gid;
+//
+//                    @Override
+//                    public Integer createVertex()
+//                    {
+//                        return gid++;
+//                    }
+//                };
+//
+//        UndirectedGraph<Integer, DefaultEdge> g5 = new SimpleGraph<>(DefaultEdge.class);
+//        gen.generateGraph(g5, f, new HashMap<>());
+//        ExactVertexCover<Integer, DefaultEdge> c5=new ExactVertexCover<>(g5);
+//        System.out.println("Cover c5: "+c5.getMinimumVertexCover());
 //        System.out.println("Cover c5: "+VertexCovers.findMinimumVertexCover(g5)); //Optimal: 7
 
 //        UndirectedGraph<Integer, DefaultEdge> g3=new SimpleGraph<>(DefaultEdge.class);

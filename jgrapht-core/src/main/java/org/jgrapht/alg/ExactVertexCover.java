@@ -120,7 +120,7 @@ public class ExactVertexCover<V,E> extends VertexCovers{
 
     }
 
-    private VertexCover calculateCoverRecursively(int lastVisited, BitSet visited, int accumulatedWeight){
+    private VertexCover calculateCoverRecursively(int indexNextCandidate, BitSet visited, int accumulatedWeight){
         //Check memoization table
         if(memo.containsKey(visited)) {
             return memo.get(visited).clone();
@@ -130,7 +130,7 @@ public class ExactVertexCover<V,E> extends VertexCovers{
         //because it doesn't cover any edges)
         int indexNextVertex=-1;
         Set<V> neighbors=Collections.emptySet();
-        for(int index=visited.nextClearBit(lastVisited);
+        for(int index=visited.nextClearBit(indexNextCandidate);
             index >=0 && index<N;
             index=visited.nextClearBit(index+1)){
 

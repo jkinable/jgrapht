@@ -82,7 +82,7 @@ public class EdmondsKarpMFImplTest extends MaximumFlowAlgorithmTest
             MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver =
                 new EdmondsKarpMFImpl<>(
                     simple);
-            Map<DefaultWeightedEdge, Double> flow = solver.buildMaximumFlow(0, 1).getFlow();
+            Map<DefaultWeightedEdge, Double> flow = solver.getMaximumFlow(0, 1).getFlow();
             flow.put(e, 25.0);
             fail();
         } catch (UnsupportedOperationException ex) {
@@ -91,7 +91,7 @@ public class EdmondsKarpMFImplTest extends MaximumFlowAlgorithmTest
             MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver =
                 new EdmondsKarpMFImpl<>(
                     simple);
-            solver.buildMaximumFlow(2, 0);
+            solver.getMaximumFlow(2, 0);
             fail();
         } catch (IllegalArgumentException ex) {
         }
@@ -99,7 +99,7 @@ public class EdmondsKarpMFImplTest extends MaximumFlowAlgorithmTest
             MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver =
                     new EdmondsKarpMFImpl<>(
                             simple);
-            solver.buildMaximumFlow(1, 2);
+            solver.getMaximumFlow(1, 2);
             fail();
         } catch (IllegalArgumentException ex) {
         }
@@ -107,7 +107,7 @@ public class EdmondsKarpMFImplTest extends MaximumFlowAlgorithmTest
             MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver =
                     new EdmondsKarpMFImpl<>(
                             simple);
-            solver.buildMaximumFlow(0, 0);
+            solver.getMaximumFlow(0, 0);
             fail();
         } catch (IllegalArgumentException ex) {
         }
@@ -115,7 +115,7 @@ public class EdmondsKarpMFImplTest extends MaximumFlowAlgorithmTest
             MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver =
                     new EdmondsKarpMFImpl<>(
                             simple);
-            solver.buildMaximumFlow(null, 0);
+            solver.getMaximumFlow(null, 0);
             fail();
         } catch (IllegalArgumentException ex) {
         }
@@ -123,7 +123,7 @@ public class EdmondsKarpMFImplTest extends MaximumFlowAlgorithmTest
             MaximumFlowAlgorithm<Integer, DefaultWeightedEdge> solver =
                     new EdmondsKarpMFImpl<>(
                             simple);
-            solver.buildMaximumFlow(0, null);
+            solver.getMaximumFlow(0, null);
             fail();
         } catch (IllegalArgumentException ex) {
         }

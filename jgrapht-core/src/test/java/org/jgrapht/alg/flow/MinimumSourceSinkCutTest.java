@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  */
 public abstract class MinimumSourceSinkCutTest extends MaximumFlowMinimumCutAlgorithmTestBase{
 
-    public static final int NR_RANDOM_TESTS=20;
+    public static final int NR_RANDOM_TESTS=2000;
 
     abstract MinimumSTCutAlgorithm<Integer, DefaultWeightedEdge> createSolver(Graph<Integer, DefaultWeightedEdge> network);
 

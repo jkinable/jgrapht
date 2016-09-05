@@ -84,7 +84,8 @@ public abstract class MaximumFlowAlgorithmTest extends MaximumFlowMinimumCutAlgo
             assertTrue(flow.containsKey(e));
         }
 
-        //Verify that the flow on every arc is between [-DEFAULT_EPSILON, edge_capacity]
+        //Verify that the flow on every arc is between [-DEFAULT_EPSILON, edge_capacity], and that the weights add up to the max flow value
+        double flowAcrossCut=0;
         for (DefaultWeightedEdge e : flow.keySet()) {
             assertTrue(network.containsEdge(e));
             assertTrue(
@@ -92,7 +93,9 @@ public abstract class MaximumFlowAlgorithmTest extends MaximumFlowMinimumCutAlgo
             assertTrue(
                     flow.get(e)
                             <= (network.getEdgeWeight(e)+ EdmondsKarpMFImpl.DEFAULT_EPSILON));
+            flowAcrossCut+=flow.get(e);
         }
+        assertEquals(expectedResult, flowAcrossCut, EdmondsKarpMFImpl.DEFAULT_EPSILON);
 
         //Verify flow preservation: amount of incoming flow must equal amount of outgoing flow (exception for the source/sink vertices)
         for (Integer v : network.vertexSet()) {
@@ -144,7 +147,8 @@ public abstract class MaximumFlowAlgorithmTest extends MaximumFlowMinimumCutAlgo
         for (DefaultWeightedEdge e : graph.edgeSet())
             assertTrue(flow.containsKey(e));
 
-        //Verify that the flow on every arc is between [-DEFAULT_EPSILON, edge_capacity]
+        //Verify that the flow on every arc is between [-DEFAULT_EPSILON, edge_capacity], and that the weights add up to the max flow value
+        double flowAcrossCut=0;
         for (DefaultWeightedEdge e : flow.keySet()) {
             assertTrue(graph.containsEdge(e));
             assertTrue(
@@ -152,7 +156,9 @@ public abstract class MaximumFlowAlgorithmTest extends MaximumFlowMinimumCutAlgo
             assertTrue(
                     flow.get(e)
                             <= (graph.getEdgeWeight(e)+ EdmondsKarpMFImpl.DEFAULT_EPSILON));
+            flowAcrossCut+=flow.get(e);
         }
+        assertEquals(expectedResult, flowAcrossCut, EdmondsKarpMFImpl.DEFAULT_EPSILON);
 
         //Verify flow preservation: amount of incoming flow must equal amount of outgoing flow (exception for the source/sink vertices)
         for (Integer u : graph.vertexSet()) {

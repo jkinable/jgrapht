@@ -169,9 +169,21 @@ public class PushRelabelMFImpl<V, E>
     @Override public MaximumFlow<E> buildMaximumFlow(V source, V sink)
     {
         this.calculateMaximumFlow(source, sink);
+        this.calculateMaximumFlow_flowBackPhase(source, sink);
         maxFlow = composeFlow();
         return new MaximumFlowImpl<>(maxFlowValue, maxFlow);
     }
+
+    //TEMP
+    Queue<VertexExtension> active;
+    @Override
+    public Map<E, Double> getMaximumFlow(){
+        this.calculateMaximumFlow(source, sink);
+        this.calculateMaximumFlow_flowBackPhase(source, sink);
+        return composeFlow();
+    }
+
+    //END TEMP
 
     /**
      * Sets current source to <tt>source</tt>, current sink to <tt>sink</tt>,
@@ -185,11 +197,11 @@ public class PushRelabelMFImpl<V, E>
     public double calculateMaximumFlow(V source,V sink){
         init(source, sink);
 
-        Queue<VertexExtension> active = new ArrayDeque<>();
+        active = new ArrayDeque<>();
 
         initialize(getVertexExtension(source), getVertexExtension(sink), active);
 
-        while (!active.isEmpty()) {
+        while (!active.isEmpty() && !flowBack) {
             VertexExtension ux = active.poll();
             for (;;) {
                 for (AnnotatedFlowEdge ex : ux.getOutgoing()) {
@@ -232,6 +244,7 @@ public class PushRelabelMFImpl<V, E>
             }
         }
 
+
         //Calculate the max flow that reaches the sink. There may be more efficient ways to do this.
         for (E e : network.edgesOf(sink)) {
             AnnotatedFlowEdge edge=edgeExtensionManager.getExtension(e);
@@ -243,6 +256,39 @@ public class PushRelabelMFImpl<V, E>
         }
 
         return maxFlowValue;
+    }
+
+    public void calculateMaximumFlow_flowBackPhase(V source,V sink){
+
+        while (!active.isEmpty()) {
+            VertexExtension ux = active.poll();
+            for (;;) {
+                for (AnnotatedFlowEdge ex : ux.getOutgoing()) {
+                    if (isAdmissible(ex)) {
+                        if ((ex.getTarget().prototype != sink)
+                                && (ex.getTarget().prototype != source))
+                        {
+                            active.offer(ex.getTarget());
+                        }
+
+                        // Check whether we're rip off the excess
+                        if (discharge(ex)) {
+                            break;
+                        }
+                    }
+                }
+
+                if (ux.hasExcess()) {
+                    relabel(ux);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        if (DIAGNOSTIC_ENABLED) {
+            diagnostic.dump();
+        }
     }
 
     private void relabel(VertexExtension vx)

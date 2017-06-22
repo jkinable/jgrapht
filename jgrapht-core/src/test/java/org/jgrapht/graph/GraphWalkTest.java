@@ -23,6 +23,9 @@ import org.jgrapht.*;
 import org.jgrapht.generate.*;
 import org.junit.*;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  *
  * @author Joris Kinable
@@ -119,7 +122,7 @@ public class GraphWalkTest
             Assert.assertEquals(0, path.getLength());
             Assert.assertEquals(Collections.emptyList(), path.getVertexList());
             Assert.assertEquals(Collections.emptyList(), path.getEdgeList());
-            Assert.assertTrue(path.isEmpty());
+            assertTrue(path.isEmpty());
             Assert.assertEquals(GraphWalk.emptyWalk(graph), path);
         }
     }
@@ -269,6 +272,75 @@ public class GraphWalkTest
         gw3.verify();
         //Concatenation with singleton shouldn't result in a different path.
         Assert.assertEquals(gw1, gw3);
+    }
+
+    @Test
+    public void testWalkTypes(){
+        Graph<Integer, DefaultEdge> g =new SimpleGraph<>(DefaultEdge.class);
+        Graphs.addAllVertices(g, Arrays.asList(0,1,2,3,4));
+        for(int i=0; i<4; i++){
+            g.addEdge(i, (i+1)%4);
+            g.addEdge(i, 4);
+        }
+
+        GraphWalk<Integer, DefaultEdge> emptyWalk=GraphWalk.emptyWalk(g);
+        assertTrue(emptyWalk.isClosed());
+        assertTrue(emptyWalk.isTrail());
+        assertTrue(emptyWalk.isCircuit());
+        assertTrue(emptyWalk.isPath());
+        assertTrue(emptyWalk.isCycle());
+        assertFalse(emptyWalk.isHamiltonianCycle());
+
+        GraphWalk<Integer, DefaultEdge> singletonWalk=GraphWalk.singletonWalk(g, 0);
+        System.out.println("edge list: "+singletonWalk.getEdgeList());
+        System.out.println("vertex list: "+singletonWalk.getVertexList());
+        assertTrue(singletonWalk.isClosed());
+        assertTrue(singletonWalk.isTrail());
+        assertTrue(singletonWalk.isCircuit());
+        assertTrue(singletonWalk.isPath());
+        assertTrue(singletonWalk.isCycle());
+        assertFalse(singletonWalk.isHamiltonianCycle());
+
+        GraphWalk<Integer, DefaultEdge> walk= GraphWalk.walk(g, Arrays.asList(0,1,2,1,4));
+        assertFalse(walk.isClosed());
+        assertFalse(walk.isTrail());
+        assertFalse(walk.isCircuit());
+        assertFalse(walk.isPath());
+        assertFalse(walk.isCycle());
+        assertFalse(walk.isHamiltonianCycle());
+
+        GraphWalk<Integer, DefaultEdge> trail= GraphWalk.walk(g, Arrays.asList(0,1,2,3,0,4));
+        assertFalse(trail.isClosed());
+        assertTrue(trail.isTrail());
+        assertFalse(trail.isCircuit());
+        assertFalse(trail.isPath());
+        assertFalse(trail.isCycle());
+        assertFalse(trail.isHamiltonianCycle());
+
+        GraphWalk<Integer, DefaultEdge> circuit= GraphWalk.walk(g, Arrays.asList(0,1,4,3,2,4,0));
+        assertTrue(circuit.isClosed());
+        assertTrue(circuit.isTrail());
+        assertTrue(circuit.isCircuit());
+        assertFalse(circuit.isPath());
+        assertFalse(circuit.isCycle());
+        assertFalse(circuit.isHamiltonianCycle());
+
+        GraphWalk<Integer, DefaultEdge> cycle= GraphWalk.walk(g, Arrays.asList(0,1,2,4,0));
+        assertTrue(cycle.isClosed());
+        assertTrue(cycle.isTrail());
+        assertTrue(cycle.isCircuit());
+        assertTrue(cycle.isPath());
+        assertTrue(cycle.isCycle());
+        assertFalse(cycle.isHamiltonianCycle());
+
+        GraphWalk<Integer, DefaultEdge> hamCycle=GraphWalk.walk(g, Arrays.asList(0,1,4,2,3,0));
+        assertTrue(hamCycle.isClosed());
+        assertTrue(hamCycle.isTrail());
+        assertTrue(hamCycle.isCircuit());
+        assertTrue(hamCycle.isPath());
+        assertTrue(hamCycle.isCycle());
+        assertTrue(hamCycle.isHamiltonianCycle());
+
     }
 
 }

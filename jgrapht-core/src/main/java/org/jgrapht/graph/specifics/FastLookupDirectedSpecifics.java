@@ -124,12 +124,14 @@ public class FastLookupDirectedSpecifics<V, E>
         getEdgeContainer(target).addIncomingEdge(e);
 
         Pair<V, V> vertexPair = new Pair<>(source, target);
-        if (!touchingVerticesToEdgeMap.containsKey(vertexPair)) {
-            ArrayUnenforcedSet<E> edgeSet = new ArrayUnenforcedSet<>();
+        ArrayUnenforcedSet<E> edgeSet = touchingVerticesToEdgeMap.get(vertexPair);
+        if(edgeSet != null)
+            edgeSet.add(e);
+        else{
+            edgeSet = new ArrayUnenforcedSet<>();
             edgeSet.add(e);
             touchingVerticesToEdgeMap.put(vertexPair, edgeSet);
-        } else
-            touchingVerticesToEdgeMap.get(vertexPair).add(e);
+        }
     }
 
     /**
@@ -148,8 +150,8 @@ public class FastLookupDirectedSpecifics<V, E>
         // for a pair
         // of touching vertices, remove the pair from the map.
         Pair<V, V> vertexPair = new Pair<>(source, target);
-        if (touchingVerticesToEdgeMap.containsKey(vertexPair)) {
-            ArrayUnenforcedSet<E> edgeSet = touchingVerticesToEdgeMap.get(vertexPair);
+        ArrayUnenforcedSet<E> edgeSet = touchingVerticesToEdgeMap.get(vertexPair);
+        if (edgeSet != null) {
             edgeSet.remove(e);
             if (edgeSet.isEmpty())
                 touchingVerticesToEdgeMap.remove(vertexPair);

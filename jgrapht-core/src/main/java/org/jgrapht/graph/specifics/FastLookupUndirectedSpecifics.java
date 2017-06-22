@@ -126,12 +126,14 @@ public class FastLookupUndirectedSpecifics<V, E>
 
         // Add edge to touchingVerticesToEdgeMap for the UnorderedPair {u,v}
         Pair<V, V> vertexPair = new UnorderedPair<>(source, target);
-        if (!touchingVerticesToEdgeMap.containsKey(vertexPair)) {
-            ArrayUnenforcedSet<E> edgeSet = new ArrayUnenforcedSet<>();
+        ArrayUnenforcedSet<E> edgeSet = touchingVerticesToEdgeMap.get(vertexPair);
+        if(edgeSet != null)
+            edgeSet.add(e);
+        else{
+            edgeSet = new ArrayUnenforcedSet<>();
             edgeSet.add(e);
             touchingVerticesToEdgeMap.put(vertexPair, edgeSet);
-        } else
-            touchingVerticesToEdgeMap.get(vertexPair).add(e);
+        }
 
         if (!source.equals(target)) { // If not a self loop
             getEdgeContainer(target).addEdge(e);
@@ -156,8 +158,8 @@ public class FastLookupUndirectedSpecifics<V, E>
         // for a pair
         // of touching vertices, remove the pair from the map.
         Pair<V, V> vertexPair = new UnorderedPair<>(source, target);
-        if (touchingVerticesToEdgeMap.containsKey(vertexPair)) {
-            ArrayUnenforcedSet<E> edgeSet = touchingVerticesToEdgeMap.get(vertexPair);
+        ArrayUnenforcedSet<E> edgeSet = touchingVerticesToEdgeMap.get(vertexPair);
+        if (edgeSet != null) {
             edgeSet.remove(e);
             if (edgeSet.isEmpty())
                 touchingVerticesToEdgeMap.remove(vertexPair);

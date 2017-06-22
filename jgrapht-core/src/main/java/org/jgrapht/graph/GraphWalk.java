@@ -126,7 +126,7 @@ public class GraphWalk<V, E>
         if (startVertex != null && vertexList !=null && edgeList != null && edgeList.size()+1 != vertexList.size())
             throw new IllegalArgumentException("VertexList and edgeList do not correspond to the same path (cardinality of vertexList +1 must equal the cardinality of the edgeList)");
         if(startVertex ==null ^ endVertex == null)
-            throw new IllegalArgumentException("Either the start and end vertices must both be null, or they must both be not null (one of them is null)");
+            throw new IllegalArgumentException("Either the start and end vertices must both be null, or they must both be non-null (one of them is null)");
 
 
         this.graph = Objects.requireNonNull(graph);
@@ -434,12 +434,76 @@ public class GraphWalk<V, E>
     }
 
     /**
-     * Returns true if the path is an empty path, that is, a path with startVertex=endVertex=null and with an empty
+     * Returns true if the path is an empty walk, that is, a walk with startVertex=endVertex=null and with an empty
      * vertex and edge list.
-     * @return Returns true if the path is an empty path.
+     * @return Returns true if the walk is an empty walk.
      */
     public boolean isEmpty(){
         return startVertex==null;
+    }
+
+    /**
+     * Tests whether the walk is a closed walk, i.e. whether start and end vertex are equal.
+     * @return true if the start and end vertex are equal
+     */
+    public boolean isClosed(){
+        return isEmpty() || startVertex.equals(endVertex);
+    }
+
+    /**
+     * Tests whether this walk is a <a href="http://mathworld.wolfram.com/Trail.html">trail</a>.
+     * A walk is a trail if it has no repeated edges.
+     * Vertices may repeat.
+     * @return true if this walk is a trail.
+     */
+    public boolean isTrail(){
+        Set<E> set=new HashSet<>(this.getEdgeList());
+        return set.size()==this.edgeList.size();
+    }
+
+    /**
+     * Tests whether this walk is a <a href="http://mathworld.wolfram.com/Circuit.html">circuit</a> (closed trail).
+     * A walk is a circuit if it has no repeated edges and the endpoints are the same.
+     * Vertices may repeat.
+     * @return true if this walk is a circuit.
+     */
+    public boolean isCircuit(){
+        return isClosed() && isTrail();
+    }
+
+    /**
+     * Tests whether this walk is a <a href="http://mathworld.wolfram.com/GraphPath.html">path</a>.
+     * A walk is a path if all vertices (except possibly the first and last) are distinct. In some literature,
+     * this is sometimes referred to as a simple path.
+     * @return true if this walk is a (simple) path.
+     */
+    public boolean isPath(){
+        System.out.println("checking path");
+        Set<V> vertices=new HashSet<>(this.getVertexList());
+        if(isEmpty() || getLength()==0) //empty or singleton graph
+            return true;
+        else if(isClosed())
+            return vertices.size()==this.vertexList.size()-1;
+        else
+            return vertices.size() == this.vertexList.size();
+    }
+
+    /**
+     * Tests whether this walk is a <a href="http://mathworld.wolfram.com/GraphCycle.html">cycle</a> (closed path).
+     * A walk is a cycle if all vertices except the first and last are distinct.
+     * @return true if this walk is a cycle.
+     */
+    public boolean isCycle(){
+        return isClosed() && isPath();
+    }
+
+    /**
+     * Tests whether this walk is a <a href="http://mathworld.wolfram.com/HamiltonianCycle.html">Hamiltonian cycle</a>.
+     * A walk is a Hamiltonian cycle if it is a cycle which visits every vertex in the graph exactly once.
+     * @return true if this walk is a cycle.
+     */
+    public boolean isHamiltonianCycle(){
+        return isCycle() && this.vertexList.size() == graph.vertexSet().size();
     }
 
     /**
@@ -513,6 +577,50 @@ public class GraphWalk<V, E>
     }
 
     /**
+     * Tests whether this path starts with the specified prefix. This path and the prefix path can be in different
+     * formats, e.g. the prefix path may be encoded as a vertex list, while this path is expressed as a sequence of
+     * vertices or vice versa. If the prefix is the Empty Path, this method always returns true.<br>
+     * The runtime of this method is linear in the size of the prefix.
+     * @param prefix the prefix
+     * @return true if this path starts with the specified prefix.
+     */
+//    public boolean startsWith(GraphWalk<V,E> prefix){
+//        if(prefix.isEmpty())
+//            return true;
+//        if(!this.startVertex.equals(prefix.startVertex) || prefix.size() > this.size())
+//            return false;
+//        if(this.edgeList != null && prefix.edgeList != null){ //Both paths are expressed in terms of edges
+//            for(int i=0; i<prefix.edgeList.size(); i++)
+//                if(!this.edgeList.get(i).equals(prefix.edgeList.get(i)))
+//                    return false;
+//        }else if(this.vertexList != null && prefix.vertexList != null){ //Both paths are expressed in terms of vertices
+//            for(int i=0; i<prefix.vertexList.size(); i++)
+//                if(!this.vertexList.get(i).equals(prefix.vertexList.get(i)))
+//                    return false;
+//        }else if(this.vertexList != null){ //compare this.vertexList against prefix.edgeList
+//            Iterator<V> it = this.vertexList.iterator();
+//            it.next(); //Skip the startVertex
+//            V v = prefix.startVertex;
+//            for(E e : prefix.edgeList){
+//                v=Graphs.getOppositeVertex(prefix.graph, e, v);
+//                if(!v.equals(it.next()))
+//                    return false;
+//            }
+//        }else{  //compare this.edgeList against prefix.vertexList
+//            Iterator<E> it =this.edgeList.iterator();
+//            V u=this.startVertex;
+//            Iterator<V> prefixIt=prefix.vertexList.iterator();
+//            prefixIt.next();//Skip the startVertex
+//            while(prefixIt.hasNext()){
+//                u=Graphs.getOppositeVertex(this.graph, it.next(), u);
+//                if(!u.equals(prefixIt.next()))
+//                    return false;
+//            }
+//        }
+//        return true;
+//    }
+
+    /**
      * Convenience method which creates an empty walk.
      * @param graph input graph
      * @param <V> vertex type
@@ -547,6 +655,20 @@ public class GraphWalk<V, E>
     public static <V,E> GraphWalk<V,E> singletonWalk(Graph<V,E> graph, V v, double weight){
         return new GraphWalk<>(graph, v, v, Collections.singletonList(v), Collections.emptyList(), weight);
     }
+
+    /**
+     * Convenience method which creates a walk over the vertices in the list. If the list is empty, an empty walk is
+     * returned. Otherwise, the walk follows the vertices the order of the vertices in the list.
+     * @param graph input graph
+     * @param vertices ordered list of vertices
+     * @param <V> vertex type
+     * @param <E> edge type
+     * @return a walk over the vertices in the list.
+     */
+    public static <V,E> GraphWalk<V,E> walk(Graph<V,E> graph, List<V> vertices){
+        return new GraphWalk<>(graph, vertices, 0d);
+    }
+
 }
 /**
  * Exception thrown in the event that the path is invalid.

@@ -26,6 +26,7 @@ Changes to JGraphT in each version:
     - Support latex math notation in Javadoc (contributed by Joris Kinable)
     - Allow CrossComponentIterator to start from a collection of startVertices (contributed by Patrick Sharp)
     - New implementation of Edmonds' maximum cardinality matching algorithm for general graphs. Added certifier for maximum cardinality by computing a Edmonds-Gallai decomposition. Reimplemented Hopcroft-Karp's algorithm for bipartite graphs. Added greedy algorithm for maximum cardinality case and enhanced greedy algorithm for the weighted case. Extended UnionFind with additional functionality. (contributed by Joris Kinable)
+    - Optimize map operations in FastLookupSpecifics (suggested by shevek, fix contributed by Joris Kinable)
 
 - **version 1.0.1** (16-Jan-2017):
     - Deleted all previously deprecated methods (cleanup contributed by Joris Kinable and Dimitrios Michail)

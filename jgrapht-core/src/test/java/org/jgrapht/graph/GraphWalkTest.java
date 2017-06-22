@@ -112,15 +112,46 @@ public class GraphWalkTest
     public void testEmptyPath()
     {
         Graph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+        //vertexList: [], edgeList:{}
         List<GraphWalk<Integer, DefaultEdge>> paths = new ArrayList<>();
         paths.add(new GraphWalk<>(graph, null, null, Collections.emptyList(), 0));
         paths.add(new GraphWalk<>(graph, Collections.emptyList(), 0));
         for (GraphWalk<Integer, DefaultEdge> path : paths) {
             Assert.assertEquals(0, path.getLength());
+            Assert.assertEquals(0, path.size());
             Assert.assertEquals(Collections.emptyList(), path.getVertexList());
             Assert.assertEquals(Collections.emptyList(), path.getEdgeList());
             Assert.assertTrue(path.isEmpty());
             Assert.assertEquals(GraphWalk.emptyWalk(graph), path);
+        }
+    }
+
+    @Test
+    public void testSingletonPath(){
+        Graph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
+        graph.addVertex(0);
+        //vertexList: [0], edgeList:{}
+        GraphWalk<Integer, DefaultEdge> path=GraphWalk.singletonWalk(graph, 0);
+        Assert.assertEquals(0, path.getLength());
+        Assert.assertEquals(1, path.size());
+        Assert.assertEquals(Collections.singletonList(0), path.getVertexList());
+        Assert.assertEquals(Collections.emptyList(), path.getEdgeList());
+    }
+
+    @Test
+    public void testLoopPath(){
+        Graph<Integer, DefaultEdge> graph = new Pseudograph<>(DefaultEdge.class);
+        graph.addVertex(0);
+        graph.addEdge(0,0);
+        //vertexList: [0], edgeList:{(0,0)}List<GraphWalk<Integer, DefaultEdge>> paths = new ArrayList<>();
+        List<GraphWalk<Integer, DefaultEdge>> paths = new ArrayList<>();
+        paths.add(new GraphWalk<>(graph, 0, 0, Collections.singletonList(graph.getEdge(0,0)), 0));
+        paths.add(new GraphWalk<>(graph, Arrays.asList(0,0), 0));
+        for (GraphWalk<Integer, DefaultEdge> path : paths) {
+            Assert.assertEquals(1, path.getLength());
+            Assert.assertEquals(2, path.size());
+            Assert.assertEquals(Arrays.asList(0,0), path.getVertexList());
+            Assert.assertEquals(Collections.singletonList(graph.getEdge(0,0)), path.getEdgeList());
         }
     }
 
@@ -265,10 +296,55 @@ public class GraphWalkTest
         graph.addEdge(0,1);
         GraphWalk<Integer, DefaultEdge> gw1=new GraphWalk<>(graph, 0, 1, Arrays.asList(0,1), null, 5);
         GraphWalk<Integer, DefaultEdge> gw2=GraphWalk.singletonWalk(graph, 1, 10);
-        GraphWalk<Integer, DefaultEdge> gw3=gw1.concat(gw2, gw-> gw1.getWeight()+gw2.getWeight());
+        GraphWalk<Integer, DefaultEdge> gw3=gw1.concat(gw2);
         gw3.verify();
         //Concatenation with singleton shouldn't result in a different path.
         Assert.assertEquals(gw1, gw3);
+        Assert.assertEquals(15, gw3.getWeight(), 0.00000001);
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testSubPathOutOfBounds(){
+        Graph<Integer, DefaultEdge> graph=new SimpleDirectedWeightedGraph<>(DefaultEdge.class);
+        GraphWalk<Integer, DefaultEdge> gw=GraphWalk.emptyWalk(graph);
+        gw.subPath(0);
+    }
+
+    @Test
+    public void testEmptySubpath(){
+        Graph<Integer, DefaultEdge> graph=new SimpleDirectedWeightedGraph<>(DefaultEdge.class);
+        GraphWalk<Integer, DefaultEdge> gw=GraphWalk.emptyWalk(graph);
+        GraphWalk<Integer, DefaultEdge> gw1=gw.subPath(0,0);
+        Assert.assertEquals(gw, gw1);
+    }
+
+    @Test
+    public void testSubPathOfSize1(){
+        Graph<Integer, DefaultEdge> graph=new SimpleGraph<>(DefaultEdge.class);
+        Graphs.addAllVertices(graph, Arrays.asList(0,1,2,3,4,5));
+        DefaultEdge e1=graph.addEdge(0,1);
+        DefaultEdge e2=graph.addEdge(1,2);
+        DefaultEdge e3=graph.addEdge(2,3);
+        DefaultEdge e4=graph.addEdge(3,4);
+        DefaultEdge e5=graph.addEdge(4,5);
+
+        List<GraphWalk<Integer, DefaultEdge>> paths = new ArrayList<>();
+        paths.add(new GraphWalk<>(graph, Arrays.asList(0,1,2,3,4,5), 5));
+        paths.add(new GraphWalk<>(graph, 0,5, Arrays.asList(e1,e2,e3,e4,e5), 5));
+        paths.add(new GraphWalk<>(graph, Arrays.asList(0,1,2,3,4), 4));
+        paths.add(new GraphWalk<>(graph, 0,5, Arrays.asList(e1,e2,e3,e4), 5));
+
+        for(GraphWalk<Integer, DefaultEdge> gw : paths){
+            for(int i=0; i<gw.size()-1; i++){
+                GraphWalk<Integer, DefaultEdge> sub=gw.subPath(i, i+1);
+                Assert.assertEquals(GraphWalk.singletonWalk(graph, i), sub);
+                Assert.assertEquals(0, sub.getWeight(), 0.00000001);
+            }
+        }
+    }
+
+    @Test
+    public void testSubPathOfSize2(){
+        Assert.fail(); //needs implementing
+    }
 }

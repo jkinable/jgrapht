@@ -131,6 +131,15 @@ public interface GraphPath<V, E>
         return getEdgeList().size();
     }
 
+    /**
+     * Returns the size of the path, measured in the number of vertices.
+     *
+     * @return the size of the path, measured in the number of vertices
+     */
+    default int size()
+    {
+        return getVertexList().size();
+    }
 }
 
 

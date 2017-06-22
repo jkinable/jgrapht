@@ -158,13 +158,17 @@ public class GraphWalk<V, E>
     @Override
     public List<E> getEdgeList()
     {
-        return (edgeList != null ? edgeList : GraphPath.super.getEdgeList());
+        if(edgeList == null)
+            this.edgeList = GraphPath.super.getEdgeList();
+        return edgeList;
     }
 
     @Override
     public List<V> getVertexList()
     {
-        return (vertexList != null ? vertexList : GraphPath.super.getVertexList());
+        if(vertexList == null)
+            this.vertexList=GraphPath.super.getVertexList();
+        return vertexList;
     }
 
     @Override
@@ -187,10 +191,21 @@ public class GraphWalk<V, E>
     {
         if (edgeList != null)
             return edgeList.size();
-        else if (vertexList != null && !vertexList.isEmpty())
-            return vertexList.size() - 1;
-        else
+        else if (isEmpty())
             return 0;
+        else
+            return vertexList.size() - 1;
+    }
+
+    @Override
+    public int size()
+    {
+        if (vertexList != null)
+            return vertexList.size();
+        else if(isEmpty())
+            return 0;
+        else
+            return edgeList.size() +1;
     }
 
     @Override
@@ -309,6 +324,80 @@ public class GraphWalk<V, E>
         else
             gw.weight=walkWeightCalculator.apply(gw);
         return gw;
+    }
+
+    public GraphWalk<V,E> subPath(int beginIndex){
+        return this.subPath(beginIndex, this.size(), null);
+    }
+
+    public GraphWalk<V,E> subPath(int beginIndex, Function<GraphWalk<V,E>,Double> walkWeightCalculator){
+        return this.subPath(beginIndex, this.size(), walkWeightCalculator);
+    }
+
+    public GraphWalk<V,E> subPath(int beginIndex, int endIndex){
+        return this.subPath(beginIndex, endIndex, null);
+    }
+
+    public GraphWalk<V,E> subPath(int beginIndex, int endIndex,Function<GraphWalk<V,E>,Double> walkWeightCalculator){
+        if(beginIndex<0 || beginIndex > endIndex || endIndex>this.size())
+            throw new IndexOutOfBoundsException("beginIndex or endIndex are negative, endIndex is greater than size(), or beginIndex is greater than endIndex");
+
+        GraphWalk<V,E> w=null;
+        double subWeight=0;
+
+        //Edge cases
+        if(beginIndex==endIndex){
+            w=emptyWalk(this.graph);
+        }else if(beginIndex+1==endIndex){ //singleton walk
+            V v;
+            if(vertexList != null)
+                v=vertexList.subList(beginIndex, endIndex).get(0);
+            else{ //Find singleton vertex by iterating over the edge list
+
+                if(beginIndex < this.size()/2.0){ //search from the start of the path
+                    v=startVertex;
+                    //TODO use iterator! it may not be a RandomAccessList!
+                    for(int i=0; i < beginIndex; i++)
+                        Graphs.getOppositeVertex(graph, edgeList.get(i), v);
+                }else{ //search from the back of the path
+                    //TODO this will be really bad if the underlying list is a LinkedList!
+                    v=endVertex;
+                    for(int i=edgeList.size()-1; i>=beginIndex; i--)
+                        Graphs.getOppositeVertex(graph, edgeList.get(i), v);
+                }
+            }
+            w=singletonWalk(this.graph, v);
+        }else{ //range of vertices/edges
+            V subStartVertex;
+            V subEndVertex;
+            List<V> subVertexList;
+            List<E> subEdgeList=null;
+
+
+            subVertexList=new ArrayList<>(this.getVertexList().subList(beginIndex, endIndex));
+            if(walkWeightCalculator==null && edgeList == null){
+                for(int i=0; i<subVertexList.size()-1; i++)
+                    subWeight+=graph.getEdgeWeight(graph.getEdge(subVertexList.get(i), subVertexList.get(i+1)));
+            }
+            subStartVertex=subVertexList.get(0);
+            subEndVertex=subVertexList.get(subVertexList.size()-1);
+
+            if(edgeList != null){
+               subEdgeList=new ArrayList<>(edgeList.subList(beginIndex, endIndex-1));
+               if(walkWeightCalculator==null)
+                   for(E e : subEdgeList)
+                       subWeight+=graph.getEdgeWeight(e);
+            }
+            w=new GraphWalk<>(graph, subStartVertex, subEndVertex, subVertexList, subEdgeList, subWeight);
+        }
+
+        if(walkWeightCalculator != null)
+            w.weight=walkWeightCalculator.apply(w);
+        return w;
+    }
+
+    public GraphWalk<V,E> concat(GraphWalk<V,E> extension){
+        return this.concat(extension, w -> this.weight + extension.weight);
     }
 
     /**
@@ -458,7 +547,6 @@ public class GraphWalk<V, E>
     public static <V,E> GraphWalk<V,E> singletonWalk(Graph<V,E> graph, V v, double weight){
         return new GraphWalk<>(graph, v, v, Collections.singletonList(v), Collections.emptyList(), weight);
     }
-
 }
 /**
  * Exception thrown in the event that the path is invalid.

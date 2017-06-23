@@ -326,23 +326,52 @@ public class GraphWalk<V, E>
         return gw;
     }
 
-    public GraphWalk<V,E> subPath(int beginIndex){
-        return this.subPath(beginIndex, this.size(), null);
+    /**
+     * Returns the vertex at the specified position in the walk. The runtime of this method depends on the container
+     * used to store the vertices in the walk.
+     * @param pos index of the desired vertex in the walk
+     * @return vertex at the specified position
+     */
+    public V getVertex(int pos){
+        if(pos==0)
+            return startVertex;
+        else if(pos==this.size()-1)
+            return endVertex;
+        else if(vertexList != null)
+            return vertexList.get(pos); //Could be slow if vertex list is a LinkedList
+        else if(graph.getType().isDirected())
+            return graph.getEdgeSource(edgeList.get(pos));
+        else //Compute the vertex list
+            return this.getVertexList().get(pos);
     }
 
-    public GraphWalk<V,E> subPath(int beginIndex, Function<GraphWalk<V,E>,Double> walkWeightCalculator){
-        return this.subPath(beginIndex, this.size(), walkWeightCalculator);
+    /**
+     * Returns the ith edge in the walk. The runtime of this method depends on the container used to store
+     * the edges in the walk.
+     * @param index index of the desired edge in the walk
+     * @return the ith edge in the walk
+     */
+    public E getEdge(int index){
+        return this.getEdgeList().get(index); //Could be slow if vertex list is a LinkedList
     }
 
-    public GraphWalk<V,E> subPath(int beginIndex, int endIndex){
-        return this.subPath(beginIndex, endIndex, null);
+    public GraphWalk<V,E> subWalk(int beginIndex){
+        return this.subWalk(beginIndex, this.size(), null);
     }
 
-    public GraphWalk<V,E> subPath(int beginIndex, int endIndex,Function<GraphWalk<V,E>,Double> walkWeightCalculator){
+    public GraphWalk<V,E> subWalk(int beginIndex, Function<GraphWalk<V,E>,Double> walkWeightCalculator){
+        return this.subWalk(beginIndex, this.size(), walkWeightCalculator);
+    }
+
+    public GraphWalk<V,E> subWalk(int beginIndex, int endIndex){
+        return this.subWalk(beginIndex, endIndex, null);
+    }
+
+    public GraphWalk<V,E> subWalk(int beginIndex, int endIndex,Function<GraphWalk<V,E>,Double> walkWeightCalculator){
         if(beginIndex<0 || beginIndex > endIndex || endIndex>this.size())
             throw new IndexOutOfBoundsException("beginIndex or endIndex are negative, endIndex is greater than size(), or beginIndex is greater than endIndex");
 
-        GraphWalk<V,E> w=null;
+        GraphWalk<V,E> w;
         double subWeight=0;
 
         //Edge cases
@@ -351,19 +380,21 @@ public class GraphWalk<V, E>
         }else if(beginIndex+1==endIndex){ //singleton walk
             V v;
             if(vertexList != null)
-                v=vertexList.subList(beginIndex, endIndex).get(0);
-            else{ //Find singleton vertex by iterating over the edge list
+                v=vertexList.get(beginIndex);
+            else{ //Find singleton vertex by iterating over the edgeList
 
-                if(beginIndex < this.size()/2.0){ //search from the start of the path
+                if(!(this.edgeList instanceof RandomAccess) || beginIndex < this.size()/2.0){ //search from the start of the path
                     v=startVertex;
-                    //TODO use iterator! it may not be a RandomAccessList!
-                    for(int i=0; i < beginIndex; i++)
-                        Graphs.getOppositeVertex(graph, edgeList.get(i), v);
+                    int index=0;
+                    Iterator<E> it=this.edgeList.iterator();
+                    while(index != beginIndex){
+                        v=Graphs.getOppositeVertex(graph, it.next(), v);
+                        index++;
+                    }
                 }else{ //search from the back of the path
-                    //TODO this will be really bad if the underlying list is a LinkedList!
                     v=endVertex;
                     for(int i=edgeList.size()-1; i>=beginIndex; i--)
-                        Graphs.getOppositeVertex(graph, edgeList.get(i), v);
+                        v=Graphs.getOppositeVertex(graph, edgeList.get(i), v);
                 }
             }
             w=singletonWalk(this.graph, v);
@@ -478,7 +509,6 @@ public class GraphWalk<V, E>
      * @return true if this walk is a (simple) path.
      */
     public boolean isPath(){
-        System.out.println("checking path");
         Set<V> vertices=new HashSet<>(this.getVertexList());
         if(isEmpty() || getLength()==0) //empty or singleton graph
             return true;
@@ -499,11 +529,23 @@ public class GraphWalk<V, E>
 
     /**
      * Tests whether this walk is a <a href="http://mathworld.wolfram.com/HamiltonianCycle.html">Hamiltonian cycle</a>.
-     * A walk is a Hamiltonian cycle if it is a cycle which visits every vertex in the graph exactly once.
-     * @return true if this walk is a cycle.
+     * A walk is a Hamiltonian cycle if it is a cycle which visits every vertex in the graph exactly once. By convention,
+     * a singleton walk is Hamiltonian if the graph consists a single vertex. In an undirected graph containing a
+     * single edge $(u,v)$, the path $[u,v,u]$ is not a Hamiltonian cycle, since the edge $(u,v)$ is used twice.
+     * @return true if this walk is a Hamiltonian cycle.
      */
     public boolean isHamiltonianCycle(){
-        return isCycle() && this.vertexList.size() == graph.vertexSet().size();
+        //If the walk is not closed, or the graph does not permit a Hamiltonian cycle, return false
+        if(!isClosed() || graph.edgeSet().size()==1)
+            return false;
+        //Singleton walk/graph
+        if(this.getLength()==0 && graph.vertexSet().size()==this.size())
+            return true;
+
+        int N=graph.vertexSet().size();
+        if(this.size()-1 != N || this.getLength() != N || new HashSet<>(this.getVertexList()).size() != N)
+            return false;
+        return true;
     }
 
     /**

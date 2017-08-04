@@ -179,7 +179,8 @@ public class DepthFirstIterator<V, E>
     }
 
     /**
-     * Returns the depth of vertex v in the search tree. The root of the search tree has depth 0.
+     * Returns the depth of vertex v in the search tree. The depth of a vertex v is defined as the number of edges
+     * traversed on the path from the root of the DFS tree to vertex v. The root of the search tree has depth 0.
      * This method can only be invoked on a vertex v once the iterator has visited vertex v!
      * @param v vertex
      * @return depth of vertex v in the search tree

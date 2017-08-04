@@ -19,6 +19,7 @@ package org.jgrapht.traverse;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.GnpRandomGraphGenerator;
 import org.jgrapht.graph.*;
 import org.junit.Test;

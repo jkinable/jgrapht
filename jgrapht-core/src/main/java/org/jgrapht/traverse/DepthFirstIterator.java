@@ -23,7 +23,7 @@ import org.jgrapht.Graphs;
 import java.util.Stack;
 
 /**
- * A depth-first iterator for a directed or undirected graphs.
+ * A depth-first iterator for directed and undirected graphs.
  * This is a non-recursive implementation with a worst-case space complexity of $O(|E|)$.
  * 
  * <p>

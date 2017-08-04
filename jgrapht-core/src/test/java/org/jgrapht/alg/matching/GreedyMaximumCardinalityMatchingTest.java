@@ -20,10 +20,10 @@ package org.jgrapht.alg.matching;
 import junit.framework.TestCase;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.interfaces.MatchingAlgorithm;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.GnmRandomGraphGenerator;
 import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.IntegerVertexFactory;
 import org.jgrapht.graph.SimpleGraph;
 
 import java.util.HashSet;

@@ -24,7 +24,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedMultigraph;
 import org.jgrapht.graph.DirectedPseudograph;
-import org.jgrapht.graph.IntegerVertexFactory;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.graph.Multigraph;
 import org.jgrapht.graph.Pseudograph;
 import org.jgrapht.graph.SimpleDirectedGraph;

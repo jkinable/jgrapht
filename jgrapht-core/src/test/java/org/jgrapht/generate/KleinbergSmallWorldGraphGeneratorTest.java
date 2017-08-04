@@ -22,7 +22,7 @@ import static org.junit.Assert.fail;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.IntegerVertexFactory;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.jgrapht.graph.SimpleGraph;
 import org.junit.Test;

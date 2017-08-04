@@ -18,6 +18,7 @@
 package org.jgrapht.generate;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.graph.*;
 
 import junit.framework.*;
@@ -69,7 +70,7 @@ public class GnmRandomBipartiteGraphGeneratorTest
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new GnmRandomBipartiteGraphGenerator<>(4, 4, 20, SEED);
         Graph<Integer, DefaultEdge> g = new DirectedPseudograph<>(DefaultEdge.class);
-        gen.generateGraph(g, new IntegerVertexFactory(), null);
+        gen.generateGraph(g, new IntegerVertexFactory(1), null);
 
         int[][] edges = { { 3, 5 }, { 6, 3 }, { 2, 8 }, { 7, 2 }, { 6, 2 }, { 4, 5 }, { 7, 4 },
             { 2, 5 }, { 6, 1 }, { 5, 1 }, { 2, 7 }, { 1, 7 }, { 2, 6 }, { 3, 6 }, { 1, 5 },
@@ -87,7 +88,7 @@ public class GnmRandomBipartiteGraphGeneratorTest
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new GnmRandomBipartiteGraphGenerator<>(4, 4, 10, SEED);
         Graph<Integer, DefaultEdge> g = new SimpleGraph<>(DefaultEdge.class);
-        gen.generateGraph(g, new IntegerVertexFactory(), null);
+        gen.generateGraph(g, new IntegerVertexFactory(1), null);
 
         int[][] edges = { { 3, 5 }, { 1, 7 }, { 2, 8 }, { 2, 6 }, { 3, 8 }, { 4, 8 }, { 1, 6 },
             { 4, 7 }, { 4, 6 }, { 4, 5 } };
@@ -119,19 +120,6 @@ public class GnmRandomBipartiteGraphGeneratorTest
         } catch (IllegalArgumentException e) {
         }
     }
-
-    private class IntegerVertexFactory
-        implements VertexFactory<Integer>
-    {
-        private int id;
-
-        @Override
-        public Integer createVertex()
-        {
-            return ++id;
-        }
-    };
-
 }
 
 // End GnmRandomBipartiteGraphGeneratorTest.java

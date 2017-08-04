@@ -21,9 +21,9 @@ import junit.framework.TestCase;
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.alg.interfaces.MatchingAlgorithm;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.GnmRandomBipartiteGraphGenerator;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.IntegerVertexFactory;
 import org.jgrapht.graph.Pseudograph;
 import org.jgrapht.graph.SimpleGraph;
 
@@ -185,10 +185,9 @@ public abstract class MaximumCardinalityBipartiteMatchingTest extends TestCase{
         for(int k=0; k<100; k++) {
             int edges=random.nextInt(maxEdges(vertices)/2);
             GnmRandomBipartiteGraphGenerator<Integer, DefaultEdge> generator = new GnmRandomBipartiteGraphGenerator<>(vertices, vertices/2, edges, 0);
-            IntegerVertexFactory vertexFactory = new IntegerVertexFactory();
 
             Graph<Integer, DefaultEdge> graph = new SimpleGraph<>(DefaultEdge.class);
-            generator.generateGraph(graph, vertexFactory, null);
+            generator.generateGraph(graph, new IntegerVertexFactory(), null);
 
             MatchingAlgorithm<Integer, DefaultEdge> matcher = getMatchingAlgorithm(graph, generator.getFirstPartition(), generator.getSecondPartition());
             MatchingAlgorithm.Matching<Integer, DefaultEdge> m = matcher.getMatching();

@@ -19,6 +19,7 @@ package org.jgrapht.alg;
 
 
 import junit.framework.*;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 

@@ -34,7 +34,7 @@ import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.IntegerVertexFactory;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.junit.Test;
 

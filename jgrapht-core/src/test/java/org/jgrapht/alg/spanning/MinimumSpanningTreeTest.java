@@ -22,6 +22,7 @@ import java.util.*;
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm.*;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 

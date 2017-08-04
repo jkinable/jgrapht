@@ -27,6 +27,13 @@ Changes to JGraphT in each version:
     - Allow CrossComponentIterator to start from a collection of startVertices (contributed by Patrick Sharp)
     - New implementation of Edmonds' maximum cardinality matching algorithm for general graphs. Added certifier for maximum cardinality by computing a Edmonds-Gallai decomposition. Reimplemented Hopcroft-Karp's algorithm for bipartite graphs. Added greedy algorithm for maximum cardinality case and enhanced greedy algorithm for the weighted case. Extended UnionFind with additional functionality. (contributed by Joris Kinable)
     - Optimize map operations in FastLookupSpecifics (suggested by shevek, fix contributed by Joris Kinable)
+    - Added importers and exporters for the graph6 (g6) and sparse6(s6) graph format (contributed by Joris Kinable)
+    - Added graph generator for Generalized Petersen graphs (contributed by Joris Kinable)
+    - Added graph generator for Windmill, Dutch Windmill and Friendship graphs (contributed by Joris Kinable)
+    - Added collection of 31 commonly used named graphs (contributed by Joris Kinable)
+    - Added GraphMeasurer class to compute graph diameter, radius, vertex eccentricity, graph center and graph periphery (contributed by Joris Kinable)
+    - Added GraphMetrics which computes general graph metrics; added method to compute the girth of a graph (contributed by Joris Kinable)
+    - Added GraphTests: isCubic, isOverfull, isForest, isSplit (contributed by Joris Kinable)
 
 - **version 1.0.1** (16-Jan-2017):
     - Deleted all previously deprecated methods (cleanup contributed by Joris Kinable and Dimitrios Michail)

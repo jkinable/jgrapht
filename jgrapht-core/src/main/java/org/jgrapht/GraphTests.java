@@ -18,6 +18,7 @@
 package org.jgrapht;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.jgrapht.alg.*;
 import org.jgrapht.alg.cycle.*;
@@ -27,6 +28,7 @@ import org.jgrapht.alg.cycle.*;
  * 
  * @author Barak Naveh
  * @author Dimitrios Michail
+ * @author Joris Kinable
  */
 public abstract class GraphTests
 {
@@ -194,6 +196,80 @@ public abstract class GraphTests
     }
 
     /**
+     * Test whether an undirected graph is a forest. A forest is a set of disjoint trees. By definition, any
+     * acyclic graph is a forest. This includes the empty graph and the class of tree graphs.
+     *
+     * @param graph the input graph
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
+     * @return true if the graph is forest, false otherwise
+     */
+    public static <V, E> boolean isForest(Graph<V, E> graph)
+    {
+        if (!graph.getType().isUndirected()) {
+            throw new IllegalArgumentException(GRAPH_MUST_BE_UNDIRECTED);
+        }
+        if(graph.vertexSet().isEmpty()) //null graph is not a forest
+            return false;
+
+        int nrConnectedComponents = new ConnectivityInspector<>(graph).connectedSets().size();
+        return graph.edgeSet().size() + nrConnectedComponents== graph.vertexSet().size();
+    }
+
+    /**
+     * Test whether a graph is <a href="https://en.wikipedia.org/wiki/Overfull_graph">overfull</a>.
+     * A graph is overfull if $|E|&gt;\Delta(G)\lfloor |V|/2 \rfloor$, where $\Delta(G)$ is the maximum degree of the graph.
+     *
+     * @param graph the input graph
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
+     * @return true if the graph is overfull, false otherwise
+     */
+    public static <V, E> boolean isOverfull(Graph<V, E> graph)
+    {
+        int maxDegree=graph.vertexSet().stream().mapToInt(graph::degreeOf).max().getAsInt();
+        return graph.edgeSet().size() > maxDegree * Math.floor(graph.vertexSet().size()/2.0);
+    }
+
+    /**
+     * Test whether an undirected graph is a <a href="https://en.wikipedia.org/wiki/Split_graph">split graph</a>.
+     * A split graph is a graph in which the vertices can be partitioned into a clique and an independent set.
+     * Split graphs are a special class of chordal graphs.
+     * Given the degree sequence $d_1 \geq,\dots,\geq d_n$ of $G$, a graph is a split graph if and only if :
+     * \[\sum_{i=1}^m d_i = m (m - 1) + \sum_{i=m + 1}^nd_i\], where $m = \max_i \{d_i\geq i-1\}$. If the graph
+     * is a split graph, then the $m$ vertices with the largest degrees form a maximum clique in $G$, and the
+     * remaining vertices constitute an independent set.
+     * See Brandstadt, A., Le, V., Spinrad, J. Graph Classes: A Survey. Philadelphia, PA: SIAM, 1999. for details.
+     *
+     * @param graph the input graph
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
+     * @return true if the graph is a split graph, false otherwise
+     */
+    public static <V, E> boolean isSplit(Graph<V, E> graph)
+    {
+        requireUndirected(graph);
+        if(!isSimple(graph) || graph.vertexSet().isEmpty())
+            return false;
+
+        List<Integer> degrees=new ArrayList<>(graph.vertexSet().size());
+        degrees.addAll(graph.vertexSet().stream().map(graph::degreeOf).collect(Collectors.toList()));
+        Collections.sort(degrees, Collections.reverseOrder()); //sort degrees descending order
+        //Find m = \max_i \{d_i\geq i-1\}
+        int m=1;
+        for(; m<degrees.size() && degrees.get(m)>= m; m++){}
+        m--;
+
+        int left=0;
+        for(int i=0; i<=m; i++)
+            left+=degrees.get(i);
+        int right=m*(m+1);
+        for(int i=m+1; i<degrees.size(); i++)
+            right+=degrees.get(i);
+        return left==right;
+    }
+
+    /**
      * Test whether a graph is bipartite.
      * 
      * @param graph the input graph
@@ -284,6 +360,21 @@ public abstract class GraphTests
             }
         }
 
+        return true;
+    }
+
+    /**
+     * Tests whether a graph is <a href="http://mathworld.wolfram.com/CubicGraph.html">cubic</a>. A graph is cubic
+     * if all vertices have degree 3.
+     * @param graph the input graph
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
+     * @return true if the graph is cubic, false otherwise
+     */
+    public static <V, E> boolean isCubic(Graph<V, E> graph){
+        for(V v : graph.vertexSet())
+            if(graph.degreeOf(v) != 3)
+                return false;
         return true;
     }
 

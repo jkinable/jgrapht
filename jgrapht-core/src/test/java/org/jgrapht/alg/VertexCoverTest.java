@@ -22,6 +22,7 @@ import java.util.*;
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.interfaces.MinimumVertexCoverAlgorithm.*;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.alg.vertexcover.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;

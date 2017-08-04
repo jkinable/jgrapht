@@ -70,13 +70,7 @@ public class StarGraphGenerator<V, E>
         for (int i = 0; i < (order - 1); i++) {
             V newVertex = vertexFactory.createVertex();
             target.addVertex(newVertex);
-        }
-
-        // Add one edge between the center vertex and every other vertex
-        for (V v : target.vertexSet()) {
-            if (v != centerVertex) {
-                target.addEdge(v, centerVertex);
-            }
+            target.addEdge(newVertex, centerVertex);
         }
     }
 }

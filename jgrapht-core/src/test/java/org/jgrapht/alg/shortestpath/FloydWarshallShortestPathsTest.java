@@ -20,6 +20,7 @@ package org.jgrapht.alg.shortestpath;
 import java.util.*;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 
@@ -154,38 +155,6 @@ public class FloydWarshallShortestPathsTest
         g.addEdge(v3, v4);
 
         return g;
-    }
-
-    public void testDiameter()
-    {
-        Graph<String, DefaultEdge> stringGraph = createStringGraph();
-        FloydWarshallShortestPaths<String, DefaultEdge> testFWPath =
-            new FloydWarshallShortestPaths<>(stringGraph);
-        double diameter = testFWPath.getDiameter();
-        assertEquals(2.0, diameter);
-    }
-
-    public void testEmptyDiameter()
-    {
-        Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        FloydWarshallShortestPaths<String, DefaultEdge> fw =
-            new FloydWarshallShortestPaths<>(graph);
-        double diameter = fw.getDiameter();
-        assertTrue(Double.isNaN(diameter));
-    }
-
-    public void testEdgeLessDiameter()
-    {
-        Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        String a = "a", b = "b";
-        graph.addVertex(a);
-        graph.addVertex(b);
-        FloydWarshallShortestPaths<String, DefaultEdge> fw =
-            new FloydWarshallShortestPaths<>(graph);
-        double diameter = fw.getDiameter();
-        assertEquals(Double.POSITIVE_INFINITY, diameter, 1e-9);
-        assertNull(fw.getFirstHop(a, b));
-        assertNull(fw.getLastHop(a, b));
     }
 
     public void testWeightedEdges()

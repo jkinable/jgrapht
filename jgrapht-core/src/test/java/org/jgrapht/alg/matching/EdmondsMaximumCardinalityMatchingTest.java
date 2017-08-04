@@ -22,7 +22,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 import org.jgrapht.alg.interfaces.MatchingAlgorithm;
 import org.jgrapht.alg.interfaces.MatchingAlgorithm.Matching;
-import org.jgrapht.generate.GnmRandomBipartiteGraphGenerator;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.GnmRandomGraphGenerator;
 import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.graph.*;

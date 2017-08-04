@@ -20,6 +20,7 @@ package org.jgrapht.alg.flow;
 import java.util.*;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 

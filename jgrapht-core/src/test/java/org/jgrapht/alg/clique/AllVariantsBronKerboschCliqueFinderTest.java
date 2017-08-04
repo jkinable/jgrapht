@@ -27,7 +27,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.generate.GnpRandomGraphGenerator;
 import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.IntegerVertexFactory;
+import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.graph.SimpleGraph;
 import org.junit.Test;
 

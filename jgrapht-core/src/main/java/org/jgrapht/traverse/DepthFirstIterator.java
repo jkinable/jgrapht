@@ -20,6 +20,8 @@ package org.jgrapht.traverse;
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Stack;
 
 /**
@@ -40,8 +42,7 @@ public class DepthFirstIterator<V, E>
     extends CrossComponentIterator<V, E, DepthFirstIterator.SearchNodeData>
 {
 
-    //private Stack<V> stack = new Stack<>();
-    private Stack<StackEntry> stack = new Stack<>();
+    private Deque<StackEntry> stack = new ArrayDeque<>(graph.edgeSet().size());
 
     /**
      * Creates a new depth-first iterator for the specified graph.

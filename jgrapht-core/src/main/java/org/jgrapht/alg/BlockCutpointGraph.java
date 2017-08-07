@@ -17,10 +17,15 @@
  */
 package org.jgrapht.alg;
 
-import java.util.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphTests;
+import org.jgrapht.Graphs;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.MaskSubgraph;
+import org.jgrapht.graph.SimpleDirectedGraph;
+import org.jgrapht.graph.SimpleGraph;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.*;
+import java.util.*;
 
 /**
  * Definition of a <a href="http://mathworld.wolfram.com/Block.html">block of a graph</a> in
@@ -44,7 +49,9 @@ import org.jgrapht.graph.*;
  * @param <E> the graph edge type
  *
  * @since July 5, 2007
+ * @deprecated Moved to package org.jgrapht.connectivity
  */
+@Deprecated
 public class BlockCutpointGraph<V, E>
     extends SimpleGraph<Graph<V, E>, DefaultEdge>
 {
@@ -220,12 +227,7 @@ public class BlockCutpointGraph<V, E>
      */
     private Set<Graph<V, E>> getBiconnectedSubgraphs(V vertex)
     {
-        Set<Graph<V, E>> biconnectedSubgraphs = this.vertex2biconnectedSubgraphs.get(vertex);
-        if (biconnectedSubgraphs == null) {
-            biconnectedSubgraphs = new HashSet<>();
-            this.vertex2biconnectedSubgraphs.put(vertex, biconnectedSubgraphs);
-        }
-        return biconnectedSubgraphs;
+        return this.vertex2biconnectedSubgraphs.computeIfAbsent(vertex, k -> new HashSet<>());
     }
 
     /**
@@ -234,13 +236,7 @@ public class BlockCutpointGraph<V, E>
     private int getNumOrder(V vertex)
     {
         assert (vertex != null);
-
-        Integer numOrder = this.vertex2numOrder.get(vertex);
-        if (numOrder == null) {
-            return 0;
-        } else {
-            return numOrder;
-        }
+        return this.vertex2numOrder.getOrDefault(vertex, 0);
     }
 
     private void setNumOrder(V vertex, int numOrder)

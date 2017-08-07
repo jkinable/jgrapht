@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.Map.*;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.graph.*;
 
 /**

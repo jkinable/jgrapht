@@ -20,7 +20,7 @@ package org.jgrapht.perf.graph;
 import java.util.*;
 import java.util.concurrent.*;
 
-import org.jgrapht.alg.*;
+import org.jgrapht.alg.connectivity.GabowStrongConnectivityInspector;
 import org.jgrapht.alg.flow.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;

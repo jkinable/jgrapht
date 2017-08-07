@@ -15,13 +15,11 @@
  * (b) the terms of the Eclipse Public License v1.0 as published by
  * the Eclipse Foundation.
  */
-package org.jgrapht.alg;
+package org.jgrapht.alg.connectivity;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
+import java.util.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.jgrapht.*;
 
 /**
  * Inspects a graph for the biconnectivity property. See {@link BlockCutpointGraph} for more
@@ -31,9 +29,7 @@ import java.util.Set;
  * @param <E> the graph edge type
  *
  * @since July 5, 2007
- * @deprecated Moved to package org.jgrapht.connectivity
  */
-@Deprecated
 public class BiconnectivityInspector<V, E>
 {
     private BlockCutpointGraph<V, E> blockCutpointGraph;
@@ -46,7 +42,6 @@ public class BiconnectivityInspector<V, E>
     public BiconnectivityInspector(Graph<V, E> graph)
     {
         super();
-        GraphTests.requireUndirected(graph, "Graph must be undirected");
         this.blockCutpointGraph = new BlockCutpointGraph<>(graph);
     }
 
@@ -87,8 +82,18 @@ public class BiconnectivityInspector<V, E>
     }
 
     /**
-     * Returns the cutpoints of the graph.
+     * Returns the bridges of the graph.
      * 
+     * @return the bridges
+     */
+    public Set<E> getBridges()
+    {
+        return this.blockCutpointGraph.getBridges();
+    }
+
+    /**
+     * Returns the cutpoints of the graph.
+     *
      * @return the cutpoints
      */
     public Set<V> getCutpoints()

@@ -18,6 +18,7 @@
 package org.jgrapht.alg;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.BiconnectivityInspector;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 

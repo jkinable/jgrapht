@@ -20,7 +20,7 @@ package org.jgrapht.alg.matching;
 import org.jgrapht.Graph;
 import org.jgrapht.GraphTests;
 import org.jgrapht.Graphs;
-import org.jgrapht.alg.ConnectivityInspector;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.interfaces.MatchingAlgorithm;
 import org.jgrapht.alg.util.FixedSizeIntegerQueue;
 import org.jgrapht.alg.util.Pair;

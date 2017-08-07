@@ -20,7 +20,9 @@ package org.jgrapht;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.jgrapht.alg.*;
+import org.jgrapht.alg.connectivity.BiconnectivityInspector;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.cycle.*;
 
 /**
@@ -138,6 +140,30 @@ public abstract class GraphTests
         }
 
         return new ConnectivityInspector<>(graph).isGraphConnected();
+    }
+
+    /**
+     * Test whether an undirected graph is biconnected.
+     *
+     * <p>
+     * This method does not performing any caching, instead recomputes everything from scratch. In
+     * case more control is required use {@link org.jgrapht.alg.connectivity.BiconnectivityInspector} directly.
+     *
+     * @param graph the input graph
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
+     * @return true if the graph is biconnected, false otherwise
+     * @see org.jgrapht.alg.connectivity.BiconnectivityInspector
+     */
+    public static <V, E> boolean isBiconnected(Graph<V, E> graph)
+    {
+        Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
+
+        if (!graph.getType().isUndirected()) {
+            throw new IllegalArgumentException(GRAPH_MUST_BE_UNDIRECTED);
+        }
+
+        return new BiconnectivityInspector<>(graph).isBiconnected();
     }
 
     /**

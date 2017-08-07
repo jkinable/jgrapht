@@ -18,19 +18,24 @@
 package org.jgrapht.alg;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.BlockCutpointGraph;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
+import org.junit.Test;
 
-import junit.framework.*;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @since July 5, 2007
  */
 public class BlockCutpointGraphTest
-    extends TestCase
 {
     // ~ Methods ----------------------------------------------------------------
 
+    @Test
     public void testBiconnected()
     {
         BiconnectedGraph graph = new BiconnectedGraph();
@@ -62,6 +67,7 @@ public class BlockCutpointGraphTest
         }
     }
 
+    @Test
     public void testLinearGraph()
     {
         testLinearGraph(3);
@@ -86,6 +92,7 @@ public class BlockCutpointGraphTest
         assertEquals(nbVertices - 1, nbBiconnectedComponents);
     }
 
+    @Test
     public void testNotBiconnected()
     {
         Graph<String, DefaultEdge> graph = new NotBiconnectedGraph();
@@ -98,6 +105,43 @@ public class BlockCutpointGraphTest
         int nbBiconnectedComponents =
             blockCutpointGraph.vertexSet().size() - blockCutpointGraph.getCutpoints().size();
         assertEquals(3, nbBiconnectedComponents);
+    }
+
+    @Test
+    public void testWikiGraph(){
+        Graph<Integer, DefaultEdge> g=new SimpleGraph<>(DefaultEdge.class);
+        Graphs.addAllVertices(g, Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14));
+        int[][] edges={{1,3},{1,2},{2,4},{3,4},{4,5},{5,6},{6,7},{7,8},{7,9},{9,10},{9,11},{11,12},{12,13},{13,14},{12,14},{7,14}};
+        for(int[] edge : edges)
+            g.addEdge(edge[0],edge[1]);
+        BlockCutpointGraph<Integer, DefaultEdge> bcg = new BlockCutpointGraph<>(g);
+
+        Set<Integer> expectedCutpoints=new HashSet<>(Arrays.asList(4,5,6,7,9));
+        assertEquals(expectedCutpoints, bcg.getCutpoints());
+
+        Set<DefaultEdge> expectedBridges = new HashSet<>();
+        expectedBridges.add(g.getEdge(4,5));
+        expectedBridges.add(g.getEdge(5,6));
+        expectedBridges.add(g.getEdge(6,7));
+        expectedBridges.add(g.getEdge(7,8));
+        expectedBridges.add(g.getEdge(9,10));
+        assertEquals(expectedBridges, bcg.getBridges());
+
+        for(int v : Arrays.asList(1,2,3))
+            assertEquals(bcg.getBlock(v), new AsSubgraph<>(g,new HashSet<>(Arrays.asList(1,2,3,4))));
+        assertEquals(new AsSubgraph<>(g,new HashSet<>(Arrays.asList(7,8))), bcg.getBlock(8));
+        for(int v : Arrays.asList(11,12,13,14))
+            assertEquals(new AsSubgraph<>(g,new HashSet<>(Arrays.asList(6,7,9,11,12,13,14))), bcg.getBlock(v));
+        for(int v : bcg.getCutpoints())
+            assertEquals(new AsSubgraph<>(g,new HashSet<>(Arrays.asList(v))), bcg.getBlock(v));
+
+//        for(int v : g.vertexSet())
+//            System.out.println("block("+v+"): "+bcg.getBlock(v));
+
+//        System.out.println("\n"+bcg);
+
+        //Test block-cut graph structure
+
     }
 }
 

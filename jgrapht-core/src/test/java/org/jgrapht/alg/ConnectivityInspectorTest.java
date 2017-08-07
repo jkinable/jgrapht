@@ -18,6 +18,7 @@
 package org.jgrapht.alg;
 
 import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.graph.*;
 
 import junit.framework.*;

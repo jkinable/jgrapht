@@ -37,7 +37,7 @@ import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.VertexFactory;
-import org.jgrapht.alg.ConnectivityInspector;
+import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.alg.CycleDetector;
 import org.jgrapht.generate.GraphGenerator;
 import org.jgrapht.generate.LinearGraphGenerator;

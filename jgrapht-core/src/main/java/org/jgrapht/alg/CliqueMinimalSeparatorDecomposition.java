@@ -263,7 +263,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
 
                     tmpGraph.removeAllVertices(separator);
                     ConnectivityInspector<V, E> con = new ConnectivityInspector<>(tmpGraph);
-                    if (con.isGraphConnected()) {
+                    if (con.isConnected()) {
                         throw new RuntimeException("separator did not separate the graph");
                     }
                     for (Set<V> component : con.connectedSets()) {

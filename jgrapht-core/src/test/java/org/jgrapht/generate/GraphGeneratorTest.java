@@ -170,7 +170,7 @@ public class GraphGeneratorTest
         ScaleFreeGraphGenerator<Object, DefaultEdge> generator = new ScaleFreeGraphGenerator<>(500);
         generator.generateGraph(graph, vertexFactory, null);
         ConnectivityInspector<Object, DefaultEdge> inspector = new ConnectivityInspector<>(graph);
-        assertTrue("generated graph is not connected", inspector.isGraphConnected());
+        assertTrue("generated graph is not connected", inspector.isConnected());
 
         try {
             new ScaleFreeGraphGenerator<>(-50);

@@ -41,6 +41,8 @@ import org.jgrapht.graph.*;
  * Hopcroft, J. Tarjan, R. Algorithm 447: efficient algorithms for graph manipulation, 1973. Communications of the ACM. 16 (6): 372–378.
  * This implementation runs in linear time $O(|V|+|E|)$ and is based on Depth-first search.
  * More information about this subject be be found in this wikipedia <a href="https://en.wikipedia.org/wiki/Biconnected_component">article</a>.
+ * <p>
+ * Note: the block-cutpoint graph is not changed when the underlying graph is changed.
  *
  *
  * @param <V> the graph vertex type
@@ -55,61 +57,45 @@ public class BlockCutpointGraph<V, E>
 {
     private static final long serialVersionUID = -9101341117013163934L;
 
-    private Set<V> cutpoints = new HashSet<>();
-
-    private Set<E> bridges = new HashSet<>();
-
+    /* Input graph */
     private Graph<V, E> graph;
 
-    /* Discovery time of a vertex. */
-    private int time;
+    /* Set of cutpoints */
+    private Set<V> cutpoints;
 
-    /* Stack which keeps track of edges in biconnected components */
-    private Deque<E> stack;
+    /* Set of blocks */
+    private Set<Graph<V, E>> blocks;
 
-    /* Mapping of a vertex to all biconnected components it belongs to */
-    private Map<V, Set<Graph<V, E>>> vertex2biconnectedSubgraphs = new HashMap<>();
-
-    /* Mapping of a non cutvertex to the unique block it belongs to */
+    /* Mapping of a vertex to the block it belongs to. */
     private Map<V, Graph<V, E>> vertex2block = new HashMap<>();
 
-    /* Map which tracks when a vertex is discovered in the DFS search */
-    private Map<V, Integer> vertex2time = new HashMap<>();
-
     /**
-     * Creates a block-cut point graph for the given input graph.
-     * Running time = O(m) where m is the number of edges.
+     * Constructs a Block-Cutpoint graph
      *
      * @param graph the input graph
      */
     public BlockCutpointGraph(Graph<V, E> graph)
     {
         super(DefaultEdge.class);
-        GraphTests.requireDirectedOrUndirected(graph);
-        if (graph.getType().isDirected()) {
-            this.graph = new AsUndirectedGraph<>(graph);
-        } else
-            this.graph = graph;
-
-        if(this.graph.getType().isAllowingMultipleEdges())
-            throw new IllegalArgumentException("This implementation currently does not support multigraphs");
-
-        this.graph = GraphTests.requireUndirected(graph, "Graph must be undirected");
-        stack = new ArrayDeque<>(graph.edgeSet().size());
-
-        V s = graph.vertexSet().iterator().next(); //Pick random start vertex
-        dfsVisit(s, null);
-
-        if(!stack.isEmpty())
-            biconnectedComponentFinished(s);
+        this.graph=graph;
+        BiconnectivityInspector<V, E> biconnectivityInspector = new BiconnectivityInspector<>(graph);
 
         //Construct the Block-cut point graph
+        cutpoints = biconnectivityInspector.getCutpoints();
+        blocks = biconnectivityInspector.getBlocks();
+
+        for(Graph<V,E> block : blocks)
+            for(V v : block.vertexSet())
+                vertex2block.put(v, block);
+        Graphs.addAllVertices(this, blocks);
+
         for (V cutpoint : this.cutpoints) {
             Graph<V,E> subgraph=new AsSubgraph<>(graph, Collections.singleton(cutpoint));
             this.vertex2block.put(cutpoint, subgraph);
             this.addVertex(subgraph);
-            for (Graph<V, E> biconnectedSubgraph : getBiconnectedSubgraphs(cutpoint))
-                addEdge(subgraph, biconnectedSubgraph);
+
+            for (Graph<V, E> block : biconnectivityInspector.getBlocks(cutpoint))
+                addEdge(subgraph, block);
         }
     }
 
@@ -117,36 +103,31 @@ public class BlockCutpointGraph<V, E>
      * Returns the vertex if vertex is a cutpoint, and otherwise returns the block (biconnected
      * component) containing the vertex.
      *
-     * @param vertex vertex in the initial graph.
+     * @param vertex vertex
      * @return the biconnected component containing the vertex
      */
     public Graph<V, E> getBlock(V vertex)
     {
-        if (!this.graph.vertexSet().contains(vertex)) {
-            throw new IllegalArgumentException("No such vertex in the graph!");
-        }
-
+        assert this.graph.containsVertex(vertex);
         return this.vertex2block.get(vertex);
     }
 
     /**
+     * Returns all blocks (biconnected components) in the graph
+     * @return all blocks (biconnected components) in the graph.
+     */
+    public Set<Graph<V, E>> getBlocks()
+    {
+        return blocks;
+    }
+
+    /**
      * Returns the cutpoints of the initial graph.
-     *
      * @return the cutpoints of the initial graph
      */
     public Set<V> getCutpoints()
     {
-        return this.cutpoints;
-    }
-
-    /**
-     * Returns the bridges of the initial graph.
-     *
-     * @return the bridges of the initial graph
-     */
-    public Set<E> getBridges()
-    {
-        return this.bridges;
+        return cutpoints;
     }
 
     /**
@@ -157,78 +138,9 @@ public class BlockCutpointGraph<V, E>
      */
     public boolean isCutpoint(V vertex)
     {
-        return this.cutpoints.contains(vertex);
+        return cutpoints.contains(vertex);
     }
 
-    private void biconnectedComponentFinished(V n)
-    {
-        Set<V> vertexComponent = new HashSet<>();
-
-        E edge;
-        do{
-            edge=this.stack.pop();
-            vertexComponent.add(graph.getEdgeSource(edge));
-            vertexComponent.add(graph.getEdgeTarget(edge));
-        }while (!this.stack.isEmpty() && getTime(graph.getEdgeSource(edge)) >= getTime(n));
-
-        Graph<V,E> biconnectedSubgraph=new AsSubgraph<>(this.graph, vertexComponent);
-        for (V vertex : vertexComponent) {
-            this.vertex2block.put(vertex, biconnectedSubgraph);
-            getBiconnectedSubgraphs(vertex).add(biconnectedSubgraph); //mapping of v to all biconnected subgraphs it is in
-        }
-        addVertex(biconnectedSubgraph);
-    }
-
-    private int dfsVisit(V s, V parent)
-    {
-        int minS = ++this.time;
-        vertex2time.put(s, time);
-        int children=0;
-
-        for (E edge : this.graph.edgesOf(s)) {
-            V n = Graphs.getOppositeVertex(this.graph, edge, s);
-            if (getTime(n) == -1) { //Node hasn't been discovered yet
-                children++;
-
-                this.stack.push(edge);
-
-                int minN = dfsVisit(n, s);
-                minS = Math.min(minN, minS);
-
-                if (minN > getTime(s))
-                    bridges.add(edge);
-
-                if ((parent != null && minN >= getTime(s)) || (parent == null && children > 1)) {
-                    this.cutpoints.add(s); //s is a cutpoint
-                    biconnectedComponentFinished(n);
-                }
-            } else if ((getTime(n) < getTime(s)) && !n.equals(parent)) {
-                this.stack.push(edge);
-                minS = Math.min(getTime(n), minS);
-            }
-        }
-        return minS;
-    }
-
-    /**
-     * Returns the biconnected components containing the vertex. A vertex which is not a cutpoint is
-     * contained in exactly one component. A cutpoint is contained is at least 2 components.
-     *
-     * @param vertex vertex in the initial graph.
-     */
-    private Set<Graph<V, E>> getBiconnectedSubgraphs(V vertex)
-    {
-        return this.vertex2biconnectedSubgraphs.computeIfAbsent(vertex, k -> new HashSet<>());
-    }
-
-    /**
-     * Returns the traverse order of the vertex in the DFS.
-     */
-    private int getTime(V vertex)
-    {
-        assert (vertex != null);
-        return this.vertex2time.getOrDefault(vertex, -1);
-    }
 }
 
 // End BlockCutpointGraph.java

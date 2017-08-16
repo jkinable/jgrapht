@@ -15,25 +15,25 @@
  * (b) the terms of the Eclipse Public License v1.0 as published by
  * the Eclipse Foundation.
  */
-package org.jgrapht.alg;
+package org.jgrapht.alg.connectivity;
 
 import org.jgrapht.graph.*;
 
 /**
  * @since July 5, 2007
  */
-public class NotBiconnectedGraph
+public class BiconnectedGraph
     extends SimpleGraph<String, DefaultEdge>
 {
     // ~ Static fields/initializers ---------------------------------------------
 
     /**
      */
-    private static final long serialVersionUID = 6518961051694377584L;
+    private static final long serialVersionUID = 6007460525580983710L;
 
     // ~ Constructors -----------------------------------------------------------
 
-    public NotBiconnectedGraph()
+    public BiconnectedGraph()
     {
         super(DefaultEdge.class);
 
@@ -45,12 +45,12 @@ public class NotBiconnectedGraph
 
     private void addEdges()
     {
-        addEdge("0", "2");
-        addEdge("0", "3");
-        addEdge("3", "1");
-        addEdge("1", "4");
+        addEdge("0", "1");
+        addEdge("1", "2");
+        addEdge("2", "3");
+        addEdge("3", "4");
         addEdge("4", "5");
-        addEdge("5", "3");
+        addEdge("5", "0");
     }
 
     private void addVertices()
@@ -64,4 +64,4 @@ public class NotBiconnectedGraph
     }
 }
 
-// End NotBiconnectedGraph.java
+// End BiconnectedGraph.java

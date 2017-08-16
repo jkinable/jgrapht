@@ -529,7 +529,7 @@ public class CliqueMinimalSeparatorDecompositionTest
                 generator.generateGraph(g, new IntegerVertexFactory(1), null);
 
                 inspector = new ConnectivityInspector<>(g);
-            } while (!inspector.isGraphConnected());
+            } while (!inspector.isConnected());
 
             // decompose graph
             CliqueMinimalSeparatorDecomposition<Integer, DefaultEdge> cmsd =

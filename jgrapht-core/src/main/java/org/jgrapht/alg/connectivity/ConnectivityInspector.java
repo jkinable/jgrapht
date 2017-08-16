@@ -54,9 +54,6 @@ import java.util.*;
 public class ConnectivityInspector<V, E>
     implements GraphListener<V, E>
 {
-    private static final String GRAPH_MUST_BE_DIRECTED_OR_UNDIRECTED =
-        "Graph must be directed or undirected";
-
     private List<Set<V>> connectedSets;
     private Map<V, Set<V>> vertexToConnectedSet;
     private Graph<V, E> graph;
@@ -69,11 +66,24 @@ public class ConnectivityInspector<V, E>
     public ConnectivityInspector(Graph<V, E> g)
     {
         init();
-        GraphTests.requireDirectedOrUndirected(g);
-        if (g.getType().isDirected()) {
+        this.graph=Objects.requireNonNull(g);
+        if (g.getType().isDirected())
             this.graph = new AsUndirectedGraph<>(g);
-        } else
-            this.graph = g;
+    }
+
+    /**
+     * Test if the inspected graph is connected. A graph is connected when there is a path between every pair of
+     * vertices. In a connected graph, there are no unreachable vertices. When the inspected graph is a <i>directed</i>
+     * graph, this method returns true if and only if the inspected graph is <i>weakly</i> connected.
+     * An empty graph is <i>not</i> considered connected.
+     *
+     * @return <code>true</code> if and only if inspected graph is connected.
+     * @deprecated for consistency, this method is renamed to {@link #isConnected()}
+     */
+    @Deprecated
+    public boolean isGraphConnected()
+    {
+        return lazyFindConnectedSets().size() == 1;
     }
 
     /**
@@ -84,7 +94,7 @@ public class ConnectivityInspector<V, E>
      *
      * @return <code>true</code> if and only if inspected graph is connected.
      */
-    public boolean isGraphConnected()
+    public boolean isConnected()
     {
         return lazyFindConnectedSets().size() == 1;
     }

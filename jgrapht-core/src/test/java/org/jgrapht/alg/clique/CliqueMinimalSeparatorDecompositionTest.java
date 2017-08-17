@@ -20,7 +20,7 @@ package org.jgrapht.alg.clique;
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.*;
 import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
@@ -529,7 +529,7 @@ public class CliqueMinimalSeparatorDecompositionTest
                 generator.generateGraph(g, new IntegerVertexFactory(1), null);
 
                 inspector = new ConnectivityInspector<>(g);
-            } while (!inspector.isConnected());
+            } while (!inspector.isGraphConnected());
 
             // decompose graph
             CliqueMinimalSeparatorDecomposition<Integer, DefaultEdge> cmsd =

@@ -20,7 +20,7 @@ package org.jgrapht.generate;
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.*;
 import org.jgrapht.graph.*;
 
 import junit.framework.*;
@@ -170,7 +170,7 @@ public class GraphGeneratorTest
         ScaleFreeGraphGenerator<Object, DefaultEdge> generator = new ScaleFreeGraphGenerator<>(500);
         generator.generateGraph(graph, vertexFactory, null);
         ConnectivityInspector<Object, DefaultEdge> inspector = new ConnectivityInspector<>(graph);
-        assertTrue("generated graph is not connected", inspector.isConnected());
+        assertTrue("generated graph is not connected", inspector.isGraphConnected());
 
         try {
             new ScaleFreeGraphGenerator<>(-50);

@@ -21,8 +21,7 @@ import java.io.*;
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.BiconnectedGraph;
-import org.jgrapht.alg.connectivity.NotBiconnectedGraph;
+import org.jgrapht.alg.*;
 import org.jgrapht.graph.*;
 
 import junit.framework.*;

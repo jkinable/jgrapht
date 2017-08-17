@@ -20,7 +20,7 @@ package org.jgrapht.alg.cycle;
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
+import org.jgrapht.alg.*;
 
 /**
  * Find all simple cycles of a directed graph using the Schwarcfiter and Lauer's algorithm.

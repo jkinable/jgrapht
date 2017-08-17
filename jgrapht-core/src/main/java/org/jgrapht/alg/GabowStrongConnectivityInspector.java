@@ -17,9 +17,16 @@
  */
 package org.jgrapht.alg;
 
-import org.jgrapht.Graph;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Vector;
 
-import java.util.*;
+import org.jgrapht.Graph;
 
 /**
  * Computes the strongly connected components of a directed graph. The implemented algorithm follows
@@ -31,9 +38,7 @@ import java.util.*;
  *
  * @author Sarah Komla-Ebri
  * @since September, 2013
- * @deprecated Moved to package org.jgrapht.connectivity
  */
-@Deprecated
 public class GabowStrongConnectivityInspector<V, E>
     extends AbstractStrongConnectivityInspector<V, E>
 {

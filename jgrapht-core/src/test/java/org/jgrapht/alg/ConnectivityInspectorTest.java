@@ -15,10 +15,9 @@
  * (b) the terms of the Eclipse Public License v1.0 as published by
  * the Eclipse Foundation.
  */
-package org.jgrapht.alg.connectivity;
+package org.jgrapht.alg;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
 import org.jgrapht.graph.*;
 
 import junit.framework.*;
@@ -107,11 +106,11 @@ public class ConnectivityInspectorTest
         ConnectivityInspector<String, DefaultEdge> inspector = new ConnectivityInspector<>(g);
         g.addGraphListener(inspector);
 
-        assertEquals(false, inspector.isConnected());
+        assertEquals(false, inspector.isGraphConnected());
 
         g.addEdge(V1, V3);
 
-        assertEquals(true, inspector.isConnected());
+        assertEquals(true, inspector.isGraphConnected());
     }
 
     /**
@@ -122,11 +121,11 @@ public class ConnectivityInspectorTest
         Pseudograph<String, DefaultEdge> g = create();
         ConnectivityInspector<String, DefaultEdge> inspector = new ConnectivityInspector<>(g);
 
-        assertEquals(false, inspector.isConnected());
+        assertEquals(false, inspector.isGraphConnected());
 
         g.removeVertex(V4);
         inspector = new ConnectivityInspector<>(g);
-        assertEquals(true, inspector.isConnected());
+        assertEquals(true, inspector.isGraphConnected());
 
         g.removeVertex(V1);
         assertEquals(1, g.edgeSet().size());
@@ -136,7 +135,7 @@ public class ConnectivityInspectorTest
         assertEquals(1, g.edgeSet().size());
 
         inspector = new ConnectivityInspector<>(g);
-        assertEquals(false, inspector.isConnected());
+        assertEquals(false, inspector.isGraphConnected());
     }
 
 }

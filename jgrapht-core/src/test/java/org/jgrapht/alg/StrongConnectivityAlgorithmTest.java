@@ -15,13 +15,11 @@
  * (b) the terms of the Eclipse Public License v1.0 as published by
  * the Eclipse Foundation.
  */
-package org.jgrapht.alg.connectivity;
+package org.jgrapht.alg;
 
 import java.util.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.GabowStrongConnectivityInspector;
-import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.util.IntegerVertexFactory;
 import org.jgrapht.generate.*;

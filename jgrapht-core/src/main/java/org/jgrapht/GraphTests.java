@@ -20,9 +20,7 @@ package org.jgrapht;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.jgrapht.alg.connectivity.BiconnectivityInspector;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
+import org.jgrapht.alg.*;
 import org.jgrapht.alg.cycle.*;
 
 /**
@@ -119,10 +117,7 @@ public abstract class GraphTests
     }
 
     /**
-     * Test if the inspected graph is connected. A graph is connected when, while ignoring edge directionality, there exists a path between every pair of
-     * vertices. In a connected graph, there are no unreachable vertices. When the inspected graph is a <i>directed</i>
-     * graph, this method returns true if and only if the inspected graph is <i>weakly</i> connected.
-     * An empty graph is <i>not</i> considered connected.
+     * Test whether an undirected graph is connected.
      * 
      * <p>
      * This method does not performing any caching, instead recomputes everything from scratch. In
@@ -137,26 +132,12 @@ public abstract class GraphTests
     public static <V, E> boolean isConnected(Graph<V, E> graph)
     {
         Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
-        return new ConnectivityInspector<>(graph).isConnected();
-    }
 
-    /**
-     * Tests if the inspected graph is biconnected. A biconnected graph is a connected graph on two or more vertices having no cutpoints.
-     *
-     * <p>
-     * This method does not performing any caching, instead recomputes everything from scratch. In
-     * case more control is required use {@link org.jgrapht.alg.connectivity.BiconnectivityInspector} directly.
-     *
-     * @param graph the input graph
-     * @param <V> the graph vertex type
-     * @param <E> the graph edge type
-     * @return true if the graph is biconnected, false otherwise
-     * @see org.jgrapht.alg.connectivity.BiconnectivityInspector
-     */
-    public static <V, E> boolean isBiconnected(Graph<V, E> graph)
-    {
-        Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
-        return new BiconnectivityInspector<>(graph).isBiconnected();
+        if (!graph.getType().isUndirected()) {
+            throw new IllegalArgumentException(GRAPH_MUST_BE_UNDIRECTED);
+        }
+
+        return new ConnectivityInspector<>(graph).isGraphConnected();
     }
 
     /**
@@ -174,7 +155,8 @@ public abstract class GraphTests
      */
     public static <V, E> boolean isWeaklyConnected(Graph<V, E> graph)
     {
-        return isConnected(graph);
+        Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
+        return new ConnectivityInspector<>(graph).isGraphConnected();
     }
 
     /**

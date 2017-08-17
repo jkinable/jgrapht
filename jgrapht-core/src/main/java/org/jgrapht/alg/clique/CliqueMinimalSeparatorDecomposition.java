@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.Map.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.*;
 import org.jgrapht.graph.*;
 
 /**
@@ -260,7 +260,7 @@ public class CliqueMinimalSeparatorDecomposition<V, E>
 
                     tmpGraph.removeAllVertices(separator);
                     ConnectivityInspector<V, E> con = new ConnectivityInspector<>(tmpGraph);
-                    if (con.isConnected()) {
+                    if (con.isGraphConnected()) {
                         throw new RuntimeException("separator did not separate the graph");
                     }
                     for (Set<V> component : con.connectedSets()) {

@@ -22,7 +22,7 @@ import java.util.function.*;
 import java.util.stream.*;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.graph.*;
 

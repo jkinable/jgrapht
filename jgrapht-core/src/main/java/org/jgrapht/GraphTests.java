@@ -119,7 +119,10 @@ public abstract class GraphTests
     }
 
     /**
-     * Test whether an undirected graph is connected.
+     * Test if the inspected graph is connected. A graph is connected when, while ignoring edge directionality, there exists a path between every pair of
+     * vertices. In a connected graph, there are no unreachable vertices. When the inspected graph is a <i>directed</i>
+     * graph, this method returns true if and only if the inspected graph is <i>weakly</i> connected.
+     * An empty graph is <i>not</i> considered connected.
      * 
      * <p>
      * This method does not performing any caching, instead recomputes everything from scratch. In
@@ -134,16 +137,11 @@ public abstract class GraphTests
     public static <V, E> boolean isConnected(Graph<V, E> graph)
     {
         Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
-
-        if (!graph.getType().isUndirected()) {
-            throw new IllegalArgumentException(GRAPH_MUST_BE_UNDIRECTED);
-        }
-
         return new ConnectivityInspector<>(graph).isConnected();
     }
 
     /**
-     * Test whether an undirected graph is biconnected.
+     * Tests if the inspected graph is biconnected. A biconnected graph is a connected graph on two or more vertices having no cutpoints.
      *
      * <p>
      * This method does not performing any caching, instead recomputes everything from scratch. In
@@ -158,11 +156,6 @@ public abstract class GraphTests
     public static <V, E> boolean isBiconnected(Graph<V, E> graph)
     {
         Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
-
-        if (!graph.getType().isUndirected()) {
-            throw new IllegalArgumentException(GRAPH_MUST_BE_UNDIRECTED);
-        }
-
         return new BiconnectivityInspector<>(graph).isBiconnected();
     }
 
@@ -181,8 +174,7 @@ public abstract class GraphTests
      */
     public static <V, E> boolean isWeaklyConnected(Graph<V, E> graph)
     {
-        Objects.requireNonNull(graph, GRAPH_CANNOT_BE_NULL);
-        return new ConnectivityInspector<>(graph).isConnected();
+        return isConnected(graph);
     }
 
     /**

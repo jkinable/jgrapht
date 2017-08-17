@@ -34,14 +34,6 @@ import org.jgrapht.graph.*;
  * Each pair of blocks of $G$ share at most one vertex, and that vertex is a cut-point in $G$. $BC(G)$ is a tree in which
  * each leaf node corresponds to a block of $G$.
  * <p>
- * This class also computes the <a href="https://en.wikipedia.org/wiki/Bridge_(graph_theory)">bridges</a> (also know as cut-edges) in a graph.
- * A bridge is an edge of a graph whose deletion increases its number of connected components.
- * <p>
- * The algorithm implemented in this class to compute the BLock-Cutpoint graph is described in:
- * Hopcroft, J. Tarjan, R. Algorithm 447: efficient algorithms for graph manipulation, 1973. Communications of the ACM. 16 (6): 372–378.
- * This implementation runs in linear time $O(|V|+|E|)$ and is based on Depth-first search.
- * More information about this subject be be found in this wikipedia <a href="https://en.wikipedia.org/wiki/Biconnected_component">article</a>.
- * <p>
  * Note: the block-cutpoint graph is not changed when the underlying graph is changed.
  *
  *
@@ -142,5 +134,4 @@ public class BlockCutpointGraph<V, E>
     }
 
 }
-
 // End BlockCutpointGraph.java

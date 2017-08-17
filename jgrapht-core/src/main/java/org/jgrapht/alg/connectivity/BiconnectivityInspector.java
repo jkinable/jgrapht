@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2007-2017, by France Telecom and Contributors.
+ * (C) Copyright 2017-2017, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -28,12 +28,17 @@ import org.jgrapht.graph.AsUndirectedGraph;
  * Allows obtaining various connectivity aspects of a graph. The <i>inspected graph</i> is specified
  * at construction time and cannot be modified. No restrictions are imposed on the input graph.
  * Multigraphs and pseudographs are also supported.
- * The inspector supports connected
- * components for undirected graphs and weakly connected components for directed graphs. To find
+ * The inspector traverses connected
+ * components (undirected graphs) or weakly connected components (directed graphs). To find
  * strongly connected components, use {@link KosarajuStrongConnectivityInspector} instead. This class
- * offers an alternative to some of the functionality provided in @{@link ConnectivityInspector}. It
- * is likely to perform somewhat slower than @{@link ConnectivityInspector}, but offers more functionality in return.
- *
+ * offers an alternative implementation of some of the functionality encountered in {@link ConnectivityInspector}. It
+ * is likely to perform somewhat slower than {@link ConnectivityInspector}, but offers more functionality in return.
+ * <p>
+ * The algorithm implemented in this class is Hopcroft and Tarjan's biconnected components algorithm, described in:
+ * Hopcroft, J. Tarjan, R. Algorithm 447: efficient algorithms for graph manipulation, 1973. Communications of the ACM. 16 (6): 372–378.
+ * This implementation runs in linear time $O(|V|+|E|)$ and is based on a recursive depth-first search.
+ * More information about this subject be be found in this wikipedia <a href="https://en.wikipedia.org/wiki/Biconnected_component">article</a>.
+
  * <p>
  * The inspector methods work in a lazy fashion: no computations are performed unless immediately
  * necessary. Computation are done once and results and cached within this class for future need.
@@ -44,7 +49,6 @@ import org.jgrapht.graph.AsUndirectedGraph;
  * @param <E> the graph edge type
  *
  * @author Joris Kinable
- * @since July 5, 2007
  */
 public class BiconnectivityInspector<V, E>
 {
@@ -109,6 +113,7 @@ public class BiconnectivityInspector<V, E>
     /**
      * Returns the graph's bridges.
      * An edge is a <a href="http://mathworld.wolfram.com/GraphBridge.html">bridge</a> if removal of that edge would increase the number of (weakly) connected components in the graph.
+     * Note that this definition remains applicable in case of multigraphs or pseudographs.
      *
      * @return the graph's bridges
      */
@@ -119,7 +124,7 @@ public class BiconnectivityInspector<V, E>
     }
 
     /**
-     * Returns the <a href="http://mathworld.wolfram.com/Block.html">blocks</a> (biconnected components) containing the vertex.
+     * Returns a set of <a href="http://mathworld.wolfram.com/Block.html">blocks</a> (biconnected components) containing the specified vertex.
      * A block is a maximal biconnected subgraph.
      * Each non-cutpoint resides in at most one block. Each cutpoint resides in at least two blocks.
      *
@@ -225,7 +230,7 @@ public class BiconnectivityInspector<V, E>
     }
 
     /**
-     * Test if the inspected graph is connected. A graph is connected when there is a path between every pair of
+     * Test if the inspected graph is connected. A graph is connected when, while ignoring edge directionality, there exists a path between every pair of
      * vertices. In a connected graph, there are no unreachable vertices. When the inspected graph is a <i>directed</i>
      * graph, this method returns true if and only if the inspected graph is <i>weakly</i> connected.
      * An empty graph is <i>not</i> considered connected.
@@ -282,9 +287,6 @@ public class BiconnectivityInspector<V, E>
      */
     private void buildBlock(int discTimeCutpoint)
     {
-//        System.out.println("finish bicomp. n: "+nv+" time_n: "+ discTime.get(nv));
-        System.out.println("discTimes: "+discTime);
-        System.out.println("stack: "+stack);
         Set<V> vertexComponent = new HashSet<>();
 
         while(!stack.isEmpty()){
@@ -297,8 +299,6 @@ public class BiconnectivityInspector<V, E>
             vertexComponent.add(source);
             vertexComponent.add(target);
         }
-        System.out.println("vertexComponent: "+vertexComponent);
-
         blocks.add(new AsSubgraph<>(this.graph, vertexComponent));
     }
 
@@ -314,7 +314,6 @@ public class BiconnectivityInspector<V, E>
         discTime.put(v, time);
         connectedSet.add(v);
         int children=0;
-        System.out.println("dfs. s: "+v+" parent: "+parent+" time: "+time+" minS: "+lowV);
 
         for (E edge : this.graph.edgesOf(v)) {
             V nv = Graphs.getOppositeVertex(this.graph, edge, v);
@@ -329,9 +328,10 @@ public class BiconnectivityInspector<V, E>
                 if (lowNV > discTime.get(v))
                     bridges.add(edge);
 
+                //1. nonroot vertex v is a cutpoint iff there is a child y of v such that lowpoint(y) >= depth(v)
+                //2. root vertex v is a cutpoint if it has more than 1 child
                 if ((parent != null && lowNV >= discTime.get(v)) || (parent == null && children > 1)) {
                     this.cutpoints.add(v); //v is a cutpoint
-                    System.out.println("found cutpoint: "+v);
                     buildBlock(discTime.get(v)); //construct biconnected component
                 }
             } else if ((discTime.get(nv) < discTime.get(v)) && !nv.equals(parent)) { //found backedge

@@ -189,9 +189,6 @@ public class BiconnectivityInspectorTest
 
         BiconnectivityInspector<Integer, DefaultEdge> inspector =
                 new BiconnectivityInspector<>(g);
-//        System.out.println("cutpoints: "+inspector.getCutpoints());
-//        System.out.println("blocks: "+inspector.getBlocks());
-//        System.out.println("bridges: "+inspector.getBridges());
 
         assertTrue(inspector.isConnected());
 

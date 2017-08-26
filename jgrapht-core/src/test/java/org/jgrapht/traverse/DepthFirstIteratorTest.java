@@ -39,7 +39,6 @@ import static org.junit.Assert.assertEquals;
  * @author Liviu Rau, Patrick Sharp
  * @since Jul 30, 2003
  */
-//public class DepthFirstIteratorTest{}
 public class DepthFirstIteratorTest
     extends CrossComponentIteratorTest
 {

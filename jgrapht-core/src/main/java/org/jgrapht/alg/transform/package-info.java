@@ -1,4 +1,4 @@
 /**
- * Graph algorithms to convert a graph into its corresponding other forms.
+ * Package for graph transformers
  */
 package org.jgrapht.alg.transform;

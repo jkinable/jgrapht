@@ -25,12 +25,11 @@ import java.util.Objects;
 import java.util.function.*;
 
 /**
- * Generator which produces the
+ * Converter which produces the
  * <a href="http://mathworld.wolfram.com/LineGraph.html">line graph</a> of a given input
  * graph.
  * The line graph of an undirected graph $G$ is another graph $L(G)$ that represents the
- * adjacencies between edges of $G$.
- * The line graph of a directed graph $G$ is the directed graph $L(G)$ whose vertex set
+ * adjacencies between edges of $G$. The line graph of a directed graph $G$ is the directed graph $L(G)$ whose vertex set
  * corresponds to the arc set of $G$ and having an arc directed from an edge $e_1$ to an
  * edge $e_2$ if in $G$, the head of $e_1$ meets the tail of $e_2$
  *
@@ -38,8 +37,10 @@ import java.util.function.*;
  * More formally, let $G = (V, E)$ be a graph then its line graph $L(G)$ is such that
  * <ul>
  * <li>Each vertex of $L(G)$ represents an edge of $G$</li>
- * <li>Two vertices of $L(G)$ are adjacent if and only if their corresponding edges share
+ * <li>If $G$ is undirected: two vertices of $L(G)$ are adjacent if and only if their corresponding edges share
  * a common endpoint ("are incident") in $G$ </li>
+ * <li>If $G$ is directed: two vertices of $L(G)$ corresponding to respectively arcs $(u,v)$ and $(r,s)$ in $G$ are adjacent
+ * if and only if $v=r$.</li>
  * </ul>
  * <p>
  *
@@ -60,7 +61,7 @@ public class LineGraphConverter<V, E, EE>
     /**
      * Line Graph Converter
      *
-     * @param graph graph to be converted
+     * @param graph graph to be converted. This implementation supports multigraphs and pseudographs.
      */
     public LineGraphConverter(Graph<V, E> graph)
     {
@@ -82,8 +83,16 @@ public class LineGraphConverter<V, E, EE>
      * Constructs a line graph of the input graph. If the input graph is directed, the result is a line digraph.
      * The result is stored in the target graph. A weight function is provided to set edge weights of the line graph
      * edges. Notice that the target graph must be a weighted graph for this to work. Recall that in a line graph
-     * $L(G)$ of a graph $G(V,E)$ there exists an edge $e$ between $e1\in E$ and $e2\in E$ if the head of $e1$ is incendent
-     * to the tail of $e2$. To determine the weight of $e$ in $L(G)$, the weight function takes as input $e1$ and $e2$.
+     * $L(G)$ of a graph $G(V,E)$ there exists an edge $e$ between $e_1\in E$ and $e_2\in E$ if the head of $e_1$ is incident
+     * to the tail of $e_2$. To determine the weight of $e$ in $L(G)$, the weight function takes as input $e_1$ and $e_2$.
+     *
+     * <p>
+     * Note: a special case arises when graph $G$ contains self-loops. Self-loops (as well as multiple edges) simply add
+     * additional nodes to line graph $L(G)$. When $G$ is <em>directed</em>, a self-loop $e=(v,v)$ in $G$ results in a vertex
+     * $e$ in $L(G)$, and in addition a self-loop $(e,e)$ in $L(G)$, since, by definition, the head of $e$ in $G$ is incident to
+     * its own tail. When $G$ is <em>undirected</em>, a self-loop $e=(v,v)$ in $G$ results in a vertex $e$ in $L(G)$, but
+     * <em>no</em> self-loop $(e,e)$ is added to $L(G)$, since, by convention, the line graph of an undirected graph is
+     * commonly assumed to be a simple graph.
      *
      * @param target target graph
      * @param weightFunction weight function
@@ -116,17 +125,4 @@ public class LineGraphConverter<V, E, EE>
 
         }
     }
-
-//    To implement getRootGraph and isLineGraph, see:
-//    -Lehot, P. G. H. "An Optimal Algorithm to Detect a Line Graph and Output Its Root Graph." J. ACM 21, 569-575, 1974.
-//    -Sysło, Maciej M. (1982), "A labeling algorithm to recognize a line digraph and output its root graph", Information Processing Letters, 15 (1): 28–30, doi:10.1016/0020-0190(82)90080-1, MR 0678028.
-//    -Degiorgi D.G., Simon K. (1995) A dynamic algorithm for line graph recognition. In: Nagl M. (eds) Graph-Theoretic Concepts in Computer Science. WG 1995. Lecture Notes in Computer Science, vol 1017. Springer, Berlin, Heidelberg
-//    public void convertToRootGraph(Graph<V, E> target){
-//        //Not yet implemented
-//    }
-//
-//    Determines whether the graph is a line graph
-//    public boolean isLineGraph(){
-//        //Not yet implemented. Add shortcut to GraphTest
-//    }
 }

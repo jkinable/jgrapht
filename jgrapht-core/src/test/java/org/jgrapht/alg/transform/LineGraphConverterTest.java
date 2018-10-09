@@ -29,7 +29,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 /**
- * Tests for LineGraphConstructor
+ * Tests for LineGraphConverter
  *
  * @author Nikhil Sharma
  * @author Joris Kinable
@@ -129,5 +129,50 @@ public class LineGraphConverterTest
         assertTrue(target.containsEdge(e43, e32));
         assertTrue(target.containsEdge(e43, e31));
         assertTrue(target.containsEdge(e14, e43));
+    }
+    @Test
+    public void selfLoopTestUndirected(){
+        Graph<Integer, DefaultEdge> g=new Pseudograph<>(DefaultEdge.class);
+        Graphs.addAllVertices(g, Arrays.asList(1,2,3));
+        DefaultEdge e12 = g.addEdge(1,2);
+        DefaultEdge e23 = g.addEdge(2,3);
+        DefaultEdge e31 = g.addEdge(3,1);
+        DefaultEdge e22 = g.addEdge(2,2);
+        LineGraphConverter<Integer, DefaultEdge, DefaultEdge> lgc = new LineGraphConverter<>(g);
+        Graph<DefaultEdge, DefaultEdge> target = new SimpleGraph<>(DefaultEdge.class);
+        lgc.convertToLineGraph(target);
+
+        assertEquals(target.vertexSet(), g.edgeSet());
+        assertEquals(5, target.edgeSet().size());
+
+        assertTrue(target.containsEdge(e12, e23));
+        assertTrue(target.containsEdge(e12, e31));
+        assertTrue(target.containsEdge(e23, e31));
+        assertTrue(target.containsEdge(e12, e22));
+        assertTrue(target.containsEdge(e22, e23));
+
+    }
+    @Test
+    public void selfLoopTestDirected(){
+        Graph<Integer, DefaultEdge> g=new DirectedPseudograph<>(DefaultEdge.class);
+        Graphs.addAllVertices(g, Arrays.asList(1,2,3));
+        DefaultEdge e12 = g.addEdge(1,2);
+        DefaultEdge e23 = g.addEdge(2,3);
+        DefaultEdge e31 = g.addEdge(3,1);
+        DefaultEdge e22 = g.addEdge(2,2);
+        LineGraphConverter<Integer, DefaultEdge, DefaultEdge> lgc = new LineGraphConverter<>(g);
+        Graph<DefaultEdge, DefaultEdge> target = new DirectedPseudograph<>(DefaultEdge.class);
+        lgc.convertToLineGraph(target);
+
+        assertEquals(target.vertexSet(), g.edgeSet());
+        assertEquals(6, target.edgeSet().size());
+
+        assertTrue(target.containsEdge(e12, e23));
+        assertTrue(target.containsEdge(e23, e31));
+        assertTrue(target.containsEdge(e31, e12));
+
+        assertTrue(target.containsEdge(e22, e22));
+        assertTrue(target.containsEdge(e12, e22));
+        assertTrue(target.containsEdge(e22, e23));
     }
 }

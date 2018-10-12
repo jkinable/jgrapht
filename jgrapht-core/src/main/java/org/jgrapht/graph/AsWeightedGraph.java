@@ -96,7 +96,7 @@ public class AsWeightedGraph<V, E>
      * of an edge returned by the <code>weightFunction</code> after its first invocation is stored in a map. The weight of
      * an edge returned by subsequent calls to @link{getEdgeWeight} for the same edge will then be
      * retrieved directly from the map, instead of re-invoking the weight function. If <code>cacheWeights</code> is set
-     * to <code>false</code>, each  invocations of the @link{getEdgeWeight} method will invoke the weight function.
+     * to <code>false</code>, each invocation of the @link{getEdgeWeight} method will invoke the weight function.
      * Caching the edge weights is particularly useful when pre-computing all edge weights is expensive and it is
      * expected that the weights of only a subset of all edges will be queried.
      *

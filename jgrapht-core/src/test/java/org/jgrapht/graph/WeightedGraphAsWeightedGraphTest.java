@@ -19,6 +19,7 @@ package org.jgrapht.graph;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.*;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
@@ -162,5 +163,19 @@ public class WeightedGraphAsWeightedGraphTest
         } catch (Exception e) {
             assertTrue(e instanceof NullPointerException);
         }
+    }
+
+    @Test
+    public void testWeightFunction(){
+        Graph<Integer, DefaultWeightedEdge> g1=new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        Graphs.addEdgeWithVertices(g1, 0, 1, 2);
+        Graphs.addEdgeWithVertices(g1, 1, 2, 3);
+        Graphs.addEdgeWithVertices(g1, 2, 0, 4);
+        Function<DefaultWeightedEdge, Double> weightFunction= e -> Math.pow(g1.getEdgeWeight(e), 2);
+        Graph<Integer, DefaultWeightedEdge> g2=new AsWeightedGraph<>(g1, weightFunction, true, false);
+        //Repeat twice to trigger caching
+        for(int i=0; i<2; i++)
+            for(DefaultWeightedEdge edge : g1.edgeSet())
+                assertEquals(g1.getEdgeWeight(edge)*g1.getEdgeWeight(edge), g2.getEdgeWeight(edge), 0);
     }
 }

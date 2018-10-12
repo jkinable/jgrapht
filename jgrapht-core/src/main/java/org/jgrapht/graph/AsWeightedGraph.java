@@ -18,8 +18,8 @@
 package org.jgrapht.graph;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.*;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphTests;
@@ -47,8 +47,10 @@ public class AsWeightedGraph<V, E>
 {
 
     private static final long serialVersionUID = -6838132233557L;
+    private final Function<E, Double> weightFunction;
     private final Map<E, Double> weights;
-    private final boolean writeWeightsThrough;
+    public final boolean writeWeightsThrough;
+    public final boolean cacheWeights;
 
     /**
      * Constructor for AsWeightedGraph which enables weight write propagation
@@ -80,11 +82,40 @@ public class AsWeightedGraph<V, E>
     {
         super(graph);
         this.weights = Objects.requireNonNull(weights);
+        this.weightFunction=null;
+        this.cacheWeights=false;
         this.writeWeightsThrough = writeWeightsThrough;
 
-        if (this.writeWeightsThrough) {
+        if (this.writeWeightsThrough)
             GraphTests.requireWeighted(graph);
-        }
+    }
+
+    /**
+     * Constructor for AsWeightedGraph which uses a weight function to compute edge weights. When the weight of an edge
+     * is queried, the weight function is invoked. If <code>cacheWeights</code> is set to <code>true</code>, the weight
+     * of an edge returned by the <code>weightFunction</code> after its first invocation is stored in a map. The weight of
+     * an edge returned by subsequent calls to @link{getEdgeWeight} for the same edge will then be
+     * retrieved directly from the map, instead of re-invoking the weight function. If <code>cacheWeights</code> is set
+     * to <code>false</code>, each  invocations of the @link{getEdgeWeight} method will invoke the weight function.
+     * Caching the edge weights is particularly useful when pre-computing all edge weights is expensive and it is
+     * expected that the weights of only a subset of all edges will be queried.
+     *
+     * @param graph the backing graph over which an weighted view is to be created
+     * @param weightFunction function which maps an edge to a weight
+     * @param cacheWeights if set to <code>true</code>, weights are cached once computed by the weight function
+     * @param writeWeightsThrough if set to <code>true</code>, the weight set directly by the @link{setEdgeWeight} method will be propagated to the backing graph.
+     * @throws NullPointerException     if the graph or the weight function is null
+     * @throws IllegalArgumentException if <code>writeWeightsThrough</code> is set to true and <code>graph</code> is not a weighted graph
+     */
+    public AsWeightedGraph(Graph<V,E> graph, Function<E, Double> weightFunction, boolean cacheWeights, boolean writeWeightsThrough){
+        super(graph);
+        this.weightFunction=Objects.requireNonNull(weightFunction);
+        this.cacheWeights=cacheWeights;
+        this.writeWeightsThrough=writeWeightsThrough;
+        this.weights=new HashMap<>();
+
+        if (this.writeWeightsThrough)
+            GraphTests.requireWeighted(graph);
     }
 
     /**
@@ -98,17 +129,27 @@ public class AsWeightedGraph<V, E>
      */
     @Override public double getEdgeWeight(E e)
     {
-        Double weight = this.weights.get(e);
-
-        if (Objects.isNull(weight)) {
-            weight = super.getEdgeWeight(e);
+        Double weight;
+        if(weightFunction != null) {
+            if(cacheWeights) //If weights are cached, check map first before invoking the weight function
+                weight = weights.computeIfAbsent(e, weightFunction);
+            else
+                weight = weightFunction.apply(e);
+        }else{
+            weight=weights.get(e);
         }
+
+        if (Objects.isNull(weight))
+            weight = super.getEdgeWeight(e);
 
         return weight;
     }
 
     /**
-     * Assigns a weight to an edge.
+     * Assigns a weight to an edge. If <code>writeWeightsThrough</code> is set to <code>true</code>, the same weight is
+     * set in the backing graph. If this class was constructed using a weight function, it only makes sense to invoke this
+     * method when <code>cacheWeights</code> is set to true. This method can than be used to preset weights in the cache, or
+     * to overwrite existing values.
      *
      * @param e      edge on which to set weight
      * @param weight new weight for edge

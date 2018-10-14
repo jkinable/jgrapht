@@ -1,6 +1,7 @@
 # JGraphT Release Process
 
 1. Let other developers on [jgrapht-dev](https://groups.google.com/forum/#!forum/jgrapht-dev) know that you're starting on the release and ask them to hold off on merging changes until the release is complete.
+1. Check and, if necessary, update dependencies: `mvn versions:display-dendency-updates`
 1. Review the README.md, HISTORY.md, CONTRIBUTORS.md, and update:
     * Version
     * Dependencies

@@ -190,6 +190,14 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
      * {@inheritDoc}
      */
     @Override
+    public Map<E, Double> getFlowMap() {
+        return this.getMinimumCostFlow().getFlowMap();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public V getFlowDirection(E edge) {
         return problem.getGraph().getEdgeTarget(edge);
     }

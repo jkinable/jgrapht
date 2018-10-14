@@ -30,7 +30,7 @@ import java.util.Map;
  * @param <E> graph edge type
  * @author Timofey Chudakov
  */
-public interface MinimumCostFlowAlgorithm<V, E> {
+public interface MinimumCostFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>{
 
     /**
      * Calculates feasible flow of minimum cost for the minimum cost flow problem. If minimum cost
@@ -49,25 +49,7 @@ public interface MinimumCostFlowAlgorithm<V, E> {
         return getMinimumCostFlow().getCost();
     }
 
-    /**
-     * Returns a <em>read-only</em> mapping from edges to the corresponding flow values.
-     *
-     * @return a <em>read-only</em> mapping from edges to the corresponding flow values.
-     */
-    default Map<E, Double> getFlowMap() {
-        return getMinimumCostFlow().getFlowMap();
-    }
 
-    /**
-     * For the specified {@code edge} $(u, v)$ return vertex $v$ if the flow goes from $u$ to $v$, or returns
-     * vertex $u$ otherwise. For directed flow networks the result is always the head of the specified arc.
-     * <p>
-     * <em>Note:</em> not all minimum cost flow algorithms may support undirected graphs.
-     *
-     * @param edge an edge from the specified flow network
-     * @return the direction of the flow on the {@code edge}
-     */
-    V getFlowDirection(E edge);
 
     /**
      * Represents a minimum cost flow.
@@ -75,30 +57,13 @@ public interface MinimumCostFlowAlgorithm<V, E> {
      * @param <E> graph edge type
      * @since July 2018
      */
-    interface MinimumCostFlow<E> {
+    interface MinimumCostFlow<E> extends Flow<E>{
         /**
          * Returns the cost of the flow
          *
          * @return the cost of the flow
          */
         double getCost();
-
-        /**
-         * Returns the flow on the {@code edge}
-         *
-         * @param edge an edge from the flow network
-         * @return the flow on the {@code edge}
-         */
-        double getFlow(E edge);
-
-        /**
-         * Returns a mapping from the network flow edges to the corresponding flow values. The mapping
-         * contains all edges of the flow network regardless of whether there is a non-zero flow on an
-         * edge or not.
-         *
-         * @return a read-only map that defines a feasible flow of minimum cost.
-         */
-        Map<E, Double> getFlowMap();
     }
 
     /**
@@ -106,15 +71,11 @@ public interface MinimumCostFlowAlgorithm<V, E> {
      *
      * @param <E> graph edge type
      */
-    class MinimumCostFlowImpl<E> implements MinimumCostFlow<E> {
+    class MinimumCostFlowImpl<E> extends FlowImpl<E> implements MinimumCostFlow<E> {
         /**
          * The cost of the flow defined by the mapping {@code flowMap}
          */
         double cost;
-        /**
-         * A mapping defining the flow on the network
-         */
-        private Map<E, Double> flowMap;
 
         /**
          * Constructs a new instance of minimum cost flow
@@ -123,16 +84,8 @@ public interface MinimumCostFlowAlgorithm<V, E> {
          * @param flowMap the mapping defining the flow on the network
          */
         public MinimumCostFlowImpl(double cost, Map<E, Double> flowMap) {
+            super(flowMap);
             this.cost = cost;
-            this.flowMap = Collections.unmodifiableMap(flowMap);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Map<E, Double> getFlowMap() {
-            return flowMap;
         }
 
         /**
@@ -141,14 +94,6 @@ public interface MinimumCostFlowAlgorithm<V, E> {
         @Override
         public double getCost() {
             return cost;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public double getFlow(E edge) {
-            return flowMap.get(edge);
         }
     }
 }

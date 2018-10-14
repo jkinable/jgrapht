@@ -19,8 +19,8 @@ package org.jgrapht.io;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.misc.*;
-import org.apache.commons.lang3.*;
-import org.apache.commons.lang3.text.translate.*;
+import org.apache.commons.text.*;
+import org.apache.commons.text.translate.*;
 import org.jgrapht.*;
 
 import java.io.*;
@@ -53,9 +53,7 @@ public class DOTImporter<V, E>
     public static final String DEFAULT_GRAPH_ID_KEY = "ID";
 
     // identifier unescape rule
-    private static final CharSequenceTranslator UNESCAPE_ID = new AggregateTranslator(
-        new LookupTranslator(
-            new String[][] { { "\\\\", "\\" }, { "\\\"", "\"" }, { "\\'", "'" }, { "\\", "" } }));
+    private final CharSequenceTranslator UNESCAPE_ID;
 
     /**
      * Constructs a new importer.
@@ -97,6 +95,14 @@ public class DOTImporter<V, E>
         super(vertexProvider, edgeProvider, (vertexUpdater != null) ? vertexUpdater : (c, a) -> {
         }, (graphUpdater != null) ? graphUpdater : (c, a) -> {
         });
+
+        Map<CharSequence,CharSequence> lookupMap=new HashMap<>();
+        lookupMap.put("\\\\", "\\");
+        lookupMap.put("\\\"", "\"");
+        lookupMap.put("\\'", "'");
+        lookupMap.put("\\", "");
+        UNESCAPE_ID = new AggregateTranslator(new LookupTranslator(lookupMap));
+
     }
 
     /**
@@ -809,7 +815,7 @@ public class DOTImporter<V, E>
      * @param input the input
      * @return the unescaped output
      */
-    private static String unescapeId(String input)
+    private String unescapeId(String input)
     {
         final char QUOTE = '"';
         if (input.charAt(0) != QUOTE || input.charAt(input.length() - 1) != QUOTE) {

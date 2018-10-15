@@ -55,7 +55,6 @@ public interface MinimumCostFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>{
      * Represents a minimum cost flow.
      *
      * @param <E> graph edge type
-     * @since July 2018
      */
     interface MinimumCostFlow<E> extends Flow<E>{
         /**

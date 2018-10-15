@@ -20,7 +20,7 @@ package org.jgrapht.alg.interfaces;
 import java.util.*;
 
 /**
- * Iterface for flow algorithms
+ * Interface for flow algorithms
  * @author Joris Kinable
  *
  * @param <V> the graph vertex type
@@ -33,7 +33,7 @@ public interface FlowAlgorithm<V,E> {
      * @return flow
      */
     default Flow getFlow(){
-        return new FlowImpl(this.getFlowMap());
+        return new FlowImpl<>(this.getFlowMap());
     }
 
     /**
@@ -44,7 +44,7 @@ public interface FlowAlgorithm<V,E> {
     Map<E, Double> getFlowMap();
 
     /**
-     * For the specified {@code edge} $(u, v)$ return vertex $v$ if the flow goes from $u$ to $v$, or returns
+     * For the specified {@code edge} $(u, v)$ returns vertex $v$ if the flow goes from $u$ to $v$, or returns
      * vertex $u$ otherwise. For directed flow networks the result is always the head of the specified arc.
      * <p>
      * <em>Note:</em> not all minimum cost flow algorithms may support undirected graphs.
@@ -58,7 +58,6 @@ public interface FlowAlgorithm<V,E> {
      * Represents a minimum cost flow.
      *
      * @param <E> graph edge type
-     * @since July 2018
      */
     interface Flow<E> {
         /**

@@ -29,6 +29,14 @@ import java.util.*;
 public interface FlowAlgorithm<V,E> {
 
     /**
+     * Result object of a flow algorithm
+     * @return flow
+     */
+    default Flow getFlow(){
+        return new FlowImpl(this.getFlowMap());
+    }
+
+    /**
      * Returns a <em>read-only</em> mapping from edges to the corresponding flow values.
      *
      * @return a <em>read-only</em> mapping from edges to the corresponding flow values.

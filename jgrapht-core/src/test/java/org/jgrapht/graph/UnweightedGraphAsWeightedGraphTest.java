@@ -94,16 +94,6 @@ public class UnweightedGraphAsWeightedGraphTest
         assertEquals(DEFAULT_EDGE_WEIGHT, this.weightedGraph.getEdgeWeight(loop), 0);
     }
 
-    @Test public void testSetEdgeWeightIfNullIsPassed()
-    {
-        try {
-            this.weightedGraph.setEdgeWeight(null, 0);
-            fail("Expected a NullPointerException");
-        } catch (Exception e) {
-            assertTrue(e instanceof NullPointerException);
-        }
-    }
-
     @Test public void testGetEdgeWeightOfNull()
     {
         try {

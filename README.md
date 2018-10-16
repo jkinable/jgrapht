@@ -7,7 +7,7 @@
 
 # JGraphT
 
-Released: May 16, 2018</p>
+Released: October 18, 2018</p>
 
 Written by [Barak Naveh](mailto:barak_naveh@users.sourceforge.net)  and Contributors
 
@@ -134,6 +134,7 @@ A local copy of the Javadoc HTML files is included in the distribution. The late
 - [JGraphX](http://www.jgraph.com/jgraph.html) is a graph visualizations and editing component (the successor to the older JGraph library). You need JGraphX only if you want to use the JGraphXAdapter to visualize the JGraphT graph interactively via JGraphX. JGraphX is licensed under the terms of the BSD license.
 - [ANTLR](http://www.antlr.org) is a parser generator.  It is used for reading text files containing graph representations, and is only required by the jgrapht-io module.  ANTLR v4 is licensed under the terms of the [BSD license](http://www.antlr.org/license.html).
 - [Guava](https://github.com/google/guava) is Google's core libraries for Java. You need Guava only if you are already using Guava's graph data-structures and wish to use our adapter classes in order to execute JGraphT's algorithms. Only required by the jgrapht-guava module.
+- [Apache Commons Proper](http://commons.apache.org/components.html) is an Apache project containing reusable Java components. The packages [commons-text](https://commons.apache.org/proper/commons-text/) and [commons-lang3.](http://commons.apache.org/proper/commons-lang/) which provide additional utilities for String manipulation are only required by the jgrapht-io module.
 
 ## Online Resources ##
 

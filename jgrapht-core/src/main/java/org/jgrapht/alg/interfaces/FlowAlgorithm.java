@@ -21,6 +21,7 @@ import java.util.*;
 
 /**
  * Interface for flow algorithms
+ *
  * @author Joris Kinable
  *
  * @param <V> the graph vertex type
@@ -30,6 +31,7 @@ public interface FlowAlgorithm<V,E> {
 
     /**
      * Result object of a flow algorithm
+     *
      * @return flow
      */
     default Flow getFlow(){
@@ -47,7 +49,7 @@ public interface FlowAlgorithm<V,E> {
      * For the specified {@code edge} $(u, v)$ returns vertex $v$ if the flow goes from $u$ to $v$, or returns
      * vertex $u$ otherwise. For directed flow networks the result is always the head of the specified arc.
      * <p>
-     * <em>Note:</em> not all minimum cost flow algorithms may support undirected graphs.
+     * <em>Note:</em> not all flow algorithms may support undirected graphs.
      *
      * @param edge an edge from the specified flow network
      * @return the direction of the flow on the {@code edge}
@@ -55,7 +57,7 @@ public interface FlowAlgorithm<V,E> {
     V getFlowDirection(E edge);
 
     /**
-     * Represents a minimum cost flow.
+     * Represents a flow.
      *
      * @param <E> graph edge type
      */
@@ -75,13 +77,13 @@ public interface FlowAlgorithm<V,E> {
          * contains all edges of the flow network regardless of whether there is a non-zero flow on an
          * edge or not.
          *
-         * @return a read-only map that defines a feasible flow of minimum cost.
+         * @return a read-only map that defines a feasible flow.
          */
         Map<E, Double> getFlowMap();
     }
 
     /**
-     * Default implementation of the {@link MinimumCostFlowAlgorithm.MinimumCostFlow}
+     * Default implementation of {@link Flow}
      *
      * @param <E> graph edge type
      */
@@ -92,7 +94,7 @@ public interface FlowAlgorithm<V,E> {
         private Map<E, Double> flowMap;
 
         /**
-         * Constructs a new instance of minimum cost flow
+         * Constructs a new flow
          *
          * @param flowMap the mapping defining the flow on the network
          */

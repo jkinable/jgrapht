@@ -135,6 +135,7 @@ A local copy of the Javadoc HTML files is included in the distribution. The late
 - [ANTLR](http://www.antlr.org) is a parser generator.  It is used for reading text files containing graph representations, and is only required by the jgrapht-io module.  ANTLR v4 is licensed under the terms of the [BSD license](http://www.antlr.org/license.html).
 - [Guava](https://github.com/google/guava) is Google's core libraries for Java. You need Guava only if you are already using Guava's graph data-structures and wish to use our adapter classes in order to execute JGraphT's algorithms. Only required by the jgrapht-guava module.
 - [Apache Commons Proper](http://commons.apache.org/components.html) is an Apache project containing reusable Java components. The packages [commons-text](https://commons.apache.org/proper/commons-text/) and [commons-lang3.](http://commons.apache.org/proper/commons-lang/) which provide additional utilities for String manipulation are only required by the jgrapht-io module.
+- [fastutil](http://fastutil.di.unimi.it/) provides a collection of type-specific maps, sets, lists and queues with a small memory footprint and fast access and insertion. Fastutil is only required by the jgrapht-opt module.
 
 ## Online Resources ##
 

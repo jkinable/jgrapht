@@ -19,7 +19,6 @@ package org.jgrapht.alg.flow.mincost;
 
 import org.jgrapht.Graph;
 import org.jgrapht.Graphs;
-import org.jgrapht.alg.flow.mincost.CapacityScalingMinimumCostFlow.DualSolution;
 import org.jgrapht.alg.interfaces.MinimumCostFlowAlgorithm.MinimumCostFlow;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -1059,21 +1058,21 @@ public class CapacityScalingMinimumCostFlowTest {
                 upperMap.put(edge, data[3]);
             }
         }
-        MinimumCostFlowProblem<Integer, DefaultWeightedEdge> problem = new MinimumCostFlowProblem<>(graph, v -> supplyMap.getOrDefault(v, 0), upperMap::get, e -> lowerMap.getOrDefault(e, 0));
-        CapacityScalingMinimumCostFlow<Integer, DefaultWeightedEdge> minimumCostFlow = new CapacityScalingMinimumCostFlow<>(problem, scalingFactor);
-        assertEquals(cost, minimumCostFlow.getFlowCost(), EPS);
-        assertTrue(minimumCostFlow.testOptimality(EPS));
+        MinimumCostFlowProblem<Integer, DefaultWeightedEdge> problem = new MinimumCostFlowProblem.MinimumCostFlowProblemImpl<>(graph, v -> supplyMap.getOrDefault(v, 0), upperMap::get, e -> lowerMap.getOrDefault(e, 0));
+        CapacityScalingMinimumCostFlow<Integer, DefaultWeightedEdge> minimumCostFlowAlgorithm = new CapacityScalingMinimumCostFlow<>(scalingFactor);
+        MinimumCostFlow<DefaultWeightedEdge> minimumCostFlow=minimumCostFlowAlgorithm.getMinimumCostFlow(problem);
+        assertEquals(cost, minimumCostFlow.getCost(), EPS);
+        assertTrue(minimumCostFlowAlgorithm.testOptimality(EPS));
 
-        assertTrue(checkFlowAndDualSolution(minimumCostFlow.getDualSolution(), minimumCostFlow.getMinimumCostFlow(), problem));
+        assertTrue(checkFlowAndDualSolution(minimumCostFlowAlgorithm.getDualSolution(), minimumCostFlow, problem));
     }
 
 
-    private <V, E> boolean checkFlowAndDualSolution(DualSolution<V> dualSolution, MinimumCostFlow<E> flow, MinimumCostFlowProblem<V, E> problem) {
+    private <V, E> boolean checkFlowAndDualSolution(Map<V, Double> dualVariables, MinimumCostFlow<E> flow, MinimumCostFlowProblem<V, E> problem) {
         Graph<V, E> graph = problem.getGraph();
-        Map<V, Double> dualVariables = dualSolution.getDualVariables();
         // check supply constraints
         for (V vertex : graph.vertexSet()) {
-            int supply = problem.getNodeDemands().apply(vertex);
+            int supply = problem.getNodeSupply().apply(vertex);
             int flowIn = 0;
             for (E edge : graph.incomingEdgesOf(vertex)) {
                 flowIn += flow.getFlow(edge);

@@ -17,6 +17,8 @@
  */
 package org.jgrapht.alg.interfaces;
 
+import org.jgrapht.alg.flow.mincost.*;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -33,20 +35,21 @@ import java.util.Map;
 public interface MinimumCostFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>{
 
     /**
-     * Calculates feasible flow of minimum cost for the minimum cost flow problem. If minimum cost
-     * flow in not unique, the algorithm chooses the result arbitrarily.
+     * Calculates feasible flow of minimum cost for the minimum cost flow problem.
      *
+     * @param minimumCostFlowProblem minimum cost flow problem
      * @return minimum cost flow
      */
-    MinimumCostFlow<E> getMinimumCostFlow();
+    MinimumCostFlow<E> getMinimumCostFlow(MinimumCostFlowProblem minimumCostFlowProblem);
 
     /**
-     * Returns the cost of the computed minimum cost flow.
+     * Returns the objective value (cost) of a solution to the minimum cost flow problem.
      *
-     * @return the cost of a minimum cost flow.
+     * @param minimumCostFlowProblem minimum cost flow problem
+     * @return the objective value (cost) of a solution to the minimum cost flow problem.
      */
-    default double getFlowCost() {
-        return getMinimumCostFlow().getCost();
+    default double getFlowCost(MinimumCostFlowProblem minimumCostFlowProblem) {
+        return getMinimumCostFlow(minimumCostFlowProblem).getCost();
     }
 
 

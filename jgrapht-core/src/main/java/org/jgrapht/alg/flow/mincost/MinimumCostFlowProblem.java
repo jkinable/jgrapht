@@ -20,6 +20,7 @@ package org.jgrapht.alg.flow.mincost;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.interfaces.MinimumCostFlowAlgorithm;
 
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -40,89 +41,111 @@ import java.util.function.Function;
  * @author Timofey Chudakov
  * @see MinimumCostFlowAlgorithm
  */
-public class MinimumCostFlowProblem<V, E> {
-    /**
-     * The flow network
-     */
-    private Graph<V, E> graph;
-    /**
-     * Function specifying the demand of each node. Demands can be positive, negative or 0. The positive
-     * demand nodes are the supply nodes, the nodes with 0 demand are transhipment nodes. Flow is always
-     * directed from supply nodes to nodes with negative demand. Summed over all nodes, the total demand
-     * should equal 0.
-     */
-    private Function<V, Integer> nodeDemands;
-    /**
-     * Function specifying the lower arc capacities. Every feasible solution to this problem should satisfy the
-     * property that every arc's flow should be no less than its lower bound. This is an optional part of
-     * the problem.
-     */
-    private Function<E, Integer> arcCapacityLowerBounds;
-    /**
-     * Function specifying the upper arc capacities. Every feasible solution to this problem should satisfy the
-     * property that the flow on an arc doesn't exceeds its upper bound.
-     */
-    private Function<E, Integer> arcCapacityUpperBounds;
-
-    /**
-     * Constructs a new minimum cost flow problem without arc capacity lower bounds.
-     *
-     * @param graph                  the flow network
-     * @param supplyMap              the node demands
-     * @param arcCapacityUpperBounds the arc capacity upper bounds
-     */
-    public MinimumCostFlowProblem(Graph<V, E> graph, Function<V, Integer> supplyMap, Function<E, Integer> arcCapacityUpperBounds) {
-        this(graph, supplyMap, arcCapacityUpperBounds, a -> 0);
-    }
-
-    /**
-     * Constructs a new minimum cost flow problem
-     *
-     * @param graph                  the flow network
-     * @param nodeDemands            the node demands
-     * @param arcCapacityUpperBounds the arc capacity upper bounds
-     * @param arcCapacityLowerBounds the arc capacity lower bounds
-     */
-    public MinimumCostFlowProblem(Graph<V, E> graph, Function<V, Integer> nodeDemands, Function<E, Integer> arcCapacityUpperBounds, Function<E, Integer> arcCapacityLowerBounds) {
-        this.graph = graph;
-        this.nodeDemands = nodeDemands;
-        this.arcCapacityUpperBounds = arcCapacityUpperBounds;
-        this.arcCapacityLowerBounds = arcCapacityLowerBounds;
-    }
+public interface MinimumCostFlowProblem<V,E>{
 
     /**
      * Returns the flow network
      *
      * @return the flow network
      */
-    public Graph<V, E> getGraph() {
-        return graph;
-    }
+    Graph<V, E> getGraph();
 
     /**
-     * Returns the supply function of the flow network
+     * Returns a function which defines the supply and demand of each node in thet network.
+     * Supplies can be positive, negative or 0. Nodes with positive negative supply are the demand nodes,
+     * nodes with zero supply are the transhipment nodes. Flow is always directed from nodes with postive
+     * supply to nodes with negative supply. Summed over all nodes, the total demand should equal 0.
      *
-     * @return the supply function of the flow network
+     * @return supply function
      */
-    public Function<V, Integer> getNodeDemands() {
-        return nodeDemands;
-    }
+    Function<V, Integer> getNodeSupply();
 
     /**
-     * Returns the lower capacity function of the flow network
+     * Returns a function which specifies the minimum capacity of an arc. The minimum capacity is the minimum amount
+     * of flow that has to go through an arc.
      *
-     * @return the lower capacity function of the flow network
+     * @return arc capacity lower bounding function
      */
-    public Function<E, Integer> getArcCapacityLowerBounds() {
-        return arcCapacityLowerBounds;
-    }
+    Function<E, Integer> getArcCapacityLowerBounds();
 
     /**
-     * Returns the upper capacity function of the flow network
+     * Returns a function which specifies the maximum capacity of an arc. The flow through an arc cannot exceed
+     * this upper bound.
      *
-     * @return the upper capacity function of the flow network
+     * @return arc capacity upper bounding function
      */
-    public Function<E, Integer> getArcCapacityUpperBounds() {
-        return arcCapacityUpperBounds;
+    Function<E, Integer> getArcCapacityUpperBounds();
+
+
+    /**
+     * Default implementation of a Minimum Cost Flow Problem
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
+     */
+    class MinimumCostFlowProblemImpl<V, E> implements MinimumCostFlowProblem<V,E>{
+
+        private final Graph<V, E> graph;
+        private final Function<V, Integer> nodeSupplies;
+        private final Function<E, Integer> arcCapacityLowerBounds;
+        private final Function<E, Integer> arcCapacityUpperBounds;
+
+        /**
+         * Constructs a new minimum cost flow problem without arc capacity lower bounds.
+         *
+         * @param graph                  the flow network
+         * @param supplyMap              the node demands
+         * @param arcCapacityUpperBounds the arc capacity upper bounds
+         */
+        public MinimumCostFlowProblemImpl(Graph<V, E> graph, Function<V, Integer> supplyMap, Function<E, Integer> arcCapacityUpperBounds) {
+            this(graph, supplyMap, arcCapacityUpperBounds, a -> 0);
+        }
+
+        /**
+         * Constructs a new minimum cost flow problem
+         *
+         * @param graph                  the flow network
+         * @param nodeSupplies            the node demands
+         * @param arcCapacityUpperBounds the arc capacity upper bounds
+         * @param arcCapacityLowerBounds the arc capacity lower bounds
+         */
+        public MinimumCostFlowProblemImpl(Graph<V, E> graph, Function<V, Integer> nodeSupplies, Function<E, Integer> arcCapacityUpperBounds, Function<E, Integer> arcCapacityLowerBounds) {
+            this.graph = Objects.requireNonNull(graph);
+            this.nodeSupplies = Objects.requireNonNull(nodeSupplies);
+            this.arcCapacityUpperBounds = Objects.requireNonNull(arcCapacityUpperBounds);
+            this.arcCapacityLowerBounds = Objects.requireNonNull(arcCapacityLowerBounds);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Graph<V, E> getGraph() {
+            return graph;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Function<V, Integer> getNodeSupply() {
+            return nodeSupplies;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Function<E, Integer> getArcCapacityLowerBounds() {
+            return arcCapacityLowerBounds;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Function<E, Integer> getArcCapacityUpperBounds() {
+            return arcCapacityUpperBounds;
+        }
     }
 }
+

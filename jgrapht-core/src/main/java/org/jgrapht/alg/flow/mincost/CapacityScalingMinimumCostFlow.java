@@ -135,7 +135,7 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
     /**
      * Computed minimum cost flow
      */
-    private MinimumCostFlow<E> minimumCostFLow;
+    private MinimumCostFlow<E> minimumCostFlow;
     /**
      * Array of internal nodes used by the algorithm. Node: these nodes are stored in the same order as vertices of
      * the specified flow network. This allows to determine quickly their counterparts in the network.
@@ -174,11 +174,15 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
     }
 
     /**
-     * {@inheritDoc}
+     * Returns mapping from edge to flow value through this particular edge
+     *
+     * @return maximum flow mapping, or null if a MinimumCostFlowProblem has not yet been solved.
      */
     @Override
     public Map<E, Double> getFlowMap() {
-        return this.minimumCostFLow.getFlowMap();
+        if(minimumCostFlow == null)
+            return null;
+        return this.minimumCostFlow.getFlowMap();
     }
 
     /**
@@ -202,7 +206,7 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
         m = problem.getGraph().edgeSet().size();
         calculateMinimumCostFlow();
         
-        return minimumCostFLow;
+        return minimumCostFlow;
     }
 
     /**
@@ -213,12 +217,13 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
      * to the reduced cost optimality conditions, a feasible solution to the minimum cost flow problem is
      * optimal if and only if reduced cost of every non-saturated arc is greater than or equal to $0$.
      *
-     * @return solution to the dual linear program formulated on the network.
+     * @return solution to the dual linear program formulated on the network, or null if a MinimumCostFlowProblem has
+     * not yet been solved.
      */
     public Map<V, Double> getDualSolution() {
 
-        if(minimumCostFLow == null)
-            throw new RuntimeException("Cannot return a dual solution before getMinimumCostFlow(MinimumCostFlowProblem minimumCostFlowProblem) is invoked!");
+        if(minimumCostFlow == null)
+            return null;
 
         Map<V, Double> dualVariables = new HashMap<>();
         for (int i = 0; i < n; i++) {
@@ -251,7 +256,7 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
             Pair<List<Node>, Set<Node>> pair = scale(1);
             pushAllFlow(pair.getFirst(), pair.getSecond(), 1);
         }
-        minimumCostFLow = finish();
+        minimumCostFlow = finish();
     }
 
     /**
@@ -586,7 +591,7 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
      * @return true, if the computed solution is optimal, false otherwise.
      */
     public boolean testOptimality(double eps) {
-        if(minimumCostFLow == null)
+        if(minimumCostFlow == null)
             throw new RuntimeException("Cannot return a dual solution before getMinimumCostFlow(MinimumCostFlowProblem minimumCostFlowProblem) is invoked!");
 
         for (Node node : nodes) {

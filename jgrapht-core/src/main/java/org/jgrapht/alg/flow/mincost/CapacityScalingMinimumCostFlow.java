@@ -180,9 +180,7 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
      */
     @Override
     public Map<E, Double> getFlowMap() {
-        if(minimumCostFlow == null)
-            return null;
-        return this.minimumCostFlow.getFlowMap();
+        return minimumCostFlow == null ? null : this.minimumCostFlow.getFlowMap();
     }
 
     /**
@@ -197,7 +195,7 @@ public class CapacityScalingMinimumCostFlow<V, E> implements MinimumCostFlowAlgo
      * {@inheritDoc}
      */
     @Override
-    public MinimumCostFlow<E> getMinimumCostFlow(final MinimumCostFlowProblem minimumCostFlowProblem) {
+    public MinimumCostFlow<E> getMinimumCostFlow(final MinimumCostFlowProblem<V,E> minimumCostFlowProblem) {
         this.problem = Objects.requireNonNull(minimumCostFlowProblem);
         if (problem.getGraph().getType().isUndirected()) {
             throw new IllegalArgumentException("The algorithm doesn't support undirected flow networks");

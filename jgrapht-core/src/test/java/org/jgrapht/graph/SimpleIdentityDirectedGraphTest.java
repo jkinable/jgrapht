@@ -73,20 +73,50 @@ public class SimpleIdentityDirectedGraphTest
         }
     }
 
+//    public static class SimpleIdentityDirectedGraph<V, E>
+//        extends
+//        SimpleDirectedGraph<V, E>
+//    {
+//        private static final long serialVersionUID = 4600490314100246989L;
+//
+//        public SimpleIdentityDirectedGraph(Class<? extends E> edgeClass)
+//        {
+//            super(edgeClass);
+//        }
+//
+//        public SimpleIdentityDirectedGraph(Supplier<E> es)
+//        {
+//            super(null, es, false);
+//        }
+//
+//        @Override
+//        protected Specifics<V, E> createSpecifics(boolean directed)
+//        {
+//            return new DirectedSpecifics<>(this, new IdentityHashMap<>());
+//        }
+//    }
+
     public static class SimpleIdentityDirectedGraph<V, E>
-        extends
-        SimpleDirectedGraph<V, E>
+            extends
+            AbstractBaseGraph<V, E>
     {
         private static final long serialVersionUID = 4600490314100246989L;
 
         public SimpleIdentityDirectedGraph(Class<? extends E> edgeClass)
         {
-            super(edgeClass);
-        }
+            super(null, SupplierUtil.createSupplier(edgeClass), DefaultGraphType.directedSimple(), new GraphSpecificsStrategy<V, E>() {
+                @Override
+                public Function<GraphType, IntrusiveEdgesSpecifics<V, E>> getIntrusiveEdgesSpecificsFactory() {
+                    return (type) -> new UniformIntrusiveEdgesSpecifics<>(new IdentityHashMap<>());
+                }
 
-        public SimpleIdentityDirectedGraph(Supplier<E> es)
-        {
-            super(null, es, false);
+                @Override
+                public BiFunction<Graph<V, E>, GraphType, Specifics<V, E>> getSpecificsFactory() {
+                    return (graph, type) -> new FastLookupDirectedSpecifics<>(
+                        graph, new IdentityHashMap<>(), new HashMap<>(), getEdgeSetFactory()
+                    );
+                }
+            });
         }
     }
 

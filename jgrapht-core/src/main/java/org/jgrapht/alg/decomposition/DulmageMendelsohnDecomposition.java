@@ -17,24 +17,16 @@
  */
 package org.jgrapht.alg.decomposition;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm.Matching;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
-import org.jgrapht.alg.matching.HopcroftKarpMaximumCardinalityBipartiteMatching;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.EdgeReversedGraph;
-import org.jgrapht.graph.builder.GraphBuilder;
-import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.interfaces.MatchingAlgorithm.*;
+import org.jgrapht.alg.matching.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.traverse.*;
+
+import java.util.*;
 
 /**
  * <p>

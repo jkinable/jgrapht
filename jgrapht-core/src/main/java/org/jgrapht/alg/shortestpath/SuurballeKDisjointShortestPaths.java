@@ -34,10 +34,10 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import java.util.*;
-
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
+
+import java.util.*;
 
 /**
  * An implementation of Suurballe algorithm for finding K edge-<em>disjoint</em> shortest paths. The

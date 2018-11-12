@@ -19,14 +19,14 @@ package org.jgrapht.generate;
 
 import org.jgrapht.*;
 import org.jgrapht.alg.shortestpath.*;
-import org.jgrapht.alg.util.*;
 import org.jgrapht.graph.*;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.util.*;
 import org.junit.*;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for GeneralizedPetersenGraphGenerator

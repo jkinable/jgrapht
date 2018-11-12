@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jgrapht.Graph;
+import org.jgrapht.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * This class stores data needed for the Kolmogorov's Blossom V algorithm; it is used by

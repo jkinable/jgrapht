@@ -17,14 +17,10 @@
  */
 package org.jgrapht.alg.flow;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.MaximumFlowAlgorithm;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
-import org.junit.Assert;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
 

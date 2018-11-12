@@ -17,11 +17,9 @@
  */
 package org.jgrapht.alg.transform;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.Graphs;
+import org.jgrapht.*;
 
-import java.util.Objects;
+import java.util.*;
 import java.util.function.*;
 
 /**

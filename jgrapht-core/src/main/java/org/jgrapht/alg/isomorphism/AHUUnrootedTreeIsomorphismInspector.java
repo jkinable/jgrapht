@@ -17,15 +17,10 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMapping;
-import org.jgrapht.GraphTests;
-import org.jgrapht.alg.shortestpath.TreeMeasurer;
+import org.jgrapht.*;
+import org.jgrapht.alg.shortestpath.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This is an implementation of the AHU algorithm for detecting an (unweighted) isomorphism between

@@ -17,16 +17,11 @@
  */
 package org.jgrapht.alg.lca;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.junit.Assert;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Tests for the {@link NaiveLCAFinder}

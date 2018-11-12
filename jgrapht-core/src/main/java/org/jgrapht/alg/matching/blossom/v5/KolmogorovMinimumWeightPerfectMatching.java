@@ -17,10 +17,10 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.alg.matching.EdmondsMaximumCardinalityMatching;
-import org.jgrapht.alg.util.Pair;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.matching.*;
+import org.jgrapht.alg.util.*;
 
 import java.util.*;
 

@@ -17,10 +17,10 @@
  */
 package org.jgrapht.alg.lca;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.LowestCommonAncestorAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
-import java.util.Set;
+import java.util.*;
 
 /**
  * Tests for the {@link BinaryLiftingLCAFinder}

@@ -17,8 +17,8 @@
  */
 package org.jgrapht.alg.vertexcover;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
 public class EdgeBasedTwoApproxVCImplTest
     extends

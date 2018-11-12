@@ -17,10 +17,9 @@
  */
 package org.jgrapht.alg.scoring;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMetrics;
-import org.jgrapht.alg.interfaces.VertexScoringAlgorithm;
-import org.jgrapht.alg.util.NeighborCache;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.util.*;
 
 import java.util.*;
 

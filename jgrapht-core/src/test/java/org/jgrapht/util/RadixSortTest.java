@@ -17,13 +17,11 @@
  */
 package org.jgrapht.util;
 
-import org.jgrapht.SlowTests;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.jgrapht.*;
+import org.junit.*;
+import org.junit.experimental.categories.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 

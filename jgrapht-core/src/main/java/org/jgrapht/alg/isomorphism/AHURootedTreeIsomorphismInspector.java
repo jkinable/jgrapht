@@ -17,15 +17,12 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMapping;
-import org.jgrapht.GraphTests;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.traverse.BreadthFirstIterator;
-import org.jgrapht.util.RadixSort;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.traverse.*;
+import org.jgrapht.util.*;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.*;
 import java.util.*;
 
 /**

@@ -17,14 +17,11 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 

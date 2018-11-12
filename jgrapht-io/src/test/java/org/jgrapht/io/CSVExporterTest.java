@@ -23,7 +23,7 @@ import org.junit.*;
 
 import java.io.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link CSVExporter}.

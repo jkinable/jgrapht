@@ -17,16 +17,13 @@
  */
 package org.jgrapht.alg.vertexcover;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.SlowTests;
-import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
+import org.junit.experimental.categories.*;
 
-import java.util.HashMap;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 

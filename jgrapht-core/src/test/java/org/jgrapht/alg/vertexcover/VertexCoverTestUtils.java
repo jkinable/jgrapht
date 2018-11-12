@@ -17,17 +17,13 @@
  */
 package org.jgrapht.alg.vertexcover;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
-import org.jgrapht.generate.GnmRandomGraphGenerator;
-import org.jgrapht.generate.GraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Base class for vertex cover tests

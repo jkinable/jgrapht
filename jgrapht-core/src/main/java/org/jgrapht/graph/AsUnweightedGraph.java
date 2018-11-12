@@ -17,11 +17,10 @@
  */
 package org.jgrapht.graph;
 
-import java.io.Serializable;
-import java.util.Objects;
+import org.jgrapht.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphType;
+import java.io.*;
+import java.util.*;
 
 /**
  * Provides an unweighted view on a graph.

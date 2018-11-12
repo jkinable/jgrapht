@@ -24,7 +24,7 @@ import org.junit.*;
 import java.io.*;
 import java.util.*;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
 /**

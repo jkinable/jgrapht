@@ -17,13 +17,13 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import java.util.*;
-import java.util.stream.*;
-
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.util.*;
 import org.jgrapht.graph.*;
+
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * A base implementation of a $k$ disjoint shortest paths algorithm based on the strategy used in

@@ -17,10 +17,9 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jheaps.AddressableHeap;
+import org.jheaps.*;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * This class is a data structure for Kolmogorov's Blossom V algorithm.

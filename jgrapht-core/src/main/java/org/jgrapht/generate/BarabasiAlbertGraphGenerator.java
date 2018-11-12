@@ -17,7 +17,7 @@
  */
 package org.jgrapht.generate;
 
-import org.jgrapht.Graph;
+import org.jgrapht.*;
 
 import java.util.*;
 

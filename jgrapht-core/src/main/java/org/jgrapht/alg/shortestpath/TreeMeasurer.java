@@ -17,9 +17,8 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.*;
+import org.jgrapht.traverse.*;
 
 import java.util.*;
 

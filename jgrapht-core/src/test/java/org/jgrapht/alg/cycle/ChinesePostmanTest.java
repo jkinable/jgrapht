@@ -17,15 +17,11 @@
  */
 package org.jgrapht.alg.cycle;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
+import org.jgrapht.*;
 import org.jgrapht.graph.*;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Joris Kinable

@@ -18,14 +18,15 @@
 package org.jgrapht.demo;
 
 //@example:class:begin
+
 import org.jgrapht.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 import org.jgrapht.traverse.*;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.util.*;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 //@example:class:end
 

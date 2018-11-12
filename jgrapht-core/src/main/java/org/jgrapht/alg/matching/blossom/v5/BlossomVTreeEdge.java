@@ -17,8 +17,8 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jheaps.MergeableAddressableHeap;
-import org.jheaps.tree.PairingHeap;
+import org.jheaps.*;
+import org.jheaps.tree.*;
 
 /**
  * This class is a data structure for Kolmogorov's Blossom V algorithm.

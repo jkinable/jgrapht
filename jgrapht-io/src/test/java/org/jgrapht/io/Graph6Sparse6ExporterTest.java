@@ -20,13 +20,14 @@ package org.jgrapht.io;
 import org.jgrapht.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.util.*;
 import org.junit.*;
 
 import java.io.*;
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for Graph6Sparse6Exporter

@@ -17,10 +17,10 @@
  */
 package org.jgrapht.alg.color;
 
-import java.util.*;
-
 import org.jgrapht.*;
-import org.jgrapht.alg.interfaces.VertexColoringAlgorithm;
+import org.jgrapht.alg.interfaces.*;
+
+import java.util.*;
 
 /**
  * Brown graph coloring algorithm.

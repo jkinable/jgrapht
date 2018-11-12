@@ -17,7 +17,7 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.*;
 
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.DualUpdateStrategy.MULTIPLE_TREE_CONNECTED_COMPONENTS;
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.DualUpdateStrategy.MULTIPLE_TREE_FIXED_DELTA;

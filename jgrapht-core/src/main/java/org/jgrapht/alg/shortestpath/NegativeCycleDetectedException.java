@@ -17,7 +17,7 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.GraphPath;
+import org.jgrapht.*;
 
 /**
  * An exception used to notify about the detection of a negative cycle. The exception may carry the

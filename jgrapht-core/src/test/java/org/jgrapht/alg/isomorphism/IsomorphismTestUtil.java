@@ -17,13 +17,11 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.generate.BarabasiAlbertForestGenerator;
-import org.jgrapht.generate.BarabasiAlbertGraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 

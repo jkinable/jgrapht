@@ -21,7 +21,7 @@ import org.jgrapht.*;
 import org.jgrapht.util.*;
 import org.junit.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * A unit test for graph generic vertex/edge parameters.

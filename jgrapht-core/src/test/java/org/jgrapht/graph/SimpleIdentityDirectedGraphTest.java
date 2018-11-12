@@ -23,7 +23,7 @@ import org.jgrapht.util.*;
 import org.junit.*;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 import static org.junit.Assert.*;
 

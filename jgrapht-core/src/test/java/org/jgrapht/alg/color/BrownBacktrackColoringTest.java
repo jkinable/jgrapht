@@ -18,18 +18,14 @@
 package org.jgrapht.alg.color;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.interfaces.VertexColoringAlgorithm;
+import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
-
 import org.jgrapht.util.*;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.experimental.categories.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

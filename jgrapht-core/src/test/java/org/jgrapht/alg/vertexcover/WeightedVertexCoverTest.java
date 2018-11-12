@@ -17,12 +17,11 @@
  */
 package org.jgrapht.alg.vertexcover;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
-import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Tests the weighted vertex cover algorithms

@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import java.util.*;
-
 import org.jgrapht.*;
+
+import java.util.*;
 
 /**
  * An implementation of Bhandari algorithm for finding $K$ edge-<em>disjoint</em> shortest paths.

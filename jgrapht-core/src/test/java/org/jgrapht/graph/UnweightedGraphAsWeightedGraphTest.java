@@ -17,12 +17,10 @@
  */
 package org.jgrapht.graph;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.jgrapht.*;
+import org.junit.*;
 
-import org.jgrapht.Graph;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.*;
 
 import static junit.framework.TestCase.fail;
 import static org.jgrapht.Graph.DEFAULT_EDGE_WEIGHT;

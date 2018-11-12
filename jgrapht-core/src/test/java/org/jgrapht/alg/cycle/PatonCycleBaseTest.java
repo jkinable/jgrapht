@@ -18,11 +18,9 @@
 package org.jgrapht.alg.cycle;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.*;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
+import org.jgrapht.alg.connectivity.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.interfaces.CycleBasisAlgorithm.*;
-import org.jgrapht.alg.util.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 import org.jgrapht.util.*;
@@ -31,7 +29,8 @@ import org.junit.*;
 import java.util.*;
 import java.util.stream.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PatonCycleBaseTest
 {

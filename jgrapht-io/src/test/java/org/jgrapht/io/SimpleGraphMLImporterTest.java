@@ -17,19 +17,19 @@
  */
 package org.jgrapht.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
 import java.io.*;
 import java.nio.charset.*;
 import java.util.*;
 
-import org.jgrapht.*;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Dimitrios Michail

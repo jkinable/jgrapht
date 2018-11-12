@@ -17,20 +17,17 @@
  */
 package org.jgrapht.alg.lca;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.alg.interfaces.LowestCommonAncestorAlgorithm;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.generate.BarabasiAlbertForestGenerator;
-import org.jgrapht.generate.GraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * Tests for LCA algorithms on rooted trees and forests

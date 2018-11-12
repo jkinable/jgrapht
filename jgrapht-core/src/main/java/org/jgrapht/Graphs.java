@@ -17,13 +17,11 @@
  */
 package org.jgrapht;
 
-import org.jgrapht.graph.AsUndirectedGraph;
-import org.jgrapht.graph.EdgeReversedGraph;
-import org.jgrapht.util.VertexToIntegerMapping;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * A collection of utilities to assist with graph manipulation.

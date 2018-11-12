@@ -17,10 +17,9 @@
  */
 package org.jgrapht.alg.decomposition;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.TreeToPathDecompositionAlgorithm;
-import org.jgrapht.util.VertexToIntegerMapping;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 

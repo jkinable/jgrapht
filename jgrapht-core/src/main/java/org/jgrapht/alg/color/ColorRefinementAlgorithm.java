@@ -17,21 +17,11 @@
  */
 package org.jgrapht.alg.color;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.VertexColoringAlgorithm;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * Color refinement algorithm that finds the coarsest stable coloring of a graph based on a given

@@ -17,11 +17,10 @@
  */
 package org.jgrapht.alg.lca;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.LowestCommonAncestorAlgorithm;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.util.VertexToIntegerMapping;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 

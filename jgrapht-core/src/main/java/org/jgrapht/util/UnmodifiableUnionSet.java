@@ -17,12 +17,8 @@
  */
 package org.jgrapht.util;
 
-import java.io.Serializable;
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 /**
  * An unmodifiable live view of the union of two sets.

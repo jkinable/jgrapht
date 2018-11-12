@@ -17,17 +17,14 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Assert;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
 import java.util.*;
 
-import static org.jgrapht.alg.matching.blossom.v5.KolmogorovMinimumWeightPerfectMatching.EPS;
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.NONE;
+import static org.jgrapht.alg.matching.blossom.v5.KolmogorovMinimumWeightPerfectMatching.EPS;
 import static org.junit.Assert.*;
 
 /**

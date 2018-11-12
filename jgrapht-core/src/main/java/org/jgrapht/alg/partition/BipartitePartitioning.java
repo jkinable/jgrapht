@@ -17,9 +17,8 @@
  */
 package org.jgrapht.alg.partition;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.PartitioningAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
 import java.util.*;
 

@@ -19,7 +19,7 @@ package org.jgrapht.io;
 
 import org.junit.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * .

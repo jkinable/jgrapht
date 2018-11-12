@@ -17,18 +17,13 @@
  */
 package org.jgrapht;
 
-import org.jgrapht.generate.CompleteGraphGenerator;
-import org.jgrapht.generate.NamedGraphGenerator;
-import org.jgrapht.generate.StarGraphGenerator;
+import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 import static junit.framework.TestCase.fail;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 

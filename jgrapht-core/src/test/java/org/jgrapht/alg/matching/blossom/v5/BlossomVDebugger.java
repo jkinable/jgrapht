@@ -17,12 +17,9 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jheaps.MergeableAddressableHeap;
+import org.jheaps.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.fail;
 

@@ -17,23 +17,16 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.generate.CompleteGraphGenerator;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.WeightedPseudograph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.junit.runners.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.jgrapht.alg.matching.blossom.v5.KolmogorovMinimumWeightPerfectMatching.EPS;
 import static org.junit.Assert.*;

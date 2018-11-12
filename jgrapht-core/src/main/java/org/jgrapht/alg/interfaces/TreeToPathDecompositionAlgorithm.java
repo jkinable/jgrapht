@@ -17,16 +17,13 @@
  */
 package org.jgrapht.alg.interfaces;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.graph.GraphWalk;
-import org.jgrapht.util.ArrayUnenforcedSet;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
-import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * An algorithm which computes a decomposition into disjoint paths for a given tree/forest

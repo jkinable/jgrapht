@@ -17,12 +17,10 @@
  */
 package org.jgrapht.alg.tour;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.HamiltonianCycleAlgorithm;
-import org.jgrapht.graph.GraphWalk;
-import org.jgrapht.util.VertexToIntegerMapping;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
 import java.util.*;
 

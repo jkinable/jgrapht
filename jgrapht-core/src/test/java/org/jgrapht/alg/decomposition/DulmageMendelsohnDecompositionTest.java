@@ -17,26 +17,21 @@
  */
 package org.jgrapht.alg.decomposition;
 
-import org.jgrapht.alg.decomposition.DulmageMendelsohnDecomposition;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm.Matching;
-import org.jgrapht.alg.matching.HopcroftKarpMaximumCardinalityBipartiteMatching;
-import org.jgrapht.graph.AsSubgraph;
-import org.jgrapht.Graph;
-import org.jgrapht.generate.GnmRandomBipartiteGraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import static org.junit.Assert.assertTrue;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.MatchingAlgorithm.*;
+import org.jgrapht.alg.matching.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.junit.runners.*;
+import org.junit.runners.Parameterized.*;
+
+import java.util.*;
+
 import static org.junit.Assert.assertFalse;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test for Dulmage-Mendelsohn, based on MaximumCardinailityBipartiteMatchingTest

@@ -17,10 +17,10 @@
  */
 package org.jgrapht.alg.vertexcover;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
-import java.util.Map;
+import java.util.*;
 
 public class BarYehudaEvenTwoApproxVCImplTest
     extends

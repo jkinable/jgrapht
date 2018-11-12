@@ -17,17 +17,12 @@
  */
 package org.jgrapht.graph;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.function.BiFunction;
-import java.util.function.Function;
+import org.jgrapht.*;
+import org.jgrapht.graph.specifics.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphType;
-import org.jgrapht.graph.specifics.FastLookupDirectedSpecifics;
-import org.jgrapht.graph.specifics.FastLookupUndirectedSpecifics;
-import org.jgrapht.graph.specifics.Specifics;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * The fast lookup specifics strategy implementation.

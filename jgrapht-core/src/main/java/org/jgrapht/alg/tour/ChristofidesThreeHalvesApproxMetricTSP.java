@@ -17,23 +17,15 @@
  */
 package org.jgrapht.alg.tour;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.GraphTests;
-import org.jgrapht.alg.cycle.HierholzerEulerianCycle;
-import org.jgrapht.alg.interfaces.EulerianCycleAlgorithm;
-import org.jgrapht.alg.interfaces.HamiltonianCycleAlgorithm;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm;
-import org.jgrapht.alg.matching.blossom.v5.KolmogorovMinimumWeightPerfectMatching;
-import org.jgrapht.alg.spanning.KruskalMinimumSpanningTree;
-import org.jgrapht.graph.AsSubgraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.GraphWalk;
-import org.jgrapht.graph.Pseudograph;
+import org.jgrapht.*;
+import org.jgrapht.alg.cycle.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.matching.blossom.v5.*;
+import org.jgrapht.alg.spanning.*;
+import org.jgrapht.graph.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * A $3/2$-approximation algorithm for the metric TSP problem.

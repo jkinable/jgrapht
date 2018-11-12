@@ -17,12 +17,11 @@
  */
 package org.jgrapht;
 
-import org.jgrapht.alg.cycle.TarjanSimpleCycles;
+import org.jgrapht.alg.cycle.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.jgrapht.util.*;
+import org.junit.*;
 
 import java.util.*;
 

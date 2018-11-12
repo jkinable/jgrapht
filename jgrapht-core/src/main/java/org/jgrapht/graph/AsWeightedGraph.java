@@ -17,13 +17,11 @@
  */
 package org.jgrapht.graph;
 
-import java.io.Serializable;
+import org.jgrapht.*;
+
+import java.io.*;
 import java.util.*;
 import java.util.function.*;
-
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.GraphType;
 
 /**
  * Provides a weighted view of a graph. The class stores edge weights internally.

@@ -17,22 +17,17 @@
  */
 package org.jgrapht.alg.decomposition;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.SlowTests;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.generate.BarabasiAlbertForestGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.traverse.BreadthFirstIterator;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.traverse.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+import org.junit.experimental.categories.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 import static org.jgrapht.util.MathUtil.log2;
 

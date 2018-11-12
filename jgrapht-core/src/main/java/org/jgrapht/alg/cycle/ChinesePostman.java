@@ -17,22 +17,16 @@
  */
 package org.jgrapht.alg.cycle;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.GraphTests;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.EulerianCycleAlgorithm;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
-import org.jgrapht.alg.matching.KuhnMunkresMinimalWeightBipartitePerfectMatching;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.matching.*;
 import org.jgrapht.alg.matching.blossom.v5.*;
 import org.jgrapht.alg.shortestpath.*;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.alg.util.UnorderedPair;
+import org.jgrapht.alg.util.*;
 import org.jgrapht.graph.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * This class solves the Chinese Postman Problem (CPP), also known as the Route Inspection Problem.

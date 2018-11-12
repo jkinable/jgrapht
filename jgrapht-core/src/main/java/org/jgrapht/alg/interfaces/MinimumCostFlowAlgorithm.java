@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.interfaces;
 
-import org.jgrapht.alg.flow.mincost.MinimumCostFlowProblem;
+import org.jgrapht.alg.flow.mincost.*;
 
-import java.util.Map;
+import java.util.*;
 
 /**
  * Allows to calculate minimum cost flow on the specified

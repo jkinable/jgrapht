@@ -26,7 +26,8 @@ import org.junit.*;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test cases for the GabowStrongConnectivityInspector. Tests are identical to the tests for the

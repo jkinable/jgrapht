@@ -17,15 +17,13 @@
  */
 package org.jgrapht.generate;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

@@ -17,14 +17,12 @@
  */
 package org.jgrapht.alg.tour;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.SlowTests;
+import org.jgrapht.*;
 import org.jgrapht.graph.*;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.junit.*;
+import org.junit.experimental.categories.*;
 
-import java.util.Random;
+import java.util.*;
 
 import static org.jgrapht.alg.tour.TwoApproxMetricTSPTest.assertHamiltonian;
 import static org.junit.Assert.*;

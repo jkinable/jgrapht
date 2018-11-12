@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.interfaces;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * Algorithm to compute a vertex partitioning of a graph.

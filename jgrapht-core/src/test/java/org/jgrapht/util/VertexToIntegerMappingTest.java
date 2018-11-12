@@ -17,13 +17,11 @@
  */
 package org.jgrapht.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.function.*;
+import java.util.stream.*;
 
 /**
  * Tests for {@link VertexToIntegerMapping}

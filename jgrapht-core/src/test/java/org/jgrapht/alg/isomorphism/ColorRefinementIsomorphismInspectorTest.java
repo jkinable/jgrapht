@@ -17,14 +17,11 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMapping;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultUndirectedGraph;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 import static org.junit.Assert.*;
 

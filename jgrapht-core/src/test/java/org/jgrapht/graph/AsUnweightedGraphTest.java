@@ -17,17 +17,12 @@
  */
 package org.jgrapht.graph;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.junit.Before;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.junit.*;
 
 import static junit.framework.TestCase.fail;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class AsUnweightedGraphTest
 {

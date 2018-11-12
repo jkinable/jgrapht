@@ -17,13 +17,11 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jgrapht.Graph;
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.PairingHeap;
+import org.jgrapht.*;
+import org.jheaps.*;
+import org.jheaps.tree.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVInitializer.Action.*;
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVNode.Label.MINUS;

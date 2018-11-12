@@ -17,8 +17,8 @@
  */
 package org.jgrapht.alg;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.util.UnionFind;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
 
 import java.util.*;
 

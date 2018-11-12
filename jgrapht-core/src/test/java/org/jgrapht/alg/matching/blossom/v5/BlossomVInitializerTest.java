@@ -17,21 +17,17 @@
  */
 package org.jgrapht.alg.matching.blossom.v5;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
 import java.util.*;
 
-import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.FRACTIONAL;
+import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.*;
 import static org.jgrapht.alg.matching.blossom.v5.KolmogorovMinimumWeightPerfectMatching.EPS;
 import static org.jgrapht.alg.matching.blossom.v5.KolmogorovMinimumWeightPerfectMatchingTest.checkMatchingAndDualSolution;
 import static org.junit.Assert.*;
-import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.GREEDY;
-import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.NONE;
 
 /**
  * Unit tests for the {@link BlossomVInitializer}

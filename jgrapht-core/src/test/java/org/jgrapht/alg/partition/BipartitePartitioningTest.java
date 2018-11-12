@@ -17,18 +17,11 @@
  */
 package org.jgrapht.alg.partition;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.GraphTestsUtils;
-import org.jgrapht.Graphs;
+import org.jgrapht.*;
 import org.jgrapht.generate.*;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedPseudograph;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Assert;
-import org.junit.Test;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
 import java.util.*;
 

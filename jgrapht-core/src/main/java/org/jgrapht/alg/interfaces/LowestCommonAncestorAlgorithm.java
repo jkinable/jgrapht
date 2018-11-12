@@ -17,11 +17,10 @@
  */
 package org.jgrapht.alg.interfaces;
 
-import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.*;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * Algorithm to compute a <a href="https://en.wikipedia.org/wiki/Lowest_common_ancestor">lowest

@@ -17,7 +17,6 @@
  */
 package org.jgrapht.io;
 
-import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.*;
 
 import java.io.*;

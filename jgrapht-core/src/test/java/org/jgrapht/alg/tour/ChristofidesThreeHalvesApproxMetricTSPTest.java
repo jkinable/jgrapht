@@ -17,13 +17,9 @@
  */
 package org.jgrapht.alg.tour;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
 import static org.jgrapht.alg.tour.TwoApproxMetricTSPTest.assertHamiltonian;
 import static org.junit.Assert.assertEquals;

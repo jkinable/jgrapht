@@ -18,12 +18,12 @@
 package org.jgrapht.alg.isomorphism;
 
 import org.jgrapht.*;
-import org.jgrapht.alg.color.ColorRefinementAlgorithm;
-import org.jgrapht.alg.interfaces.VertexColoringAlgorithm;
-import org.jgrapht.alg.interfaces.VertexColoringAlgorithm.Coloring;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.AsGraphUnion;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.alg.color.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.interfaces.VertexColoringAlgorithm.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
 
 import java.util.*;
 

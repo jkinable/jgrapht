@@ -17,11 +17,11 @@
  */
 package org.jgrapht;
 
-import org.jgrapht.alg.shortestpath.GraphMeasurer;
-import org.jgrapht.alg.util.NeighborCache;
+import org.jgrapht.alg.shortestpath.*;
+import org.jgrapht.alg.util.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * Collection of methods which provide numerical graph information.

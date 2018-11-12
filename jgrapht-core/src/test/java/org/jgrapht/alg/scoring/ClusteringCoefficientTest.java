@@ -17,14 +17,11 @@
  */
 package org.jgrapht.alg.scoring;
 
-import org.jgrapht.Graph;
-import org.jgrapht.generate.CompleteGraphGenerator;
-import org.jgrapht.generate.StarGraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
 import static org.junit.Assert.assertEquals;
 

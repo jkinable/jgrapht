@@ -17,11 +17,11 @@
  */
 package org.jgrapht.alg.flow.mincost;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.MinimumCostFlowAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.*;
 
 /**
  * This class represents a <a href="https://en.wikipedia.org/wiki/Minimum-cost_flow_problem">

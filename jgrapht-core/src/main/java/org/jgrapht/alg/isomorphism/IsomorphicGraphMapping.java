@@ -17,8 +17,7 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMapping;
+import org.jgrapht.*;
 
 import java.util.*;
 

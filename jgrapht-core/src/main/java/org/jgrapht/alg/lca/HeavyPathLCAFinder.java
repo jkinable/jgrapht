@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.lca;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.decomposition.HeavyPathDecomposition;
-import org.jgrapht.alg.interfaces.LowestCommonAncestorAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.decomposition.*;
+import org.jgrapht.alg.interfaces.*;
 
 import java.util.*;
 

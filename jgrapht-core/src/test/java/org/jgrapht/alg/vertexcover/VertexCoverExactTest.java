@@ -17,14 +17,12 @@
  */
 package org.jgrapht.alg.vertexcover;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
-import java.util.Arrays;
+import java.util.*;
 
 import static org.jgrapht.alg.vertexcover.VertexCoverTestUtils.isCover;
 import static org.junit.Assert.assertEquals;

@@ -17,13 +17,11 @@
  */
 package org.jgrapht.graph;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.*;
+import org.jgrapht.*;
+import org.junit.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.junit.Test;
+import java.util.*;
+import java.util.function.*;
 
 import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;

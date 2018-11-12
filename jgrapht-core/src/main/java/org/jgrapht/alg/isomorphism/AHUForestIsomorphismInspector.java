@@ -17,12 +17,10 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMapping;
-import org.jgrapht.GraphTests;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.AsGraphUnion;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
 
 import java.util.*;
 

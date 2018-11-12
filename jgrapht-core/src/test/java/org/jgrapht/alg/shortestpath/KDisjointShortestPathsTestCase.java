@@ -17,16 +17,16 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import static org.junit.Assert.*;
-
-import java.util.*;
-
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
 import org.jgrapht.util.*;
 import org.junit.*;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * 

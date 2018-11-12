@@ -17,19 +17,16 @@
  */
 package org.jgrapht.alg.isomorphism;
 
-import org.jgrapht.Graph;
-import org.jgrapht.SlowTests;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+import org.junit.experimental.categories.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 import static org.jgrapht.alg.isomorphism.IsomorphismTestUtil.*;
 

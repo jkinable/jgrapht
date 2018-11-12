@@ -17,8 +17,7 @@
  */
 package org.jgrapht.graph;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * A weighted variant of the intrusive edges specifics.

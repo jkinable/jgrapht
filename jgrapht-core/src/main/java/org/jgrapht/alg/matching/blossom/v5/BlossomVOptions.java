@@ -19,9 +19,7 @@ package org.jgrapht.alg.matching.blossom.v5;
 
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.DualUpdateStrategy.MULTIPLE_TREE_CONNECTED_COMPONENTS;
 import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.DualUpdateStrategy.MULTIPLE_TREE_FIXED_DELTA;
-import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.FRACTIONAL;
-import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.GREEDY;
-import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.NONE;
+import static org.jgrapht.alg.matching.blossom.v5.BlossomVOptions.InitializationType.*;
 
 /**
  * BlossomVOptions that define the strategies to use during the algorithm for updating duals and

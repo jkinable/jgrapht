@@ -17,17 +17,14 @@
  */
 package org.jgrapht.alg.flow.mincost;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.MinimumCostFlowAlgorithm.MinimumCostFlow;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.MinimumCostFlowAlgorithm.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.junit.runners.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

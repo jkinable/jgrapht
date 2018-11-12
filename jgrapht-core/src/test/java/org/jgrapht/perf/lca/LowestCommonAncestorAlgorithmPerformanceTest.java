@@ -17,29 +17,22 @@
  */
 package org.jgrapht.perf.lca;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.connectivity.ConnectivityInspector;
-import org.jgrapht.alg.interfaces.LowestCommonAncestorAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.connectivity.*;
+import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.lca.*;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.generate.BarabasiAlbertForestGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
-import org.openjdk.jmh.runner.options.TimeValue;
+import org.openjdk.jmh.runner.*;
+import org.openjdk.jmh.runner.options.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.*;
 
 public class LowestCommonAncestorAlgorithmPerformanceTest
 {

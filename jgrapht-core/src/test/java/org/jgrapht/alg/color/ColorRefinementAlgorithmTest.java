@@ -17,14 +17,14 @@
  */
 package org.jgrapht.alg.color;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
-import java.util.*;
-
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
 import org.junit.*;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Tests for the color-refinement algorithm.

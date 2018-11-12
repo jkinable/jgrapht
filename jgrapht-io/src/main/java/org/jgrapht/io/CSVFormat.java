@@ -185,13 +185,6 @@ public enum CSVFormat
          */
         MATRIX_FORMAT_NODEID,
         /**
-         * Whether to import/export edge weights. Only valid for the {@link CSVFormat#MATRIX MATRIX}
-         * format.
-         * 
-         * @deprecated Use {@link #EDGE_WEIGHTS} instead.
-         */
-        @Deprecated MATRIX_FORMAT_EDGE_WEIGHTS,
-        /**
          * Whether the input/output contains zero for missing edges. Only valid for the
          * {@link CSVFormat#MATRIX MATRIX} format.
          */

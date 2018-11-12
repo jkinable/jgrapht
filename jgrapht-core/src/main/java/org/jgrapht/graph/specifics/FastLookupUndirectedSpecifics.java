@@ -50,49 +50,6 @@ public class FastLookupUndirectedSpecifics<V, E>
      * Construct a new fast lookup undirected specifics.
      * 
      * @param graph the graph for which these specifics are for
-     * @deprecated Since default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public FastLookupUndirectedSpecifics(Graph<V, E> graph)
-    {
-        this(graph, new LinkedHashMap<>(), new ArrayUnenforcedSetEdgeSetFactory<>());
-    }
-
-    /**
-     * Construct a new fast lookup undirected specifics.
-     * 
-     * @param graph the graph for which these specifics are for
-     * @param vertexMap map for the storage of vertex edge sets
-     * @deprecated Since default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public FastLookupUndirectedSpecifics(
-        Graph<V, E> graph, Map<V, UndirectedEdgeContainer<V, E>> vertexMap)
-    {
-        this(graph, vertexMap, new ArrayUnenforcedSetEdgeSetFactory<>());
-    }
-
-    /**
-     * Construct a new fast lookup undirected specifics.
-     * 
-     * @param graph the graph for which these specifics are for
-     * @param vertexMap map for the storage of vertex edge sets. Needs to have a predictable
-     *        iteration order.
-     * @param edgeSetFactory factory for the creation of vertex edge sets
-     * @deprecated Since default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public FastLookupUndirectedSpecifics(
-        Graph<V, E> graph, Map<V, UndirectedEdgeContainer<V, E>> vertexMap,
-        EdgeSetFactory<V, E> edgeSetFactory)
-    {
-        this(graph, vertexMap, new HashMap<>(), edgeSetFactory);
-    }
-
-    /**
-     * Construct a new fast lookup undirected specifics.
-     * 
-     * @param graph the graph for which these specifics are for
      * @param vertexMap map for the storage of vertex edge sets. Needs to have a predictable
      *        iteration order.
      * @param touchingVerticesToEdgeMap Additional map for caching. No need for a predictable

@@ -399,7 +399,7 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
     @Override
     public double calculateMinCut(V source, V sink)
     {
-        return this.calculateMaximumFlow(source, sink);
+        return this.getMaximumFlowValue(source, sink);
     }
 
     @Override

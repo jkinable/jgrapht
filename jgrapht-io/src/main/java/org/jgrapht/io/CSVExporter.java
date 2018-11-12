@@ -240,8 +240,7 @@ public class CSVExporter<V, E>
     private void exportAsMatrix(Graph<V, E> g, PrintWriter out)
     {
         boolean exportNodeId = parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_NODEID);
-        boolean exportEdgeWeights = parameters.contains(CSVFormat.Parameter.EDGE_WEIGHTS)
-            || parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_EDGE_WEIGHTS);
+        boolean exportEdgeWeights = parameters.contains(CSVFormat.Parameter.EDGE_WEIGHTS);
         boolean zeroWhenNoEdge =
             parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE);
 

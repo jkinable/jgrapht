@@ -88,13 +88,6 @@ public class SimpleIdentityDirectedGraphTest
         {
             super(null, es, false);
         }
-
-        @Override
-        protected Specifics<V, E> createSpecifics(boolean directed)
-        {
-            return new DirectedSpecifics<>(this, new IdentityHashMap<>());
-        }
-
     }
 
     // ~ Instance fields --------------------------------------------------------
@@ -149,9 +142,9 @@ public class SimpleIdentityDirectedGraphTest
         } catch (IllegalArgumentException ile) {
         }
 
-        assertEquals(false, g2.addEdge(v2, v1, e));
-        assertEquals(false, g3.addEdge(v2, v1, e));
-        assertEquals(true, g4.addEdge(v2, v1, e));
+        assertFalse(g2.addEdge(v2, v1, e));
+        assertFalse(g3.addEdge(v2, v1, e));
+        assertTrue(g4.addEdge(v2, v1, e));
     }
 
     /**

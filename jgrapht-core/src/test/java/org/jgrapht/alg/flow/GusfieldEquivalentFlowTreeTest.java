@@ -65,9 +65,8 @@ public class GusfieldEquivalentFlowTreeTest
 
                 // Check cut weights
                 double expectedCutWeight = minimumSTCutAlgorithm.calculateMinCut(i, j);
-                assertEquals(expectedCutWeight, alg.calculateMaximumFlow(i, j), 0);
-                assertEquals(expectedCutWeight, alg.calculateMaximumFlow(j, i), 0);
-                assertEquals(expectedCutWeight, alg.getMaximumFlowValue(), 0);
+                assertEquals(expectedCutWeight, alg.getMaximumFlowValue(i, j), 0);
+                assertEquals(expectedCutWeight, alg.getMaximumFlowValue(j, i), 0);
 
                 // Verify the correctness of the tree
                 // The cost of the cheapest edge in the path from i to j must equal the weight of an

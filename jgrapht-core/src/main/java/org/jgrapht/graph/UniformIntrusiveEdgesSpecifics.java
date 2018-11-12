@@ -43,17 +43,6 @@ public class UniformIntrusiveEdgesSpecifics<V, E>
     /**
      * Constructor
      * 
-     * @deprecated Since, default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public UniformIntrusiveEdgesSpecifics()
-    {
-        this(new LinkedHashMap<>());
-    }
-
-    /**
-     * Constructor
-     * 
      * @param map the map to use for storage
      */
     public UniformIntrusiveEdgesSpecifics(Map<E, IntrusiveEdge> map)

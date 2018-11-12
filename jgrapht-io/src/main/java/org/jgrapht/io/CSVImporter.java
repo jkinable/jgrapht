@@ -350,8 +350,7 @@ public class CSVImporter<V, E>
         {
             super(graph);
             this.assumeNodeIds = parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_NODEID);
-            this.assumeEdgeWeights = parameters.contains(CSVFormat.Parameter.EDGE_WEIGHTS)
-                || parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_EDGE_WEIGHTS);
+            this.assumeEdgeWeights = parameters.contains(CSVFormat.Parameter.EDGE_WEIGHTS);
             ;
             this.assumeZeroWhenNoEdge =
                 parameters.contains(CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE);

@@ -43,17 +43,6 @@ public class WeightedIntrusiveEdgesSpecifics<V, E>
     /**
      * Constructor
      * 
-     * @deprecated Since default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public WeightedIntrusiveEdgesSpecifics()
-    {
-        this(new LinkedHashMap<>());
-    }
-
-    /**
-     * Constructor
-     * 
      * @param map the map to use for storage
      */
     public WeightedIntrusiveEdgesSpecifics(Map<E, IntrusiveWeightedEdge> map)

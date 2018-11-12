@@ -52,31 +52,6 @@ public class DirectedSpecifics<V, E>
      * Construct a new directed specifics.
      * 
      * @param graph the graph for which these specifics are for
-     * @deprecated Since default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public DirectedSpecifics(Graph<V, E> graph)
-    {
-        this(graph, new LinkedHashMap<>(), new ArrayUnenforcedSetEdgeSetFactory<>());
-    }
-
-    /**
-     * Construct a new directed specifics.
-     * 
-     * @param graph the graph for which these specifics are for
-     * @param vertexMap map for the storage of vertex edge sets
-     * @deprecated Since default strategies should be decided at a higher level.
-     */
-    @Deprecated
-    public DirectedSpecifics(Graph<V, E> graph, Map<V, DirectedEdgeContainer<V, E>> vertexMap)
-    {
-        this(graph, vertexMap, new ArrayUnenforcedSetEdgeSetFactory<>());
-    }
-
-    /**
-     * Construct a new directed specifics.
-     * 
-     * @param graph the graph for which these specifics are for
      * @param vertexMap map for the storage of vertex edge sets. Needs to have a predictable
      *        iteration order.
      * @param edgeSetFactory factory for the creation of vertex edge sets

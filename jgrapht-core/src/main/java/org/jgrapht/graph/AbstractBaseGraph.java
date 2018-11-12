@@ -90,24 +90,7 @@ public abstract class AbstractBaseGraph<V, E>
     protected AbstractBaseGraph(
         Supplier<V> vertexSupplier, Supplier<E> edgeSupplier, GraphType type)
     {
-        /*
-         * Replace with the following code after the next release
-         * 
-         * this(vertexSupplier, edgeSupplier, type, new FastLookupGraphSpecificsStrategy());
-         */
-        this.vertexSupplier = vertexSupplier;
-        this.edgeSupplier = edgeSupplier;
-        this.type = Objects.requireNonNull(type);
-        if (type.isMixed()) {
-            throw new IllegalArgumentException(MIXED_GRAPH_NOT_SUPPORTED);
-        }
-        this.graphSpecificsStrategy = new BackwardsCompatibleGraphSpecificsStrategy();
-        this.specifics = Objects.requireNonNull(
-            graphSpecificsStrategy.getSpecificsFactory().apply(this, type),
-            GRAPH_SPECIFICS_MUST_NOT_BE_NULL);
-        this.intrusiveEdgesSpecifics = Objects.requireNonNull(
-            graphSpecificsStrategy.getIntrusiveEdgesSpecificsFactory().apply(type),
-            GRAPH_SPECIFICS_MUST_NOT_BE_NULL);
+        this(vertexSupplier, edgeSupplier, type, new FastLookupGraphSpecificsStrategy<>());
     }
 
     /**
@@ -557,67 +540,4 @@ public abstract class AbstractBaseGraph<V, E>
     {
         return type;
     }
-
-    /**
-     * Create the specifics for this graph. Subclasses can override this method in order to adjust
-     * the specifics and thus the space-time tradeoffs of the graph implementation.
-     * 
-     * @param directed if true the specifics should adjust the behavior to a directed graph
-     *        otherwise undirected
-     * @return the specifics used by this graph
-     * 
-     * @deprecated In favor of using factories
-     */
-    @Deprecated
-    protected Specifics<V, E> createSpecifics(boolean directed)
-    {
-        if (directed) {
-            return new FastLookupDirectedSpecifics<>(this);
-        } else {
-            return new FastLookupUndirectedSpecifics<>(this);
-        }
-    }
-
-    /**
-     * Create the specifics for the edges set of the graph.
-     * 
-     * @param weighted if true the specifics should support weighted edges
-     * @return the specifics used for the edge set of this graph
-     * 
-     * @deprecated In favor of using factories
-     */
-    @Deprecated
-    protected IntrusiveEdgesSpecifics<V, E> createIntrusiveEdgesSpecifics(boolean weighted)
-    {
-        if (weighted) {
-            return new WeightedIntrusiveEdgesSpecifics<>();
-        } else {
-            return new UniformIntrusiveEdgesSpecifics<>();
-        }
-    }
-
-    /*
-     * Added for backwards compatibility, remove after next release.
-     */
-    @Deprecated
-    class BackwardsCompatibleGraphSpecificsStrategy
-        implements
-        GraphSpecificsStrategy<V, E>
-    {
-        @Override
-        public Function<GraphType,
-            IntrusiveEdgesSpecifics<V, E>> getIntrusiveEdgesSpecificsFactory()
-        {
-            return (type) -> createIntrusiveEdgesSpecifics(type.isWeighted());
-        }
-
-        @Override
-        public BiFunction<Graph<V, E>, GraphType, Specifics<V, E>> getSpecificsFactory()
-        {
-            return (graph, type) -> {
-                return createSpecifics(type.isDirected());
-            };
-        }
-    }
-
 }

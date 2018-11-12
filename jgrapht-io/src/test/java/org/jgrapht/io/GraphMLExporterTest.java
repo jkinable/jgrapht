@@ -668,4 +668,3 @@ public class GraphMLExporterTest
     }
 
 }
-

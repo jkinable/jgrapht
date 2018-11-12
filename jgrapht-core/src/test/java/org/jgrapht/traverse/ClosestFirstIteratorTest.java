@@ -156,4 +156,3 @@ public class ClosestFirstIteratorTest
         return new ClosestFirstIterator<>(g, startVertex);
     }
 }
-

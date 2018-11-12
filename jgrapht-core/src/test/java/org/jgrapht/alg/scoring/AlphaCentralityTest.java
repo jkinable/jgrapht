@@ -355,4 +355,3 @@ public class AlphaCentralityTest
         new AlphaCentrality<>(g, 0.85, 1.0, 100, 0.0);
     }
 }
-

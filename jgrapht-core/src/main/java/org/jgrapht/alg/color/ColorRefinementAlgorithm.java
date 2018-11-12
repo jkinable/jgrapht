@@ -105,8 +105,8 @@ public class ColorRefinementAlgorithm<V, E>
             Set<Integer> adjacentColors = calculateColorDegrees(currentColor, rep);
 
             // split colors
-            adjacentColors.stream()
-                .filter(c -> rep.minColorDegree[c] < rep.maxColorDegree[c])
+            adjacentColors
+                .stream().filter(c -> rep.minColorDegree[c] < rep.maxColorDegree[c])
                 .sorted(Comparator.comparingInt(o -> o)) // canonical order
                 .forEach(color -> splitUpColor(color, refineStack, rep));
 
@@ -178,7 +178,7 @@ public class ColorRefinementAlgorithm<V, E>
      */
     private void cleanupColorDegrees(Set<Integer> adjacentColors, ColoringRepresentation rep)
     {
-        for(int c: adjacentColors) { 
+        for (int c : adjacentColors) {
             for (V v : rep.positiveDegreeColorClasses.get(c)) {
                 rep.colorDegree.put(v, 0);
             }
@@ -244,7 +244,7 @@ public class ColorRefinementAlgorithm<V, E>
                 }
             }
         }
-        
+
         // Update colors classes if some color has changed
         for (V v : rep.positiveDegreeColorClasses.get(color)) {
             if (!newMapping.get(rep.colorDegree.get(v)).equals(color)) {

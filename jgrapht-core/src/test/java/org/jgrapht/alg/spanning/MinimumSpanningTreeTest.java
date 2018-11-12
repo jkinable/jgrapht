@@ -174,4 +174,3 @@ public abstract class MinimumSpanningTreeTest
     }
 
 }
-

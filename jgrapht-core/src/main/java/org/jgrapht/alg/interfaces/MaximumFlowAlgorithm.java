@@ -30,7 +30,9 @@ import java.util.*;
  * @param <E> the graph edge type
  *
  */
-public interface MaximumFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>
+public interface MaximumFlowAlgorithm<V, E>
+    extends
+    FlowAlgorithm<V, E>
 {
 
     /**
@@ -98,7 +100,9 @@ public interface MaximumFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>
      *
      * @param <E> the graph edge type
      */
-    interface MaximumFlow<E> extends Flow<E>
+    interface MaximumFlow<E>
+        extends
+        Flow<E>
     {
         /**
          * Returns value of the maximum-flow for the given network
@@ -114,7 +118,10 @@ public interface MaximumFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>
          * @deprecated Method renamed to getFlowMap
          */
         @Deprecated
-        default Map<E, Double> getFlow(){return getFlowMap();}
+        default Map<E, Double> getFlow()
+        {
+            return getFlowMap();
+        }
     }
 
     /**
@@ -122,7 +129,9 @@ public interface MaximumFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>
      *
      * @param <E> the graph edge type
      */
-    class MaximumFlowImpl<E> extends FlowImpl<E>
+    class MaximumFlowImpl<E>
+        extends
+        FlowImpl<E>
         implements
         MaximumFlow<E>
     {
@@ -153,4 +162,3 @@ public interface MaximumFlowAlgorithm<V, E> extends FlowAlgorithm<V,E>
         }
     }
 }
-

@@ -67,8 +67,7 @@ class BaseListenableImporter<V, E>
      * 
      * @param consumer the consumer
      */
-    public void removeGraphAttributeConsumer(
-        BiConsumer<String, Attribute> consumer)
+    public void removeGraphAttributeConsumer(BiConsumer<String, Attribute> consumer)
     {
         graphAttributeConsumers.remove(consumer);
     }

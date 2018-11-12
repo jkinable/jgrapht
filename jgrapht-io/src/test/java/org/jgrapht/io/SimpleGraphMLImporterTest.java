@@ -236,8 +236,8 @@ public class SimpleGraphMLImporterTest
 
         Graph<String,
             DefaultEdge> g = GraphTypeBuilder
-                .undirected().weighted(false).allowingMultipleEdges(true)
-                .allowingSelfLoops(true).vertexSupplier(SupplierUtil.createStringSupplier())
+                .undirected().weighted(false).allowingMultipleEdges(true).allowingSelfLoops(true)
+                .vertexSupplier(SupplierUtil.createStringSupplier())
                 .edgeSupplier(SupplierUtil.createDefaultEdgeSupplier()).buildGraph();
 
         new SimpleGraphMLImporter<String, DefaultEdge>()
@@ -338,21 +338,20 @@ public class SimpleGraphMLImporterTest
         assertTrue(g.containsVertex("0"));
         assertTrue(g.containsVertex("1"));
         assertTrue(g.containsEdge("0", "1"));
-        
+
+        assertEquals(DefaultAttribute.createAttribute("green"), graphAttrs.get("color"));
+        assertEquals(DefaultAttribute.createAttribute("undirected"), graphAttrs.get("edgedefault"));
+        assertEquals(DefaultAttribute.createAttribute("n0"), vertexAttrs.get(Pair.of("0", "id")));
+        assertEquals(DefaultAttribute.createAttribute("n1"), vertexAttrs.get(Pair.of("1", "id")));
         assertEquals(
-            DefaultAttribute.createAttribute("green"), graphAttrs.get("color"));
+            DefaultAttribute.createAttribute("e1"),
+            edgeAttrs.get(Pair.of(g.getEdge("0", "1"), "id")));
         assertEquals(
-            DefaultAttribute.createAttribute("undirected"), graphAttrs.get("edgedefault"));
+            DefaultAttribute.createAttribute("n0"),
+            edgeAttrs.get(Pair.of(g.getEdge("0", "1"), "source")));
         assertEquals(
-            DefaultAttribute.createAttribute("n0"), vertexAttrs.get(Pair.of("0", "id")));
-        assertEquals(
-            DefaultAttribute.createAttribute("n1"), vertexAttrs.get(Pair.of("1", "id")));
-        assertEquals(
-            DefaultAttribute.createAttribute("e1"), edgeAttrs.get(Pair.of(g.getEdge("0", "1"), "id")));
-        assertEquals(
-            DefaultAttribute.createAttribute("n0"), edgeAttrs.get(Pair.of(g.getEdge("0", "1"), "source")));
-        assertEquals(
-            DefaultAttribute.createAttribute("n1"), edgeAttrs.get(Pair.of(g.getEdge("0", "1"), "target")));
+            DefaultAttribute.createAttribute("n1"),
+            edgeAttrs.get(Pair.of(g.getEdge("0", "1"), "target")));
     }
 
 }

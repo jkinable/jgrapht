@@ -161,4 +161,3 @@ public class DepthFirstIteratorTest
         assertEquals(expected, actual);
     }
 }
-

@@ -65,7 +65,7 @@ public class MaximumWeightBipartiteMatching<V, E>
     private final Set<V> partition2;
 
     private final Comparator<BigDecimal> comparator;
-    private final Function<Comparator<BigDecimal>, AddressableHeap<BigDecimal,V>> heapSupplier;
+    private final Function<Comparator<BigDecimal>, AddressableHeap<BigDecimal, V>> heapSupplier;
 
     // vertex potentials
     private Map<V, BigDecimal> pot;
@@ -94,7 +94,7 @@ public class MaximumWeightBipartiteMatching<V, E>
     {
         this(graph, partition1, partition2, (comparator) -> new FibonacciHeap<>(comparator));
     }
-    
+
     /**
      * Constructor.
      * 
@@ -104,7 +104,9 @@ public class MaximumWeightBipartiteMatching<V, E>
      * @param heapSupplier a supplier for the addressable heap to use in the algorithm.
      * @throws IllegalArgumentException if the graph is not undirected
      */
-    public MaximumWeightBipartiteMatching(Graph<V, E> graph, Set<V> partition1, Set<V> partition2, Function<Comparator<BigDecimal>, AddressableHeap<BigDecimal,V>> heapSupplier)
+    public MaximumWeightBipartiteMatching(
+        Graph<V, E> graph, Set<V> partition1, Set<V> partition2,
+        Function<Comparator<BigDecimal>, AddressableHeap<BigDecimal, V>> heapSupplier)
     {
         this.graph = GraphTests.requireUndirected(graph);
         this.partition1 = Objects.requireNonNull(partition1, "Partition 1 cannot be null");

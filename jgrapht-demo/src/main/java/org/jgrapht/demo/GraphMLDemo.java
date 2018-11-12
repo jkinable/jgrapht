@@ -294,7 +294,7 @@ public final class GraphMLDemo
             public CustomVertex get()
             {
                 return new CustomVertex(
-                        String.valueOf(id++), GENERATOR.nextBoolean() ? Color.BLACK : Color.WHITE);
+                    String.valueOf(id++), GENERATOR.nextBoolean() ? Color.BLACK : Color.WHITE);
             }
         };
 
@@ -302,8 +302,8 @@ public final class GraphMLDemo
          * Generate the complete graph. Vertices have random colors and edges have random edge
          * weights.
          */
-        Graph<CustomVertex, DefaultWeightedEdge> graph1 =
-                new DirectedWeightedPseudograph<>(vSupplier, SupplierUtil.createDefaultWeightedEdgeSupplier());
+        Graph<CustomVertex, DefaultWeightedEdge> graph1 = new DirectedWeightedPseudograph<>(
+            vSupplier, SupplierUtil.createDefaultWeightedEdgeSupplier());
 
         CompleteGraphGenerator<CustomVertex, DefaultWeightedEdge> completeGenerator =
             new CompleteGraphGenerator<>(SIZE);

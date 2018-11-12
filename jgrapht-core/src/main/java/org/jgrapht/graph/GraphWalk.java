@@ -54,7 +54,7 @@ import java.util.function.Function;
  * walk. It is the responsibility of the invoking class to provide correct input data.
  *
  * <p>
- *     Note: Serialization of a GraphWalk implies the serialization of the entire underlying graph.
+ * Note: Serialization of a GraphWalk implies the serialization of the entire underlying graph.
  * </p>
  *
  * @param <V> the graph vertex type
@@ -65,7 +65,8 @@ import java.util.function.Function;
  */
 public class GraphWalk<V, E>
     implements
-    GraphPath<V, E>, Serializable
+    GraphPath<V, E>,
+    Serializable
 {
     private static final long serialVersionUID = 7663410644865380676L;
     protected Graph<V, E> graph;
@@ -540,4 +541,3 @@ class InvalidGraphWalkException
     }
 
 }
-

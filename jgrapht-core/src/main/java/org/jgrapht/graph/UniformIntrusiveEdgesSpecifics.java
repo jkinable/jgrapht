@@ -51,7 +51,7 @@ public class UniformIntrusiveEdgesSpecifics<V, E>
     {
         this(new LinkedHashMap<>());
     }
-    
+
     /**
      * Constructor
      * 

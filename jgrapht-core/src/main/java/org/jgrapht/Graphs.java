@@ -580,8 +580,8 @@ public abstract class Graphs
     }
 
     /**
-     * Compute a new mapping from the vertices of a graph to the integer range $[0, n)$
-     * where $n$ is the number of vertices in the graph.
+     * Compute a new mapping from the vertices of a graph to the integer range $[0, n)$ where $n$ is
+     * the number of vertices in the graph.
      *
      * @param graph the input graph
      * @param <V> the graph vertex type
@@ -592,8 +592,8 @@ public abstract class Graphs
      *
      * @see VertexToIntegerMapping
      */
-    public static <V, E> VertexToIntegerMapping<V> getVertexToIntegerMapping(Graph<V, E> graph){
+    public static <V, E> VertexToIntegerMapping<V> getVertexToIntegerMapping(Graph<V, E> graph)
+    {
         return new VertexToIntegerMapping<>(Objects.requireNonNull(graph).vertexSet());
     }
 }
-

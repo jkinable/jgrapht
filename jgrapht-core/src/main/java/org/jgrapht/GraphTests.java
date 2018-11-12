@@ -249,7 +249,8 @@ public abstract class GraphTests
      * This method does not performing any caching, instead recomputes everything from scratch. In
      * case more control is required use {@link KosarajuStrongConnectivityInspector} directly.
      * 
-     * <p>In case of undirected graphs this method delegated to {@link #isConnected(Graph)}.
+     * <p>
+     * In case of undirected graphs this method delegated to {@link #isConnected(Graph)}.
      *
      * @param graph the input graph
      * @param <V> the graph vertex type
@@ -691,4 +692,3 @@ public abstract class GraphTests
         return graph;
     }
 }
-

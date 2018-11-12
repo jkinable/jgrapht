@@ -34,10 +34,11 @@ import java.util.Set;
  * @author Barak Naveh
  * @author Alexandru Valeanu
  */
-public class NaiveLCAFinderTest {
+public class NaiveLCAFinderTest
+{
 
     private static <V,
-            E> void checkLcas(NaiveLCAFinder<V, E> finder, V a, V b, Collection<V> expectedSet)
+        E> void checkLcas(NaiveLCAFinder<V, E> finder, V a, V b, Collection<V> expectedSet)
     {
         Set<V> lcaSet = finder.getLCASet(a, b);
         Assert.assertTrue(lcaSet.containsAll(expectedSet));

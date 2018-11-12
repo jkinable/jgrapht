@@ -36,11 +36,14 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Timofey Chudakov
  */
-public class BlossomVStateTest {
+public class BlossomVStateTest
+{
 
     @Test
-    public void testAddTreeEdge() {
-        BlossomVTree tree1 = new BlossomVTree(new BlossomVNode(-1)); // positions doesn't matter here
+    public void testAddTreeEdge()
+    {
+        BlossomVTree tree1 = new BlossomVTree(new BlossomVNode(-1)); // positions doesn't matter
+                                                                     // here
         BlossomVTree tree2 = new BlossomVTree(new BlossomVNode(-1));
         BlossomVTreeEdge treeEdge = BlossomVTree.addTreeEdge(tree1, tree2);
         int currentDir = tree2.currentDirection;
@@ -49,14 +52,18 @@ public class BlossomVStateTest {
     }
 
     @Test
-    public void testMoveEdge() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testMoveEdge()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
         DefaultWeightedEdge e12 = Graphs.addEdgeWithVertices(graph, 1, 2, 0);
         DefaultWeightedEdge e13 = Graphs.addEdgeWithVertices(graph, 1, 3, 0);
         DefaultWeightedEdge e23 = Graphs.addEdgeWithVertices(graph, 2, 3, 0);
 
-        BlossomVInitializer<Integer, DefaultWeightedEdge> initializer = new BlossomVInitializer<>(graph);
-        BlossomVState<Integer, DefaultWeightedEdge> state = initializer.initialize(new BlossomVOptions(NONE));
+        BlossomVInitializer<Integer, DefaultWeightedEdge> initializer =
+            new BlossomVInitializer<>(graph);
+        BlossomVState<Integer, DefaultWeightedEdge> state =
+            initializer.initialize(new BlossomVOptions(NONE));
         Map<Integer, BlossomVNode> vertexMap = BlossomVDebugger.getVertexMap(state);
         Map<DefaultWeightedEdge, BlossomVEdge> edgeMap = BlossomVDebugger.getEdgeMap(state);
 
@@ -70,15 +77,23 @@ public class BlossomVStateTest {
 
         edge12.moveEdgeTail(node2, node3);
         assertEquals(node3, edge12.getOpposite(node1));
-        assertEquals(new HashSet<>(Arrays.asList(edge12, edge13)), BlossomVDebugger.getEdgesOf(node1));
-        assertEquals(new HashSet<>(Collections.singletonList(edge23)), BlossomVDebugger.getEdgesOf(node2));
-        assertEquals(new HashSet<>(Arrays.asList(edge12, edge13, edge23)), BlossomVDebugger.getEdgesOf(node3));
+        assertEquals(
+            new HashSet<>(Arrays.asList(edge12, edge13)), BlossomVDebugger.getEdgesOf(node1));
+        assertEquals(
+            new HashSet<>(Collections.singletonList(edge23)), BlossomVDebugger.getEdgesOf(node2));
+        assertEquals(
+            new HashSet<>(Arrays.asList(edge12, edge13, edge23)),
+            BlossomVDebugger.getEdgesOf(node3));
 
         edge23.moveEdgeTail(node2, node1);
         assertEquals(node1, edge13.getOpposite(node3));
-        assertEquals(new HashSet<>(Arrays.asList(edge12, edge13, edge23)), BlossomVDebugger.getEdgesOf(node1));
+        assertEquals(
+            new HashSet<>(Arrays.asList(edge12, edge13, edge23)),
+            BlossomVDebugger.getEdgesOf(node1));
         assertEquals(new HashSet<>(), BlossomVDebugger.getEdgesOf(node2));
-        assertEquals(new HashSet<>(Arrays.asList(edge12, edge13, edge23)), BlossomVDebugger.getEdgesOf(node3));
+        assertEquals(
+            new HashSet<>(Arrays.asList(edge12, edge13, edge23)),
+            BlossomVDebugger.getEdgesOf(node3));
     }
 
 }

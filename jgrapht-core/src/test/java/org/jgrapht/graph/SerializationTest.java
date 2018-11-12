@@ -111,4 +111,3 @@ public class SerializationTest
         return obj;
     }
 }
-

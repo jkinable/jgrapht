@@ -37,7 +37,10 @@ import static org.jgrapht.GraphTests.isEmpty;
  * @author Dimitrios Michail
  * @author Alexandru Valeanu
  */
-public class BipartitePartitioning<V, E> implements PartitioningAlgorithm<V> {
+public class BipartitePartitioning<V, E>
+    implements
+    PartitioningAlgorithm<V>
+{
 
     /* Input graph */
     private Graph<V, E> graph;
@@ -51,7 +54,8 @@ public class BipartitePartitioning<V, E> implements PartitioningAlgorithm<V> {
      *
      * @param graph the input graph;
      */
-    public BipartitePartitioning(Graph<V, E> graph){
+    public BipartitePartitioning(Graph<V, E> graph)
+    {
         this.graph = Objects.requireNonNull(graph, "graph cannot be null");
     }
 
@@ -68,7 +72,7 @@ public class BipartitePartitioning<V, E> implements PartitioningAlgorithm<V> {
         try {
             // at most n^2/4 edges
             if (Math.multiplyExact(4, graph.edgeSet().size()) > Math
-                    .multiplyExact(graph.vertexSet().size(), graph.vertexSet().size()))
+                .multiplyExact(graph.vertexSet().size(), graph.vertexSet().size()))
             {
                 return false;
             }
@@ -83,7 +87,8 @@ public class BipartitePartitioning<V, E> implements PartitioningAlgorithm<V> {
      * {@inheritDoc}
      */
     @Override
-    public Partitioning<V> getPartitioning() {
+    public Partitioning<V> getPartitioning()
+    {
         if (computed) {
             return cachedPartitioning;
         }
@@ -127,7 +132,8 @@ public class BipartitePartitioning<V, E> implements PartitioningAlgorithm<V> {
      * {@inheritDoc}
      */
     @Override
-    public boolean isValidPartitioning(Partitioning<V> partitioning){
+    public boolean isValidPartitioning(Partitioning<V> partitioning)
+    {
         Objects.requireNonNull(partitioning, "Partition cannot be null");
 
         if (partitioning.getNumberPartitions() != 2)

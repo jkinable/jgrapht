@@ -115,7 +115,7 @@ public class KuhnMunkresMinimalWeightBipartitePerfectMatchingTest
         generator.generateGraph(target);
 
         return new KuhnMunkresMinimalWeightBipartitePerfectMatching<>(
-                target, new LinkedHashSet<>(first), new LinkedHashSet<>(second)).getMatching();
+            target, new LinkedHashSet<>(first), new LinkedHashSet<>(second)).getMatching();
     }
 
     @Test

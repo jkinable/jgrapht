@@ -218,7 +218,8 @@ public class WeakChordalityInspectorTest
     @Test
     public void testIsWeaklyChordal9()
     {
-        Graph<Integer, DefaultEdge> graph = new DefaultUndirectedGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> graph = new DefaultUndirectedGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         CompleteGraphGenerator<Integer, DefaultEdge> generator = new CompleteGraphGenerator<>(50);
         generator.generateGraph(graph);
         WeakChordalityInspector<Integer, DefaultEdge> inspector =

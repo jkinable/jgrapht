@@ -261,4 +261,3 @@ public class NaiveLcaFinder<V, E>
         return y.iterator().next();
     }
 }
-

@@ -46,8 +46,12 @@ import java.util.function.*;
  * @author Dimitrios Michail
  */
 public abstract class AbstractBaseGraph<V, E>
-    extends AbstractGraph<V, E>
-    implements Graph<V, E>, Cloneable, Serializable
+    extends
+    AbstractGraph<V, E>
+    implements
+    Graph<V, E>,
+    Cloneable,
+    Serializable
 {
     private static final long serialVersionUID = -3582386521833998627L;
 
@@ -57,11 +61,13 @@ public abstract class AbstractBaseGraph<V, E>
     private static final String INVALID_VERTEX_SUPPLIER_DOES_NOT_RETURN_UNIQUE_VERTICES_ON_EACH_CALL =
         "Invalid vertex supplier (does not return unique vertices on each call).";
     private static final String MIXED_GRAPH_NOT_SUPPORTED = "Mixed graph not supported";
-    private static final String GRAPH_SPECIFICS_STRATEGY_REQUIRED = "Graph specifics strategy required";
-    private static final String THE_GRAPH_CONTAINS_NO_VERTEX_SUPPLIER = "The graph contains no vertex supplier";
-    private static final String THE_GRAPH_CONTAINS_NO_EDGE_SUPPLIER = "The graph contains no edge supplier";
+    private static final String GRAPH_SPECIFICS_STRATEGY_REQUIRED =
+        "Graph specifics strategy required";
+    private static final String THE_GRAPH_CONTAINS_NO_VERTEX_SUPPLIER =
+        "The graph contains no vertex supplier";
+    private static final String THE_GRAPH_CONTAINS_NO_EDGE_SUPPLIER =
+        "The graph contains no edge supplier";
 
-    
     private transient Set<V> unmodifiableVertexSet = null;
 
     private Supplier<V> vertexSupplier;
@@ -283,8 +289,9 @@ public abstract class AbstractBaseGraph<V, E>
 
         V v = vertexSupplier.get();
 
-        if (!specifics.addVertex(v)) { 
-            throw new IllegalArgumentException(INVALID_VERTEX_SUPPLIER_DOES_NOT_RETURN_UNIQUE_VERTICES_ON_EACH_CALL);
+        if (!specifics.addVertex(v)) {
+            throw new IllegalArgumentException(
+                INVALID_VERTEX_SUPPLIER_DOES_NOT_RETURN_UNIQUE_VERTICES_ON_EACH_CALL);
         }
         return v;
     }
@@ -594,7 +601,8 @@ public abstract class AbstractBaseGraph<V, E>
      */
     @Deprecated
     class BackwardsCompatibleGraphSpecificsStrategy
-        implements GraphSpecificsStrategy<V, E>
+        implements
+        GraphSpecificsStrategy<V, E>
     {
         @Override
         public Function<GraphType,
@@ -613,4 +621,3 @@ public abstract class AbstractBaseGraph<V, E>
     }
 
 }
-

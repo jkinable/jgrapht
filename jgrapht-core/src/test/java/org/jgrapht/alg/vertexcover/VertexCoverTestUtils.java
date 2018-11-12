@@ -29,15 +29,16 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-
 /**
- *  Base class for vertex cover tests
+ * Base class for vertex cover tests
  *
  * @author Linda Buisman
  */
-public class VertexCoverTestUtils {
+public class VertexCoverTestUtils
+{
 
-    public VertexCoverTestUtils(){
+    public VertexCoverTestUtils()
+    {
     }
 
     // ~ Static fields/initializers ---------------------------------------------
@@ -59,7 +60,8 @@ public class VertexCoverTestUtils {
      *
      * @return returns true if the provided vertex cover is a valid cover in the given graph
      */
-    static boolean isCover(Graph<Integer, DefaultEdge> g, VertexCoverAlgorithm.VertexCover<Integer> vertexCover)
+    static boolean isCover(
+        Graph<Integer, DefaultEdge> g, VertexCoverAlgorithm.VertexCover<Integer> vertexCover)
     {
         Set<DefaultEdge> uncoveredEdges = new HashSet<>(g.edgeSet());
         for (Integer v : vertexCover)
@@ -76,10 +78,10 @@ public class VertexCoverTestUtils {
      */
     static Graph<Integer, DefaultEdge> createRandomPseudoGraph(int vertices)
     {
-        Pseudograph<Integer, DefaultEdge> g = new Pseudograph<>(SupplierUtil.createIntegerSupplier(),
-                SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+        Pseudograph<Integer, DefaultEdge> g = new Pseudograph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         GraphGenerator<Integer, DefaultEdge, Integer> graphGenerator =
-                new GnmRandomGraphGenerator<>(vertices, rnd.nextInt(vertices / 2) + 1);
+            new GnmRandomGraphGenerator<>(vertices, rnd.nextInt(vertices / 2) + 1);
         graphGenerator.generateGraph(g);
         return g;
     }

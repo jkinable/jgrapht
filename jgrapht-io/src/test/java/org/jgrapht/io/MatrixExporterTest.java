@@ -115,4 +115,3 @@ public class MatrixExporterTest
         assertEquals(DIRECTED_ADJACENCY, w.toString());
     }
 }
-

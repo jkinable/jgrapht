@@ -33,10 +33,12 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Alexandru Valeanu
  */
-public class TreeMeasurerTest {
+public class TreeMeasurerTest
+{
 
     @Test
-    public void testNoCenters(){
+    public void testNoCenters()
+    {
         Graph<Integer, DefaultEdge> tree = new SimpleGraph<>(DefaultEdge.class);
 
         TreeMeasurer<Integer, DefaultEdge> treeMeasurer = new TreeMeasurer<>(tree);
@@ -45,7 +47,8 @@ public class TreeMeasurerTest {
     }
 
     @Test
-    public void testTwoCenters(){
+    public void testTwoCenters()
+    {
         Graph<Integer, DefaultEdge> tree = new SimpleGraph<>(DefaultEdge.class);
 
         tree.addVertex(1);
@@ -63,7 +66,8 @@ public class TreeMeasurerTest {
     }
 
     @Test
-    public void testOneCenter(){
+    public void testOneCenter()
+    {
         Graph<Integer, DefaultEdge> tree = new SimpleGraph<>(DefaultEdge.class);
 
         tree.addVertex(1);

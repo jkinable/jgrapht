@@ -27,10 +27,14 @@ import java.util.Set;
  *
  * @author Alexandru Valeanu
  */
-public class HeavyPathLCAFinderTest extends LCATreeTestBase {
+public class HeavyPathLCAFinderTest
+    extends
+    LCATreeTestBase
+{
 
     @Override
-    <V, E> LowestCommonAncestorAlgorithm<V> createSolver(Graph<V, E> graph, Set<V> roots) {
+    <V, E> LowestCommonAncestorAlgorithm<V> createSolver(Graph<V, E> graph, Set<V> roots)
+    {
         return new HeavyPathLCAFinder<>(graph, roots);
     }
 }

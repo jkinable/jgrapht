@@ -64,4 +64,3 @@ public class KSPExampleTest
         assertEquals(nbPaths, ksp.getPaths(sourceVertex, targetVertex, nbPaths).size());
     }
 }
-

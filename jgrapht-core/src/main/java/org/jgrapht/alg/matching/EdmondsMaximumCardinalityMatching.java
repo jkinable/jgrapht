@@ -173,7 +173,7 @@ public class EdmondsMaximumCardinalityMatching<V, E>
         this.matching = new SimpleMatching(vertices.size());
         this.matchedVertices = 0;
 
-        this.levels  = new Levels(vertices.size());
+        this.levels = new Levels(vertices.size());
 
         this.queue = new FixedSizeIntegerQueue(vertices.size());
         this.uf = new UnionFind<>(new HashSet<>(vertexIndexMap.values()));
@@ -214,9 +214,9 @@ public class EdmondsMaximumCardinalityMatching<V, E>
         queue.clear();
 
         Deque<Integer> exposed = new ArrayDeque<>(matching.getExposed());
-        
-        while(!exposed.isEmpty()) { 
-            int root = exposed.pop(); 
+
+        while (!exposed.isEmpty()) {
+            int root = exposed.pop();
 
             levels.setEven(root, root);
             queue.enqueue(root);
@@ -544,71 +544,79 @@ public class EdmondsMaximumCardinalityMatching<V, E>
                 / 2.0;
     }
 
-    
     /**
      * Storage of the forest, even and odd levels.
      * 
-     * We explicitly maintain a dirty mark in order to be able to cleanup only the 
-     * values that we have changed. This is important when the graph is sparse to avoid performing an 
-     * $O(n)$ operation per augmentation.
+     * We explicitly maintain a dirty mark in order to be able to cleanup only the values that we
+     * have changed. This is important when the graph is sparse to avoid performing an $O(n)$
+     * operation per augmentation.
      */
     private static class Levels
     {
         private int[] even, odd;
         private List<Integer> dirty;
-        
-        public Levels(int n) {
+
+        public Levels(int n)
+        {
             this.even = new int[n];
             this.odd = new int[n];
             this.dirty = new ArrayList<>();
-            
+
             Arrays.fill(even, NIL);
             Arrays.fill(odd, NIL);
         }
-        
-        public int getEven(int v) { 
+
+        public int getEven(int v)
+        {
             return even[v];
         }
-        
-        public void setEven(int v, int value) { 
+
+        public void setEven(int v, int value)
+        {
             even[v] = value;
-            if (value != NIL) { 
+            if (value != NIL) {
                 dirty.add(v);
             }
         }
-        
-        public int getOdd(int v) { 
+
+        public int getOdd(int v)
+        {
             return odd[v];
         }
-        
-        public void setOdd(int v, int value) { 
+
+        public void setOdd(int v, int value)
+        {
             odd[v] = value;
-            if (value != NIL) { 
+            if (value != NIL) {
                 dirty.add(v);
             }
         }
-        
-        public boolean isEven(int v) { 
+
+        public boolean isEven(int v)
+        {
             return even[v] != NIL;
         }
-        
-        public boolean isOddOrUnreached(int v) { 
+
+        public boolean isOddOrUnreached(int v)
+        {
             return odd[v] == NIL;
         }
-        
-        public boolean isOdd(int v) { 
+
+        public boolean isOdd(int v)
+        {
             return odd[v] != NIL;
         }
-        
-        public void reset() {
-            for(int v: dirty) { 
+
+        public void reset()
+        {
+            for (int v : dirty) {
                 even[v] = NIL;
                 odd[v] = NIL;
             }
             dirty.clear();
         }
     }
-    
+
     /**
      * Simple representation of a matching
      */
@@ -622,7 +630,7 @@ public class EdmondsMaximumCardinalityMatching<V, E>
         {
             this.match = new int[n];
             this.exposed = new HashSet<>(n);
-            
+
             Arrays.fill(match, UNMATCHED);
             IntStream.range(0, n).forEach(exposed::add);
         }
@@ -662,12 +670,12 @@ public class EdmondsMaximumCardinalityMatching<V, E>
             exposed.remove(u);
             exposed.remove(v);
         }
-        
+
         Set<Integer> getExposed()
         {
             return exposed;
         }
-        
+
     }
 
     /** Utility function to reverse part of an array */

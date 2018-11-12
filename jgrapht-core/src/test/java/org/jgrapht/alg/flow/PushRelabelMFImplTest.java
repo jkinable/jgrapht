@@ -40,8 +40,10 @@ public class PushRelabelMFImplTest
     }
 
     @Test
-    public void testSimpleDirectedWeightedGraph(){
-        SimpleDirectedWeightedGraph<Integer, DefaultEdge> graph = new SimpleDirectedWeightedGraph<>(DefaultEdge.class);
+    public void testSimpleDirectedWeightedGraph()
+    {
+        SimpleDirectedWeightedGraph<Integer, DefaultEdge> graph =
+            new SimpleDirectedWeightedGraph<>(DefaultEdge.class);
 
         graph.addVertex(-1);
         graph.addVertex(-2);

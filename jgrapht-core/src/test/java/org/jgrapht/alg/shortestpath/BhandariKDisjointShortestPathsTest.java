@@ -32,7 +32,9 @@ import org.junit.*;
  * 
  * @author Assaf Mizrachi
  */
-public class BhandariKDisjointShortestPathsTest extends KDisjointShortestPathsTestCase
+public class BhandariKDisjointShortestPathsTest
+    extends
+    KDisjointShortestPathsTestCase
 {
 
     /**

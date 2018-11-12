@@ -33,28 +33,35 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Warmup(iterations = 2, time = 5)
 @Measurement(iterations = 10, time = 8)
-public class KolmogorovMinimumWeightPerfectMatchingPerformanceTest {
+public class KolmogorovMinimumWeightPerfectMatchingPerformanceTest
+{
 
     @Benchmark
-    public MatchingAlgorithm.Matching<Integer, DefaultWeightedEdge> testBlossomV(Data data) {
-        KolmogorovMinimumWeightPerfectMatching<Integer, DefaultWeightedEdge> matching = new KolmogorovMinimumWeightPerfectMatching<>(data.graph, data.options[data.optionNum]);
+    public MatchingAlgorithm.Matching<Integer, DefaultWeightedEdge> testBlossomV(Data data)
+    {
+        KolmogorovMinimumWeightPerfectMatching<Integer, DefaultWeightedEdge> matching =
+            new KolmogorovMinimumWeightPerfectMatching<>(data.graph, data.options[data.optionNum]);
         return matching.getMatching();
     }
 
     @State(Scope.Benchmark)
-    public static class Data {
+    public static class Data
+    {
 
         public BlossomVOptions[] options = BlossomVOptions.ALL_OPTIONS;
-        @Param({"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"})
+        @Param({ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14",
+            "15", "16", "17", "18", "19", "20", "21", "22", "23" })
         public int optionNum;
-        @Param({"300", "500"})
+        @Param({ "300", "500" })
         public int graphSize;
         Graph<Integer, DefaultWeightedEdge> graph;
 
         @Setup(Level.Iteration)
-        public void generate() {
+        public void generate()
+        {
             this.graph = new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
-            CompleteGraphGenerator<Integer, DefaultWeightedEdge> generator = new CompleteGraphGenerator<>(graphSize);
+            CompleteGraphGenerator<Integer, DefaultWeightedEdge> generator =
+                new CompleteGraphGenerator<>(graphSize);
             generator.generateGraph(graph);
         }
     }

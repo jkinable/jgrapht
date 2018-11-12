@@ -140,7 +140,10 @@ public class Graph6Sparse6ExporterTest
         GnpRandomGraphGenerator<Integer, DefaultEdge> gnp =
             new GnpRandomGraphGenerator<>(40, .55, 0, true);
         for (int i = 0; i < 20; i++) {
-            Graph<Integer, DefaultEdge> orig = new Pseudograph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+            Graph<Integer,
+                DefaultEdge> orig = new Pseudograph<>(
+                    SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),
+                    false);
             gnp.generateGraph(orig);
 
             String res = exportGraph(orig, Graph6Sparse6Exporter.Format.SPARSE6);
@@ -197,7 +200,10 @@ public class Graph6Sparse6ExporterTest
         GnpRandomGraphGenerator<Integer, DefaultEdge> gnp =
             new GnpRandomGraphGenerator<>(40, .55, 0);
         for (int i = 0; i < 20; i++) {
-            Graph<Integer, DefaultEdge> orig = new SimpleGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+            Graph<Integer,
+                DefaultEdge> orig = new SimpleGraph<>(
+                    SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),
+                    false);
             gnp.generateGraph(orig);
 
             String res = exportGraph(orig, Graph6Sparse6Exporter.Format.GRAPH6);

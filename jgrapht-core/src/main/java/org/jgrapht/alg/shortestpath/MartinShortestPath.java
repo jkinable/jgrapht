@@ -64,7 +64,7 @@ public class MartinShortestPath<V, E>
     private final Map<V, LinkedList<Label>> nodeLabels;
     // temporary labels ordered lexicographically
     private final Heap<Label> heap;
-    
+
     /**
      * Create a new shortest path algorithm
      * 
@@ -80,7 +80,7 @@ public class MartinShortestPath<V, E>
         this.nodeLabels = new HashMap<>();
         this.heap = new DaryArrayHeap<>(3, new LabelComparator());
     }
-    
+
     @Override
     public List<GraphPath<V, E>> getPaths(V source, V sink)
     {

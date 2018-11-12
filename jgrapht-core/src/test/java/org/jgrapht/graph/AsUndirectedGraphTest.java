@@ -225,4 +225,3 @@ public class AsUndirectedGraphTest
         loop = directed.addEdge(v4, v4);
     }
 }
-

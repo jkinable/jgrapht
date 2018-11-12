@@ -39,8 +39,11 @@ import org.jgrapht.GraphType;
  * @param <E> the graph edge type
  */
 public class AsUnweightedGraph<V, E>
-    extends GraphDelegator<V, E>
-    implements Serializable, Graph<V, E>
+    extends
+    GraphDelegator<V, E>
+    implements
+    Serializable,
+    Graph<V, E>
 {
 
     private static final long serialVersionUID = -5186421272597767751L;
@@ -57,17 +60,20 @@ public class AsUnweightedGraph<V, E>
         super(Objects.requireNonNull(g));
     }
 
-    @Override public double getEdgeWeight(E e)
+    @Override
+    public double getEdgeWeight(E e)
     {
         return Graph.DEFAULT_EDGE_WEIGHT;
     }
 
-    @Override public void setEdgeWeight(E e, double weight)
+    @Override
+    public void setEdgeWeight(E e, double weight)
     {
         throw new UnsupportedOperationException(EDGE_WEIGHT_IS_NOT_SUPPORTED);
     }
 
-    @Override public GraphType getType()
+    @Override
+    public GraphType getType()
     {
         return super.getType().asUnweighted();
     }

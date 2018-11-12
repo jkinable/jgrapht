@@ -42,7 +42,7 @@ import java.util.*;
  * @author Nathan Fiedler
  * @author Dimitrios Michail
  * 
- * @deprecated In favor of using data structures from the jheaps library. 
+ * @deprecated In favor of using data structures from the jheaps library.
  */
 @Deprecated
 public class GenericFibonacciHeap<K, T>
@@ -336,12 +336,12 @@ public class GenericFibonacciHeap<K, T>
         Node z = y.parent;
 
         // while there's a parent...
-        while(z != null){
+        while (z != null) {
             // if y is unmarked, set it marked and stop
-            if(!y.mark){
+            if (!y.mark) {
                 y.mark = true;
                 return;
-            }else{
+            } else {
                 // y is marked, cut it from parent and continue cascading cut with z
                 cut(y, z);
                 // proceed

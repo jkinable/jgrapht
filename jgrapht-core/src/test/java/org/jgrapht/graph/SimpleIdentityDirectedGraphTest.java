@@ -350,7 +350,7 @@ public class SimpleIdentityDirectedGraphTest
     public void testGetEdgeSupplier()
     {
         assertNotNull(g1.getEdgeSupplier());
-        Supplier<DefaultEdge> es=g1.getEdgeSupplier();
+        Supplier<DefaultEdge> es = g1.getEdgeSupplier();
         DefaultEdge e = es.get();
         assertNotNull(e);
         assertNull(g1.getEdgeSource(e));
@@ -617,7 +617,7 @@ public class SimpleIdentityDirectedGraphTest
         g3 = new SimpleIdentityDirectedGraph<>(DefaultEdge.class);
         g4 = new SimpleIdentityDirectedGraph<>(DefaultEdge.class);
 
-        eSupplier=g1.getEdgeSupplier();
+        eSupplier = g1.getEdgeSupplier();
         eLoop = eSupplier.get();
 
         g1.addVertex(v1);
@@ -654,4 +654,3 @@ public class SimpleIdentityDirectedGraphTest
         v4.setT("_v4");
     }
 }
-

@@ -137,8 +137,10 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Dimitrios Michail
  */
 public class SimpleGraphMLImporter<V, E>
-    extends BaseListenableImporter<V, E>
-    implements GraphImporter<V, E>
+    extends
+    BaseListenableImporter<V, E>
+    implements
+    GraphImporter<V, E>
 {
     private static final String GRAPHML_SCHEMA_FILENAME = "graphml.xsd";
     private static final String XLINK_SCHEMA_FILENAME = "xlink.xsd";
@@ -266,7 +268,8 @@ public class SimpleGraphMLImporter<V, E>
 
     // content handler
     private class GraphMLHandler
-        extends DefaultHandler
+        extends
+        DefaultHandler
     {
         private static final String GRAPH = "graph";
         private static final String GRAPH_ID = "id";
@@ -393,8 +396,7 @@ public class SimpleGraphMLImporter<V, E>
                 String keyAttrName = findAttribute(KEY_ATTR_NAME, attributes)
                     .orElseThrow(() -> new IllegalArgumentException("Key attribute name missing"));
                 currentKey = new Key(
-                    keyId,
-                    keyAttrName, findAttribute(KEY_ATTR_TYPE, attributes)
+                    keyId, keyAttrName, findAttribute(KEY_ATTR_TYPE, attributes)
                         .map(AttributeType::create).orElse(AttributeType.UNKNOWN),
                     findAttribute(KEY_FOR, attributes).orElse("ALL"));
                 break;
@@ -507,7 +509,8 @@ public class SimpleGraphMLImporter<V, E>
                      */
                     if (isWeighted && key.attributeName.equals(edgeWeightAttributeName)) {
                         try {
-                            graph.setEdgeWeight(currentEdge, Double.parseDouble(currentDataValue.toString()));
+                            graph.setEdgeWeight(
+                                currentEdge, Double.parseDouble(currentDataValue.toString()));
                         } catch (NumberFormatException e) {
                             // ignore
                         }
@@ -521,7 +524,8 @@ public class SimpleGraphMLImporter<V, E>
                 Key key = graphValidKeys.get(currentDataKey);
                 if (key != null) {
                     notifyGraph(
-                        key.attributeName, new DefaultAttribute<>(currentDataValue.toString(), key.type));
+                        key.attributeName,
+                        new DefaultAttribute<>(currentDataValue.toString(), key.type));
                 }
             }
         }

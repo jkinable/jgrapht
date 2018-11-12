@@ -63,7 +63,8 @@ public class RandomRegularGraphGeneratorTest
     {
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(10, 2);
-        Graph<Integer, DefaultEdge> g = new DefaultDirectedGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> g = new DefaultDirectedGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         try {
             gen.generateGraph(g);
             fail("gen.generateGraph() did not throw an IllegalArgumentException as expected");
@@ -78,7 +79,8 @@ public class RandomRegularGraphGeneratorTest
         int d = 20;
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(n, d, SEED);
-        Graph<Integer, DefaultEdge> g = new Pseudograph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
+        Graph<Integer, DefaultEdge> g = new Pseudograph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         gen.generateGraph(g);
         for (Integer v : g.vertexSet()) {
             assertEquals(d, g.degreeOf(v));
@@ -92,7 +94,8 @@ public class RandomRegularGraphGeneratorTest
         int d = n;
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(n, d, SEED);
-        Graph<Integer, DefaultEdge> g = new Pseudograph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> g = new Pseudograph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         gen.generateGraph(g);
         for (Integer v : g.vertexSet()) {
             assertEquals(d, g.degreeOf(v));
@@ -106,7 +109,8 @@ public class RandomRegularGraphGeneratorTest
         int d = 20;
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(n, d, SEED);
-        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         gen.generateGraph(g);
         for (Integer v : g.vertexSet()) {
             assertEquals(d, g.degreeOf(v));
@@ -120,7 +124,8 @@ public class RandomRegularGraphGeneratorTest
         int d = n - 1;
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(n, d, SEED);
-        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         gen.generateGraph(g);
         for (Integer v : g.vertexSet()) {
             assertEquals(d, g.degreeOf(v));
@@ -134,7 +139,8 @@ public class RandomRegularGraphGeneratorTest
         int d = 0;
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(n, d, SEED);
-        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         gen.generateGraph(g);
         assertEquals(0, g.vertexSet().size());
         assertEquals(0, g.edgeSet().size());
@@ -147,7 +153,8 @@ public class RandomRegularGraphGeneratorTest
         int d = 0;
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
             new RandomRegularGraphGenerator<>(n, d, SEED);
-        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(),false);
+        Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.createDefaultEdgeSupplier(), false);
         gen.generateGraph(g);
         assertEquals(n, g.vertexSet().size());
         assertEquals(0, g.edgeSet().size());

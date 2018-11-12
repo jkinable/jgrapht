@@ -29,9 +29,11 @@ import java.util.Map;
  *
  * @author Joris Kinable
  */
-public interface WeightedVertexCoverTest {
+public interface WeightedVertexCoverTest
+{
 
-     <V, E> VertexCoverAlgorithm<V> createWeightedSolver(Graph<V, E> graph, Map<V, Double> vertexWeightMap);
+    <V, E> VertexCoverAlgorithm<V> createWeightedSolver(
+        Graph<V, E> graph, Map<V, Double> vertexWeightMap);
 
     // ------- Helper methods ------
 

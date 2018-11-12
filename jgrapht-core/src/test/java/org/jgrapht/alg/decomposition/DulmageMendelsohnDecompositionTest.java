@@ -39,43 +39,54 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Test for Dulmage-Mendelsohn, based on
- * MaximumCardinailityBipartiteMatchingTest
+ * Test for Dulmage-Mendelsohn, based on MaximumCardinailityBipartiteMatchingTest
  *
  * @author Peter Harman
  * @author Joris Kinable
  */
 @RunWith(Parameterized.class)
-public class DulmageMendelsohnDecompositionTest {
+public class DulmageMendelsohnDecompositionTest
+{
 
     private final GnmRandomBipartiteGraphGenerator<Integer, DefaultEdge> generator;
 
-    public DulmageMendelsohnDecompositionTest(GnmRandomBipartiteGraphGenerator<Integer, DefaultEdge> generator) {
+    public DulmageMendelsohnDecompositionTest(
+        GnmRandomBipartiteGraphGenerator<Integer, DefaultEdge> generator)
+    {
         this.generator = generator;
     }
 
     @Parameters
-    public static Collection<Object[]> generators() {
+    public static Collection<Object[]> generators()
+    {
         Collection<Object[]> out = new ArrayList<>();
         Random random = new Random(1);
         for (int vertices = 20; vertices < 120; vertices++) {
             int edges = random.nextInt(maxEdges(vertices) / 2);
             int imbalance = randomImbalance(random, vertices);
-            GnmRandomBipartiteGraphGenerator<Integer, DefaultEdge> generator
-                    = new GnmRandomBipartiteGraphGenerator<>(vertices - imbalance, vertices + imbalance, edges, 0);
-            out.add(new Object[]{generator});
+            GnmRandomBipartiteGraphGenerator<Integer, DefaultEdge> generator =
+                new GnmRandomBipartiteGraphGenerator<>(
+                    vertices - imbalance, vertices + imbalance, edges, 0);
+            out.add(new Object[] { generator });
         }
         return out;
     }
 
     @Test
-    public void testGeneratedGraph() {
-        Graph<Integer, DefaultEdge> graph = new SimpleGraph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+    public void testGeneratedGraph()
+    {
+        Graph<Integer, DefaultEdge> graph = new SimpleGraph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         generator.generateGraph(graph);
-        DulmageMendelsohnDecomposition<Integer, DefaultEdge> dm = new DulmageMendelsohnDecomposition<>(
+        DulmageMendelsohnDecomposition<Integer, DefaultEdge> dm =
+            new DulmageMendelsohnDecomposition<>(
                 graph, generator.getFirstPartition(), generator.getSecondPartition());
-        assertValidDecomposition(graph, dm.getDecomposition(true), generator.getFirstPartition(), generator.getSecondPartition());
-        assertValidDecomposition(graph, dm.getDecomposition(false), generator.getFirstPartition(), generator.getSecondPartition());
+        assertValidDecomposition(
+            graph, dm.getDecomposition(true), generator.getFirstPartition(),
+            generator.getSecondPartition());
+        assertValidDecomposition(
+            graph, dm.getDecomposition(false), generator.getFirstPartition(),
+            generator.getSecondPartition());
     }
 
     /**
@@ -88,7 +99,10 @@ public class DulmageMendelsohnDecompositionTest {
      * @param partition1
      * @param partition2
      */
-    private static <V, E> void assertValidDecomposition(Graph<V, E> graph, DulmageMendelsohnDecomposition.Decomposition<V, E> decomposition, Set<V> partition1, Set<V> partition2) {
+    private static <V, E> void assertValidDecomposition(
+        Graph<V, E> graph, DulmageMendelsohnDecomposition.Decomposition<V, E> decomposition,
+        Set<V> partition1, Set<V> partition2)
+    {
         // Is the perfect matched set actually perfectly matched?
         Set<V> allPerfectlyMatched = new HashSet<>();
         Set<V> partition1PerfectlyMatched = new HashSet<>();
@@ -102,22 +116,38 @@ public class DulmageMendelsohnDecompositionTest {
                 if (partition2.contains(v)) {
                     partition2PerfectlyMatched.add(v);
                 }
-            };
-        };
-        Matching<V, E> perfectMatching = new HopcroftKarpMaximumCardinalityBipartiteMatching<>(new AsSubgraph<>(graph, allPerfectlyMatched), partition1PerfectlyMatched, partition2PerfectlyMatched).getMatching();
+            }
+            ;
+        }
+        ;
+        Matching<V,
+            E> perfectMatching = new HopcroftKarpMaximumCardinalityBipartiteMatching<>(
+                new AsSubgraph<>(graph, allPerfectlyMatched), partition1PerfectlyMatched,
+                partition2PerfectlyMatched).getMatching();
         assertTrue("Core of decomposition must perfectly match", perfectMatching.isPerfect());
         // Do all the vertices in the graph appear in the decomposition, and only in one part of it?
         for (V v : graph.vertexSet()) {
             if (allPerfectlyMatched.contains(v)) {
-                assertFalse("Vertex appears in multiple sets in decomposition", decomposition.getPartition1DominatedSet().contains(v));
-                assertFalse("Vertex appears in multiple sets in decomposition", decomposition.getPartition2DominatedSet().contains(v));
+                assertFalse(
+                    "Vertex appears in multiple sets in decomposition",
+                    decomposition.getPartition1DominatedSet().contains(v));
+                assertFalse(
+                    "Vertex appears in multiple sets in decomposition",
+                    decomposition.getPartition2DominatedSet().contains(v));
             } else if (decomposition.getPartition1DominatedSet().contains(v)) {
-                assertFalse("Vertex appears in multiple sets in decomposition", allPerfectlyMatched.contains(v));
-                assertFalse("Vertex appears in multiple sets in decomposition", decomposition.getPartition2DominatedSet().contains(v));
+                assertFalse(
+                    "Vertex appears in multiple sets in decomposition",
+                    allPerfectlyMatched.contains(v));
+                assertFalse(
+                    "Vertex appears in multiple sets in decomposition",
+                    decomposition.getPartition2DominatedSet().contains(v));
             } else {
-                assertTrue("Vertex appears in multiple sets in decomposition", decomposition.getPartition2DominatedSet().contains(v));
+                assertTrue(
+                    "Vertex appears in multiple sets in decomposition",
+                    decomposition.getPartition2DominatedSet().contains(v));
             }
-        };
+        }
+        ;
         // Are the partition1/2 dominated sets dominated as expected?
         int n1 = 0;
         int n2 = 0;
@@ -128,7 +158,9 @@ public class DulmageMendelsohnDecompositionTest {
                 n2++;
             }
         }
-        assertTrue("Partition 1 dominated set is not dominated by partition 1", n1 > n2 || (n1 == 0 && n2 == 0));
+        assertTrue(
+            "Partition 1 dominated set is not dominated by partition 1",
+            n1 > n2 || (n1 == 0 && n2 == 0));
         n1 = 0;
         n2 = 0;
         for (V v : decomposition.getPartition2DominatedSet()) {
@@ -138,7 +170,9 @@ public class DulmageMendelsohnDecompositionTest {
                 n2++;
             }
         }
-        assertTrue("Partition 2 dominated set is not dominated by partition 2", n1 < n2 || (n1 == 0 && n2 == 0));
+        assertTrue(
+            "Partition 2 dominated set is not dominated by partition 2",
+            n1 < n2 || (n1 == 0 && n2 == 0));
     }
 
     /**
@@ -147,7 +181,8 @@ public class DulmageMendelsohnDecompositionTest {
      * @param n
      * @return
      */
-    private static int maxEdges(int n) {
+    private static int maxEdges(int n)
+    {
         if (n % 2 == 0) {
             return Math.multiplyExact(n / 2, n - 1);
         } else {
@@ -156,14 +191,14 @@ public class DulmageMendelsohnDecompositionTest {
     }
 
     /**
-     * Generate a random difference between the size of partition1 and
-     * partition2
+     * Generate a random difference between the size of partition1 and partition2
      *
      * @param random
      * @param n
      * @return
      */
-    private static int randomImbalance(Random random, int n) {
+    private static int randomImbalance(Random random, int n)
+    {
         int max = Math.floorDiv(n, 4);
         return random.nextInt(max * 2) - max;
     }

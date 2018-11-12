@@ -35,10 +35,12 @@ import static org.junit.Assert.fail;
  *
  * @author Alexandru Valeanu
  */
-public class BarabasiAlbertForestGeneratorTest {
+public class BarabasiAlbertForestGeneratorTest
+{
 
     @Test
-    public void testBadParameters() {
+    public void testBadParameters()
+    {
         try {
             new BarabasiAlbertForestGenerator<>(0, 10, 100);
             fail("Bad parameter");
@@ -59,13 +61,14 @@ public class BarabasiAlbertForestGeneratorTest {
     }
 
     @Test
-    public void testUndirected() {
+    public void testUndirected()
+    {
         final long seed = 5;
 
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                new BarabasiAlbertForestGenerator<>(5, 20, seed);
+            new BarabasiAlbertForestGenerator<>(5, 20, seed);
         Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
-                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         gen.generateGraph(g);
 
         assertEquals(20, g.vertexSet().size());
@@ -73,11 +76,12 @@ public class BarabasiAlbertForestGeneratorTest {
     }
 
     @Test
-    public void testNoAdditionalNodes() {
+    public void testNoAdditionalNodes()
+    {
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                new BarabasiAlbertForestGenerator<>(20, 20);
+            new BarabasiAlbertForestGenerator<>(20, 20);
         Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
-                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         gen.generateGraph(g);
 
         assertEquals(20, g.vertexSet().size());
@@ -85,13 +89,14 @@ public class BarabasiAlbertForestGeneratorTest {
     }
 
     @Test
-    public void testUndirectedWithOneInitialNode() {
+    public void testUndirectedWithOneInitialNode()
+    {
         final long seed = 7;
 
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                new BarabasiAlbertForestGenerator<>(1, 20, seed);
+            new BarabasiAlbertForestGenerator<>(1, 20, seed);
         Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
-                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         gen.generateGraph(g);
 
         assertEquals(20, g.vertexSet().size());
@@ -99,39 +104,42 @@ public class BarabasiAlbertForestGeneratorTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDirected() {
+    public void testDirected()
+    {
         final long seed = 5;
 
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                new BarabasiAlbertForestGenerator<>(2, 10, seed);
+            new BarabasiAlbertForestGenerator<>(2, 10, seed);
         Graph<Integer, DefaultEdge> g = new SimpleDirectedGraph<>(
-                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         gen.generateGraph(g);
 
         assertEquals(10, g.vertexSet().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDirectedWithOneInitialNode() {
+    public void testDirectedWithOneInitialNode()
+    {
         final long seed = 13;
 
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                new BarabasiAlbertForestGenerator<>(2, 20, seed);
+            new BarabasiAlbertForestGenerator<>(2, 20, seed);
         Graph<Integer, DefaultEdge> g = new SimpleDirectedGraph<>(
-                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         gen.generateGraph(g);
 
         assertEquals(20, g.vertexSet().size());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testUndirectedWithGraphWhichAlreadyHasSomeVertices() {
+    public void testUndirectedWithGraphWhichAlreadyHasSomeVertices()
+    {
         final long seed = 5;
 
         GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                new BarabasiAlbertForestGenerator<>(3, 10, seed);
+            new BarabasiAlbertForestGenerator<>(3, 10, seed);
         Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
-                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
 
         g.addVertex(1000);
 
@@ -141,7 +149,8 @@ public class BarabasiAlbertForestGeneratorTest {
     }
 
     @Test
-    public void testRandomTrees() {
+    public void testRandomTrees()
+    {
         Random random = new Random(0x88);
 
         final int NUM_TESTS = 10_000;
@@ -151,9 +160,9 @@ public class BarabasiAlbertForestGeneratorTest {
             final int T = 1 + random.nextInt(N);
 
             GraphGenerator<Integer, DefaultEdge, Integer> gen =
-                    new BarabasiAlbertForestGenerator<>(T, N);
+                new BarabasiAlbertForestGenerator<>(T, N);
             Graph<Integer, DefaultEdge> g = new SimpleGraph<>(
-                    SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+                SupplierUtil.createIntegerSupplier(1), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
             gen.generateGraph(g);
 
             assertEquals(N, g.vertexSet().size());

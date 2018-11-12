@@ -180,7 +180,7 @@ public class WattsStrogatzGraphGeneratorTest
         assertEquals(6, g.vertexSet().size());
         assertEquals(12, g.edgeSet().size());
     }
-    
+
     @Test
     public void testNonIntegerVertices()
     {

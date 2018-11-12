@@ -52,7 +52,7 @@ public class DirectedSpecifics<V, E>
      * Construct a new directed specifics.
      * 
      * @param graph the graph for which these specifics are for
-     * @deprecated Since default strategies should be decided at a higher level. 
+     * @deprecated Since default strategies should be decided at a higher level.
      */
     @Deprecated
     public DirectedSpecifics(Graph<V, E> graph)
@@ -67,9 +67,8 @@ public class DirectedSpecifics<V, E>
      * @param vertexMap map for the storage of vertex edge sets
      * @deprecated Since default strategies should be decided at a higher level.
      */
-    @Deprecated    
-    public DirectedSpecifics(
-        Graph<V, E> graph, Map<V, DirectedEdgeContainer<V, E>> vertexMap)
+    @Deprecated
+    public DirectedSpecifics(Graph<V, E> graph, Map<V, DirectedEdgeContainer<V, E>> vertexMap)
     {
         this(graph, vertexMap, new ArrayUnenforcedSetEdgeSetFactory<>());
     }
@@ -122,9 +121,7 @@ public class DirectedSpecifics<V, E>
     {
         Set<E> edges = null;
 
-        if (graph.containsVertex(sourceVertex)
-            && graph.containsVertex(targetVertex))
-        {
+        if (graph.containsVertex(sourceVertex) && graph.containsVertex(targetVertex)) {
             edges = new ArrayUnenforcedSet<>();
 
             DirectedEdgeContainer<V, E> ec = getEdgeContainer(sourceVertex);
@@ -145,9 +142,7 @@ public class DirectedSpecifics<V, E>
     @Override
     public E getEdge(V sourceVertex, V targetVertex)
     {
-        if (graph.containsVertex(sourceVertex)
-            && graph.containsVertex(targetVertex))
-        {
+        if (graph.containsVertex(sourceVertex) && graph.containsVertex(targetVertex)) {
             DirectedEdgeContainer<V, E> ec = getEdgeContainer(sourceVertex);
 
             for (E e : ec.outgoing) {

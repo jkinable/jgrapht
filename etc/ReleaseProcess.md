@@ -9,7 +9,7 @@
     * Contributors
     * Copyright year
 1. Review/update github issues to make sure they reflect the current state.  If there were important bug/feature changes, it is worth mentioning them in the README.md release notes.
-1. Run `mvn javadoc:aggregate` to build the javadoc and make sure it is generated without errors/warnings. Fix where necessary. Make sure Eclipse build is warning-free.
+1. Run `mvn clean; mvn javadoc:aggregate` to build the javadoc and make sure it is generated without errors/warnings. Fix where necessary. Make sure Eclipse build is warning-free.
 1. Run all the JUnit tests via `mvn test`. Fix where necessary.
 1. Reformat all code [using Eclipse](codeFormatter.sh). 
 1. Commit all work and push to github.

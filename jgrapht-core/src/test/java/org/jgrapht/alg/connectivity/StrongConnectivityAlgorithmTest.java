@@ -296,4 +296,3 @@ public class StrongConnectivityAlgorithmTest
             throw new IllegalArgumentException("Unknown strongConnectivityInspectorClass");
     }
 }
-

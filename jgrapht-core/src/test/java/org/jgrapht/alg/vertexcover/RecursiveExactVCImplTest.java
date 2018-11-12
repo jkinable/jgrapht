@@ -22,15 +22,21 @@ import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
 
 import java.util.Map;
 
-public class RecursiveExactVCImplTest extends WeightedVertexCoverExactTest {
+public class RecursiveExactVCImplTest
+    extends
+    WeightedVertexCoverExactTest
+{
 
     @Override
-    public <V, E> VertexCoverAlgorithm<V> createSolver(Graph<V, E> graph) {
+    public <V, E> VertexCoverAlgorithm<V> createSolver(Graph<V, E> graph)
+    {
         return new RecursiveExactVCImpl<>(graph);
     }
 
     @Override
-    public <V, E> VertexCoverAlgorithm<V> createWeightedSolver(Graph<V, E> graph, Map<V, Double> vertexWeightMap) {
+    public <V, E> VertexCoverAlgorithm<V> createWeightedSolver(
+        Graph<V, E> graph, Map<V, Double> vertexWeightMap)
+    {
         return new RecursiveExactVCImpl<>(graph, vertexWeightMap);
     }
 }

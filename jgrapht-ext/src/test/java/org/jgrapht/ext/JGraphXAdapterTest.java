@@ -404,4 +404,3 @@ public class JGraphXAdapterTest
         return set.equals(compareSet);
     }
 }
-

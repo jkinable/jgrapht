@@ -327,7 +327,7 @@ public class DOTExporter<V, E>
             labelAttribute = attributes.get("label");
         }
         if (labelAttribute != null) {
-             renderAttribute(out, "label", labelAttribute);
+            renderAttribute(out, "label", labelAttribute);
         }
         if (attributes != null) {
             for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
@@ -399,4 +399,3 @@ public class DOTExporter<V, E>
     }
 
 }
-

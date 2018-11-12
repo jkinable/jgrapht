@@ -161,4 +161,3 @@ public class BreadthFirstIteratorTest
         assertEquals(new Integer(2), bfs.getParent(3));
     }
 }
-

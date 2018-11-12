@@ -27,10 +27,14 @@ import java.util.Set;
  *
  * @author Alexandru Valeanu
  */
-public class BinaryLiftingLCAFinderTest extends LCATreeTestBase {
+public class BinaryLiftingLCAFinderTest
+    extends
+    LCATreeTestBase
+{
 
     @Override
-    <V, E> LowestCommonAncestorAlgorithm<V> createSolver(Graph<V, E> graph, Set<V> roots) {
+    <V, E> LowestCommonAncestorAlgorithm<V> createSolver(Graph<V, E> graph, Set<V> roots)
+    {
         return new BinaryLiftingLCAFinder<>(graph, roots);
     }
 }

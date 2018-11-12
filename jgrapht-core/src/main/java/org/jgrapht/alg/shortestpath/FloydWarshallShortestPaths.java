@@ -51,14 +51,15 @@ import org.jgrapht.util.TypeUtil;
  * @author Dimitrios Michail
  */
 public class FloydWarshallShortestPaths<V, E>
-    extends BaseShortestPathAlgorithm<V, E>
+    extends
+    BaseShortestPathAlgorithm<V, E>
 {
     private final List<V> vertices;
     private final List<Integer> degrees;
     private final Map<V, Integer> vertexIndices;
     // minimum vertex with degree at least 1
     private final int minDegreeOne;
-    // minimum vertex with degree at least 2    
+    // minimum vertex with degree at least 2
     private final int minDegreeTwo;
 
     private double[][] d = null;
@@ -83,7 +84,7 @@ public class FloydWarshallShortestPaths<V, E>
             vertices, new VertexDegreeComparator<>(graph, VertexDegreeComparator.Order.ASCENDING));
         this.degrees = new ArrayList<>();
         this.vertexIndices = new HashMap<>(this.vertices.size());
-        
+
         int i = 0;
         int minDegreeOne = vertices.size();
         int minDegreeTwo = vertices.size();
@@ -91,7 +92,7 @@ public class FloydWarshallShortestPaths<V, E>
             vertexIndices.put(vertex, i);
             int degree = graph.degreeOf(vertex);
             degrees.add(degree);
-            
+
             if (degree > 1) {
                 if (i < minDegreeOne) {
                     minDegreeOne = i;
@@ -102,7 +103,7 @@ public class FloydWarshallShortestPaths<V, E>
             } else if (i < minDegreeOne && degree == 1) {
                 minDegreeOne = i;
             }
-            
+
             ++i;
         }
         this.minDegreeOne = minDegreeOne;
@@ -313,14 +314,14 @@ public class FloydWarshallShortestPaths<V, E>
         // run fw alg
         for (int k = minDegreeTwo; k < n; k++) {
             for (int i = minDegreeOne; i < n; i++) {
-                if (i == k) { 
+                if (i == k) {
                     continue;
                 }
                 for (int j = minDegreeOne; j < n; j++) {
-                    if (i == j || j == k) { 
+                    if (i == j || j == k) {
                         continue;
                     }
-                    
+
                     double ik_kj = d[i][k] + d[k][j];
                     if (Double.compare(ik_kj, d[i][j]) < 0) {
                         d[i][j] = ik_kj;
@@ -366,7 +367,8 @@ public class FloydWarshallShortestPaths<V, E>
     }
 
     class FloydWarshallSingleSourcePaths
-        implements SingleSourcePaths<V, E>
+        implements
+        SingleSourcePaths<V, E>
     {
         private V source;
 

@@ -22,15 +22,21 @@ import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
 
 import java.util.Map;
 
-public class BarYehudaEvenTwoApproxVCImplTest extends WeightedVertexCoverTwoApproxTest {
+public class BarYehudaEvenTwoApproxVCImplTest
+    extends
+    WeightedVertexCoverTwoApproxTest
+{
 
     @Override
-    public <V, E> VertexCoverAlgorithm<V> createSolver(Graph<V, E> graph) {
+    public <V, E> VertexCoverAlgorithm<V> createSolver(Graph<V, E> graph)
+    {
         return new BarYehudaEvenTwoApproxVCImpl<>(graph);
     }
 
     @Override
-    public <V, E> VertexCoverAlgorithm<V> createWeightedSolver(Graph<V, E> graph, Map<V, Double> vertexWeightMap) {
+    public <V, E> VertexCoverAlgorithm<V> createWeightedSolver(
+        Graph<V, E> graph, Map<V, Double> vertexWeightMap)
+    {
         return new BarYehudaEvenTwoApproxVCImpl<>(graph, vertexWeightMap);
     }
 }

@@ -25,7 +25,8 @@ import org.jgrapht.alg.interfaces.VertexCoverAlgorithm;
  *
  * @author Linda Buisman
  */
-public interface VertexCoverTest {
+public interface VertexCoverTest
+{
 
     <V, E> VertexCoverAlgorithm<V> createSolver(Graph<V, E> graph);
 }

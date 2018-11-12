@@ -183,4 +183,3 @@ public abstract class CrossComponentIteratorTest
         }
     }
 }
-

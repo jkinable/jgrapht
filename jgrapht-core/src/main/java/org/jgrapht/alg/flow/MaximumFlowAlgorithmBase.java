@@ -475,4 +475,3 @@ public abstract class MaximumFlowAlgorithmBase<V, E>
         }
     }
 }
-

@@ -409,7 +409,8 @@ public class GraphTestsTest
         }
     }
 
-    @Test public void testIsCubic()
+    @Test
+    public void testIsCubic()
     {
         assertTrue(GraphTests.isCubic(NamedGraphGenerator.petersenGraph()));
         Graph<Integer, DefaultEdge> triangle = new SimpleGraph<>(DefaultEdge.class);
@@ -448,11 +449,12 @@ public class GraphTestsTest
         assertTrue(GraphTests.isWeaklyChordal(graph));
     }
 
-    @Test public void failRequireIsWeightedOnUnweightedGraph()
+    @Test
+    public void failRequireIsWeightedOnUnweightedGraph()
     {
         try {
             Graph<String, DefaultWeightedEdge> graph =
-                    new DefaultDirectedGraph<>(DefaultWeightedEdge.class);
+                new DefaultDirectedGraph<>(DefaultWeightedEdge.class);
             GraphTests.requireWeighted(graph);
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
@@ -460,7 +462,8 @@ public class GraphTestsTest
         }
     }
 
-    @Test public void failRequireIsWeightedOnNull()
+    @Test
+    public void failRequireIsWeightedOnNull()
     {
         try {
             GraphTests.requireWeighted(null);
@@ -470,10 +473,10 @@ public class GraphTestsTest
         }
     }
 
-    @Test public void testRequireIsWeighted()
+    @Test
+    public void testRequireIsWeighted()
     {
         Graph graph = new DefaultUndirectedWeightedGraph<>(DefaultEdge.class);
         assertEquals(graph, GraphTests.requireWeighted(graph));
     }
 }
-

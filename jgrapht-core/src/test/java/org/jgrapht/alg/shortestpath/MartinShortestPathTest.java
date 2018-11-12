@@ -107,5 +107,5 @@ public class MartinShortestPathTest
         List<GraphPath<Integer, DefaultEdge>> paths22 = paths2.getPaths(2);
         assertEquals(1, paths22.size());
     }
-    
+
 }

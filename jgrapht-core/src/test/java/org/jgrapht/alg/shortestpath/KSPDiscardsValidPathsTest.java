@@ -123,4 +123,3 @@ public class KSPDiscardsValidPathsTest
         graph.setEdgeWeight(edge, weight);
     }
 }
-

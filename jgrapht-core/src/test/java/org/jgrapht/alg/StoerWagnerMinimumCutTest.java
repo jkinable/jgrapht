@@ -325,4 +325,3 @@ public class StoerWagnerMinimumCutTest
         assertTrue(mincut.minCut().equals(solution1) || mincut.minCut().equals(solution2));
     }
 }
-

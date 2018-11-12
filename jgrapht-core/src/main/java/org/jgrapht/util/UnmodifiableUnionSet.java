@@ -32,8 +32,10 @@ import java.util.Set;
  * @author Dimitrios Michail
  */
 public class UnmodifiableUnionSet<E>
-    extends AbstractSet<E>
-    implements Serializable
+    extends
+    AbstractSet<E>
+    implements
+    Serializable
 {
     private static final long serialVersionUID = -1937327799873331354L;
 
@@ -82,14 +84,16 @@ public class UnmodifiableUnionSet<E>
         }
         return count;
     }
-    
+
     @Override
-    public boolean contains(Object o) {
+    public boolean contains(Object o)
+    {
         return first.contains(o) || second.contains(o);
     }
 
     private class UnionIterator
-        implements Iterator<E>
+        implements
+        Iterator<E>
     {
 
         private boolean inFirstSet;

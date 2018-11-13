@@ -17,15 +17,32 @@
  */
 package org.jgrapht.graph;
 
-import org.jgrapht.*;
-import org.jgrapht.graph.specifics.*;
-import org.jgrapht.util.*;
-import org.junit.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
-import java.util.*;
-import java.util.function.*;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-import static org.junit.Assert.*;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphType;
+import org.jgrapht.graph.specifics.DirectedSpecifics;
+import org.jgrapht.graph.specifics.Specifics;
+import org.jgrapht.graph.specifics.UndirectedSpecifics;
+import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.util.TypeUtil;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * A unit test for simple directed graph when the backing map is an IdentityHashMap
@@ -73,29 +90,6 @@ public class SimpleIdentityDirectedGraphTest
         }
     }
 
-//    public static class SimpleIdentityDirectedGraph<V, E>
-//        extends
-//        SimpleDirectedGraph<V, E>
-//    {
-//        private static final long serialVersionUID = 4600490314100246989L;
-//
-//        public SimpleIdentityDirectedGraph(Class<? extends E> edgeClass)
-//        {
-//            super(edgeClass);
-//        }
-//
-//        public SimpleIdentityDirectedGraph(Supplier<E> es)
-//        {
-//            super(null, es, false);
-//        }
-//
-//        @Override
-//        protected Specifics<V, E> createSpecifics(boolean directed)
-//        {
-//            return new DirectedSpecifics<>(this, new IdentityHashMap<>());
-//        }
-//    }
-
     public static class SimpleIdentityDirectedGraph<V, E>
             extends
             AbstractBaseGraph<V, E>
@@ -104,20 +98,42 @@ public class SimpleIdentityDirectedGraphTest
 
         public SimpleIdentityDirectedGraph(Class<? extends E> edgeClass)
         {
-            super(null, SupplierUtil.createSupplier(edgeClass), DefaultGraphType.directedSimple(), new GraphSpecificsStrategy<V, E>() {
-                @Override
-                public Function<GraphType, IntrusiveEdgesSpecifics<V, E>> getIntrusiveEdgesSpecificsFactory() {
-                    return (type) -> new UniformIntrusiveEdgesSpecifics<>(new IdentityHashMap<>());
-                }
-
-                @Override
-                public BiFunction<Graph<V, E>, GraphType, Specifics<V, E>> getSpecificsFactory() {
-                    return (graph, type) -> new FastLookupDirectedSpecifics<>(
-                        graph, new IdentityHashMap<>(), new HashMap<>(), getEdgeSetFactory()
-                    );
-                }
-            });
+            super(null, SupplierUtil.createSupplier(edgeClass), DefaultGraphType.directedSimple(), new IdentitySpecificsStrategy<>());
         }
+    }
+    
+    private static class IdentitySpecificsStrategy<V,E> implements GraphSpecificsStrategy<V, E> {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public Function<GraphType,
+            IntrusiveEdgesSpecifics<V, E>> getIntrusiveEdgesSpecificsFactory()
+        {
+            return (Function<GraphType, IntrusiveEdgesSpecifics<V, E>> & Serializable) (type) -> {
+                if (type.isWeighted()) {
+                    return new WeightedIntrusiveEdgesSpecifics<V, E>(new IdentityHashMap<>());
+                } else {
+                    return new UniformIntrusiveEdgesSpecifics<>(new IdentityHashMap<>());
+                }
+            };
+        }
+
+        @Override
+        public BiFunction<Graph<V, E>, GraphType, Specifics<V, E>> getSpecificsFactory()
+        {
+            return (BiFunction<Graph<V, E>, GraphType,
+                Specifics<V, E>> & Serializable) (graph, type) -> {
+                    if (type.isDirected()) {
+                        return new DirectedSpecifics<V, E>(
+                            graph, new IdentityHashMap<>(), getEdgeSetFactory());
+                    } else {
+                        return new UndirectedSpecifics<>(
+                            graph, new IdentityHashMap<>(), getEdgeSetFactory());
+                    }
+                };
+        } 
+        
     }
 
     // ~ Instance fields --------------------------------------------------------

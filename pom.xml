@@ -8,7 +8,6 @@
 	<version>1.3.1-SNAPSHOT</version>
 	<description>A Java class library for graph-theory data structures and algorithms.</description>
 	<url>http://www.jgrapht.org</url>
-	<logo>https://raw.githubusercontent.com/jgrapht/jgrapht/master/etc/logo/jgrapht-logo-transparent.png</logo>
 	<parent>
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>

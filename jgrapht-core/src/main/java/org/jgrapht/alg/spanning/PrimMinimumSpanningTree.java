@@ -20,6 +20,8 @@ package org.jgrapht.alg.spanning;
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.util.*;
+import org.jheaps.AddressableHeap;
+import org.jheaps.tree.FibonacciHeap;
 
 import java.lang.reflect.*;
 import java.util.*;
@@ -75,22 +77,21 @@ public class PrimMinimumSpanningTree<V, E>
         List<V> indexList = vertexToIntegerMapping.getIndexList();
 
         VertexInfo[] vertices = (VertexInfo[]) Array.newInstance(VertexInfo.class, N);
-        FibonacciHeapNode<VertexInfo>[] fibNodes =
-            (FibonacciHeapNode<VertexInfo>[]) Array.newInstance(FibonacciHeapNode.class, N);
-        FibonacciHeap<VertexInfo> fibonacciHeap = new FibonacciHeap<>();
+        AddressableHeap.Handle<Double, VertexInfo>[] fibNodes =
+            (AddressableHeap.Handle<Double, VertexInfo>[]) Array
+                .newInstance(AddressableHeap.Handle.class, N);
+        AddressableHeap<Double, VertexInfo> fibonacciHeap = new FibonacciHeap<>();
 
         for (int i = 0; i < N; i++) {
             vertices[i] = new VertexInfo();
             vertices[i].id = i;
             vertices[i].distance = Double.MAX_VALUE;
-            fibNodes[i] = new FibonacciHeapNode<>(vertices[i]);
-
-            fibonacciHeap.insert(fibNodes[i], vertices[i].distance);
+            fibNodes[i] = fibonacciHeap.insert(vertices[i].distance, vertices[i]);
         }
 
         while (!fibonacciHeap.isEmpty()) {
-            FibonacciHeapNode<VertexInfo> fibNode = fibonacciHeap.removeMin();
-            VertexInfo vertexInfo = fibNode.getData();
+            AddressableHeap.Handle<Double, VertexInfo> fibNode = fibonacciHeap.deleteMin();
+            VertexInfo vertexInfo = fibNode.getValue();
 
             V p = indexList.get(vertexInfo.id);
             vertexInfo.spanned = true;
@@ -113,8 +114,7 @@ public class PrimMinimumSpanningTree<V, E>
                     if (cost < vertices[id].distance) {
                         vertices[id].distance = cost;
                         vertices[id].edgeFromParent = e;
-
-                        fibonacciHeap.decreaseKey(fibNodes[id], cost);
+                        fibNodes[id].decreaseKey(cost);
                     }
                 }
             }

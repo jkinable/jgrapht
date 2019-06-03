@@ -188,38 +188,6 @@ public class AStarShortestPath<V, E>
         return numberOfExpandedNodes;
     }
 
-    /**
-     * Returns true if the provided heuristic is a <i>consistent</i> or <i>monotone</i> heuristic
-     * wrt the graph provided at construction time. A heuristic is monotonic if its estimate is
-     * always less than or equal to the estimated distance from any neighboring vertex to the goal,
-     * plus the step cost of reaching that neighbor. For details, refer to <a href=
-     * "https://en.wikipedia.org/wiki/Consistent_heuristic">https://en.wikipedia.org/wiki/Consistent_heuristic</a>.
-     * In short, a heuristic is consistent iff <code>h(u)&le; d(u,v)+h(v)</code>, for every edge
-     * $(u,v)$, where $d(u,v)$ is the weight of edge $(u,v)$ and $h(u)$ is the estimated cost to
-     * reach the target node from vertex u. Most natural admissible heuristics, such as Manhattan or
-     * Euclidean distance, are consistent heuristics.
-     *
-     * @param admissibleHeuristic admissible heuristic
-     * @return true is the heuristic is consistent, false otherwise
-     * @deprecated use {@link AStarAdmissibleHeuristic#isConsistent(Graph)} instead
-     */
-    @Deprecated
-    public boolean isConsistentHeuristic(AStarAdmissibleHeuristic<V> admissibleHeuristic)
-    {
-        for (V targetVertex : graph.vertexSet()) {
-            for (E e : graph.edgeSet()) {
-                double weight = graph.getEdgeWeight(e);
-                V edgeSource = graph.getEdgeSource(e);
-                V edgeTarget = graph.getEdgeTarget(e);
-                double h_x = admissibleHeuristic.getCostEstimate(edgeSource, targetVertex);
-                double h_y = admissibleHeuristic.getCostEstimate(edgeTarget, targetVertex);
-                if (h_x > weight + h_y)
-                    return false;
-            }
-        }
-        return true;
-    }
-
     private void expandNode(AddressableHeap.Handle<Double, V> currentNode, V endVertex)
     {
         numberOfExpandedNodes++;

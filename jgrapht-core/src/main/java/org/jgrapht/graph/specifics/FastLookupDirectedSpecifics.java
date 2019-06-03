@@ -129,18 +129,7 @@ public class FastLookupDirectedSpecifics<V, E>
         addEdgeToTouchingVertices(sourceVertex, targetVertex, e);
         return e;
     }
-
-    @Override
-    @Deprecated
-    public void removeEdgeFromTouchingVertices(E e)
-    {
-        super.removeEdgeFromTouchingVertices(e);
-
-        V source = graph.getEdgeSource(e);
-        V target = graph.getEdgeTarget(e);
-        removeFromIndex(source, target, e);
-    }
-
+    
     @Override
     public void removeEdgeFromTouchingVertices(V sourceVertex, V targetVertex, E e)
     {

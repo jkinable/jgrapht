@@ -143,19 +143,6 @@ public class UndirectedSpecifics<V, E>
     }
 
     @Override
-    @Deprecated
-    public void addEdgeToTouchingVertices(E e)
-    {
-        V source = graph.getEdgeSource(e);
-        V target = graph.getEdgeTarget(e);
-        getEdgeContainer(source).addEdge(e);
-
-        if (!source.equals(target)) {
-            getEdgeContainer(target).addEdge(e);
-        }
-    }
-
-    @Override
     public boolean addEdgeToTouchingVertices(V sourceVertex, V targetVertex, E e)
     {
         getEdgeContainer(sourceVertex).addEdge(e);
@@ -273,26 +260,6 @@ public class UndirectedSpecifics<V, E>
     public Set<E> outgoingEdgesOf(V vertex)
     {
         return getEdgeContainer(vertex).getUnmodifiableVertexEdges();
-    }
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @deprecated Use method {@link #removeEdgeFromTouchingVertices(Object, Object, Object)}
-     *             instead.
-     */
-    @Override
-    @Deprecated
-    public void removeEdgeFromTouchingVertices(E e)
-    {
-        V source = graph.getEdgeSource(e);
-        V target = graph.getEdgeTarget(e);
-
-        getEdgeContainer(source).removeEdge(e);
-
-        if (!source.equals(target)) {
-            getEdgeContainer(target).removeEdge(e);
-        }
     }
 
     /**

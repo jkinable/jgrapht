@@ -35,6 +35,7 @@ Changes to JGraphT in each version:
     - Added Goldberg's algorithms for the calculation of maximum density subgraphs (contributed by Andre Immig)
     - Optimize UnmodifiableUnionSet to lazily read live sizes from underlying sets (contributed by John Sichi)
     - Added Eppsteins k-shortest paths algorithm (contributed by Semen Chudakov)
+    - Added serialization test for `AsGraphUnion` and made `WeightCombiner` default implementations serializable (contributed by Charul Bhanawat)
 
 - **version 1.3.0** (12-Nov-2018):
     - Prepared release cycle 1.2.1: removed deprecated code, updated dependencies, etc (contributed by Joris Kinable)

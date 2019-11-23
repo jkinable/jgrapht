@@ -42,15 +42,26 @@ public class CompleteGraphGenerator<V, E>
     /**
      * Construct a new CompleteGraphGenerator.
      *
-     * @param size number of vertices to be generated
+     * The generator will first add {@code size} nodes to the target graph when invoking {@link #generateGraph(Graph, Map)}.
+     * Next, a complete graph is generated on <i>all</i> nodes present in the target graph, including any nodes that were already present in the target graph.
+     *
+     * @param size number of vertices that will be added to the graph
      * @throws IllegalArgumentException if the specified size is negative
      */
     public CompleteGraphGenerator(int size)
     {
-        if (size < 0) {
+        if (size < 0)
             throw new IllegalArgumentException("size must be non-negative");
-        }
         this.size = size;
+    }
+
+    /**
+     * Construct a new CompleteGraphGenerator.
+     *
+     * A complete graph will be generated using the vertices already present in the target graph when invoking {@link #generateGraph(Graph, Map)}
+     */
+    public CompleteGraphGenerator(){
+        size=0;
     }
 
     /**
@@ -59,10 +70,6 @@ public class CompleteGraphGenerator<V, E>
     @Override
     public void generateGraph(Graph<V, E> target, Map<String, V> resultMap)
     {
-        if (size < 1) {
-            return;
-        }
-
         /*
          * Ensure directed or undirected
          */
@@ -72,16 +79,15 @@ public class CompleteGraphGenerator<V, E>
         /*
          * Add vertices
          */
-        List<V> nodes = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            nodes.add(target.addVertex());
-        }
+        for(int i=0; i<size; i++)
+            target.addVertex();
 
         /*
          * Add edges
          */
-        for (int i = 0; i < size; i++) {
-            for (int j = i + 1; j < size; j++) {
+        List<V> nodes = new ArrayList<>(target.vertexSet());
+        for (int i = 0; i < nodes.size(); i++) {
+            for (int j = i + 1; j < nodes.size(); j++) {
                 V v = nodes.get(i);
                 V u = nodes.get(j);
                 target.addEdge(v, u);

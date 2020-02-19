@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,8 +17,9 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import java.util.Comparator;
-import org.jgrapht.alg.util.Pair;
+import org.jgrapht.alg.util.*;
+
+import java.util.*;
 
 /**
  * A collection of utilities to assist with boxes manipulation.
@@ -63,10 +64,9 @@ public abstract class Boxes
     {
         double newWidth = box.getWidth() / 2d;
         double height = box.getHeight();
-        return Pair
-            .of(
-                Box2D.of(box.getMinX(), box.getMinY(), newWidth, height),
-                Box2D.of(box.getMinX() + newWidth, box.getMinY(), newWidth, height));
+        return Pair.of(
+            Box2D.of(box.getMinX(), box.getMinY(), newWidth, height),
+            Box2D.of(box.getMinX() + newWidth, box.getMinY(), newWidth, height));
     }
 
     /**
@@ -79,10 +79,9 @@ public abstract class Boxes
     {
         double width = box.getWidth();
         double newHeight = box.getHeight() / 2d;
-        return Pair
-            .of(
-                Box2D.of(box.getMinX(), box.getMinY(), width, newHeight),
-                Box2D.of(box.getMinX(), box.getMinY() + newHeight, width, newHeight));
+        return Pair.of(
+            Box2D.of(box.getMinX(), box.getMinY(), width, newHeight),
+            Box2D.of(box.getMinX(), box.getMinY() + newHeight, width, newHeight));
     }
 
     /**

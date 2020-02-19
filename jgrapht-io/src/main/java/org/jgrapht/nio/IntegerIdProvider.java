@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2005-2017, by Trevor Harmon and Contributors.
+ * (C) Copyright 2005-2020, by Trevor Harmon and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,7 +18,7 @@
 package org.jgrapht.nio;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.*;
 
 /**
  * Assign a unique integer identifier to a set of elements.

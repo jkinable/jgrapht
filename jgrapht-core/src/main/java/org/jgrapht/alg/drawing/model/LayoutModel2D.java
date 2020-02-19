@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,11 +17,9 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.jgrapht.alg.drawing.*;
 
-import org.jgrapht.alg.drawing.LayoutAlgorithm2D;
+import java.util.*;
 
 /**
  * A general interface for the 2D layout model.

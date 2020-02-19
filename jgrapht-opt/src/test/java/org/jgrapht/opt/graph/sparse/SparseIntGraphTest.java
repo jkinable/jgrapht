@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,24 +17,15 @@
  */
 package org.jgrapht.opt.graph.sparse;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphType;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.alg.util.Triple;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests

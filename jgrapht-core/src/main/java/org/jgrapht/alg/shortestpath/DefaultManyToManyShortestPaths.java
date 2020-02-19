@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,33 +17,32 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Naive algorithm for many-to-many shortest paths problem using.
  *
  * <p>
- * For every pair of source and target vertices computes a shortest path between them and
- * caches the result.
+ * For every pair of source and target vertices computes a shortest path between them and caches the
+ * result.
  *
  * <p>
- * For each pair of {@code source} and {@code target} vertex a {@link ShortestPathAlgorithm}
- * is used to compute the path. There is a way to provide the preferable implementation
- * of the interface via the {@code function}.
+ * For each pair of {@code source} and {@code target} vertex a {@link ShortestPathAlgorithm} is used
+ * to compute the path. There is a way to provide the preferable implementation of the interface via
+ * the {@code function}.
  *
  * @param <V> the graph vertex type
  * @param <E> the graph edge type
  * @author Semen Chudakov
  */
-public class DefaultManyToManyShortestPaths<V, E> extends BaseManyToManyShortestPaths<V, E> {
+public class DefaultManyToManyShortestPaths<V, E>
+    extends
+    BaseManyToManyShortestPaths<V, E>
+{
 
     /**
      * Provides implementation of {@link ShortestPathAlgorithm} for a given graph.
@@ -51,28 +50,32 @@ public class DefaultManyToManyShortestPaths<V, E> extends BaseManyToManyShortest
     private final Function<Graph<V, E>, ShortestPathAlgorithm<V, E>> function;
 
     /**
-     * Constructs a new instance of the algorithm for a given {@code graph}.
-     * The {@code function} is defaulted to returning {@link BidirectionalDijkstraShortestPath}.
+     * Constructs a new instance of the algorithm for a given {@code graph}. The {@code function} is
+     * defaulted to returning {@link BidirectionalDijkstraShortestPath}.
      *
      * @param graph a graph
      */
-    public DefaultManyToManyShortestPaths(Graph<V, E> graph) {
+    public DefaultManyToManyShortestPaths(Graph<V, E> graph)
+    {
         this(graph, g -> new BidirectionalDijkstraShortestPath<>(g));
     }
 
     /**
      * Constructs a new instance of the algorithm for a given {@code graph} and {@code function}.
      *
-     * @param graph    a graph
+     * @param graph a graph
      * @param function provides implementation of {@link ShortestPathAlgorithm}
      */
-    public DefaultManyToManyShortestPaths(Graph<V, E> graph, Function<Graph<V, E>, ShortestPathAlgorithm<V, E>> function) {
+    public DefaultManyToManyShortestPaths(
+        Graph<V, E> graph, Function<Graph<V, E>, ShortestPathAlgorithm<V, E>> function)
+    {
         super(graph);
         this.function = function;
     }
 
     @Override
-    public ManyToManyShortestPaths<V, E> getManyToManyPaths(Set<V> sources, Set<V> targets) {
+    public ManyToManyShortestPaths<V, E> getManyToManyPaths(Set<V> sources, Set<V> targets)
+    {
         Objects.requireNonNull(sources, "sources cannot be null!");
         Objects.requireNonNull(targets, "targets cannot be null!");
 
@@ -97,7 +100,10 @@ public class DefaultManyToManyShortestPaths<V, E> extends BaseManyToManyShortest
      * {@link org.jgrapht.alg.interfaces.ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths}.
      * For each pair of source and target vertices stores a corresponding path between them.
      */
-    static class DefaultManyToManyShortestPathsImpl<V, E> extends BaseManyToManyShortestPathsImpl<V, E> {
+    static class DefaultManyToManyShortestPathsImpl<V, E>
+        extends
+        BaseManyToManyShortestPathsImpl<V, E>
+    {
 
         /**
          * Map with paths between sources and targets.
@@ -105,15 +111,16 @@ public class DefaultManyToManyShortestPaths<V, E> extends BaseManyToManyShortest
         private final Map<V, Map<V, GraphPath<V, E>>> pathsMap;
 
         /**
-         * Constructs an instance of the algorithm for the given {@code sources},
-         * {@code targets} and {@code pathsMap}.
+         * Constructs an instance of the algorithm for the given {@code sources}, {@code targets}
+         * and {@code pathsMap}.
          *
-         * @param sources  source vertices
-         * @param targets  target vertices
+         * @param sources source vertices
+         * @param targets target vertices
          * @param pathsMap map with paths between sources and targets
          */
-        DefaultManyToManyShortestPathsImpl(Set<V> sources, Set<V> targets,
-                                           Map<V, Map<V, GraphPath<V, E>>> pathsMap) {
+        DefaultManyToManyShortestPathsImpl(
+            Set<V> sources, Set<V> targets, Map<V, Map<V, GraphPath<V, E>>> pathsMap)
+        {
             super(sources, targets);
             this.pathsMap = pathsMap;
         }
@@ -122,7 +129,8 @@ public class DefaultManyToManyShortestPaths<V, E> extends BaseManyToManyShortest
          * {@inheritDoc}
          */
         @Override
-        public GraphPath<V, E> getPath(V source, V target) {
+        public GraphPath<V, E> getPath(V source, V target)
+        {
             assertCorrectSourceAndTarget(source, target);
             return pathsMap.get(source).get(target);
         }
@@ -131,7 +139,8 @@ public class DefaultManyToManyShortestPaths<V, E> extends BaseManyToManyShortest
          * {@inheritDoc}
          */
         @Override
-        public double getWeight(V source, V target) {
+        public double getWeight(V source, V target)
+        {
             assertCorrectSourceAndTarget(source, target);
 
             GraphPath<V, E> path = pathsMap.get(source).get(target);

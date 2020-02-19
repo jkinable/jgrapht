@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,22 +17,12 @@
  */
 package org.jgrapht.alg.matching;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.alg.util.FixedSizeIntegerQueue;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.util.*;
 import org.jgrapht.util.*;
+
+import java.util.*;
 
 /**
  * Edmonds' blossom algorithm for maximum cardinality matching in general undirected graphs.
@@ -116,7 +106,8 @@ public class SparseEdmondsMaximumCardinalityMatching<V, E>
      * @param initializer heuristic matching algorithm used to quickly generate a (near optimal)
      *        initial feasible solution
      */
-    public SparseEdmondsMaximumCardinalityMatching(Graph<V, E> graph, MatchingAlgorithm<V, E> initializer)
+    public SparseEdmondsMaximumCardinalityMatching(
+        Graph<V, E> graph, MatchingAlgorithm<V, E> initializer)
     {
         this.graph = GraphTests.requireUndirected(graph);
         this.initializer = initializer;

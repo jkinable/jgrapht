@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,12 +17,10 @@
  */
 package org.jgrapht.nio;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.alg.util.Pair;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Base implementation for an importer which uses consumers to notify interested parties. Note that

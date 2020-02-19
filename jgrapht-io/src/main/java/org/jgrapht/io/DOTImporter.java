@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2017, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -249,13 +249,11 @@ public class DOTImporter<V, E>
             if (idPartial != null) {
                 try {
                     // notify graph updater
-                    graphUpdater
-                        .update(
-                            graph,
-                            Collections
-                                .singletonMap(
-                                    DEFAULT_GRAPH_ID_KEY,
-                                    DefaultAttribute.createAttribute(idPartial.getId())));
+                    graphUpdater.update(
+                        graph,
+                        Collections.singletonMap(
+                            DEFAULT_GRAPH_ID_KEY,
+                            DefaultAttribute.createAttribute(idPartial.getId())));
                 } catch (Exception e) {
                     throw new IllegalArgumentException("Graph update failed: " + e.getMessage(), e);
                 }
@@ -451,10 +449,9 @@ public class DOTImporter<V, E>
             scope.graphAttrs.put(key, DefaultAttribute.createAttribute(value));
             if (subgraphScopes.size() == 1) {
                 try {
-                    graphUpdater
-                        .update(
-                            graph,
-                            Collections.singletonMap(key, DefaultAttribute.createAttribute(value)));
+                    graphUpdater.update(
+                        graph,
+                        Collections.singletonMap(key, DefaultAttribute.createAttribute(value)));
                 } catch (Exception e) {
                     throw new IllegalArgumentException("Graph update failed: " + e.getMessage(), e);
                 }

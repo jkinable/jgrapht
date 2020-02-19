@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -210,7 +210,7 @@ public class BidirectionalAStarShortestPath<V, E>
      */
     class AStarSearchFrontier
         extends
-        BaseSearchFrontier<V,E>
+        BaseSearchFrontier<V, E>
     {
         /**
          * End vertex of the frontier.

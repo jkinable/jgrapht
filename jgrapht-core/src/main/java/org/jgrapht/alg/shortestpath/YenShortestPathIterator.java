@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -467,7 +467,7 @@ public class YenShortestPathIterator<V, E>
 
             for (E e : super.g.outgoingEdgesOf(v)) {
                 V successor = Graphs.getOppositeVertex(super.g, e, v);
-                if(successor.equals(v)){
+                if (successor.equals(v)) {
                     continue;
                 }
                 double updatedDistance = Double.POSITIVE_INFINITY;
@@ -499,7 +499,7 @@ public class YenShortestPathIterator<V, E>
 
                 for (E e : super.g.incomingEdgesOf(vertex)) {
                     V predecessor = Graphs.getOppositeVertex(super.g, e, vertex);
-                    if(predecessor.equals(vertex)){
+                    if (predecessor.equals(vertex)) {
                         continue;
                     }
                     double predecessorDistance = Double.POSITIVE_INFINITY;

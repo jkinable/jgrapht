@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,17 +17,11 @@
  */
 package org.jgrapht.nio;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.alg.util.Pair;
+import java.io.*;
+import java.nio.charset.*;
+import java.util.function.*;
 
 /**
  * Interface for an importer using consumers.

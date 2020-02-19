@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,16 +17,10 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.interfaces.ManyToManyShortestPathsAlgorithm;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Base class for many-to-many shortest paths algorithms. Currently extended by
@@ -37,7 +31,10 @@ import java.util.Set;
  * @author Semen Chudakov
  * @author Dimitrios Michail
  */
-abstract class BaseManyToManyShortestPaths<V, E> implements ManyToManyShortestPathsAlgorithm<V, E> {
+abstract class BaseManyToManyShortestPaths<V, E>
+    implements
+    ManyToManyShortestPathsAlgorithm<V, E>
+{
 
     protected final Graph<V, E> graph;
 
@@ -46,7 +43,8 @@ abstract class BaseManyToManyShortestPaths<V, E> implements ManyToManyShortestPa
      *
      * @param graph the graph
      */
-    public BaseManyToManyShortestPaths(Graph<V, E> graph) {
+    public BaseManyToManyShortestPaths(Graph<V, E> graph)
+    {
         this.graph = Objects.requireNonNull(graph, "Graph is null");
     }
 
@@ -54,15 +52,18 @@ abstract class BaseManyToManyShortestPaths<V, E> implements ManyToManyShortestPa
      * {@inheritDoc}
      */
     @Override
-    public GraphPath<V, E> getPath(V source, V sink) {
-        return getManyToManyPaths(Collections.singleton(source), Collections.singleton(sink)).getPath(source, sink);
+    public GraphPath<V, E> getPath(V source, V sink)
+    {
+        return getManyToManyPaths(Collections.singleton(source), Collections.singleton(sink))
+            .getPath(source, sink);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public double getPathWeight(V source, V sink) {
+    public double getPathWeight(V source, V sink)
+    {
         GraphPath<V, E> p = getPath(source, sink);
         if (p == null) {
             return Double.POSITIVE_INFINITY;
@@ -75,7 +76,8 @@ abstract class BaseManyToManyShortestPaths<V, E> implements ManyToManyShortestPa
      * {@inheritDoc}
      */
     @Override
-    public SingleSourcePaths<V, E> getPaths(V source) {
+    public SingleSourcePaths<V, E> getPaths(V source)
+    {
         if (!graph.containsVertex(source)) {
             throw new IllegalArgumentException("graph must contain the source vertex");
         }
@@ -88,20 +90,21 @@ abstract class BaseManyToManyShortestPaths<V, E> implements ManyToManyShortestPa
     }
 
     /**
-     * Computes shortest paths tree starting at {@code source} and stopping as
-     * soon as all of the {@code targets} are reached. Here the
-     * {@link DijkstraClosestFirstIterator} is used.
+     * Computes shortest paths tree starting at {@code source} and stopping as soon as all of the
+     * {@code targets} are reached. Here the {@link DijkstraClosestFirstIterator} is used.
      *
-     * @param graph   a graph
-     * @param source  source vertex
+     * @param graph a graph
+     * @param source source vertex
      * @param targets target vertices
-     * @param <V>     the graph vertex type
-     * @param <E>     the  graph edge type
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
      * @return shortest paths starting from {@code source} and reaching all {@code targets}
      */
-    protected static <V, E> ShortestPathAlgorithm.SingleSourcePaths<V, E>
-    getShortestPathsTree(Graph<V, E> graph, V source, Set<V> targets) {
-        DijkstraClosestFirstIterator<V, E> iterator = new DijkstraClosestFirstIterator<>(graph, source);
+    protected static <V, E> ShortestPathAlgorithm.SingleSourcePaths<V, E> getShortestPathsTree(
+        Graph<V, E> graph, V source, Set<V> targets)
+    {
+        DijkstraClosestFirstIterator<V, E> iterator =
+            new DijkstraClosestFirstIterator<>(graph, source);
 
         int reachedTargets = 0;
         while (iterator.hasNext() && reachedTargets < targets.size()) {

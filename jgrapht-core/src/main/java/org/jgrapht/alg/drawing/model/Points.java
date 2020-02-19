@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import java.util.function.BiFunction;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.alg.util.ToleranceDoubleComparator;
+import java.util.function.*;
 
 /**
  * A collection of utilities to assist with point manipulation.
@@ -32,8 +32,7 @@ public abstract class Points
         new ToleranceDoubleComparator(1e-9);
 
     /**
-     * Compute the length of a vector. The length of vector $(x,y)$ is 
-     * given by $\sqrt{x^2+y^2}$.  
+     * Compute the length of a vector. The length of vector $(x,y)$ is given by $\sqrt{x^2+y^2}$.
      * 
      * @param v the vector
      * @return the length of a vector
@@ -42,7 +41,7 @@ public abstract class Points
     {
         return Math.sqrt(v.getX() * v.getX() + v.getY() * v.getY());
     }
-    
+
     /**
      * Add 2-dimensional vectors
      * 

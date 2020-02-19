@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2017, by Avner Linder and Contributors.
+ * (C) Copyright 2003-2020, by Avner Linder and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -39,7 +39,7 @@ import java.io.*;
  * @param <E> the graph edge type
  *
  * @author Avner Linder
- * @deprecated Use {@link org.jgrapht.nio.csv.VisioExporter} instead. 
+ * @deprecated Use {@link org.jgrapht.nio.csv.VisioExporter} instead.
  */
 @Deprecated
 public class VisioExporter<V, E>

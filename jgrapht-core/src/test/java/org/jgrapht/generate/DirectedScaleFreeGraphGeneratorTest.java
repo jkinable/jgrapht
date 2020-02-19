@@ -1,15 +1,12 @@
 package org.jgrapht.generate;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedMultigraph;
-import org.jgrapht.graph.DirectedPseudograph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
 
 public class DirectedScaleFreeGraphGeneratorTest
 {

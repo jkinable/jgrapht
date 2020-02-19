@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,27 +17,20 @@
  */
 package org.jgrapht.nio.graph6;
 
+import org.jgrapht.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+
+import java.io.*;
+import java.nio.charset.*;
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMetrics;
-import org.jgrapht.Graphs;
-import org.jgrapht.generate.NamedGraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
 
 /**
  * Tests for Graph6Sparse6Importer Sparse6/Graph6 strings are generated with Sage Math engine

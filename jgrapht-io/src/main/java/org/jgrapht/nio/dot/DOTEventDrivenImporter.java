@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,37 +17,15 @@
  */
 package org.jgrapht.nio.dot;
 
-import java.io.Reader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.CommonTokenFactory;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.UnbufferedCharStream;
-import org.antlr.v4.runtime.UnbufferedTokenStream;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.apache.commons.text.StringEscapeUtils;
-import org.apache.commons.text.translate.AggregateTranslator;
-import org.apache.commons.text.translate.CharSequenceTranslator;
-import org.apache.commons.text.translate.LookupTranslator;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.apache.commons.text.*;
+import org.apache.commons.text.translate.*;
 import org.jgrapht.alg.util.Pair;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
+import org.jgrapht.nio.*;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * Import a graph from a DOT file.

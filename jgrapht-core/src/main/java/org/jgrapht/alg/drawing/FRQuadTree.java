@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,16 +17,10 @@
  */
 package org.jgrapht.alg.drawing;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import org.jgrapht.alg.drawing.model.*;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.alg.drawing.model.Box2D;
-import org.jgrapht.alg.drawing.model.Boxes;
-import org.jgrapht.alg.drawing.model.Point2D;
-import org.jgrapht.alg.util.Pair;
+import java.util.*;
 
 /**
  * A simple <a href="https://en.wikipedia.org/wiki/Quadtree">QuadTree</a> for indexing during force
@@ -118,10 +112,9 @@ class FRQuadTree
 
             // count new point and update centroid
             cur.totalPoints++;
-            cur.centroid = Point2D
-                .of(
-                    (cur.centroid.getX() * (cur.totalPoints - 1) + p.getX()) / cur.totalPoints,
-                    (cur.centroid.getY() * (cur.totalPoints - 1) + p.getY()) / cur.totalPoints);
+            cur.centroid = Point2D.of(
+                (cur.centroid.getX() * (cur.totalPoints - 1) + p.getX()) / cur.totalPoints,
+                (cur.centroid.getY() * (cur.totalPoints - 1) + p.getY()) / cur.totalPoints);
 
             // non-leaf
             if (Boxes.containsPoint(cur.children[NW].getBox(), p)) {

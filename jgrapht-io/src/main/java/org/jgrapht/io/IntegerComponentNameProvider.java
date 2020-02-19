@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2005-2017, by Trevor Harmon and Contributors.
+ * (C) Copyright 2005-2020, by Trevor Harmon and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,9 @@
  */
 package org.jgrapht.io;
 
-import java.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.nio.IntegerIdProvider;
+import java.util.*;
 
 /**
  * Assigns a unique integer to represent each component. Each instance of provider maintains an

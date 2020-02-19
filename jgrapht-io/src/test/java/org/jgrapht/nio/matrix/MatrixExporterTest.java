@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2017, by Charles Fry and Contributors.
+ * (C) Copyright 2003-2020, by Charles Fry and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,19 +17,14 @@
  */
 package org.jgrapht.nio.matrix;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.nio.*;
+import org.junit.*;
+
+import java.io.*;
+
 import static org.junit.Assert.assertEquals;
-
-import java.io.StringWriter;
-import java.io.Writer;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedMultigraph;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.nio.ExportException;
-import org.jgrapht.nio.GraphExporter;
-import org.junit.Test;
 
 /**
  * Tests

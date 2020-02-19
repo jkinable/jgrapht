@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,13 +18,13 @@
 package org.jgrapht.traverse;
 
 import org.jgrapht.*;
-import org.jgrapht.event.*;
 import org.jgrapht.graph.*;
 import org.junit.*;
 
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for the {@link LexBreadthFirstIterator}
@@ -49,7 +49,7 @@ public class LexBreadthFirstIteratorTest
         LexBreadthFirstIterator<Integer, DefaultEdge> iterator =
             new LexBreadthFirstIterator<>(graph);
         VertexTrackingTraversalListener<Integer, DefaultEdge> listener =
-                new VertexTrackingTraversalListener<>(graph);
+            new VertexTrackingTraversalListener<>(graph);
         iterator.addTraversalListener(listener);
         for (int i = 0; i < 4; i++) {
             iterator.next();

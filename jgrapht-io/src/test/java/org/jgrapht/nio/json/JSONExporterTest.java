@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,27 +17,19 @@
  */
 package org.jgrapht.nio.json;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Function;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.ExportException;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.nio.IntegerIdProvider;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
 
 /**
  * Test JSONExporter

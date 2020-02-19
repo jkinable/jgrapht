@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,32 +17,18 @@
  */
 package org.jgrapht.nio.graphml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.nio.charset.*;
+import java.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedPseudograph;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests

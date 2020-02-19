@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2014-2018, by Luiz Kill and Contributors.
+ * (C) Copyright 2014-2020, by Luiz Kill and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -191,7 +191,6 @@ public class HawickJamesSimpleCycles<V, E>
             B[u].removeAll(singletonList(w));
             wPos -= (sizeBeforeRemove - B[u].size());
 
-
             if (blocked[w]) {
                 unblock(w);
             }
@@ -302,8 +301,8 @@ public class HawickJamesSimpleCycles<V, E>
     }
 
     /**
-     * This is the default behaviour of the algorithm.
-     * It will keep looking as long as there are paths available.
+     * This is the default behaviour of the algorithm. It will keep looking as long as there are
+     * paths available.
      */
     public void clearPathLimit()
     {

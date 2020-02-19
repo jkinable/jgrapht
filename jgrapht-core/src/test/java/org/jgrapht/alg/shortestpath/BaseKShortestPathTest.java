@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -54,10 +54,8 @@ class BaseKShortestPathTest
             { 4, 3, 2 }, { 4, 4, 0 }, { 4, 6, 0 }, { 5, 3, 2 }, { 5, 6, 2 } };
 
     protected final int[][] pseudograph2 =
-            { { 1, 1, 0 }, { 1, 1, 1 }, { 1, 2, 2 }, { 1, 2, 3 }, { 1, 2, 4 },
-                    { 2, 2, 5 }, { 2, 3, 6 }, { 2, 3, 7 },
-                    { 3, 3, 8 }, { 3, 4, 9 }, { 3, 4, 10 },
-                    { 4, 4, 11 } };
+        { { 1, 1, 0 }, { 1, 1, 1 }, { 1, 2, 2 }, { 1, 2, 3 }, { 1, 2, 4 }, { 2, 2, 5 }, { 2, 3, 6 },
+            { 2, 3, 7 }, { 3, 3, 8 }, { 3, 4, 9 }, { 3, 4, 10 }, { 4, 4, 11 } };
 
     protected void readGraph(Graph<Integer, DefaultWeightedEdge> graph, int[][] representation)
     {

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,18 +17,16 @@
  */
 package org.jgrapht.alg.drawing;
 
+import org.jgrapht.*;
+import org.jgrapht.alg.drawing.model.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
-
-import java.util.Random;
-
-import org.jgrapht.Graph;
-import org.jgrapht.alg.drawing.model.Box2D;
-import org.jgrapht.alg.drawing.model.MapLayoutModel2D;
-import org.jgrapht.alg.drawing.model.Point2D;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
 
 /**
  * Test {@link RandomLayoutAlgorithm2D}.

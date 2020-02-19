@@ -1,20 +1,15 @@
 package org.jgrapht.alg.shortestpath;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
-import java.util.Arrays;
+import java.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.WeightedPseudograph;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link IntVertexDijkstraShortestPath}.
@@ -149,12 +144,9 @@ public class IntVertexDijkstraShortestPathTest
                 .edgeSupplier(SupplierUtil.DEFAULT_WEIGHTED_EDGE_SUPPLIER)
                 .vertexSupplier(SupplierUtil.createIntegerSupplier()).buildGraph();
 
-        Graphs
-            .addAllVertices(
-                g,
-                Arrays
-                    .asList(
-                        offset + 0, offset + 1, offset + 2, offset + 3, offset + 4, offset + 5));
+        Graphs.addAllVertices(
+            g,
+            Arrays.asList(offset + 0, offset + 1, offset + 2, offset + 3, offset + 4, offset + 5));
         DefaultWeightedEdge e01 = g.addEdge(offset + 0, offset + 1);
         g.setEdgeWeight(e01, 10.0);
         DefaultWeightedEdge e02 = g.addEdge(offset + 0, offset + 2);

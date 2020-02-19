@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,16 +17,10 @@
  */
 package org.jgrapht.opt.graph.sparse;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.alg.util.Pair;
+import java.io.*;
+import java.util.*;
 
 /**
  * A sparse boolean matrix in Compressed Sparse Row (CSR) format.

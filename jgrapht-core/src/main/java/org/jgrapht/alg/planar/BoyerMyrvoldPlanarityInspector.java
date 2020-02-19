@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,41 +17,46 @@
  */
 package org.jgrapht.alg.planar;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.PlanarityTestingAlgorithm;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.AsSubgraph;
-import org.jgrapht.util.DoublyLinkedList;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.*;
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 /**
- * An implementation of the Boyer-Myrvold planarity testing algorithm. This class determines whether an
- * input graph is planar or not. If the graph is planar, the algorithm provides a
- * <a href="https://en.wikipedia.org/wiki/Graph_embedding#Combinatorial_embedding">combinatorial embedding</a>
- * of the graph, which is represented as a clockwise ordering of the edges of the graph. Otherwise, the algorithm
- * provides a <a href="https://en.wikipedia.org/wiki/Kuratowski%27s_theorem#Kuratowski_subgraphs"> Kuratowski subgraph</a>
- * as a certificate. Both embedding of the graph and Kuratowski subdivision are computed lazily, meaning that the
- * call to the {@link BoyerMyrvoldPlanarityInspector#isPlanar()} does spend time only on the planarity testing.
- * All of the operations of this algorithm (testing, embedding and Kuratowski subgraph extraction) run in linear time.
+ * An implementation of the Boyer-Myrvold planarity testing algorithm. This class determines whether
+ * an input graph is planar or not. If the graph is planar, the algorithm provides a
+ * <a href="https://en.wikipedia.org/wiki/Graph_embedding#Combinatorial_embedding">combinatorial
+ * embedding</a> of the graph, which is represented as a clockwise ordering of the edges of the
+ * graph. Otherwise, the algorithm provides a
+ * <a href="https://en.wikipedia.org/wiki/Kuratowski%27s_theorem#Kuratowski_subgraphs"> Kuratowski
+ * subgraph</a> as a certificate. Both embedding of the graph and Kuratowski subdivision are
+ * computed lazily, meaning that the call to the {@link BoyerMyrvoldPlanarityInspector#isPlanar()}
+ * does spend time only on the planarity testing. All of the operations of this algorithm (testing,
+ * embedding and Kuratowski subgraph extraction) run in linear time.
  * <p>
- * A <a href="https://en.wikipedia.org/wiki/Planar_graph">planar graph</a> is a graph, which can be drawn in
- * two-dimensional space without any of its edges crossing. According to the
- * <a href="https://en.wikipedia.org/wiki/Kuratowski%27s_theorem">Kuratowski theorem</a>, a graph is planar if
- * and only if it doesn't contain a subdivision of the $K_{3,3}$ or $K_{5}$ graphs.
+ * A <a href="https://en.wikipedia.org/wiki/Planar_graph">planar graph</a> is a graph, which can be
+ * drawn in two-dimensional space without any of its edges crossing. According to the
+ * <a href="https://en.wikipedia.org/wiki/Kuratowski%27s_theorem">Kuratowski theorem</a>, a graph is
+ * planar if and only if it doesn't contain a subdivision of the $K_{3,3}$ or $K_{5}$ graphs.
  * <p>
- * The Boyer-Myrvold planarity testing algorithm was originally described in: <i>Boyer, John amp; Myrvold, Wendy.
- * (2004). On the Cutting Edge: Simplified O(n) Planarity by Edge Addition. J. Graph Algorithms Appl.. 8. 241-273.
- * 10.7155/jgaa.00091. </i>. We refer to this paper for the complete description of the Boyer-Myrvold algorithm
+ * The Boyer-Myrvold planarity testing algorithm was originally described in: <i>Boyer, John amp;
+ * Myrvold, Wendy. (2004). On the Cutting Edge: Simplified O(n) Planarity by Edge Addition. J. Graph
+ * Algorithms Appl.. 8. 241-273. 10.7155/jgaa.00091. </i>. We refer to this paper for the complete
+ * description of the Boyer-Myrvold algorithm
  *
  * @param <V> the graph vertex type
  * @param <E> the graph edge type
  * @author Timofey Chudakov
  */
-public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlgorithm<V, E> {
+public class BoyerMyrvoldPlanarityInspector<V, E>
+    implements
+    PlanarityTestingAlgorithm<V, E>
+{
     /**
      * Whether to print debug messages
      */
@@ -69,8 +74,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      */
     private int n;
     /**
-     * The resulting combinatorial embedding. This value is computed only after the first call
-     * to the {@link BoyerMyrvoldPlanarityInspector#getEmbedding()}
+     * The resulting combinatorial embedding. This value is computed only after the first call to
+     * the {@link BoyerMyrvoldPlanarityInspector#getEmbedding()}
      */
     private Embedding<V, E> embedding;
     /**
@@ -79,25 +84,27 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      */
     private Graph<V, E> kuratowskiSubdivision;
     /**
-     * List of the vertices of the {@code graph} in their internal representation. After the orientation of
-     * the {@code graph} and edge sorting, nodes in this list are sorted according to their dfs indexes
+     * List of the vertices of the {@code graph} in their internal representation. After the
+     * orientation of the {@code graph} and edge sorting, nodes in this list are sorted according to
+     * their dfs indexes
      */
     private List<Node> nodes;
     /**
-     * List of the dfs tree roots of the {@code graph}. This list has length more than 1 if the input
-     * {@code graph} isn't connected
+     * List of the dfs tree roots of the {@code graph}. This list has length more than 1 if the
+     * input {@code graph} isn't connected
      */
     private List<Node> dfsTreeRoots;
     /**
-     * List of the virtual biconnected component roots. Initially, a virtual biconnected component root
-     * is created for every node in the {@code graph}, except for the dfs roots. These component roots don't
-     * belong to the {@code graph}. At each step of the algorithm, every biconnected component has its own
-     * unique component root.
+     * List of the virtual biconnected component roots. Initially, a virtual biconnected component
+     * root is created for every node in the {@code graph}, except for the dfs roots. These
+     * component roots don't belong to the {@code graph}. At each step of the algorithm, every
+     * biconnected component has its own unique component root.
      */
     private List<Node> componentRoots;
     /**
-     * The stack containing merge information for every consecutive pair of biconnected components on the path
-     * to the back edge source. After all the biconnected components are merged, this stack is cleared
+     * The stack containing merge information for every consecutive pair of biconnected components
+     * on the path to the back edge source. After all the biconnected components are merged, this
+     * stack is cleared
      */
     private List<MergeInfo> stack;
     /**
@@ -114,12 +121,13 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     private boolean planar;
 
     /**
-     * Creates new instance of the planarity testing algorithm for the {@code graph}. The input graph
-     * can't be null.
+     * Creates new instance of the planarity testing algorithm for the {@code graph}. The input
+     * graph can't be null.
      *
      * @param graph the graph to test the planarity of
      */
-    public BoyerMyrvoldPlanarityInspector(Graph<V, E> graph) {
+    public BoyerMyrvoldPlanarityInspector(Graph<V, E> graph)
+    {
         this.graph = Objects.requireNonNull(graph, "Graph can't be null");
         this.n = graph.vertexSet().size();
         this.nodes = new ArrayList<>(n);
@@ -131,14 +139,16 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * Creates a new node by converting the {@code graphVertex} to the internal node representation.
      *
-     * @param vertexMap   the map from vertices of the {@code graph} to their internal representation
+     * @param vertexMap the map from vertices of the {@code graph} to their internal representation
      * @param graphVertex the vertex of the {@code graph} we're processing
-     * @param edge        the parent edge of the {@code graphVertex}, is {@code null} for dfs tree roots
-     * @param parent      the parent node of the {@code graphVertex}
-     * @param dfsIndex    the dfs index of the {@code graphVertex}
+     * @param edge the parent edge of the {@code graphVertex}, is {@code null} for dfs tree roots
+     * @param parent the parent node of the {@code graphVertex}
+     * @param dfsIndex the dfs index of the {@code graphVertex}
      * @return the newly created node
      */
-    private Node createNewNode(Map<V, Node> vertexMap, V graphVertex, E edge, Node parent, int dfsIndex) {
+    private Node createNewNode(
+        Map<V, Node> vertexMap, V graphVertex, E edge, Node parent, int dfsIndex)
+    {
         Node child;
         if (parent == null) {
             child = new Node(graphVertex, dfsIndex, 0, null, null);
@@ -163,15 +173,16 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Orients the input graph according to its dfs traversal by creating a dfs tree. Computes
-     * the least ancestors and lowpoints of the nodes
+     * Orients the input graph according to its dfs traversal by creating a dfs tree. Computes the
+     * least ancestors and lowpoints of the nodes
      *
-     * @param vertexMap        the map from {@code graph} vertices to their internal representatives
+     * @param vertexMap the map from {@code graph} vertices to their internal representatives
      * @param startGraphVertex the node to start the traversal from (this is a dfs tree root).
-     * @param currentDfsIndex  the dfs index of the {@code startGraphVertex}
+     * @param currentDfsIndex the dfs index of the {@code startGraphVertex}
      * @return the {@code currentDfsIndex} + number of nodes in the traversed subtree
      */
-    private int orientDfs(Map<V, Node> vertexMap, V startGraphVertex, int currentDfsIndex) {
+    private int orientDfs(Map<V, Node> vertexMap, V startGraphVertex, int currentDfsIndex)
+    {
         List<OrientDfsStackInfo> stack = new ArrayList<>();
         stack.add(new OrientDfsStackInfo(startGraphVertex, null, null, false));
         while (!stack.isEmpty()) {
@@ -181,7 +192,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 Node current = vertexMap.get(info.current);
                 current.leastAncestor = current.lowpoint = current.dfsIndex;
                 for (Edge backEdge : current.backEdges) {
-                    current.leastAncestor = Math.min(current.leastAncestor, backEdge.target.dfsIndex);
+                    current.leastAncestor =
+                        Math.min(current.leastAncestor, backEdge.target.dfsIndex);
                 }
                 for (Edge treeEdge : current.treeEdges) {
                     current.lowpoint = Math.min(current.lowpoint, treeEdge.target.lowpoint);
@@ -193,7 +205,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                     continue;
                 }
                 stack.add(new OrientDfsStackInfo(info.current, info.parent, info.parentEdge, true));
-                Node current = createNewNode(vertexMap, info.current, info.parentEdge, vertexMap.get(info.parent), currentDfsIndex);
+                Node current = createNewNode(
+                    vertexMap, info.current, info.parentEdge, vertexMap.get(info.parent),
+                    currentDfsIndex);
                 ++currentDfsIndex;
                 for (E e : graph.edgesOf(info.current)) {
                     V opposite = Graphs.getOppositeVertex(graph, e, info.current);
@@ -217,10 +231,12 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Iteratively start an orienting dfs from every {@code graph} vertex that hasn't been visited yet.
-     * After orienting the graph, sorts the nodes by their lowpoints and adds them to the {@code separatedDfsChildList}
+     * Iteratively start an orienting dfs from every {@code graph} vertex that hasn't been visited
+     * yet. After orienting the graph, sorts the nodes by their lowpoints and adds them to the
+     * {@code separatedDfsChildList}
      */
-    private void orient() {
+    private void orient()
+    {
         Map<V, Node> visited = new HashMap<>();
         int currentDfsIndex = 0;
         for (V vertex : graph.vertexSet()) {
@@ -232,9 +248,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Performs sorting of the vertices by their lowpoints and adding them to the {@code separatedDfsChildList}
+     * Performs sorting of the vertices by their lowpoints and adding them to the
+     * {@code separatedDfsChildList}
      */
-    private void sortVertices() {
+    private void sortVertices()
+    {
         List<List<Node>> sorted = new ArrayList<>(Collections.nCopies(n, null));
         for (Node node : nodes) {
             int lowpoint = node.lowpoint;
@@ -252,7 +270,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 for (Node node : list) {
                     nodes.set(i++, node);
                     if (node.parentEdge != null) {
-                        node.listNode = node.parentEdge.source.separatedDfsChildList.addElementLast(node);
+                        node.listNode =
+                            node.parentEdge.source.separatedDfsChildList.addElementLast(node);
                     }
                 }
             }
@@ -260,12 +279,13 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Lazily tests the planarity of the graph. The implementation below is close to the code presented
-     * in the original paper
+     * Lazily tests the planarity of the graph. The implementation below is close to the code
+     * presented in the original paper
      *
      * @return true if the graph is planar, false otherwise
      */
-    private boolean lazyTestPlanarity() {
+    private boolean lazyTestPlanarity()
+    {
         if (!tested) {
             tested = true;
 
@@ -300,10 +320,12 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
 
     /**
      * Merges the last two biconnected components using the info stored on top of the stack. The key
-     * goal of this method is to merge the outer faces of the two components and to merge the embedded edges
-     * of the child component root with the embedded edges of the component parent node.
+     * goal of this method is to merge the outer faces of the two components and to merge the
+     * embedded edges of the child component root with the embedded edges of the component parent
+     * node.
      */
-    private void mergeBiconnectedComponent() {
+    private void mergeBiconnectedComponent()
+    {
         MergeInfo info = stack.get(stack.size() - 1);
         stack.remove(stack.size() - 1);
         if (DEBUG) {
@@ -319,7 +341,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         root.pertinentRoots.removeNode(virtualRoot.listNode);
         root.separatedDfsChildList.removeNode(virtualRootChild.listNode);
 
-        root.mergeChildEdges(virtualRoot.embedded, info.vIn, info.vOut, info.parentNext, virtualRoot.parentEdge);
+        root.mergeChildEdges(
+            virtualRoot.embedded, info.vIn, info.vOut, info.parentNext, virtualRoot.parentEdge);
 
         root.substituteAnother(info.parentNext, info.childPrev);
         info.childPrev.substitute(virtualRoot, root);
@@ -327,17 +350,18 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Embeds the back edge {@code edge} into the list of embedded edges of the source and the virtual
-     * target of the edge such that the {@code childPrev} belongs to the new inner face. This method
-     * also takes care of modifying the boundary of the outer face accordingly
+     * Embeds the back edge {@code edge} into the list of embedded edges of the source and the
+     * virtual target of the edge such that the {@code childPrev} belongs to the new inner face.
+     * This method also takes care of modifying the boundary of the outer face accordingly
      *
-     * @param root      the component root
-     * @param entryDir  the component entry direction
-     * @param edge      the edge to embed
+     * @param root the component root
+     * @param entryDir the component entry direction
+     * @param edge the edge to embed
      * @param childPrev the neighbor of the source of the edge that should belong to the inner face
      * @return a circulator starting from the edge's source
      */
-    private OuterFaceCirculator embedBackEdge(Node root, int entryDir, Edge edge, Node childPrev) {
+    private OuterFaceCirculator embedBackEdge(Node root, int entryDir, Edge edge, Node childPrev)
+    {
         if (DEBUG) {
             System.out.printf("Embedding back edge %s\n", edge.toString());
         }
@@ -364,10 +388,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * {@code circulator}. Changes the outer face accordingly
      *
      * @param componentRoot the component root
-     * @param entryDir      the direction used to enter the component
-     * @param circulator    a circulator to the source of the new edge
+     * @param entryDir the direction used to enter the component
+     * @param circulator a circulator to the source of the new edge
      */
-    private void embedShortCircuit(Node componentRoot, int entryDir, OuterFaceCirculator circulator) {
+    private void embedShortCircuit(Node componentRoot, int entryDir, OuterFaceCirculator circulator)
+    {
         Node current = circulator.getCurrent(), prev = circulator.getPrev();
         Edge shortCircuit = new Edge(current, componentRoot.getParent());
         if (entryDir == 0) {
@@ -386,25 +411,29 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * The walkdown procedure from the original paper. Either embeds all of the back edges in the subtree rooted
-     * at the child of the {@code componentRoot} or identifies the back edges which can be used to extract a
-     * Kuratowski subdivision. Iteratively traverses the tree of the biconnected component and descends only
-     * to the pertinent components. This procedure is also responsible for embedding short-circuit edges to
-     * make the algorithm run in linear time in the worst case.
+     * The walkdown procedure from the original paper. Either embeds all of the back edges in the
+     * subtree rooted at the child of the {@code componentRoot} or identifies the back edges which
+     * can be used to extract a Kuratowski subdivision. Iteratively traverses the tree of the
+     * biconnected component and descends only to the pertinent components. This procedure is also
+     * responsible for embedding short-circuit edges to make the algorithm run in linear time in the
+     * worst case.
      *
      * @param componentRoot the root of the component to start the walkdown from
      */
-    private void walkDown(Node componentRoot) {
+    private void walkDown(Node componentRoot)
+    {
         if (DEBUG) {
             System.out.printf("\nStart walk down on node %s\n", componentRoot.toString(true));
         }
-        for (int componentEntryDir = 0; componentEntryDir < 2 && stack.isEmpty(); componentEntryDir++) {
+        for (int componentEntryDir = 0; componentEntryDir < 2 && stack.isEmpty();
+            componentEntryDir++)
+        {
             if (DEBUG) {
                 System.out.println("\nNew traversal direction = " + componentEntryDir);
             }
             int currentComponentEntryDir = componentEntryDir;
             OuterFaceCirculator circulator = componentRoot.iterator(currentComponentEntryDir);
-            for (Node current = circulator.next(); current != componentRoot; ) {
+            for (Node current = circulator.next(); current != componentRoot;) {
                 if (DEBUG) {
                     System.out.printf("Current = %s\n", current.toString());
                 }
@@ -416,7 +445,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                             printState();
                         }
                     }
-                    circulator = embedBackEdge(componentRoot, componentEntryDir, current.edgeToEmbed, childPrev);
+                    circulator = embedBackEdge(
+                        componentRoot, componentEntryDir, current.edgeToEmbed, childPrev);
                     if (DEBUG) {
                         printState();
                         printBiconnectedComponent(current);
@@ -429,9 +459,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                     if (DEBUG) {
                         System.out.printf("Descending to the root = %s\n", root.toString());
                     }
-                    OuterFaceCirculator ccwCirculator = getActiveSuccessorOnOuterFace(root, componentRoot, 0);
+                    OuterFaceCirculator ccwCirculator =
+                        getActiveSuccessorOnOuterFace(root, componentRoot, 0);
                     Node ccwActiveNode = ccwCirculator.getCurrent();
-                    OuterFaceCirculator cwCirculator = getActiveSuccessorOnOuterFace(root, componentRoot, 1);
+                    OuterFaceCirculator cwCirculator =
+                        getActiveSuccessorOnOuterFace(root, componentRoot, 1);
                     Node cwActiveNode = cwCirculator.getCurrent();
 
                     if (ccwActiveNode.isInternallyActiveWrtTo(componentRoot)) {
@@ -445,7 +477,10 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                     }
 
                     if (currentComponentEntryDir == 0) {
-                        stack.add(new MergeInfo(current, circulator.next(), root, root.outerFaceNeighbors[1], parentComponentEntryDir, currentComponentEntryDir));
+                        stack.add(
+                            new MergeInfo(
+                                current, circulator.next(), root, root.outerFaceNeighbors[1],
+                                parentComponentEntryDir, currentComponentEntryDir));
                         current = ccwActiveNode;
                         circulator = ccwCirculator;
 
@@ -453,7 +488,10 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                             embedShortCircuit(root, 1, cwCirculator);
                         }
                     } else {
-                        stack.add(new MergeInfo(current, circulator.next(), root, root.outerFaceNeighbors[0], parentComponentEntryDir, currentComponentEntryDir));
+                        stack.add(
+                            new MergeInfo(
+                                current, circulator.next(), root, root.outerFaceNeighbors[0],
+                                parentComponentEntryDir, currentComponentEntryDir));
                         current = cwActiveNode;
                         circulator = cwCirculator;
 
@@ -480,13 +518,15 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
 
     /**
      * The walkup procedure from the original paper. Identifies the pertinent subgraph of the graph
-     * by going up the dfs tree from the {@code start} node to the {@code end} node using the edge {@code edge}
+     * by going up the dfs tree from the {@code start} node to the {@code end} node using the edge
+     * {@code edge}
      *
      * @param start the node to start the walkup from
-     * @param end   the node currently processed by the main loop of the algorithm
-     * @param edge  a back edge to embed
+     * @param end the node currently processed by the main loop of the algorithm
+     * @param edge a back edge to embed
      */
-    private void walkUp(Node start, Node end, Edge edge) {
+    private void walkUp(Node start, Node end, Edge edge)
+    {
         if (DEBUG) {
             System.out.printf("\nStart walk up on edge = %s\n", edge.toString());
         }
@@ -495,7 +535,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         start.backEdgeFlag = visited;
         start.edgeToEmbed = edge;
 
-        Node x = start.outerFaceNeighbors[0], y = start.outerFaceNeighbors[1], xPrev = start, yPrev = start;
+        Node x = start.outerFaceNeighbors[0], y = start.outerFaceNeighbors[1], xPrev = start,
+            yPrev = start;
         start.visited = visited;
         while (x != end && !x.isVisitedWrtTo(end) && !y.isVisitedWrtTo(end)) {
             if (DEBUG) {
@@ -544,15 +585,17 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Lazily computes a combinatorial embedding of the {@code graph} by removing all the short-circuit edges and
-     * properly orienting the edges around the nodes.
+     * Lazily computes a combinatorial embedding of the {@code graph} by removing all the
+     * short-circuit edges and properly orienting the edges around the nodes.
      *
      * @return a combinatorial embedding of the {@code graph}
      */
-    private Embedding<V, E> lazyComputeEmbedding() {
+    private Embedding<V, E> lazyComputeEmbedding()
+    {
         lazyTestPlanarity();
         if (!planar) {
-            throw new IllegalArgumentException("Input graph is not planar, can't compute graph embedding");
+            throw new IllegalArgumentException(
+                "Input graph is not planar, can't compute graph embedding");
         }
         if (embedding == null) {
             for (Node dfsTreeRoot : dfsTreeRoots) {
@@ -580,7 +623,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      *
      * @param node a node on the outer face
      */
-    private void printBiconnectedComponent(Node node) {
+    private void printBiconnectedComponent(Node node)
+    {
         StringBuilder builder = new StringBuilder(node.toString(false));
         OuterFaceCirculator circulator = node.iterator(0);
         Node current = circulator.next();
@@ -595,7 +639,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * Method for debug purposes, prints the state of the algorithm
      */
-    private void printState() {
+    private void printState()
+    {
         System.out.println("\nPrinting state:");
         System.out.println("Dfs roots: " + dfsTreeRoots);
         System.out.println("Nodes:");
@@ -618,16 +663,18 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Either finds and returns a circulator to the node on the boundary of the component,
-     * which satisfies the {@code predicate} or returns a circulator to the {@code stop} node.
+     * Either finds and returns a circulator to the node on the boundary of the component, which
+     * satisfies the {@code predicate} or returns a circulator to the {@code stop} node.
      *
      * @param predicate the condition the desired node should satisfy
-     * @param start     the node to start the search from
-     * @param stop      the node to end the search with
-     * @param dir       the direction to start the traversal in
+     * @param start the node to start the search from
+     * @param stop the node to end the search with
+     * @param dir the direction to start the traversal in
      * @return a circulator to the node satisfying the {@code predicate} or to the {@code stop} node
      */
-    private OuterFaceCirculator selectOnOuterFace(Predicate<Node> predicate, Node start, Node stop, int dir) {
+    private OuterFaceCirculator selectOnOuterFace(
+        Predicate<Node> predicate, Node start, Node stop, int dir)
+    {
         OuterFaceCirculator circulator = start.iterator(dir);
         Node current = circulator.next();
         while (current != stop && !predicate.test(current)) {
@@ -637,29 +684,32 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Returns an active node on the outer face in the direction {@code dir} starting from
-     * the {@code start} node
+     * Returns an active node on the outer face in the direction {@code dir} starting from the
+     * {@code start} node
      *
      * @param start the node to start the search from
-     * @param v     an ancestor of the {@code start}
-     * @param dir   the direction of the search
+     * @param v an ancestor of the {@code start}
+     * @param dir the direction of the search
      * @return a circulator to the found node
      */
-    private OuterFaceCirculator getActiveSuccessorOnOuterFace(Node start, Node v, int dir) {
+    private OuterFaceCirculator getActiveSuccessorOnOuterFace(Node start, Node v, int dir)
+    {
         return selectOnOuterFace(n -> n.isActiveWrtTo(v), start, start, dir);
     }
 
     /**
-     * Returns acirculator to the externally active node on the outer face between the {@code start} and
-     * {@code end} nodes in the direction {@code dir}.
+     * Returns acirculator to the externally active node on the outer face between the {@code start}
+     * and {@code end} nodes in the direction {@code dir}.
      *
      * @param start the node to start the search from
-     * @param stop  the node to end the search with
-     * @param v     an ancestor of the {@code start} and the {@code end}
-     * @param dir   the direction of the search
+     * @param stop the node to end the search with
+     * @param v an ancestor of the {@code start} and the {@code end}
+     * @param dir the direction of the search
      * @return a circulator to the found node
      */
-    private OuterFaceCirculator getExternallyActiveSuccessorOnOuterFace(Node start, Node stop, Node v, int dir) {
+    private OuterFaceCirculator getExternallyActiveSuccessorOnOuterFace(
+        Node start, Node stop, Node v, int dir)
+    {
         return selectOnOuterFace(n -> n.isExternallyActiveWrtTo(v), start, stop, dir);
     }
 
@@ -669,19 +719,21 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * @param node a node in the partially embedded graph
      * @return a component root of the component the {@code node} belongs to
      */
-    private Node getComponentRoot(Node node) {
+    private Node getComponentRoot(Node node)
+    {
         return selectOnOuterFace(Node::isRootVertex, node, node, 0).getCurrent();
     }
 
     /**
-     * Adds the edges on the path from the {@code startEdge} up to the node {@code stop}
-     * to the set {@code edges}
+     * Adds the edges on the path from the {@code startEdge} up to the node {@code stop} to the set
+     * {@code edges}
      *
-     * @param edges     the set to add the path edges to
+     * @param edges the set to add the path edges to
      * @param startEdge the edge to start from
-     * @param stop      the last node on the path
+     * @param stop the last node on the path
      */
-    private void addPathEdges(Set<Edge> edges, Edge startEdge, Node stop) {
+    private void addPathEdges(Set<Edge> edges, Edge startEdge, Node stop)
+    {
         edges.add(startEdge);
         Node current = startEdge.source;
         while (current != stop) {
@@ -695,9 +747,10 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      *
      * @param edges the set to add the path edges to to
      * @param start the node to start from
-     * @param stop  the node to end with
+     * @param stop the node to end with
      */
-    private void addPathEdges(Set<Edge> edges, Node start, Node stop) {
+    private void addPathEdges(Set<Edge> edges, Node start, Node stop)
+    {
         if (start != stop) {
             addPathEdges(edges, start.parentEdge, stop);
         }
@@ -706,23 +759,25 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * Searches a back edge which target has a height smaller than {@code heightMax}
      *
-     * @param current   the node to start from
+     * @param current the node to start from
      * @param heightMax an upper bound on the height of the desired back edge
      * @return the desired back edge or null, if no such edge exist
      */
-    private Edge searchEdge(Node current, int heightMax) {
+    private Edge searchEdge(Node current, int heightMax)
+    {
         return searchEdge(current, heightMax, null);
     }
 
     /**
      * Searches a back edge which target has a height smaller than {@code heightMax}
      *
-     * @param current       the node to start from
-     * @param heightMax     an upper bound on the height of the desired back edge
+     * @param current the node to start from
+     * @param heightMax an upper bound on the height of the desired back edge
      * @param forbiddenEdge an edge the desired edge should not be equal to
      * @return the desired back edge or null, if no such edge exist
      */
-    private Edge searchEdge(Node current, int heightMax, Edge forbiddenEdge) {
+    private Edge searchEdge(Node current, int heightMax, Edge forbiddenEdge)
+    {
         Predicate<Edge> isNeeded = e -> {
             if (forbiddenEdge == e) {
                 return false;
@@ -733,14 +788,16 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Generically searches an edge in the subtree rooted at the {@code current}, which doesn't include
-     * the children of the {@code current} that have beem merged to the parent biconnected component.
+     * Generically searches an edge in the subtree rooted at the {@code current}, which doesn't
+     * include the children of the {@code current} that have beem merged to the parent biconnected
+     * component.
      *
-     * @param current  the node to start the searh from
+     * @param current the node to start the searh from
      * @param isNeeded the predicate which the desired edge should satisfy
      * @return an edge which satisfies the {@code predicate}, or null if such an edge doesn't exist
      */
-    private Edge searchEdge(Node current, Predicate<Edge> isNeeded) {
+    private Edge searchEdge(Node current, Predicate<Edge> isNeeded)
+    {
         for (Node node : current.separatedDfsChildList) {
             Edge result = searchSubtreeDfs(node, isNeeded);
             if (result != null) {
@@ -756,14 +813,15 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Recursively searches all the subtree root at the node {@code start} to find
-     * an edge satisfying the {@code predicate}.
+     * Recursively searches all the subtree root at the node {@code start} to find an edge
+     * satisfying the {@code predicate}.
      *
-     * @param start    the node to start the search from.
+     * @param start the node to start the search from.
      * @param isNeeded a predicate, which the desired edge should satisfy
      * @return a desired edge, or null if no such edge exist.
      */
-    private Edge searchSubtreeDfs(Node start, Predicate<Edge> isNeeded) {
+    private Edge searchSubtreeDfs(Node start, Predicate<Edge> isNeeded)
+    {
         List<Node> stack = new ArrayList<>();
         stack.add(start);
         while (!stack.isEmpty()) {
@@ -788,7 +846,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * @param b a node in the dfs tree
      * @return the highest of the two nodes
      */
-    private Node highest(Node a, Node b) {
+    private Node highest(Node a, Node b)
+    {
         return a.height > b.height ? a : b;
     }
 
@@ -799,20 +858,22 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * @param b a node in the dfs tree
      * @return the lowest of the two nodes
      */
-    private Node lowest(Node a, Node b) {
+    private Node lowest(Node a, Node b)
+    {
         return a.height < b.height ? a : b;
     }
 
     /**
-     * Iteratively sets a boundary height for the nodes on the outer face branch ending at the
-     * node {@code w}.
+     * Iteratively sets a boundary height for the nodes on the outer face branch ending at the node
+     * {@code w}.
      *
      * @param componentRoot the root of the component
-     * @param w             the end of the outer face branch
-     * @param dir           the direction to start the traversal in
-     * @param delta         a value in $\{+1, -1\}$ to set either positive or negative boundary height
+     * @param w the end of the outer face branch
+     * @param dir the direction to start the traversal in
+     * @param delta a value in $\{+1, -1\}$ to set either positive or negative boundary height
      */
-    private void setBoundaryDepth(Node componentRoot, Node w, int dir, int delta) {
+    private void setBoundaryDepth(Node componentRoot, Node w, int dir, int delta)
+    {
         OuterFaceCirculator circulator = componentRoot.iterator(dir);
         Node current = circulator.next();
         int currentHeight = delta;
@@ -826,25 +887,30 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * Clears the visited variable of all the nodes and component roots
      */
-    private void clearVisited() {
+    private void clearVisited()
+    {
         nodes.forEach(n -> n.visited = 0);
         componentRoots.forEach(n -> n.visited = 0);
     }
 
     /**
      * Generically searches a path from the {@code current} node to the first node satisfying the
-     * {@code isFinish} predicate consisting of all the nodes satisfying the {@code canGo} predicate.
-     * The key property of this method is that it searches the next edge on the path in the clockwise order
-     * starting from the previous edge. The edges of the resulting path are added to the {@code edges}.
+     * {@code isFinish} predicate consisting of all the nodes satisfying the {@code canGo}
+     * predicate. The key property of this method is that it searches the next edge on the path in
+     * the clockwise order starting from the previous edge. The edges of the resulting path are
+     * added to the {@code edges}.
      *
-     * @param start     the start node of the traversal
+     * @param start the start node of the traversal
      * @param startPrev the previous edge of the start node
-     * @param canGo     specifies where the search can go
-     * @param isFinish  specifies what nodes are finish nodes
-     * @param edges     the list containing the resulting path
+     * @param canGo specifies where the search can go
+     * @param isFinish specifies what nodes are finish nodes
+     * @param edges the list containing the resulting path
      * @return true if the search was successful, false otherwise
      */
-    private boolean findPathDfs(Node start, Edge startPrev, Predicate<Node> canGo, Predicate<Node> isFinish, List<Edge> edges) {
+    private boolean findPathDfs(
+        Node start, Edge startPrev, Predicate<Node> canGo, Predicate<Node> isFinish,
+        List<Edge> edges)
+    {
         List<SearchInfo> stack = new ArrayList<>();
         stack.add(new SearchInfo(start, startPrev, false));
         while (!stack.isEmpty()) {
@@ -864,15 +930,17 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 stack.add(new SearchInfo(info.current, info.prevEdge, true));
                 edges.add(info.prevEdge);
                 /*
-                 * The iteration is performed in the reverse order since the infos are pushed on
-                 * the stack and therefore will be processed in the again reverse order
+                 * The iteration is performed in the reverse order since the infos are pushed on the
+                 * stack and therefore will be processed in the again reverse order
                  */
                 Iterator<Edge> iterator =
                     info.current.embedded.reverseCircularIterator(info.prevEdge);
                 while (iterator.hasNext()) {
                     Edge currentEdge = iterator.next();
                     Node opposite = currentEdge.getOpposite(info.current);
-                    if ((!canGo.test(opposite) || opposite.visited != 0) && !isFinish.test(opposite)) {
+                    if ((!canGo.test(opposite) || opposite.visited != 0)
+                        && !isFinish.test(opposite))
+                    {
                         continue;
                     }
                     stack.add(new SearchInfo(opposite, currentEdge, false));
@@ -883,22 +951,27 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Finds the highest obstructing path in the component rooted at {@code componentRoot}. See the original
-     * paper for the definition of the obstructing path. This method heavily relies on the fact that the
-     * method {@link BoyerMyrvoldPlanarityInspector#findPathDfs(Node, Edge, Predicate, Predicate, List)} chooses
-     * the edges in the clockwise order.
+     * Finds the highest obstructing path in the component rooted at {@code componentRoot}. See the
+     * original paper for the definition of the obstructing path. This method heavily relies on the
+     * fact that the method
+     * {@link BoyerMyrvoldPlanarityInspector#findPathDfs(Node, Edge, Predicate, Predicate, List)}
+     * chooses the edges in the clockwise order.
      *
      * @param componentRoot the root of the component
-     * @param w             the node called {@code w} in the Kuratowski subdivision extraction phase.
+     * @param w the node called {@code w} in the Kuratowski subdivision extraction phase.
      * @return the edges of the desired path as a list
      */
-    private List<Edge> findHighestObstructingPath(Node componentRoot, Node w) {
+    private List<Edge> findHighestObstructingPath(Node componentRoot, Node w)
+    {
         clearVisited();
         List<Edge> result = new ArrayList<>();
         OuterFaceCirculator circulator = componentRoot.iterator(0);
         Node current = circulator.next();
         while (current != w) {
-            if (findPathDfs(current, current.embedded.getFirst(), n -> !n.marked, n -> n.boundaryHeight < 0, result)) {
+            if (findPathDfs(
+                current, current.embedded.getFirst(), n -> !n.marked, n -> n.boundaryHeight < 0,
+                result))
+            {
                 return result;
             }
             current = circulator.next();
@@ -912,7 +985,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * @param subdivision the edges in the Kuratowski subdivision
      * @return the Kuratowski subgraph of the {@code graph}
      */
-    private Graph<V, E> finish(Set<Edge> subdivision) {
+    private Graph<V, E> finish(Set<Edge> subdivision)
+    {
         Set<E> edgeSubset = new HashSet<>();
         Set<V> vertexSubset = new HashSet<>();
         subdivision.forEach(e -> {
@@ -925,13 +999,14 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Adds the edges on the outer face of the component rooted at {@code componentRoot} to
-     * the set {@code edges}
+     * Adds the edges on the outer face of the component rooted at {@code componentRoot} to the set
+     * {@code edges}
      *
-     * @param edges         the set to add the edges to
+     * @param edges the set to add the edges to
      * @param componentRoot the root of the biconnected component
      */
-    private void addBoundaryEdges(Set<Edge> edges, Node componentRoot) {
+    private void addBoundaryEdges(Set<Edge> edges, Node componentRoot)
+    {
         OuterFaceCirculator circulator = componentRoot.iterator(0);
         Node current;
         do {
@@ -945,7 +1020,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * Cleans up the dfs trees before the Kuratowski subdivision extraction phase
      */
-    private void kuratowskiCleanUp() {
+    private void kuratowskiCleanUp()
+    {
         for (Node dfsTreeRoot : dfsTreeRoots) {
             cleanUpDfs(dfsTreeRoot);
         }
@@ -958,12 +1034,13 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Recursively cleans up the dfs tree rooted at the {@code dfsTreeRoot} my removing all
-     * the short-circuit edges and properly orienting other embedded edges
+     * Recursively cleans up the dfs tree rooted at the {@code dfsTreeRoot} my removing all the
+     * short-circuit edges and properly orienting other embedded edges
      *
      * @param dfsTreeRoot the root of the dfs tree to clean up
      */
-    private void cleanUpDfs(Node dfsTreeRoot) {
+    private void cleanUpDfs(Node dfsTreeRoot)
+    {
         List<Pair<Node, Integer>> stack = new ArrayList<>();
         stack.add(Pair.of(dfsTreeRoot, 1));
         while (!stack.isEmpty()) {
@@ -992,13 +1069,16 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      *
      * @param componentRoot the root of the component to process
      */
-    private void fixBoundaryOrder(Node componentRoot) {
+    private void fixBoundaryOrder(Node componentRoot)
+    {
         if (componentRoot.embedded.size() < 2) {
             return;
         }
         Node componentParent = componentRoot.getParent();
-        Edge edgeToNext = componentRoot.embedded.getLast(), edgeToPrev = componentRoot.embedded.getFirst();
-        Node next = edgeToNext.getOpposite(componentParent), prev = edgeToPrev.getOpposite(componentParent);
+        Edge edgeToNext = componentRoot.embedded.getLast(),
+            edgeToPrev = componentRoot.embedded.getFirst();
+        Node next = edgeToNext.getOpposite(componentParent),
+            prev = edgeToPrev.getOpposite(componentParent);
 
         componentRoot.outerFaceNeighbors[0] = next;
         componentRoot.outerFaceNeighbors[1] = prev;
@@ -1021,15 +1101,16 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Removes the edges from the outer face from the {@code start} node to the {@code end} node
-     * in the direction {@code dir} from the set {@code edges}
+     * Removes the edges from the outer face from the {@code start} node to the {@code end} node in
+     * the direction {@code dir} from the set {@code edges}
      *
      * @param start the start of the boundary path
-     * @param end   the end of the boundary path
-     * @param dir   the direction to take from the {@code start} node
+     * @param end the end of the boundary path
+     * @param dir the direction to take from the {@code start} node
      * @param edges the set of edges to modify
      */
-    private void removeUp(Node start, Node end, int dir, Set<Edge> edges) {
+    private void removeUp(Node start, Node end, int dir, Set<Edge> edges)
+    {
         if (start == end) {
             return;
         }
@@ -1044,13 +1125,16 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
 
     /**
      * Effectively is a method for finding node {@code z} in the notations of the original paper.
-     * The search proceeds in the reverse order of the path from the {@code backEdge} to the node {@code w}
+     * The search proceeds in the reverse order of the path from the {@code backEdge} to the node
+     * {@code w}
      *
-     * @param w        the start of the path down
+     * @param w the start of the path down
      * @param backEdge the last edge on the path
-     * @return the desired node {@code z} or null if the source of the {@code backEdge} is equal to {@code w}
+     * @return the desired node {@code z} or null if the source of the {@code backEdge} is equal to
+     *         {@code w}
      */
-    private Node getNextOnPath(Node w, Edge backEdge) {
+    private Node getNextOnPath(Node w, Edge backEdge)
+    {
         if (backEdge.source == w) {
             return null;
         }
@@ -1063,19 +1147,21 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Finds a path from some intermediate nodes on the path represented by the list {@code path} to the
-     * node {@code v}. The path to {@code v} certainly doesn't exist if the list {@code path} has size 1,
-     * because we're looking for a path from some intermediate node
+     * Finds a path from some intermediate nodes on the path represented by the list {@code path} to
+     * the node {@code v}. The path to {@code v} certainly doesn't exist if the list {@code path}
+     * has size 1, because we're looking for a path from some intermediate node
      *
      * @param path the path between left and right outer face branches
-     * @param v    the parent of the biconnected component
+     * @param v the parent of the biconnected component
      * @return the path edges in a list, which can be empty
      */
-    private List<Edge> findPathToV(List<Edge> path, Node v) {
+    private List<Edge> findPathToV(List<Edge> path, Node v)
+    {
         clearVisited();
         int i = 0;
         Edge currentEdge = path.get(i);
-        Node current = currentEdge.source.boundaryHeight != 0 ? currentEdge.target : currentEdge.source;
+        Node current =
+            currentEdge.source.boundaryHeight != 0 ? currentEdge.target : currentEdge.source;
         List<Edge> result = new ArrayList<>();
         while (i < path.size() - 1) {
             if (findPathDfs(current, currentEdge, n -> !n.marked, n -> n == v, result)) {
@@ -1096,25 +1182,30 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * @param c a node in the dfs tree
      * @return true if the first node in strictly higher that other node, false otherwise
      */
-    private boolean firstStrictlyHigher(Node a, Node b, Node c) {
+    private boolean firstStrictlyHigher(Node a, Node b, Node c)
+    {
         return a.height > b.height && a.height > c.height;
     }
 
     /**
-     * Checks whether the biconnected component rooted at {@code componentRoot} can be used to extract a
-     * Kuratowski subdivision. It can be used in the case there is one externally active node on each
-     * branch of the outer face and there is a pertinent node on the lower part of the outer face between
-     * these two externally active nodes.
+     * Checks whether the biconnected component rooted at {@code componentRoot} can be used to
+     * extract a Kuratowski subdivision. It can be used in the case there is one externally active
+     * node on each branch of the outer face and there is a pertinent node on the lower part of the
+     * outer face between these two externally active nodes.
      *
      * @param componentRoot the root of the biconnected component
-     * @param v             an ancestor of the nodes in the biconnected component
+     * @param v an ancestor of the nodes in the biconnected component
      * @return an unembedded back edge, which target is {@code v} and which can be used to extract a
-     * Kuratowski subdivision, or {@code null} is no such edge exist for this biconnected component
+     *         Kuratowski subdivision, or {@code null} is no such edge exist for this biconnected
+     *         component
      */
-    private Edge checkComponentForFailedEdge(Node componentRoot, Node v) {
-        OuterFaceCirculator firstDir = getExternallyActiveSuccessorOnOuterFace(componentRoot, componentRoot, v, 0);
+    private Edge checkComponentForFailedEdge(Node componentRoot, Node v)
+    {
+        OuterFaceCirculator firstDir =
+            getExternallyActiveSuccessorOnOuterFace(componentRoot, componentRoot, v, 0);
         Node firstDirNode = firstDir.getCurrent();
-        OuterFaceCirculator secondDir = getExternallyActiveSuccessorOnOuterFace(componentRoot, componentRoot, v, 1);
+        OuterFaceCirculator secondDir =
+            getExternallyActiveSuccessorOnOuterFace(componentRoot, componentRoot, v, 1);
         Node secondDirNode = secondDir.getCurrent();
         if (firstDirNode != componentRoot && firstDirNode != secondDirNode) {
             Node current = firstDir.next();
@@ -1129,21 +1220,23 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Finds an unembedded back edge to {@code v}, which can be used to extract the Kuratowski subdivision.
-     * If the merge stack isn't empty, the last biconnected component processed by the walkdown can be used
-     * to find such an edge, because walkdown descended to that component (which means that component is pertinent)
-     * and couldn't reach a pertinent node. This can only happen by encountering externally active nodes on both
-     * branches of the traversal. Otherwise, be have look in all the child biconnected components to find an
-     * unembedded back edge. We're guided by the fact that an edge can not be embedded only in the case both
-     * traversals of the walkdown could reach all off the pertinent nodes. This in turn can happen only if
-     * both traversals get stuck on externally active nodes.
+     * Finds an unembedded back edge to {@code v}, which can be used to extract the Kuratowski
+     * subdivision. If the merge stack isn't empty, the last biconnected component processed by the
+     * walkdown can be used to find such an edge, because walkdown descended to that component
+     * (which means that component is pertinent) and couldn't reach a pertinent node. This can only
+     * happen by encountering externally active nodes on both branches of the traversal. Otherwise,
+     * be have look in all the child biconnected components to find an unembedded back edge. We're
+     * guided by the fact that an edge can not be embedded only in the case both traversals of the
+     * walkdown could reach all off the pertinent nodes. This in turn can happen only if both
+     * traversals get stuck on externally active nodes.
      * <p>
      * <b>Note:</b> not every unembedded back edge can be used to extract a Kuratowski subdivision
      *
      * @param v the vertex which has an unembedded back edge incident to it
      * @return the found unembedded back edge which can be used to extract a Kuratowski subdivision
      */
-    private Edge findFailedEdge(Node v) {
+    private Edge findFailedEdge(Node v)
+    {
         if (stack.isEmpty()) {
             for (Node child : v.separatedDfsChildList) {
                 Node componentRoot = child.initialComponentRoot;
@@ -1165,7 +1258,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      *
      * @return a Kuratowski subgraph of the {@code graph}
      */
-    private Graph<V, E> lazyExtractKuratowskiSubdivision() {
+    private Graph<V, E> lazyExtractKuratowskiSubdivision()
+    {
         if (kuratowskiSubdivision == null) {
             // remove short-circuit edges and orient all embedded lists clockwise
             kuratowskiCleanUp();
@@ -1177,10 +1271,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
             Edge failedEdge = findFailedEdge(failedV);
             assert failedEdge != null;
             /*
-             * We're iteratively moving up traversing the outer faces of the biconnected components to find
-             * externally active nodes x and y, which are on different branches of the outer face. The way we're
-             * finding the nodes x and y helps us eliminate the case E_1 described in the original paper. This can
-             * be done because we always find the closest to the node w externally active nodes x and y.
+             * We're iteratively moving up traversing the outer faces of the biconnected components
+             * to find externally active nodes x and y, which are on different branches of the outer
+             * face. The way we're finding the nodes x and y helps us eliminate the case E_1
+             * described in the original paper. This can be done because we always find the closest
+             * to the node w externally active nodes x and y.
              */
             Node x, y, v = failedEdge.target, w = failedEdge.source, componentRoot;
             while (true) {
@@ -1199,9 +1294,12 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
             Edge xBackEdge = searchEdge(x, v.height);
             Edge yBackEdge = searchEdge(y, v.height);
             if (DEBUG) {
-                System.out.printf("Failed v = %s, failed edge = %s\n", failedV.toString(false), failedEdge.toString());
+                System.out.printf(
+                    "Failed v = %s, failed edge = %s\n", failedV.toString(false),
+                    failedEdge.toString());
                 System.out.printf("x = %s, y = %s\n", x.toString(false), y.toString(false));
-                System.out.printf("xBackEdge = %s, yBackEdge = %s\n", xBackEdge.toString(), yBackEdge.toString());
+                System.out.printf(
+                    "xBackEdge = %s, yBackEdge = %s\n", xBackEdge.toString(), yBackEdge.toString());
             }
             Node backLower = lowest(xBackEdge.target, yBackEdge.target);
             Node backHigher = highest(xBackEdge.target, yBackEdge.target);
@@ -1231,14 +1329,15 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 }
                 addPathEdges(subdivision, backEdge, w);
                 addPathEdges(subdivision, failedEdge, w);
-                Node highest = highest(xBackEdge.target, highest(yBackEdge.target, backEdge.target));
+                Node highest =
+                    highest(xBackEdge.target, highest(yBackEdge.target, backEdge.target));
                 Node lowest = lowest(xBackEdge.target, lowest(yBackEdge.target, backEdge.target));
                 addPathEdges(subdivision, highest, lowest);
                 return finish(subdivision);
             }
             /*
-             * If we failed to either case A or B, we have to find a highest obstructing path
-             * and then deal with cases C - E
+             * If we failed to either case A or B, we have to find a highest obstructing path and
+             * then deal with cases C - E
              */
             setBoundaryDepth(componentRoot, w, 0, 1);
             setBoundaryDepth(componentRoot, w, 1, -1);
@@ -1252,10 +1351,14 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
 
             Edge firstEdge = path.get(0);
             Edge lastEdge = path.get(path.size() - 1);
-            Node firstNode = firstEdge.source.boundaryHeight > 0 ? firstEdge.source : firstEdge.target;
+            Node firstNode =
+                firstEdge.source.boundaryHeight > 0 ? firstEdge.source : firstEdge.target;
             Node lastNode = lastEdge.source.boundaryHeight < 0 ? lastEdge.source : lastEdge.target;
-            if (firstNode.boundaryHeight < x.boundaryHeight || lastNode.boundaryHeight > y.boundaryHeight) {
-                // case C, either the first node or the last node of the path is higher than x or y respectively
+            if (firstNode.boundaryHeight < x.boundaryHeight
+                || lastNode.boundaryHeight > y.boundaryHeight)
+            {
+                // case C, either the first node or the last node of the path is higher than x or y
+                // respectively
                 if (PRINT_CASES) {
                     System.out.println("Case C");
                 }
@@ -1298,7 +1401,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                     System.out.println("Case E_2");
                 }
                 addPathEdges(subdivision, componentRoot.getParent(), backLower);
-            } else if (firstStrictlyHigher(xBackEdge.target, yBackEdge.target, externallyActive.target)) {
+            } else if (firstStrictlyHigher(
+                xBackEdge.target, yBackEdge.target, externallyActive.target))
+            {
                 // case E_2, u_x is higher
                 if (PRINT_CASES) {
                     System.out.println("Case E_2, u_x is higher");
@@ -1308,7 +1413,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 subdivision.addAll(path);
                 addPathEdges(subdivision, failedEdge, w);
                 addPathEdges(subdivision, v, lowest(backLower, externallyActive.target));
-            } else if (firstStrictlyHigher(yBackEdge.target, xBackEdge.target, externallyActive.target)) {
+            } else if (firstStrictlyHigher(
+                yBackEdge.target, xBackEdge.target, externallyActive.target))
+            {
                 // case E_2, u_y is higher
                 if (PRINT_CASES) {
                     System.out.println("Case E_2, u_y is higher");
@@ -1326,7 +1433,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 removeUp(w, lastNode, 0, subdivision);
                 subdivision.addAll(path);
                 addPathEdges(subdivision, failedEdge, w);
-                addPathEdges(subdivision, highest(backHigher, externallyActive.target), lowest(backLower, externallyActive.target));
+                addPathEdges(
+                    subdivision, highest(backHigher, externallyActive.target),
+                    lowest(backLower, externallyActive.target));
             } else if (lastNode.boundaryHeight < y.boundaryHeight) {
                 // case E_4, p_y is lower than y
                 if (PRINT_CASES) {
@@ -1335,7 +1444,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 removeUp(firstNode, w, 0, subdivision);
                 subdivision.addAll(path);
                 addPathEdges(subdivision, failedEdge, w);
-                addPathEdges(subdivision, highest(backHigher, externallyActive.target), lowest(backLower, externallyActive.target));
+                addPathEdges(
+                    subdivision, highest(backHigher, externallyActive.target),
+                    lowest(backLower, externallyActive.target));
             } else {
                 // case E, extracting K_5
                 if (PRINT_CASES) {
@@ -1353,40 +1464,44 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * {@inheritDoc}
      * <p>
-     * Only the first call to this method does the actual computation, all subsequent calls only return the
-     * previously computed value.
+     * Only the first call to this method does the actual computation, all subsequent calls only
+     * return the previously computed value.
      */
     @Override
-    public boolean isPlanar() {
+    public boolean isPlanar()
+    {
         return lazyTestPlanarity();
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * Only the first call to this method does the actual computation, all subsequent calls only return the
-     * previously computed value.
+     * Only the first call to this method does the actual computation, all subsequent calls only
+     * return the previously computed value.
      */
     @Override
-    public Embedding<V, E> getEmbedding() {
+    public Embedding<V, E> getEmbedding()
+    {
         return lazyComputeEmbedding();
     }
 
     /**
      * {@inheritDoc}
      * <p>
-     * Only the first call to this method does the actual computation, all subsequent calls only return the
-     * previously computed value.
+     * Only the first call to this method does the actual computation, all subsequent calls only
+     * return the previously computed value.
      */
     @Override
-    public Graph<V, E> getKuratowskiSubdivision() {
+    public Graph<V, E> getKuratowskiSubdivision()
+    {
         return lazyExtractKuratowskiSubdivision();
     }
 
     /**
      * Represents information needed to search a path within a biconnected component
      */
-    private class SearchInfo {
+    private class SearchInfo
+    {
         /**
          * The current node of the dfs traversal
          */
@@ -1403,11 +1518,12 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         /**
          * Creates a new search info
          *
-         * @param current   the current node of the traversal
-         * @param prevEdge  the edge used to go to the {@code current} vertex
+         * @param current the current node of the traversal
+         * @param prevEdge the edge used to go to the {@code current} vertex
          * @param backtrack whether dfs is in a forward or a backtracking phase
          */
-        SearchInfo(Node current, Edge prevEdge, boolean backtrack) {
+        SearchInfo(Node current, Edge prevEdge, boolean backtrack)
+        {
             this.current = current;
             this.prevEdge = prevEdge;
             this.backtrack = backtrack;
@@ -1415,9 +1531,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     }
 
     /**
-     * Represents information needed to store in the stack during the input {@code graph} orientation.
+     * Represents information needed to store in the stack during the input {@code graph}
+     * orientation.
      */
-    private class OrientDfsStackInfo {
+    private class OrientDfsStackInfo
+    {
         /**
          * The current vertex of the dfs traversal
          */
@@ -1436,15 +1554,17 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         boolean backtrack;
 
         /**
-         * Creates new instance of the information stored on the stack during the orientation of
-         * the {@code graph}
+         * Creates new instance of the information stored on the stack during the orientation of the
+         * {@code graph}
          *
-         * @param current    the vertex dfs is currently processing
-         * @param parent     the parent of the {@code current} vertex
+         * @param current the vertex dfs is currently processing
+         * @param parent the parent of the {@code current} vertex
          * @param parentEdge the edge between {@code current} and {@code parent} vertices
-         * @param backtrack  whether dfs is moving forward or backtracking on the {@code current} vertex
+         * @param backtrack whether dfs is moving forward or backtracking on the {@code current}
+         *        vertex
          */
-        OrientDfsStackInfo(V current, V parent, E parentEdge, boolean backtrack) {
+        OrientDfsStackInfo(V current, V parent, E parentEdge, boolean backtrack)
+        {
             this.current = current;
             this.parent = parent;
             this.parentEdge = parentEdge;
@@ -1455,9 +1575,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * The information needed to merge two consecutive biconnected components
      */
-    private class MergeInfo {
+    private class MergeInfo
+    {
         /**
-         * The node current traversal descended from. This node belongs to the parent biconnected component
+         * The node current traversal descended from. This node belongs to the parent biconnected
+         * component
          */
         Node parent;
         /**
@@ -1475,30 +1597,31 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         /**
          * The direction used to enter the parent biconnected component.
          * <p>
-         * <b>Note:</b> this value doesn't specify the direction from {@code parent} node to
-         * the {@code parentNext} node, i.e. {@code parent.outerFaceNeighbors[vIn]} may not be
-         * equal to the {@code parentNext}. Instead, this value specifies the direction used to
-         * start the traversal from the parent's biconnected component virtual root.
+         * <b>Note:</b> this value doesn't specify the direction from {@code parent} node to the
+         * {@code parentNext} node, i.e. {@code parent.outerFaceNeighbors[vIn]} may not be equal to
+         * the {@code parentNext}. Instead, this value specifies the direction used to start the
+         * traversal from the parent's biconnected component virtual root.
          */
         int vIn;
         /**
          * The direction used to start the traversal of the child biconnected component. Since the
-         * {@code child} is the component root, {@code child.outerFaceNeighbors[|1-vOut|]} is equal to
-         * the {@code childPrev}
+         * {@code child} is the component root, {@code child.outerFaceNeighbors[|1-vOut|]} is equal
+         * to the {@code childPrev}
          */
         int vOut;
 
         /**
          * Creates new instance of the infromation needed to merge to biconnected components
          *
-         * @param parent     the node current traversal descended from
+         * @param parent the node current traversal descended from
          * @param parentNext the next node along the traversal of the parent component
-         * @param child      the virtual root of the child biconnected component
-         * @param childPrev  the previous node along the traversal of the child component
-         * @param vIn        the direction used to enter the parent biconnected component
-         * @param vOut       the direction used to enter the child biconnected component
+         * @param child the virtual root of the child biconnected component
+         * @param childPrev the previous node along the traversal of the child component
+         * @param vIn the direction used to enter the parent biconnected component
+         * @param vOut the direction used to enter the child biconnected component
          */
-        MergeInfo(Node parent, Node parentNext, Node child, Node childPrev, int vIn, int vOut) {
+        MergeInfo(Node parent, Node parentNext, Node child, Node childPrev, int vIn, int vOut)
+        {
             this.parent = parent;
             this.parentNext = parentNext;
             this.child = child;
@@ -1508,13 +1631,14 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         }
 
         /**
-         * Returns true if the traversal was inverted when descending to the child biconnected component,
-         * false otherwise
+         * Returns true if the traversal was inverted when descending to the child biconnected
+         * component, false otherwise
          *
-         * @return true if the traversal was inverted when descending to the child biconnected component,
-         * false otherwise
+         * @return true if the traversal was inverted when descending to the child biconnected
+         *         component, false otherwise
          */
-        boolean isInverted() {
+        boolean isInverted()
+        {
             return vIn != vOut;
         }
 
@@ -1522,38 +1646,42 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
-            return String.format("Parent dir = {%s -> %s}, child_dir = {%s -> %s}, inverted = %b, vIn = %d, vOut = %d",
-                    parent.toString(false), parentNext.toString(false),
-                    childPrev.toString(false), child.toString(false), isInverted(), vIn, vOut);
+        public String toString()
+        {
+            return String.format(
+                "Parent dir = {%s -> %s}, child_dir = {%s -> %s}, inverted = %b, vIn = %d, vOut = %d",
+                parent.toString(false), parentNext.toString(false), childPrev.toString(false),
+                child.toString(false), isInverted(), vIn, vOut);
         }
     }
 
     /**
-     * A circulator over the nodes on the boundary of the biconnected component.
-     * Traverses the nodes in the cyclic manner, i.e. it doesn't stop when all the
-     * nodes are traversed
+     * A circulator over the nodes on the boundary of the biconnected component. Traverses the nodes
+     * in the cyclic manner, i.e. it doesn't stop when all the nodes are traversed
      */
-    private class OuterFaceCirculator implements Iterator<Node> {
+    private class OuterFaceCirculator
+        implements
+        Iterator<Node>
+    {
         /**
          * The node this circulator will return next
          */
         private Node current;
         /**
-         * The previous node along the traversal of the component boundary. This
-         * node is needed because the component boundary nodes aren't connected in
-         * an ordered way.
+         * The previous node along the traversal of the component boundary. This node is needed
+         * because the component boundary nodes aren't connected in an ordered way.
          */
         private Node prev;
 
         /**
-         * Creates a new instance of the circulator over the biconnected component
-         * boundary nodes. The {@code prev} node is considered to be just traversed
+         * Creates a new instance of the circulator over the biconnected component boundary nodes.
+         * The {@code prev} node is considered to be just traversed
          *
          * @param current the node this circulator will return next
-         * @param prev    the previous node along the traversal
+         * @param prev the previous node along the traversal
          */
-        OuterFaceCirculator(Node current, Node prev) {
+        OuterFaceCirculator(Node current, Node prev)
+        {
             this.current = current;
             this.prev = prev;
         }
@@ -1564,7 +1692,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * Always returns true since this is a circulator
          */
         @Override
-        public boolean hasNext() {
+        public boolean hasNext()
+        {
             return true;
         }
 
@@ -1572,7 +1701,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * {@inheritDoc}
          */
         @Override
-        public Node next() {
+        public Node next()
+        {
             Node t = current;
             current = current.nextOnOuterFace(prev);
             prev = t;
@@ -1580,13 +1710,14 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         }
 
         /**
-         * Returns an edge connecting previously returned node with node, which
-         * will be returned next. If either of the mentioned nodes is virtual,
-         * the edge will be incident to its real counterpart.
+         * Returns an edge connecting previously returned node with node, which will be returned
+         * next. If either of the mentioned nodes is virtual, the edge will be incident to its real
+         * counterpart.
          *
          * @return an edge from the current node to the next node
          */
-        Edge edgeToNext() {
+        Edge edgeToNext()
+        {
             Edge edge = prev.embedded.getFirst();
             Node target = toExistingNode(current);
             Node source = toExistingNode(prev);
@@ -1602,29 +1733,32 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          *
          * @return the node this circulator has just traversed
          */
-        Node getCurrent() {
+        Node getCurrent()
+        {
             return prev;
         }
 
         /**
-         * Returns a node adjacent to the current node along the boundary, which is
-         * not equal to the next node along the traversal. If the component consist
-         * of just one real node, returns the only neighbor the the current node.
+         * Returns a node adjacent to the current node along the boundary, which is not equal to the
+         * next node along the traversal. If the component consist of just one real node, returns
+         * the only neighbor the the current node.
          *
          * @return node before the current node along the traversal
          */
-        Node getPrev() {
+        Node getPrev()
+        {
             return prev.nextOnOuterFace(current);
         }
 
         /**
-         * Returns either {@code node} or its real counterpart in the case the {@code node}
-         * is a component root.
+         * Returns either {@code node} or its real counterpart in the case the {@code node} is a
+         * component root.
          *
          * @param node the input argument
          * @return the real counterpath of the {@code node}
          */
-        private Node toExistingNode(Node node) {
+        private Node toExistingNode(Node node)
+        {
             return node.isRootVertex() ? node.getParent() : node;
         }
 
@@ -1632,7 +1766,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
+        public String toString()
+        {
             return String.format("%s -> %s", prev.toString(false), current.toString(false));
         }
     }
@@ -1640,10 +1775,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
     /**
      * Internal representation of the edges of the input {@code graph}.
      */
-    private class Edge {
+    private class Edge
+    {
         /**
-         * The counterpart of this edge in the {@code graph}. This value can be null if
-         * the edge was created as a short-circuit edge.
+         * The counterpart of this edge in the {@code graph}. This value can be null if the edge was
+         * created as a short-circuit edge.
          */
         E graphEdge;
         /**
@@ -1657,9 +1793,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         Node target;
         /**
          * Either $+1$ or $-1$ for regular and inverted edges respectively. This value is set to
-         * $-1$ to flip a biconnected component in $\mathcal{O}(1)$ time.
-         * <b>Note:</b> this operation doesn't flip any of the child biconnected components
-         * of this biconnected component
+         * $-1$ to flip a biconnected component in $\mathcal{O}(1)$ time. <b>Note:</b> this
+         * operation doesn't flip any of the child biconnected components of this biconnected
+         * component
          */
         int sign;
         /**
@@ -1667,22 +1803,23 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          */
         boolean embedded;
         /**
-         * Whether the edge is real or short-circuit. See the original paper for the
-         * definition of the short-circuit edges.
+         * Whether the edge is real or short-circuit. See the original paper for the definition of
+         * the short-circuit edges.
          */
         boolean shortCircuit;
 
         /**
          * Creates a new short-circuit edge with no counterpart in {@code graph}. The {@code source}
          * of this edge is always a real node on the boundary of some biconnected component, and the
-         * {@code target} node is the parent node of the biconnected component the source node belongs
-         * to, so the edge resembles a regular back edge except for that it doesn't have a counterpart
-         * in the {@code graph}
+         * {@code target} node is the parent node of the biconnected component the source node
+         * belongs to, so the edge resembles a regular back edge except for that it doesn't have a
+         * counterpart in the {@code graph}
          *
          * @param source the source of the short-circuit edge
          * @param target the target of the short-circuit edge
          */
-        Edge(Node source, Node target) {
+        Edge(Node source, Node target)
+        {
             this(null, source, target);
             this.shortCircuit = true;
             this.embedded = true;
@@ -1692,9 +1829,10 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * Creates a new tree edge.
          *
          * @param graphEdge the counterpart of this edge in the {@code graph}
-         * @param source    the source node of this edge
+         * @param source the source node of this edge
          */
-        Edge(E graphEdge, Node source) {
+        Edge(E graphEdge, Node source)
+        {
             this(graphEdge, source, null);
         }
 
@@ -1702,10 +1840,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * Creates a new edge. This constructor is used directly for the creation of the back edges
          *
          * @param graphEdge the counterpart of this edge in the {@code graph}
-         * @param source    the source node of this edge
-         * @param target    the target node of this edge
+         * @param source the source node of this edge
+         * @param target the target node of this edge
          */
-        Edge(E graphEdge, Node source, Node target) {
+        Edge(E graphEdge, Node source, Node target)
+        {
             this.graphEdge = graphEdge;
             this.source = source;
             this.target = target;
@@ -1718,7 +1857,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param node the node to test
          * @return true if this edge is incident to the node {@code node}, false otherwise
          */
-        boolean isIncidentTo(Node node) {
+        boolean isIncidentTo(Node node)
+        {
             return source == node || target == node;
         }
 
@@ -1728,8 +1868,9 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param node an endpoint of this edge
          * @return the other endpoint of this edge
          */
-        Node getOpposite(Node node) {
-            assert isIncidentTo(node);  // debug purpose assertion
+        Node getOpposite(Node node)
+        {
+            assert isIncidentTo(node); // debug purpose assertion
             return source == node ? target : source;
         }
 
@@ -1737,7 +1878,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
+        public String toString()
+        {
             String formatString = "%s -> %s";
             if (shortCircuit) {
                 formatString = "%s ~ %s";
@@ -1750,10 +1892,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
      * The internal representation of the vertices of the graph. Contains necessary information to
      * perform dfs traversals, biconnected component boundary traversals, to embed edges, etc.
      */
-    private class Node {
+    private class Node
+    {
         /**
-         * The counterpart of this node in the {@code graph}. For the component roots this value
-         * is {@code null}.
+         * The counterpart of this node in the {@code graph}. For the component roots this value is
+         * {@code null}.
          */
         V graphVertex;
         /**
@@ -1761,20 +1904,20 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          */
         boolean rootVertex;
         /**
-         * The dfs index of this node in the graph. Every node has a unique dfs index in the
-         * range $[0,|V| - 1]$. This value is used to order the nodes for the embedding of the
-         * edges incident to them. The index of the first dfs root is $1$
+         * The dfs index of this node in the graph. Every node has a unique dfs index in the range
+         * $[0,|V| - 1]$. This value is used to order the nodes for the embedding of the edges
+         * incident to them. The index of the first dfs root is $1$
          */
         int dfsIndex;
         /**
-         * The height of the node in the created dfs tree. The root of the tree has height $0$.
-         * The smaller this value is, the lower the node is considered to be.
+         * The height of the node in the created dfs tree. The root of the tree has height $0$. The
+         * smaller this value is, the lower the node is considered to be.
          */
         int height;
         /**
-         * The least <b>dfs index</b> of the nodes' least ancestors in the subtree rooted at
-         * this node. If the subtree doesn't contain a node with a back edge, that ends lower that
-         * this node, this value is equal to the dfs index of this node.
+         * The least <b>dfs index</b> of the nodes' least ancestors in the subtree rooted at this
+         * node. If the subtree doesn't contain a node with a back edge, that ends lower that this
+         * node, this value is equal to the dfs index of this node.
          */
         int lowpoint;
         /**
@@ -1784,23 +1927,24 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         int leastAncestor;
         /**
          * Stores some value to indicate whether this node is visited in the current context or not.
-         * During the testing phase, if this value if equal to the dfs index of the currently processed
-         * node $v$, than this node is visited, otherwise not. During the Kuratowski subdivision extraction
-         * phase, the value of $0$ indicates that the node isn't visited, otherwise, the node is considered
-         * to be visited.
+         * During the testing phase, if this value if equal to the dfs index of the currently
+         * processed node $v$, than this node is visited, otherwise not. During the Kuratowski
+         * subdivision extraction phase, the value of $0$ indicates that the node isn't visited,
+         * otherwise, the node is considered to be visited.
          */
         int visited;
         /**
-         * During the process of embedding of the down edges of the node $v$, this variable is set to
-         * the dfs index of $v$ to indicate that this node has a back edge incident to $v$, which needs
-         * to be embedded.
+         * During the process of embedding of the down edges of the node $v$, this variable is set
+         * to the dfs index of $v$ to indicate that this node has a back edge incident to $v$, which
+         * needs to be embedded.
          */
         int backEdgeFlag;
         /**
          * The height of this node on the boundary of the biconnected component, which is used to
-         * extract the Kuratowski subdivision. The height of the component root is $0$, the heights on
-         * the left side are positive, on the right side - negative. This value is used to quickly determine
-         * for two nodes on the same boundary branch which one is higher (closer to the component root).
+         * extract the Kuratowski subdivision. The height of the component root is $0$, the heights
+         * on the left side are positive, on the right side - negative. This value is used to
+         * quickly determine for two nodes on the same boundary branch which one is higher (closer
+         * to the component root).
          */
         int boundaryHeight;
         /**
@@ -1808,12 +1952,13 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          */
         boolean marked;
         /**
-         * Edge to the parent node of this node in the dfs tree. For tree roots this value is {@code null}
+         * Edge to the parent node of this node in the dfs tree. For tree roots this value is
+         * {@code null}
          */
         Edge parentEdge;
         /**
-         * If this node has a back edge incident to the currently processed node $v$, than this variable
-         * stores this edge
+         * If this node has a back edge incident to the currently processed node $v$, than this
+         * variable stores this edge
          */
         Edge edgeToEmbed;
         /**
@@ -1826,24 +1971,24 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          */
         Node[] outerFaceNeighbors;
         /**
-         * The list containing the dfs children of this node, which are in the different child biconnected
-         * component, i.e. their weren't merged in the parent component.
+         * The list containing the dfs children of this node, which are in the different child
+         * biconnected component, i.e. their weren't merged in the parent component.
          */
         DoublyLinkedList<Node> separatedDfsChildList;
         /**
-         * The roots of the pertinent components during the processing of the node $v$. These are the
-         * components that have pertinent descendant nodes, i.e. nodes incident to the node $v$ via
-         * a back edge
+         * The roots of the pertinent components during the processing of the node $v$. These are
+         * the components that have pertinent descendant nodes, i.e. nodes incident to the node $v$
+         * via a back edge
          */
         DoublyLinkedList<Node> pertinentRoots;
         /**
-         * The list of tree edges incident to this node in the dfs tree. This list doesn't contain
-         * a parent edge of this node
+         * The list of tree edges incident to this node in the dfs tree. This list doesn't contain a
+         * parent edge of this node
          */
         List<Edge> treeEdges;
         /**
-         * The list containing the edges from descendants of this node in the dfs tree. For each such
-         * descendant the corresponding edge is a back edge.
+         * The list containing the edges from descendants of this node in the dfs tree. For each
+         * such descendant the corresponding edge is a back edge.
          */
         List<Edge> downEdges;
         /**
@@ -1851,42 +1996,44 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          */
         List<Edge> backEdges;
         /**
-         * Stores the list node from the {@code separatedDfsChildList} of the parent node
-         * this node is stored in. This enable deleting of this node from the {@code separatedDfsChildList}
+         * Stores the list node from the {@code separatedDfsChildList} of the parent node this node
+         * is stored in. This enable deleting of this node from the {@code separatedDfsChildList}
          * list in $\mathcal{O}(1)$ time
          */
         DoublyLinkedList.ListNode<Node> listNode;
         /**
-         * The list of the embedded edges incident to this node in a clockwise or a counterclockwise order.
-         * The order is counterclockwise if the product of the signs of the parent edges along the path from
-         * the root of the component this node is contained in to this node is equal to $-1$. Otherwise, the
-         * order is clockwise.
+         * The list of the embedded edges incident to this node in a clockwise or a counterclockwise
+         * order. The order is counterclockwise if the product of the signs of the parent edges
+         * along the path from the root of the component this node is contained in to this node is
+         * equal to $-1$. Otherwise, the order is clockwise.
          */
         DoublyLinkedList<Edge> embedded;
 
         /**
          * Creates a new real node with the specified parameters.
          *
-         * @param graphVertex          the counterpart of this node in the {@code graph}
-         * @param dfsIndex             the dfs index of this node
-         * @param height               the height of this node in the dfs tree
+         * @param graphVertex the counterpart of this node in the {@code graph}
+         * @param dfsIndex the dfs index of this node
+         * @param height the height of this node in the dfs tree
          * @param initialComponentRoot the component root of this node.
-         * @param parentEdge           the parent edge of this node
+         * @param parentEdge the parent edge of this node
          */
-        Node(V graphVertex, int dfsIndex, int height, Node initialComponentRoot, Edge parentEdge) {
+        Node(V graphVertex, int dfsIndex, int height, Node initialComponentRoot, Edge parentEdge)
+        {
             this(graphVertex, dfsIndex, parentEdge, false);
             this.height = height;
             this.initialComponentRoot = initialComponentRoot;
         }
 
         /**
-         * Creates a new component root. Dfs index of the component root is equal to dfs index
-         * of its parent.
+         * Creates a new component root. Dfs index of the component root is equal to dfs index of
+         * its parent.
          *
-         * @param dfsIndex   the dfs index of this node
+         * @param dfsIndex the dfs index of this node
          * @param parentEdge the parent edge of this component root
          */
-        Node(int dfsIndex, Edge parentEdge) {
+        Node(int dfsIndex, Edge parentEdge)
+        {
             this(null, dfsIndex, parentEdge, true);
         }
 
@@ -1894,11 +2041,12 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * Creates a new node with the specified parameters
          *
          * @param graphVertex the vertex in the {@code graph} corresponding to this node
-         * @param dfsIndex    the dfs index of this node
-         * @param parentEdge  the parent edge of this node
-         * @param rootVertex  whether this is real or virtual node
+         * @param dfsIndex the dfs index of this node
+         * @param parentEdge the parent edge of this node
+         * @param rootVertex whether this is real or virtual node
          */
-        Node(V graphVertex, int dfsIndex, Edge parentEdge, boolean rootVertex) {
+        Node(V graphVertex, int dfsIndex, Edge parentEdge, boolean rootVertex)
+        {
             this.graphVertex = graphVertex;
             this.dfsIndex = dfsIndex;
             this.parentEdge = parentEdge;
@@ -1924,19 +2072,21 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param node the node that is currently been processed
          * @return true if this node is visited, false otherwise
          */
-        boolean isVisitedWrtTo(Node node) {
+        boolean isVisitedWrtTo(Node node)
+        {
             return node.dfsIndex == visited;
         }
 
         /**
          * Checks whether this node is pertinent in the context of processing the node {@code node}.
-         * During the processing of the node {@code node}, a node is pertinent if it has a back edge to
-         * {@code node} or it has a child biconnected component, which has a pertinent node.
+         * During the processing of the node {@code node}, a node is pertinent if it has a back edge
+         * to {@code node} or it has a child biconnected component, which has a pertinent node.
          *
          * @param node the node that is currently been processed
          * @return true if this node is pertinent, false otherwise
          */
-        boolean isPertinentWrtTo(Node node) {
+        boolean isPertinentWrtTo(Node node)
+        {
             return backEdgeFlag == node.dfsIndex || !pertinentRoots.isEmpty();
         }
 
@@ -1946,7 +2096,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param node the other endpoint of the edge we're looking for
          * @return true if the edge between this node and {@code node} exists, false otherwise
          */
-        boolean hasBackEdgeWrtTo(Node node) {
+        boolean hasBackEdgeWrtTo(Node node)
+        {
             return backEdgeFlag == node.dfsIndex;
         }
 
@@ -1956,11 +2107,13 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * has a child biconnected component with a pertinent node
          *
          * @param node an ancestor of this node
-         * @return true if this node is externally active with respect to the {@code node}, false otherwise
+         * @return true if this node is externally active with respect to the {@code node}, false
+         *         otherwise
          */
-        boolean isExternallyActiveWrtTo(Node node) {
-            return leastAncestor < node.dfsIndex ||
-                    (!separatedDfsChildList.isEmpty() && separatedDfsChildList.getFirst().lowpoint < node.dfsIndex);
+        boolean isExternallyActiveWrtTo(Node node)
+        {
+            return leastAncestor < node.dfsIndex || (!separatedDfsChildList.isEmpty()
+                && separatedDfsChildList.getFirst().lowpoint < node.dfsIndex);
         }
 
         /**
@@ -1968,18 +2121,20 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          *
          * @return true if the node is a component root, false otherwise
          */
-        boolean isRootVertex() {
+        boolean isRootVertex()
+        {
             return rootVertex;
         }
 
         /**
-         * Check whether this node is internally active. A node is internally active if it's pertinent
-         * and not externally active
+         * Check whether this node is internally active. A node is internally active if it's
+         * pertinent and not externally active
          *
          * @param node an ancestor of this node
          * @return true if this node is internally active, false otherwise
          */
-        boolean isInternallyActiveWrtTo(Node node) {
+        boolean isInternallyActiveWrtTo(Node node)
+        {
             return isPertinentWrtTo(node) && !isExternallyActiveWrtTo(node);
         }
 
@@ -1990,29 +2145,32 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param node an ancestor of this node
          * @return true if this node is inactive, false otherwise
          */
-        boolean isInactiveWrtTo(Node node) {
+        boolean isInactiveWrtTo(Node node)
+        {
             return !isExternallyActiveWrtTo(node) && !isPertinentWrtTo(node);
         }
 
         /**
-         * Check whether this node is active. A node is active it is either pertinent or
-         * externally active
+         * Check whether this node is active. A node is active it is either pertinent or externally
+         * active
          *
          * @param node an ancestor of this node
          * @return true if this node is active, false otherwise
          */
-        boolean isActiveWrtTo(Node node) {
+        boolean isActiveWrtTo(Node node)
+        {
             return !isInactiveWrtTo(node);
         }
 
         /**
-         * Returns a circulator, that moves in the direction {@code direction}. The next node along the
-         * traversal will be {@code this.outerFaceNeighbor[direction]}.
+         * Returns a circulator, that moves in the direction {@code direction}. The next node along
+         * the traversal will be {@code this.outerFaceNeighbor[direction]}.
          *
          * @param direction the direction to move in
          * @return an iterator over the boundary nodes in the direction {@code direction}
          */
-        OuterFaceCirculator iterator(int direction) {
+        OuterFaceCirculator iterator(int direction)
+        {
             return new OuterFaceCirculator(outerFaceNeighbors[direction], this);
         }
 
@@ -2022,27 +2180,32 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         }
 
         /**
-         * Returns the parent of this node in the dfs tree. Tree parent of the dfs root node is {@code null}
+         * Returns the parent of this node in the dfs tree. Tree parent of the dfs root node is
+         * {@code null}
          *
          * @return the parent of this node in the dfs tree
          */
-        Node getParent() {
+        Node getParent()
+        {
             return parentEdge == null ? null : parentEdge.source;
         }
 
         /**
-         * Checks whether this node has a neighbor {@code node} on the boundary of the biconnected component
+         * Checks whether this node has a neighbor {@code node} on the boundary of the biconnected
+         * component
          *
          * @param node a possible neighbor of this node
          */
-        void checkIsAdjacent(Node node) {
+        void checkIsAdjacent(Node node)
+        {
             assert node == outerFaceNeighbors[0] || node == outerFaceNeighbors[1];
         }
 
         /**
          * Swaps the outer face neighbors of this node
          */
-        void swapNeighbors() {
+        void swapNeighbors()
+        {
             Node t = outerFaceNeighbors[0];
             outerFaceNeighbors[0] = outerFaceNeighbors[1];
             outerFaceNeighbors[1] = t;
@@ -2051,10 +2214,11 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         /**
          * Substitutes the neighbor {@code node} with a {@code newNeighbor}
          *
-         * @param node        an old neighbor
+         * @param node an old neighbor
          * @param newNeighbor a new neighbor
          */
-        void substitute(Node node, Node newNeighbor) {
+        void substitute(Node node, Node newNeighbor)
+        {
             checkIsAdjacent(node);
             if (outerFaceNeighbors[0] == node) {
                 outerFaceNeighbors[0] = newNeighbor;
@@ -2064,13 +2228,14 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
         }
 
         /**
-         * Substitutes a neighbor of this node, which is not equal to the {@code node},
-         * with the {@code newNeighbor}
+         * Substitutes a neighbor of this node, which is not equal to the {@code node}, with the
+         * {@code newNeighbor}
          *
-         * @param node        the remaining neighbor
+         * @param node the remaining neighbor
          * @param newNeighbor a new neighbor
          */
-        void substituteAnother(Node node, Node newNeighbor) {
+        void substituteAnother(Node node, Node newNeighbor)
+        {
             checkIsAdjacent(node);
             if (outerFaceNeighbors[0] == node) {
                 outerFaceNeighbors[1] = newNeighbor;
@@ -2084,7 +2249,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          *
          * @return true, if this node has a root node neighbor, false otherwise
          */
-        boolean hasRootNeighbor() {
+        boolean hasRootNeighbor()
+        {
             return outerFaceNeighbors[0].isRootVertex() || outerFaceNeighbors[1].isRootVertex();
         }
 
@@ -2094,7 +2260,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param prev a neighbor of this node
          * @return a neightbor, which is not equal to the {@code prev}
          */
-        Node nextOnOuterFace(Node prev) {
+        Node nextOnOuterFace(Node prev)
+        {
             checkIsAdjacent(prev);
             if (outerFaceNeighbors[0] == prev) {
                 return outerFaceNeighbors[1];
@@ -2110,7 +2277,8 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param edge an edge to embed
          * @param prev the node which should be on the new inner face
          */
-        void embedBackEdge(Edge edge, Node prev) {
+        void embedBackEdge(Edge edge, Node prev)
+        {
             assert !embedded.isEmpty();
             if (prev.isRootVertex()) {
                 prev = prev.getParent();
@@ -2132,13 +2300,15 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * (clockwise or counterclockwise). The edges in the {@code edges} list should have the same
          * orientation. If this list is inverted, the sign of the {@code parentEdge} is set to $-1$.
          *
-         * @param edges      the edges from the child component root
-         * @param vIn        the direction used to enter the parent component
-         * @param vOut       the direction used to enter the child component
+         * @param edges the edges from the child component root
+         * @param vIn the direction used to enter the parent component
+         * @param vOut the direction used to enter the child component
          * @param parentNext the next node along the traversal of the parent biconnected component
          * @param parentEdge the parent edge if the child component
          */
-        void mergeChildEdges(DoublyLinkedList<Edge> edges, int vIn, int vOut, Node parentNext, Edge parentEdge) {
+        void mergeChildEdges(
+            DoublyLinkedList<Edge> edges, int vIn, int vOut, Node parentNext, Edge parentEdge)
+        {
             assert !embedded.isEmpty();
             Node firstOpposite = embedded.getFirst().getOpposite(this);
             boolean alongParentTraversal = firstOpposite != parentNext;
@@ -2183,9 +2353,12 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
-            String neighbor1 = outerFaceNeighbors[0] == null ? "null" : outerFaceNeighbors[0].toString(false);
-            String neighbor2 = outerFaceNeighbors[1] == null ? "null" : outerFaceNeighbors[1].toString(false);
+        public String toString()
+        {
+            String neighbor1 =
+                outerFaceNeighbors[0] == null ? "null" : outerFaceNeighbors[0].toString(false);
+            String neighbor2 =
+                outerFaceNeighbors[1] == null ? "null" : outerFaceNeighbors[1].toString(false);
             String childListString = "null";
             if (separatedDfsChildList != null) {
                 StringBuilder builder = new StringBuilder("{");
@@ -2193,12 +2366,18 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
                 childListString = builder.append("}").toString();
             }
             if (rootVertex) {
-                return String.format("R {%s}: neighbors = [%s, %s], embedded = %s, visited = %d, back_edge_flag = %d, dfs_index = %d",
-                        toString(false), neighbor1, neighbor2,
-                        embedded.toString(), visited, backEdgeFlag, dfsIndex);
+                return String.format(
+                    "R {%s}: neighbors = [%s, %s], embedded = %s, visited = %d, back_edge_flag = %d, dfs_index = %d",
+                    toString(false), neighbor1, neighbor2, embedded.toString(), visited,
+                    backEdgeFlag, dfsIndex);
             } else {
-                return String.format("{%s}:  neighbors = [%s, %s], embedded = %s, visited = %d, back_edge_flag = %d, dfs_index = %d, separated = %s, tree_edges = %s, down_edges = %s, back_edges = %s, parent = %s, lowpoint = %d, least_ancestor = %d",
-                        toString(false), neighbor1, neighbor2, embedded.toString(), visited, backEdgeFlag, dfsIndex, childListString, treeEdges.toString(), downEdges.toString(), backEdges.toString(), parentEdge == null ? "null" : parentEdge.source.toString(false), lowpoint, leastAncestor);
+                return String.format(
+                    "{%s}:  neighbors = [%s, %s], embedded = %s, visited = %d, back_edge_flag = %d, dfs_index = %d, separated = %s, tree_edges = %s, down_edges = %s, back_edges = %s, parent = %s, lowpoint = %d, least_ancestor = %d",
+                    toString(false), neighbor1, neighbor2, embedded.toString(), visited,
+                    backEdgeFlag, dfsIndex, childListString, treeEdges.toString(),
+                    downEdges.toString(), backEdges.toString(),
+                    parentEdge == null ? "null" : parentEdge.source.toString(false), lowpoint,
+                    leastAncestor);
             }
         }
 
@@ -2208,10 +2387,13 @@ public class BoyerMyrvoldPlanarityInspector<V, E> implements PlanarityTestingAlg
          * @param full whether to return full or partial string representation of this node
          * @return either full or partial string representation of this node
          */
-        public String toString(boolean full) {
+        public String toString(boolean full)
+        {
             if (!full) {
                 if (rootVertex) {
-                    return String.format("%s^%s", parentEdge.source.graphVertex.toString(), parentEdge.target.graphVertex.toString());
+                    return String.format(
+                        "%s^%s", parentEdge.source.graphVertex.toString(),
+                        parentEdge.target.graphVertex.toString());
                 } else {
                     return graphVertex.toString();
                 }

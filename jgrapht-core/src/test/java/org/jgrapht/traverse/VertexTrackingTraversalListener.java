@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2016-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,12 +17,10 @@
  */
 package org.jgrapht.traverse;
 
-import org.jgrapht.Graph;
-import org.jgrapht.event.TraversalListenerAdapter;
-import org.jgrapht.event.VertexTraversalEvent;
+import org.jgrapht.*;
+import org.jgrapht.event.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -30,41 +28,50 @@ import static org.junit.Assert.assertTrue;
 /**
  * TraversalListener for testing basic graph traversal invariants
  */
-public class VertexTrackingTraversalListener<V, E> extends
-        TraversalListenerAdapter<V, E> {
+public class VertexTrackingTraversalListener<V, E>
+    extends
+    TraversalListenerAdapter<V, E>
+{
     private Set<V> verticesTraversed = new HashSet<>();
     private Set<V> verticesFinished = new HashSet<>();
     private Graph<V, E> graph;
 
-    VertexTrackingTraversalListener(Graph<V, E> graph) {
+    VertexTrackingTraversalListener(Graph<V, E> graph)
+    {
         this.graph = graph;
     }
 
     @Override
-    public void vertexTraversed(VertexTraversalEvent<V> e) {
+    public void vertexTraversed(VertexTraversalEvent<V> e)
+    {
         assertTrue(graph.containsVertex(e.getVertex()));
         verticesTraversed.add(e.getVertex());
     }
 
     @Override
-    public void vertexFinished(VertexTraversalEvent<V> e) {
+    public void vertexFinished(VertexTraversalEvent<V> e)
+    {
         assertTrue(graph.containsVertex(e.getVertex()));
         verticesFinished.add(e.getVertex());
     }
 
-    public Set<V> getVerticesTraversed() {
+    public Set<V> getVerticesTraversed()
+    {
         return verticesTraversed;
     }
 
-    public Set<V> getVerticesFinished() {
+    public Set<V> getVerticesFinished()
+    {
         return verticesFinished;
     }
 
-    public void checkAllVerticesTraversed() {
+    public void checkAllVerticesTraversed()
+    {
         assertEquals(graph.vertexSet(), verticesTraversed);
     }
 
-    public void checkAllVerticesFinished() {
+    public void checkAllVerticesFinished()
+    {
         assertEquals(graph.vertexSet(), verticesFinished);
     }
 }

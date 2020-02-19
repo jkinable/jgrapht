@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008-2018, by Andrew Newell and Contributors.
+ * (C) Copyright 2008-2020, by Andrew Newell and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -57,10 +57,11 @@ public class CompleteBipartiteGraphGenerator<V, E>
     }
 
     /**
-     * Creates a new CompleteBipartiteGraphGenerator object.
-     * A complete bipartite graph is generated on the vertices provided between the vertices provided in the two partitions.
-     * Note that <i>all</i> vertices in both {@code partitionA} and {@code partitionB} must be present in the graph or an
-     * exception will be thrown during the invocation of {@link #generateGraph(Graph, Map)}
+     * Creates a new CompleteBipartiteGraphGenerator object. A complete bipartite graph is generated
+     * on the vertices provided between the vertices provided in the two partitions. Note that
+     * <i>all</i> vertices in both {@code partitionA} and {@code partitionB} must be present in the
+     * graph or an exception will be thrown during the invocation of
+     * {@link #generateGraph(Graph, Map)}
      *
      * @param partitionA first partition
      * @param partitionB second partition
@@ -72,8 +73,8 @@ public class CompleteBipartiteGraphGenerator<V, E>
         }
         this.sizeA = 0;
         this.sizeB = 0;
-        this.partitionA=partitionA;
-        this.partitionB=partitionB;
+        this.partitionA = partitionA;
+        this.partitionB = partitionB;
     }
 
     /**

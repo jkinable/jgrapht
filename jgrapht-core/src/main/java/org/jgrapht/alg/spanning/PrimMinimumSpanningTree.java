@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2013-2018, by Alexandru Valeanu and Contributors.
+ * (C) Copyright 2013-2020, by Alexandru Valeanu and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -20,8 +20,8 @@ package org.jgrapht.alg.spanning;
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.util.*;
-import org.jheaps.AddressableHeap;
-import org.jheaps.tree.FibonacciHeap;
+import org.jheaps.*;
+import org.jheaps.tree.*;
 
 import java.lang.reflect.*;
 import java.util.*;

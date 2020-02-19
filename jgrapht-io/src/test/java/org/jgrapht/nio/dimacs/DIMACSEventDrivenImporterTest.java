@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,18 +17,14 @@
  */
 package org.jgrapht.nio.dimacs;
 
+import org.jgrapht.alg.util.*;
+import org.junit.*;
+
+import java.io.*;
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.alg.util.Triple;
-import org.junit.Test;
 
 /**
  * Tests

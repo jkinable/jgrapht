@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Sean Hudson and Contributors.
+ * (C) Copyright 2019-2020, by Sean Hudson and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -24,12 +24,12 @@ import org.junit.*;
 import java.util.*;
 import java.util.stream.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for overriding the {@link CrossComponentIterator#selectOutgoingEdges selectOutgoingEdges}
- * method. Overriding this method allows for selecting outgoing edges based on the source vertex
- * and other traversal state.
+ * method. Overriding this method allows for selecting outgoing edges based on the source vertex and
+ * other traversal state.
  *
  * @author Sean Hudson
  */
@@ -52,7 +52,8 @@ public class EdgeSelectionTest
                 @Override
                 protected Set<StatefulEdge> selectOutgoingEdges(StatefulVertex vertex)
                 {
-                    return graph.outgoingEdgesOf(vertex).stream().filter(e -> filterEdge(vertex, e))
+                    return graph
+                        .outgoingEdgesOf(vertex).stream().filter(e -> filterEdge(vertex, e))
                         .collect(Collectors.toSet());
                 }
 
@@ -61,8 +62,8 @@ public class EdgeSelectionTest
                  */
                 private boolean filterEdge(StatefulVertex vertex, StatefulEdge edge)
                 {
-                    return vertex.getState() % 2 == 0 ? edge.getColor().equals(evenEdgeColor) :
-                        edge.getColor().equals(oddEdgeColor);
+                    return vertex.getState() % 2 == 0 ? edge.getColor().equals(evenEdgeColor)
+                        : edge.getColor().equals(oddEdgeColor);
                 }
             };
         VertexTrackingTraversalListener<StatefulVertex, StatefulEdge> listener =
@@ -115,7 +116,8 @@ public class EdgeSelectionTest
     }
 
     private static class StatefulEdge
-        extends DefaultWeightedEdge
+        extends
+        DefaultWeightedEdge
     {
         private final String color;
 

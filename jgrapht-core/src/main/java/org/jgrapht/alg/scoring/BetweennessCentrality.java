@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Assaf Mizrachi and Contributors.
+ * (C) Copyright 2017-2020, by Assaf Mizrachi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -190,11 +190,10 @@ public class BetweennessCentrality<V, E>
                 }
                 // shortest path to w via v?
                 else if (distance.get(w) == d) {
-                    //queue.update(w, d);
+                    // queue.update(w, d);
                     sigma.put(w, sigma.get(w) + sigma.get(v));
                     predecessors.get(w).add(v);
-                }
-                else if(distance.get(w) > d){
+                } else if (distance.get(w) > d) {
                     queue.update(w, d);
                     distance.put(w, d);
                     sigma.put(w, sigma.get(v));

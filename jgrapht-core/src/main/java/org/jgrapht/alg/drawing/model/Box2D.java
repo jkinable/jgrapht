@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,8 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Objects;
+import java.io.*;
+import java.util.*;
 
 /**
  * A 2-dimensional box (rectangle).
@@ -99,7 +98,7 @@ public class Box2D
     {
         return coordinates[0];
     }
-    
+
     /**
      * Get the minimum y coordinate
      * 
@@ -135,7 +134,8 @@ public class Box2D
      * 
      * @return the maximum x coordinate
      */
-    public double getMaxX() { 
+    public double getMaxX()
+    {
         return coordinates[0] + sides[0];
     }
 
@@ -144,13 +144,11 @@ public class Box2D
      * 
      * @return the maximum y coordinate
      */
-    public double getMaxY() { 
+    public double getMaxY()
+    {
         return coordinates[1] + sides[1];
     }
 
-
-
-    
     @Override
     public int hashCode()
     {

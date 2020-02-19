@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.*;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test {@link Points}.
@@ -35,27 +35,27 @@ public class PointsTest
         Point2D p = Point2D.of(5, 5);
         assertEquals(Math.sqrt(50), Points.length(p), 1e-9);
     }
-    
+
     @Test
     public void testAdd()
     {
         Point2D p1 = Point2D.of(5, 5);
         Point2D p2 = Point2D.of(3, 4);
-        Point2D p3 = Points.add(p1,  p2);
+        Point2D p3 = Points.add(p1, p2);
         assertEquals(8d, p3.getX(), 1e-9);
         assertEquals(9d, p3.getY(), 1e-9);
     }
-    
+
     @Test
     public void testSub()
     {
         Point2D p1 = Point2D.of(5, 5);
         Point2D p2 = Point2D.of(3, 4);
-        Point2D p3 = Points.subtract(p1,  p2);
+        Point2D p3 = Points.subtract(p1, p2);
         assertEquals(2d, p3.getX(), 1e-9);
         assertEquals(1d, p3.getY(), 1e-9);
     }
-    
+
     @Test
     public void testMinus()
     {
@@ -64,12 +64,12 @@ public class PointsTest
         assertEquals(-5d, p2.getX(), 1e-9);
         assertEquals(-3d, p2.getY(), 1e-9);
     }
-    
+
     @Test
     public void testScalarMultiply()
     {
         Point2D p1 = Point2D.of(5, 3);
-        Point2D p2 = Points.scalarMultiply(p1,  2);
+        Point2D p2 = Points.scalarMultiply(p1, 2);
         assertEquals(10d, p2.getX(), 1e-9);
         assertEquals(6d, p2.getY(), 1e-9);
     }

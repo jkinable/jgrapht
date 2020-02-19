@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2017, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -237,15 +237,15 @@ public class GraphMLImporter<V, E>
             SAXParserFactory spf = SAXParserFactory.newInstance();
             if (schemaValidation) {
                 // load schema
-                InputStream xsdStream = Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(GRAPHML_SCHEMA_FILENAME);
+                InputStream xsdStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        GRAPHML_SCHEMA_FILENAME);
                 if (xsdStream == null) {
                     throw new ImportException("Failed to locate GraphML xsd");
                 }
-                InputStream xlinkStream = Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(XLINK_SCHEMA_FILENAME);
+                InputStream xlinkStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        XLINK_SCHEMA_FILENAME);
                 if (xlinkStream == null) {
                     throw new ImportException("Failed to locate XLink xsd");
                 }
@@ -331,15 +331,13 @@ public class GraphMLImporter<V, E>
                     String validId = validKey.id;
                     AttributeType validType = validKey.type;
                     if (collectedAttributes.containsKey(validId)) {
-                        finalAttributes
-                            .put(
-                                validKey.attributeName, new DefaultAttribute<>(
-                                    collectedAttributes.get(validId), validType));
+                        finalAttributes.put(
+                            validKey.attributeName,
+                            new DefaultAttribute<>(collectedAttributes.get(validId), validType));
                     } else if (validKey.defaultValue != null) {
-                        finalAttributes
-                            .put(
-                                validKey.attributeName,
-                                new DefaultAttribute<>(validKey.defaultValue, validType));
+                        finalAttributes.put(
+                            validKey.attributeName,
+                            new DefaultAttribute<>(validKey.defaultValue, validType));
                     }
                 }
 
@@ -396,16 +394,14 @@ public class GraphMLImporter<V, E>
                     String validId = validKey.id;
                     AttributeType validType = validKey.type;
                     if (collectedAttributes.containsKey(validId)) {
-                        finalAttributes
-                            .put(
-                                validKey.attributeName, new DefaultAttribute<>(
-                                    collectedAttributes.get(validId), validType));
+                        finalAttributes.put(
+                            validKey.attributeName,
+                            new DefaultAttribute<>(collectedAttributes.get(validId), validType));
                     } else {
                         if (validKey.defaultValue != null) {
-                            finalAttributes
-                                .put(
-                                    validKey.attributeName,
-                                    new DefaultAttribute<>(validKey.defaultValue, validType));
+                            finalAttributes.put(
+                                validKey.attributeName,
+                                new DefaultAttribute<>(validKey.defaultValue, validType));
                         }
                     }
                 }
@@ -417,13 +413,9 @@ public class GraphMLImporter<V, E>
                 if (handleSpecialEdgeWeights) {
                     if (finalAttributes.containsKey(edgeWeightAttributeName)) {
                         try {
-                            graph
-                                .setEdgeWeight(
-                                    e,
-                                    Double
-                                        .parseDouble(
-                                            finalAttributes
-                                                .get(edgeWeightAttributeName).getValue()));
+                            graph.setEdgeWeight(
+                                e, Double.parseDouble(
+                                    finalAttributes.get(edgeWeightAttributeName).getValue()));
                         } catch (NumberFormatException nfe) {
                             graph.setEdgeWeight(e, defaultSpecialEdgeWeight);
                         }
@@ -462,11 +454,10 @@ public class GraphMLImporter<V, E>
                 currentGraphElement.push(new GraphElement(findAttribute(NODE_ID, attributes)));
                 break;
             case EDGE:
-                currentGraphElement
-                    .push(
-                        new GraphElement(
-                            findAttribute(EDGE_SOURCE, attributes),
-                            findAttribute(EDGE_TARGET, attributes)));
+                currentGraphElement.push(
+                    new GraphElement(
+                        findAttribute(EDGE_SOURCE, attributes),
+                        findAttribute(EDGE_TARGET, attributes)));
                 break;
             case KEY:
                 String keyId = findAttribute(KEY_ID, attributes);

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Peter Harman and Contributors.
+ * (C) Copyright 2019-2020, by Peter Harman and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,36 +17,31 @@
  */
 package org.jgrapht.alg.tour;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.util.UnionFind;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * The greedy heuristic algorithm for the TSP problem.
  *
  * <p>
- * The travelling salesman problem (TSP) asks the following question: "Given a
- * list of cities and the distances between each pair of cities, what is the
- * shortest possible route that visits each city exactly once and returns to the
- * origin city?".
+ * The travelling salesman problem (TSP) asks the following question: "Given a list of cities and
+ * the distances between each pair of cities, what is the shortest possible route that visits each
+ * city exactly once and returns to the origin city?".
  * </p>
  *
  * <p>
- * The Greedy heuristic gradually constructs a tour by repeatedly selecting the
- * shortest edge and adding it to the tour as long as it doesn’t create a cycle
- * with less than N edges, or increases the degree of any node to more than 2.
- * We must not add the same edge twice of course.
+ * The Greedy heuristic gradually constructs a tour by repeatedly selecting the shortest edge and
+ * adding it to the tour as long as it doesn’t create a cycle with less than N edges, or increases
+ * the degree of any node to more than 2. We must not add the same edge twice of course.
  * </p>
  *
  * <p>
  * The implementation of this class is based on: <br>
- * Nilsson, Christian. "Heuristics for the traveling salesman problem." Linkoping University 38 (2003)
+ * Nilsson, Christian. "Heuristics for the traveling salesman problem." Linkoping University 38
+ * (2003)
  * </p>
  *
  * <p>
@@ -62,7 +57,10 @@ import org.jgrapht.alg.util.UnionFind;
  *
  * @author Peter Harman
  */
-public class GreedyHeuristicTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E> {
+public class GreedyHeuristicTSP<V, E>
+    extends
+    HamiltonianCycleAlgorithmBase<V, E>
+{
 
     /**
      * Computes a tour using the greedy heuristic.
@@ -74,7 +72,8 @@ public class GreedyHeuristicTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E
      * @throws IllegalArgumentException if the graph contains no vertices
      */
     @Override
-    public GraphPath<V, E> getTour(Graph<V, E> graph) {
+    public GraphPath<V, E> getTour(Graph<V, E> graph)
+    {
         // Check that graph is appropriate
         checkGraph(graph);
         int n = graph.vertexSet().size();
@@ -83,13 +82,14 @@ public class GreedyHeuristicTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E
             return getSingletonTour(graph);
         }
         // Sort all the edges by weight
-        Deque<E> edges = graph.edgeSet().stream()
-                .sorted((e1, e2) -> Double.compare(graph.getEdgeWeight(e1), graph.getEdgeWeight(e2)))
-                .collect(Collectors.toCollection(() -> new ArrayDeque<>()));
+        Deque<E> edges = graph
+            .edgeSet().stream()
+            .sorted((e1, e2) -> Double.compare(graph.getEdgeWeight(e1), graph.getEdgeWeight(e2)))
+            .collect(Collectors.toCollection(() -> new ArrayDeque<>()));
         Set<E> tourEdges = new HashSet<>(n);
         // Create a Map to track the degree of each vertex in tour
-        Map<V,Integer> vertexDegree = graph.vertexSet().stream()
-                .collect(Collectors.toMap(v -> v, v -> 0));
+        Map<V, Integer> vertexDegree =
+            graph.vertexSet().stream().collect(Collectors.toMap(v -> v, v -> 0));
         // Create a UnionFind to track forming of loops
         UnionFind<V> tourSet = new UnionFind<>(graph.vertexSet());
         // Iterate until the tour is complete
@@ -111,10 +111,9 @@ public class GreedyHeuristicTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E
     }
 
     /**
-     * Tests if an edge can be added. Returns false if it would increase the
-     * degree of a vertex to more than 2. Returns false if a cycle is created
-     * and we are not at the last edge, or false if we do not create a cycle and
-     * are at the last edge.
+     * Tests if an edge can be added. Returns false if it would increase the degree of a vertex to
+     * more than 2. Returns false if a cycle is created and we are not at the last edge, or false if
+     * we do not create a cycle and are at the last edge.
      *
      * @param vertexDegree A Map tracking the degree of each vertex in the tour
      * @param tourSet A UnionFind tracking the connectivity of the tour
@@ -123,7 +122,9 @@ public class GreedyHeuristicTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E
      * @param lastEdge true if we are looking for the last edge
      * @return true if this edge can be added
      */
-    private boolean canAddEdge(Map<V,Integer> vertexDegree, UnionFind<V> tourSet, V vertex1, V vertex2, boolean lastEdge) {
+    private boolean canAddEdge(
+        Map<V, Integer> vertexDegree, UnionFind<V> tourSet, V vertex1, V vertex2, boolean lastEdge)
+    {
         // Would form a tree rather than loop
         if (vertexDegree.get(vertex1) > 1 || vertexDegree.get(vertex2) > 1) {
             return false;

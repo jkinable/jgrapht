@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,29 +17,18 @@
  */
 package org.jgrapht.alg.matching;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.interfaces.MatchingAlgorithm.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm;
-import org.jgrapht.alg.interfaces.MatchingAlgorithm.Matching;
-import org.jgrapht.generate.BarabasiAlbertGraphGenerator;
-import org.jgrapht.generate.GnmRandomGraphGenerator;
-import org.jgrapht.generate.GraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests for EdmondsMaximumCardinalityMatching
@@ -67,7 +56,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -89,7 +79,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -110,7 +101,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -132,7 +124,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -152,7 +145,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -172,7 +166,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -192,7 +187,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -214,7 +210,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
 
         Map<Integer, Integer> oddSetCover = matcher.getOddSetCover();
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(g, match.getEdges(), oddSetCover));
+            SparseEdmondsMaximumCardinalityMatching
+                .isOptimalMatching(g, match.getEdges(), oddSetCover));
     }
 
     @Test
@@ -392,9 +389,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 58);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -648,9 +644,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
         for (Integer v : graph.vertexSet())
             assertTrue(m.isMatched(v));
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -789,9 +784,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 100);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -884,9 +878,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 99);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -967,9 +960,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 98);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -1038,9 +1030,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 96);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -1102,9 +1093,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 91);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -1157,9 +1147,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 86);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -1204,9 +1193,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 75);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     @Test
@@ -1243,9 +1231,8 @@ public final class SparseEdmondsMaximumCardinalityMatchingTest
             new SparseEdmondsMaximumCardinalityMatching<>(graph);
         verifyMatching(graph, matcher.getMatching(), 66);
         assertTrue(
-            SparseEdmondsMaximumCardinalityMatching
-                .isOptimalMatching(
-                    graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
+            SparseEdmondsMaximumCardinalityMatching.isOptimalMatching(
+                graph, matcher.getMatching().getEdges(), matcher.getOddSetCover()));
     }
 
     private <V, E> void verifyMatching(Graph<V, E> g, Matching<V, E> m, int cardinality)

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Sarah Komla-Ebri and Contributors.
+ * (C) Copyright 2003-2020, by Sarah Komla-Ebri and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,15 +17,10 @@
  */
 package org.jgrapht.nio.graph6;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
+import java.io.*;
 
 /**
  * Importer which reads graphs in graph6 or sparse6 format.
@@ -93,7 +88,7 @@ public class Graph6Sparse6EventDrivenImporter
         }
 
         notifyImportEvent(ImportEvent.START);
-        
+
         // read line
         String g6 = null;
         try {
@@ -110,7 +105,7 @@ public class Graph6Sparse6EventDrivenImporter
 
         // do the actual parsing
         new Parser(g6).parse();
-        
+
         notifyImportEvent(ImportEvent.END);
     }
 

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,8 +17,8 @@
  */
 package org.jgrapht.alg.util;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.io.*;
+import java.util.*;
 
 /**
  * Generic triple (3-tuple).

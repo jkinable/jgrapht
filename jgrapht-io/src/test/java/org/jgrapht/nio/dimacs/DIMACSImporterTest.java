@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Joris Kinable and Contributors.
+ * (C) Copyright 2016-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -19,9 +19,9 @@ package org.jgrapht.nio.dimacs;
 
 import org.jgrapht.*;
 import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.graph.builder.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.util.*;
 import org.junit.*;
 
 import java.io.*;
@@ -70,7 +70,7 @@ public class DIMACSImporterTest
             { 3, 5 }, { 3, 7 }, { 3, 10 }, { 4, 5 }, { 4, 6 }, { 4, 10 }, { 5, 8 }, { 5, 9 },
             { 6, 11 }, { 7, 11 }, { 8, 11 }, { 9, 11 }, { 10, 11 } };
         for (int[] edge : edges)
-            assertTrue(graph.containsEdge(edge[0]-1, edge[1]-1));
+            assertTrue(graph.containsEdge(edge[0] - 1, edge[1] - 1));
     }
 
     /**
@@ -93,8 +93,8 @@ public class DIMACSImporterTest
             { 8, 11, 18 }, { 9, 11, 19 }, { 10, 11, 20 } };
 
         for (int[] edge : edges) {
-            assertTrue(graph.containsEdge(edge[0]-1, edge[1]-1));
-            DefaultWeightedEdge e = graph.getEdge(edge[0]-1, edge[1]-1);
+            assertTrue(graph.containsEdge(edge[0] - 1, edge[1] - 1));
+            DefaultWeightedEdge e = graph.getEdge(edge[0] - 1, edge[1] - 1);
             assertEquals((int) graph.getEdgeWeight(e), edge[2]);
         }
     }
@@ -119,8 +119,8 @@ public class DIMACSImporterTest
 
         int[][] edges = { { 1, 2, 1 }, { 2, 1, 1 }, { 2, 3, 1 } };
         for (int[] edge : edges) {
-            assertTrue(graph.containsEdge(edge[0]-1, edge[1]-1));
-            DefaultWeightedEdge e = graph.getEdge(edge[0]-1, edge[1]-1);
+            assertTrue(graph.containsEdge(edge[0] - 1, edge[1] - 1));
+            DefaultWeightedEdge e = graph.getEdge(edge[0] - 1, edge[1] - 1);
             assertEquals((int) graph.getEdgeWeight(e), edge[2]);
         }
     }

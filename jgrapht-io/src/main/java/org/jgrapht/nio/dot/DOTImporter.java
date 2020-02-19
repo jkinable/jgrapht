@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,19 +17,13 @@
  */
 package org.jgrapht.nio.dot;
 
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.GraphImporter;
-import org.jgrapht.nio.ImportException;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Import a graph from a DOT file.

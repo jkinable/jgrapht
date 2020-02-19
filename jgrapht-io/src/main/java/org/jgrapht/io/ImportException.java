@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2017, by Wil Selwood and Contributors.
+ * (C) Copyright 2015-2020, by Wil Selwood and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -19,6 +19,7 @@ package org.jgrapht.io;
 
 /**
  * An exception that the library throws in case of graph import errors.
+ * 
  * @deprecated In favor of nio package.
  */
 @Deprecated

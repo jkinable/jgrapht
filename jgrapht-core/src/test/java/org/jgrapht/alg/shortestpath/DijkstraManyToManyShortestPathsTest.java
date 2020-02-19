@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,67 +17,79 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.ManyToManyShortestPathsAlgorithm;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
 /**
  * Tests for {@link DijkstraManyToManyShortestPaths}.
  *
  * @author Semen Chudakov
  */
-public class DijkstraManyToManyShortestPathsTest extends BaseManyToManyShortestPathsTest {
+public class DijkstraManyToManyShortestPathsTest
+    extends
+    BaseManyToManyShortestPathsTest
+{
 
     @Test
-    public void testEmptyGraph() {
+    public void testEmptyGraph()
+    {
         super.testEmptyGraph();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testSourcesIsNull() {
+    public void testSourcesIsNull()
+    {
         super.testSourcesIsNull();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testTargetsIsNull() {
+    public void testTargetsIsNull()
+    {
         super.testTargetsIsNull();
     }
 
     @Test
-    public void testNoPath() {
+    public void testNoPath()
+    {
         super.testNoPath();
     }
 
     @Test
-    public void testDifferentSourcesAndTargetsSimpleGraph() {
+    public void testDifferentSourcesAndTargetsSimpleGraph()
+    {
         super.testDifferentSourcesAndTargetsSimpleGraph();
     }
 
     @Test
-    public void testDifferentSourcesAndTargetsMultigraph() {
+    public void testDifferentSourcesAndTargetsMultigraph()
+    {
         super.testDifferentSourcesAndTargetsMultigraph();
     }
 
     @Test
-    public void testSourcesEqualTargetsSimpleGraph() {
+    public void testSourcesEqualTargetsSimpleGraph()
+    {
         super.testSourcesEqualTargetsSimpleGraph();
     }
 
     @Test
-    public void testSourcesEqualTargetsMultigraph() {
+    public void testSourcesEqualTargetsMultigraph()
+    {
         super.testSourcesEqualTargetsMultigraph();
     }
 
     @Test
-    public void testOnRandomGraphs() {
-        super.testOnRandomGraphs(100, 20,
-                new int[][]{{50, 30}, {40, 40}, {30, 50}}, 50);
+    public void testOnRandomGraphs()
+    {
+        super.testOnRandomGraphs(100, 20, new int[][] { { 50, 30 }, { 40, 40 }, { 30, 50 } }, 50);
     }
 
     @Override
     protected ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> getAlgorithm(
-            Graph<Integer, DefaultWeightedEdge> graph) {
+        Graph<Integer, DefaultWeightedEdge> graph)
+    {
         return new DijkstraManyToManyShortestPaths<>(graph);
     }
 }

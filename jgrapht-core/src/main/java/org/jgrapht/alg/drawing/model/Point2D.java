@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,7 +17,7 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * A 2-dimensional point in Euclidean space.

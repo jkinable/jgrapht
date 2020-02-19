@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh, Dimitrios Michail and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh, Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -21,7 +21,7 @@ import org.jgrapht.alg.connectivity.*;
 import org.jgrapht.alg.cycle.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.alg.partition.*;
-import org.jgrapht.alg.planar.BoyerMyrvoldPlanarityInspector;
+import org.jgrapht.alg.planar.*;
 
 import java.util.*;
 import java.util.stream.*;
@@ -549,9 +549,9 @@ public abstract class GraphTests
     /**
      * Checks that the specified graph is planar. A graph is
      * <a href="https://en.wikipedia.org/wiki/Planar_graph">planar</a> if it can be drawn on a
-     * two-dimensional plane without any of its edges crossing. The implementation of the method
-     * is delegated to the {@link org.jgrapht.alg.planar.BoyerMyrvoldPlanarityInspector}. Also,
-     * use this class to get a planar embedding of the graph in case it is planar, or a Kuratowski
+     * two-dimensional plane without any of its edges crossing. The implementation of the method is
+     * delegated to the {@link org.jgrapht.alg.planar.BoyerMyrvoldPlanarityInspector}. Also, use
+     * this class to get a planar embedding of the graph in case it is planar, or a Kuratowski
      * subgraph as a certificate of nonplanarity.
      *
      * @param graph the graph to test planarity of
@@ -568,13 +568,14 @@ public abstract class GraphTests
     }
 
     /**
-     * Checks whether the {@code graph} is a
-     * <a href="https://en.wikipedia.org/wiki/Kuratowski%27s_theorem#Kuratowski_subgraphs">Kuratowski subdivision</a>.
-     * Effectively checks whether the {@code graph} is a $K_{3,3}$ subdivision or $K_{5}$ subdivision
+     * Checks whether the {@code graph} is a <a href=
+     * "https://en.wikipedia.org/wiki/Kuratowski%27s_theorem#Kuratowski_subgraphs">Kuratowski
+     * subdivision</a>. Effectively checks whether the {@code graph} is a $K_{3,3}$ subdivision or
+     * $K_{5}$ subdivision
      *
      * @param graph the graph to test
-     * @param <V>   the graph vertex type
-     * @param <E>   the graph edge type
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
      * @return true if the {@code graph} is a Kuratowski subdivision, false otherwise
      */
     public static <V, E> boolean isKuratowskiSubdivision(Graph<V, E> graph)
@@ -586,8 +587,8 @@ public abstract class GraphTests
      * Checks whether the {@code graph} is a $K_{3,3}$ subdivision.
      *
      * @param graph the graph to test
-     * @param <V>   the graph vertex type
-     * @param <E>   the graph edge type
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
      * @return true if the {@code graph} is a $K_{3,3}$ subdivision, false otherwise
      */
     public static <V, E> boolean isK33Subdivision(Graph<V, E> graph)
@@ -612,15 +613,15 @@ public abstract class GraphTests
         }
         degree3.removeAll(reachable);
         return reachable.equals(reachableWithDegree(graph, degree3.get(0), 3))
-                && reachable.equals(reachableWithDegree(graph, degree3.get(1), 3));
+            && reachable.equals(reachableWithDegree(graph, degree3.get(1), 3));
     }
 
     /**
      * Checks whether the {@code graph} is a $K_5$ subdivision.
      *
      * @param graph the graph to test
-     * @param <V>   the graph vertex type
-     * @param <E>   the graph edge type
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
      * @return true if the {@code graph} is a $K_5$ subdivision, false otherwise
      */
     public static <V, E> boolean isK5Subdivision(Graph<V, E> graph)
@@ -639,7 +640,9 @@ public abstract class GraphTests
         }
         for (V vertex : degree5) {
             Set<V> reachable = reachableWithDegree(graph, vertex, 4);
-            if (reachable.size() != 4 || !degree5.containsAll(reachable) || reachable.contains(vertex)) {
+            if (reachable.size() != 4 || !degree5.containsAll(reachable)
+                || reachable.contains(vertex))
+            {
                 return false;
             }
         }
@@ -647,16 +650,16 @@ public abstract class GraphTests
     }
 
     /**
-     * Uses BFS to find all vertices of the {@code graph} which have a degree {@code degree}.
-     * This method doesn't advance to new nodes after it finds a node with a degree {@code degree}
+     * Uses BFS to find all vertices of the {@code graph} which have a degree {@code degree}. This
+     * method doesn't advance to new nodes after it finds a node with a degree {@code degree}
      *
-     * @param graph       the graph to search in
+     * @param graph the graph to search in
      * @param startVertex the start vertex
-     * @param degree      the degree of desired vertices
-     * @param <V>         the graph vertex type
-     * @param <E>         the graph edge type
+     * @param degree the degree of desired vertices
+     * @param <V> the graph vertex type
+     * @param <E> the graph edge type
      * @return all vertices of the {@code graph} reachable from {@code startVertex}, which have
-     * degree {@code degree}
+     *         degree {@code degree}
      */
     private static <V, E> Set<V> reachableWithDegree(Graph<V, E> graph, V startVertex, int degree)
     {

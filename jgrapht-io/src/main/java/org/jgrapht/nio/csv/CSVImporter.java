@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,20 +17,13 @@
  */
 package org.jgrapht.nio.csv;
 
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphType;
-import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.GraphImporter;
-import org.jgrapht.nio.ImportException;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Imports a graph from a CSV Format or any other Delimiter-separated value format.
@@ -205,17 +198,14 @@ public class CSVImporter<V, E>
         CSVEventDrivenImporter genericImporter = new CSVEventDrivenImporter();
         genericImporter.setDelimiter(delimiter);
         genericImporter.setFormat(format);
-        genericImporter
-            .setParameter(
-                CSVFormat.Parameter.EDGE_WEIGHTS, isParameter(CSVFormat.Parameter.EDGE_WEIGHTS));
-        genericImporter
-            .setParameter(
-                CSVFormat.Parameter.MATRIX_FORMAT_NODEID,
-                isParameter(CSVFormat.Parameter.MATRIX_FORMAT_NODEID));
-        genericImporter
-            .setParameter(
-                CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE,
-                isParameter(CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE));
+        genericImporter.setParameter(
+            CSVFormat.Parameter.EDGE_WEIGHTS, isParameter(CSVFormat.Parameter.EDGE_WEIGHTS));
+        genericImporter.setParameter(
+            CSVFormat.Parameter.MATRIX_FORMAT_NODEID,
+            isParameter(CSVFormat.Parameter.MATRIX_FORMAT_NODEID));
+        genericImporter.setParameter(
+            CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE,
+            isParameter(CSVFormat.Parameter.MATRIX_FORMAT_ZERO_WHEN_NO_EDGE));
 
         Consumers consumers = new Consumers(graph);
         genericImporter.addVertexConsumer(consumers.vertexConsumer);

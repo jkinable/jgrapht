@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,14 +17,12 @@
  */
 package org.jgrapht.opt.graph.sparse;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphType;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.alg.util.Triple;
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * Sparse undirected weighted graph.

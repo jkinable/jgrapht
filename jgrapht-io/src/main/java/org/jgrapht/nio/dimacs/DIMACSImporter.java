@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2010-2019, by Michael Behrisch and Contributors. 
+ * (C) Copyright 2010-2020, by Michael Behrisch and Contributors. 
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,16 +17,13 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.GraphImporter;
-import org.jgrapht.nio.ImportException;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Imports a graph specified in DIMACS format.
@@ -119,7 +116,8 @@ public class DIMACSImporter<V, E>
     public void importGraph(Graph<V, E> graph, Reader input)
         throws ImportException
     {
-        DIMACSEventDrivenImporter genericImporter = new DIMACSEventDrivenImporter().renumberVertices(false);
+        DIMACSEventDrivenImporter genericImporter =
+            new DIMACSEventDrivenImporter().renumberVertices(false);
         Consumers consumers = new Consumers(graph);
         genericImporter.addVertexCountConsumer(consumers.nodeCountConsumer);
         genericImporter.addEdgeConsumer(consumers.edgeConsumer);

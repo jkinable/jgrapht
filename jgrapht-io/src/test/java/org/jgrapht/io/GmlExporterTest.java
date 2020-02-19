@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2006-2017, by John V Sichi, Dimitrios Michail and Contributors.
+ * (C) Copyright 2006-2020, by John V Sichi, Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *

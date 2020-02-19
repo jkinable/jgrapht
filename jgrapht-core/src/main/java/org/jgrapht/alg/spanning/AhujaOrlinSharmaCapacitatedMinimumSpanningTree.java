@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Christoph Grüne and Contributors.
+ * (C) Copyright 2018-2020, by Christoph Grüne and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -45,7 +45,7 @@ import java.util.*;
  * algorithm for subset disjoint cycles by Ahuja et al. That is, the algorithm may run in
  * exponential time. This algorithm is implemented in two different version: a local search and a
  * tabu search. In both cases we have to find the best neighbor of the current capacitated spanning
- * tree. 
+ * tree.
  *
  * @param <V> the vertex type
  * @param <E> the edge type

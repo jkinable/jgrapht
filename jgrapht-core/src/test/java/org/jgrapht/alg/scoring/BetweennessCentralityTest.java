@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Assaf Mizrachi and Contributors.
+ * (C) Copyright 2017-2020, by Assaf Mizrachi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -171,7 +171,7 @@ public class BetweennessCentralityTest
         assertGraph5(scores);
 
     }
-    
+
     @Test
     public void testWeighted6()
     {
@@ -363,7 +363,7 @@ public class BetweennessCentralityTest
         assertEquals(0.0, scores.get(13), 0.0);
         assertEquals(0.0, scores.get(14), 0.0);
     }
-    
+
     private void assertGraph6(Map<Integer, Double> scores)
     {
         assertEquals(0.0, scores.get(0), 0.0);
@@ -523,22 +523,23 @@ public class BetweennessCentralityTest
 
         return g;
     }
-    
+
     private Graph<Integer, DefaultWeightedEdge> createWeighted6()
     {
-        Graph<Integer, DefaultWeightedEdge> g = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        Graph<Integer, DefaultWeightedEdge> g =
+            new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
         g.addVertex(0);
         g.addVertex(1);
         g.addVertex(2);
-        
+
         DefaultWeightedEdge e;
-        
+
         e = g.addEdge(2, 1);
         g.setEdgeWeight(e, 1);
-        
+
         e = g.addEdge(1, 0);
         g.setEdgeWeight(e, 1);
-        
+
         e = g.addEdge(2, 0);
         g.setEdgeWeight(e, 49);
 

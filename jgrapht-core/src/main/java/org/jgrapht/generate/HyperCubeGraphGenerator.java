@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2008-2018, by Andrew Newell and Contributors.
+ * (C) Copyright 2008-2020, by Andrew Newell and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,41 +17,20 @@
  */
 package org.jgrapht.nio.graphml;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-
-import org.jgrapht.Graph;
-import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
+import javax.xml.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.*;
+import javax.xml.validation.*;
+import java.io.*;
+import java.util.*;
+import java.util.Map.*;
 
 /**
  * Imports a graph from a GraphML data source.
@@ -221,15 +200,15 @@ public class GraphMLEventDrivenImporter
             SAXParserFactory spf = SAXParserFactory.newInstance();
             if (schemaValidation) {
                 // load schema
-                InputStream xsdStream = Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(GRAPHML_SCHEMA_FILENAME);
+                InputStream xsdStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        GRAPHML_SCHEMA_FILENAME);
                 if (xsdStream == null) {
                     throw new ImportException("Failed to locate GraphML xsd");
                 }
-                InputStream xlinkStream = Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(XLINK_SCHEMA_FILENAME);
+                InputStream xlinkStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        XLINK_SCHEMA_FILENAME);
                 if (xlinkStream == null) {
                     throw new ImportException("Failed to locate XLink xsd");
                 }
@@ -315,15 +294,13 @@ public class GraphMLEventDrivenImporter
                     String validId = validKey.id;
                     AttributeType validType = validKey.type;
                     if (collectedAttributes.containsKey(validId)) {
-                        finalAttributes
-                            .put(
-                                validKey.attributeName, new DefaultAttribute<>(
-                                    collectedAttributes.get(validId), validType));
+                        finalAttributes.put(
+                            validKey.attributeName,
+                            new DefaultAttribute<>(collectedAttributes.get(validId), validType));
                     } else if (validKey.defaultValue != null) {
-                        finalAttributes
-                            .put(
-                                validKey.attributeName,
-                                new DefaultAttribute<>(validKey.defaultValue, validType));
+                        finalAttributes.put(
+                            validKey.attributeName,
+                            new DefaultAttribute<>(validKey.defaultValue, validType));
                     }
                 }
 
@@ -376,16 +353,14 @@ public class GraphMLEventDrivenImporter
                     String validId = validKey.id;
                     AttributeType validType = validKey.type;
                     if (collectedAttributes.containsKey(validId)) {
-                        finalAttributes
-                            .put(
-                                validKey.attributeName, new DefaultAttribute<>(
-                                    collectedAttributes.get(validId), validType));
+                        finalAttributes.put(
+                            validKey.attributeName,
+                            new DefaultAttribute<>(collectedAttributes.get(validId), validType));
                     } else {
                         if (validKey.defaultValue != null) {
-                            finalAttributes
-                                .put(
-                                    validKey.attributeName,
-                                    new DefaultAttribute<>(validKey.defaultValue, validType));
+                            finalAttributes.put(
+                                validKey.attributeName,
+                                new DefaultAttribute<>(validKey.defaultValue, validType));
                         }
                     }
                 }
@@ -396,12 +371,9 @@ public class GraphMLEventDrivenImporter
                 if (handleSpecialEdgeWeights) {
                     if (finalAttributes.containsKey(edgeWeightAttributeName)) {
                         try {
-                            te
-                                .setThird(
-                                    Double
-                                        .parseDouble(
-                                            finalAttributes
-                                                .get(edgeWeightAttributeName).getValue()));
+                            te.setThird(
+                                Double.parseDouble(
+                                    finalAttributes.get(edgeWeightAttributeName).getValue()));
                         } catch (NumberFormatException nfe) {
                             te.setThird(defaultSpecialEdgeWeight);
                         }
@@ -443,11 +415,10 @@ public class GraphMLEventDrivenImporter
                 currentGraphElement.push(new GraphElement(findAttribute(NODE_ID, attributes)));
                 break;
             case EDGE:
-                currentGraphElement
-                    .push(
-                        new GraphElement(
-                            findAttribute(EDGE_SOURCE, attributes),
-                            findAttribute(EDGE_TARGET, attributes)));
+                currentGraphElement.push(
+                    new GraphElement(
+                        findAttribute(EDGE_SOURCE, attributes),
+                        findAttribute(EDGE_TARGET, attributes)));
                 break;
             case KEY:
                 String keyId = findAttribute(KEY_ID, attributes);

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,21 +17,17 @@
  */
 package org.jgrapht.alg.tour;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
+import org.jgrapht.*;
+
+import java.util.*;
 
 /**
  * Generate a random tour.
  *
  * <p>
- * This class generates a random Hamiltonian Cycle. This is a simple unoptimised
- * solution to the Travelling Salesman Problem, or more usefully is a starting
- * point for optimising a tour using TwoOptHeuristicTSP.
+ * This class generates a random Hamiltonian Cycle. This is a simple unoptimised solution to the
+ * Travelling Salesman Problem, or more usefully is a starting point for optimising a tour using
+ * TwoOptHeuristicTSP.
  * </p>
  *
  * @param <V> the graph vertex type
@@ -40,14 +36,18 @@ import org.jgrapht.GraphPath;
  * @author Peter Harman
  * @author Dimitrios Michail
  */
-public class RandomTourTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E> {
+public class RandomTourTSP<V, E>
+    extends
+    HamiltonianCycleAlgorithmBase<V, E>
+{
 
     private final Random rng;
 
     /**
      * Construct with default random number generator
      */
-    public RandomTourTSP() {
+    public RandomTourTSP()
+    {
         this(new Random());
     }
 
@@ -56,7 +56,8 @@ public class RandomTourTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E> {
      * 
      * @param rng The random number generator
      */
-    public RandomTourTSP(Random rng) {
+    public RandomTourTSP(Random rng)
+    {
         this.rng = Objects.requireNonNull(rng, "Random number generator cannot be null");
     }
 
@@ -70,7 +71,8 @@ public class RandomTourTSP<V, E> extends HamiltonianCycleAlgorithmBase<V, E> {
      * @throws IllegalArgumentException if the graph contains no vertices
      */
     @Override
-    public GraphPath<V, E> getTour(Graph<V, E> graph) {
+    public GraphPath<V, E> getTour(Graph<V, E> graph)
+    {
         // Check that graph is appropriate
         checkGraph(graph);
         List<V> vertices = new ArrayList<>(graph.vertexSet());

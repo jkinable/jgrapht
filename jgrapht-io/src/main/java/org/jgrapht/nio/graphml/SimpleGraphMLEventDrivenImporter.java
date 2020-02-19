@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,34 +17,18 @@
  */
 package org.jgrapht.nio.graphml;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-
-import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
+import javax.xml.*;
+import javax.xml.parsers.*;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.*;
+import javax.xml.validation.*;
+import java.io.*;
+import java.util.*;
 
 /**
  * Imports a graph from a GraphML data source. The importer does not construct a graph but calls the
@@ -220,15 +204,15 @@ public class SimpleGraphMLEventDrivenImporter
             SAXParserFactory spf = SAXParserFactory.newInstance();
             if (schemaValidation) {
                 // load schema
-                InputStream xsdStream = Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(GRAPHML_SCHEMA_FILENAME);
+                InputStream xsdStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        GRAPHML_SCHEMA_FILENAME);
                 if (xsdStream == null) {
                     throw new ImportException("Failed to locate GraphML xsd");
                 }
-                InputStream xlinkStream = Thread
-                    .currentThread().getContextClassLoader()
-                    .getResourceAsStream(XLINK_SCHEMA_FILENAME);
+                InputStream xlinkStream =
+                    Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                        XLINK_SCHEMA_FILENAME);
                 if (xlinkStream == null) {
                     throw new ImportException("Failed to locate XLink xsd");
                 }
@@ -320,14 +304,12 @@ public class SimpleGraphMLEventDrivenImporter
                         "This importer does not support nested graphs");
                 }
                 insideGraph++;
-                findAttribute(GRAPH_ID, attributes)
-                    .ifPresent(
-                        value -> notifyGraphAttribute(
-                            GRAPH_ID, DefaultAttribute.createAttribute(value)));
-                findAttribute(GRAPH_EDGE_DEFAULT, attributes)
-                    .ifPresent(
-                        value -> notifyGraphAttribute(
-                            GRAPH_EDGE_DEFAULT, DefaultAttribute.createAttribute(value)));
+                findAttribute(GRAPH_ID, attributes).ifPresent(
+                    value -> notifyGraphAttribute(
+                        GRAPH_ID, DefaultAttribute.createAttribute(value)));
+                findAttribute(GRAPH_EDGE_DEFAULT, attributes).ifPresent(
+                    value -> notifyGraphAttribute(
+                        GRAPH_EDGE_DEFAULT, DefaultAttribute.createAttribute(value)));
                 break;
             case NODE:
                 if (insideNode > 0 || insideEdge > 0) {
@@ -335,9 +317,8 @@ public class SimpleGraphMLEventDrivenImporter
                         "Nodes cannot be inside other nodes or edges");
                 }
                 insideNode++;
-                String nodeId = findAttribute(NODE_ID, attributes)
-                    .orElseThrow(
-                        () -> new IllegalArgumentException("Node must have an identifier"));
+                String nodeId = findAttribute(NODE_ID, attributes).orElseThrow(
+                    () -> new IllegalArgumentException("Node must have an identifier"));
                 currentNode = nodeId;
                 notifyVertex(currentNode);
                 notifyVertexAttribute(
@@ -371,8 +352,7 @@ public class SimpleGraphMLEventDrivenImporter
                 String keyAttrName = findAttribute(KEY_ATTR_NAME, attributes)
                     .orElseThrow(() -> new IllegalArgumentException("Key attribute name missing"));
                 currentKey = new Key(
-                    keyId, keyAttrName,
-                    findAttribute(KEY_ATTR_TYPE, attributes)
+                    keyId, keyAttrName, findAttribute(KEY_ATTR_TYPE, attributes)
                         .map(AttributeType::create).orElse(AttributeType.UNKNOWN),
                     findAttribute(KEY_FOR, attributes).orElse("ALL"));
                 break;

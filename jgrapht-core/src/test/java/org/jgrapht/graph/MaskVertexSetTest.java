@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Andrew Gainer-Dewar and Contributors.
+ * (C) Copyright 2016-2020, by Andrew Gainer-Dewar and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,9 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.*;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test {@link Point2D}.

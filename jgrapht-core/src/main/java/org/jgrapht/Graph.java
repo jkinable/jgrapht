@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -180,9 +180,9 @@ public interface Graph<V, E>
      * More formally, adds the specified edge, <code>
      * e</code>, to this graph if this graph contains no edge <code>e2</code> such that
      * <code>e2.equals(e)</code>. If this graph already contains such an edge, the call leaves this
-     * graph unchanged and returns <code>false</code>. Some graphs do not allow edge-multiplicity. In
-     * such cases, if the graph already contains an edge from the specified source to the specified
-     * target, than this method does not change the graph and returns <code>
+     * graph unchanged and returns <code>false</code>. Some graphs do not allow edge-multiplicity.
+     * In such cases, if the graph already contains an edge from the specified source to the
+     * specified target, than this method does not change the graph and returns <code>
      * false</code>. If the edge was added to the graph, returns <code>
      * true</code>.
      *
@@ -246,8 +246,8 @@ public interface Graph<V, E>
      * specified vertex, <code>v</code>, to this graph if this graph contains no vertex
      * <code>u</code> such that <code>
      * u.equals(v)</code>. If this graph already contains such vertex, the call leaves this graph
-     * unchanged and returns <code>false</code>. In combination with the restriction on constructors,
-     * this ensures that graphs never contain duplicate vertices.
+     * unchanged and returns <code>false</code>. In combination with the restriction on
+     * constructors, this ensures that graphs never contain duplicate vertices.
      *
      * @param v vertex to be added to this graph.
      *
@@ -259,9 +259,10 @@ public interface Graph<V, E>
     boolean addVertex(V v);
 
     /**
-     * Returns <code>true</code> if and only if this graph contains an edge going from the source vertex
-     * to the target vertex. In undirected graphs the same result is obtained when source and target
-     * are inverted. If any of the specified vertices does not exist in the graph, or if is <code>
+     * Returns <code>true</code> if and only if this graph contains an edge going from the source
+     * vertex to the target vertex. In undirected graphs the same result is obtained when source and
+     * target are inverted. If any of the specified vertices does not exist in the graph, or if is
+     * <code>
      * null</code>, returns <code>false</code>.
      *
      * @param sourceVertex source vertex of the edge.

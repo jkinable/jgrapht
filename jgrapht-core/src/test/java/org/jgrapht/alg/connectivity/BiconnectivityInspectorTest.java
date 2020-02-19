@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2007-2017, by France Telecom and Contributors.
+ * (C) Copyright 2007-2020, by France Telecom and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -20,12 +20,11 @@ package org.jgrapht.alg.connectivity;
 import org.jgrapht.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
 import org.jgrapht.util.*;
 import org.junit.*;
 
 import java.util.*;
-
-import org.jgrapht.graph.builder.GraphTypeBuilder;
 
 import static org.junit.Assert.*;
 
@@ -242,7 +241,7 @@ public class BiconnectivityInspectorTest
         assertEquals(
             new HashSet<>(Arrays.asList(blocks.get(5), blocks.get(6))), inspector.getBlocks(9));
     }
-    
+
     @Test
     public void testGithubIssueBug798()
     {

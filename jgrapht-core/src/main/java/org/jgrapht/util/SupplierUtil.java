@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -20,8 +20,7 @@ package org.jgrapht.util;
 import org.jgrapht.graph.*;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.*;
 
@@ -306,7 +305,7 @@ public class SupplierUtil
         Serializable
     {
         private static final long serialVersionUID = -560480634880773413L;
-        
+
         private String error;
 
         public AlwaysFailingSupplier()

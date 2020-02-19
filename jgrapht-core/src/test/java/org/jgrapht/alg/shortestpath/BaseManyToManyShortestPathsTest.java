@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,37 +17,26 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.ManyToManyShortestPathsAlgorithm;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
-import org.jgrapht.generate.GnmRandomGraphGenerator;
-import org.jgrapht.generate.GraphGenerator;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedWeightedMultigraph;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.SimpleWeightedGraph;
-import org.jgrapht.util.SupplierUtil;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
  * Base test for many-to-many shortest paths algorithms. Currently extended by
- * {@link CHManyToManyShortestPathsTest}, {@link DijkstraManyToManyShortestPathsTest}
- * and {@link DefaultManyToManyShortestPathsTest}.
+ * {@link CHManyToManyShortestPathsTest}, {@link DijkstraManyToManyShortestPathsTest} and
+ * {@link DefaultManyToManyShortestPathsTest}.
  *
  * @author Semen Chudakov
  */
-public abstract class BaseManyToManyShortestPathsTest {
+public abstract class BaseManyToManyShortestPathsTest
+{
     /**
      * Seed for random numbers generator used in tests.
      */
@@ -62,33 +51,41 @@ public abstract class BaseManyToManyShortestPathsTest {
      * @return algorithm implementation
      */
     protected abstract ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> getAlgorithm(
-            Graph<Integer, DefaultWeightedEdge> graph
-    );
+        Graph<Integer, DefaultWeightedEdge> graph);
 
     /**
      * Tests provided algorithm on an empty graph to ensure no exception is thrown.
      */
-    protected void testEmptyGraph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(graph);
+    protected void testEmptyGraph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(graph);
         algorithm.getManyToManyPaths(Collections.emptySet(), Collections.emptySet());
     }
 
     /**
      * Checks that provided implementation throws exception when source vertices set is null.
      */
-    protected void testSourcesIsNull() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(graph);
+    protected void testSourcesIsNull()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(graph);
         algorithm.getManyToManyPaths(null, Collections.emptySet());
     }
 
     /**
      * Checks that provided implementation throws exception when target vertices set is null.
      */
-    protected void testTargetsIsNull() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(graph);
+    protected void testTargetsIsNull()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(graph);
         algorithm.getManyToManyPaths(Collections.emptySet(), null);
     }
 
@@ -96,32 +93,34 @@ public abstract class BaseManyToManyShortestPathsTest {
      * Checks that provided implementation returns {@link Double#POSITIVE_INFINITY} when there is no
      * path between a source and a target as well as that the returned path is $null$.
      */
-    protected void testNoPath() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+    protected void testNoPath()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
         graph.addVertex(1);
         graph.addVertex(2);
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = getAlgorithm(graph).getManyToManyPaths(new HashSet<>(Collections.singletonList(1)),
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths = getAlgorithm(graph).getManyToManyPaths(
+                new HashSet<>(Collections.singletonList(1)),
                 new HashSet<>(Collections.singletonList(2)));
 
         assertEquals(Double.POSITIVE_INFINITY, shortestPaths.getWeight(1, 2), 1e-9);
         assertNull(shortestPaths.getPath(1, 2));
     }
 
-
     /**
-     * Test provided algorithm on the graph generated by {@code getSimpleGraph} using disjoint sets of
-     * source and target vertices.
+     * Test provided algorithm on the graph generated by {@code getSimpleGraph} using disjoint sets
+     * of source and target vertices.
      */
-    protected void testDifferentSourcesAndTargetsSimpleGraph() {
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(getSimpleGraph());
+    protected void testDifferentSourcesAndTargetsSimpleGraph()
+    {
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(getSimpleGraph());
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = algorithm.getManyToManyPaths(
-                new HashSet<>(Arrays.asList(4, 1, 2)),
-                new HashSet<>(Arrays.asList(8, 9, 6))
-        );
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths = algorithm.getManyToManyPaths(
+                new HashSet<>(Arrays.asList(4, 1, 2)), new HashSet<>(Arrays.asList(8, 9, 6)));
 
         assertEquals(2.0, shortestPaths.getWeight(4, 8), 1e-9);
         assertEquals(Arrays.asList(4, 5, 8), shortestPaths.getPath(4, 8).getVertexList());
@@ -152,17 +151,17 @@ public abstract class BaseManyToManyShortestPathsTest {
     }
 
     /**
-     * Test provided algorithm on the graph generated by {@code getMultigraph} using disjoint sets of
-     * source and target vertices.
+     * Test provided algorithm on the graph generated by {@code getMultigraph} using disjoint sets
+     * of source and target vertices.
      */
-    protected void testDifferentSourcesAndTargetsMultigraph() {
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(getMultigraph());
+    protected void testDifferentSourcesAndTargetsMultigraph()
+    {
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(getMultigraph());
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = algorithm.getManyToManyPaths(
-                new HashSet<>(Arrays.asList(1, 4)),
-                new HashSet<>(Arrays.asList(2, 5))
-        );
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths = algorithm.getManyToManyPaths(
+                new HashSet<>(Arrays.asList(1, 4)), new HashSet<>(Arrays.asList(2, 5)));
 
         assertEquals(1.0, shortestPaths.getWeight(1, 2), 1e-9);
         assertEquals(Arrays.asList(1, 2), shortestPaths.getPath(1, 2).getVertexList());
@@ -182,14 +181,14 @@ public abstract class BaseManyToManyShortestPathsTest {
      * Test provided algorithm on the graph generated by {@code getSimpleGraph} using the same
      * source and target vertices.
      */
-    protected void testSourcesEqualTargetsSimpleGraph() {
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(getSimpleGraph());
+    protected void testSourcesEqualTargetsSimpleGraph()
+    {
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(getSimpleGraph());
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = algorithm.getManyToManyPaths(
-                new HashSet<>(Arrays.asList(1, 5, 9)),
-                new HashSet<>(Arrays.asList(1, 5, 9))
-        );
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths = algorithm.getManyToManyPaths(
+                new HashSet<>(Arrays.asList(1, 5, 9)), new HashSet<>(Arrays.asList(1, 5, 9)));
 
         assertEquals(0.0, shortestPaths.getWeight(1, 1), 1e-9);
         assertEquals(Collections.singletonList(1), shortestPaths.getPath(1, 1).getVertexList());
@@ -200,18 +199,15 @@ public abstract class BaseManyToManyShortestPathsTest {
         assertEquals(0.0, shortestPaths.getWeight(9, 9), 1e-9);
         assertEquals(Collections.singletonList(9), shortestPaths.getPath(9, 9).getVertexList());
 
-
         assertEquals(2.0, shortestPaths.getWeight(1, 5), 1e-9);
         assertEquals(Arrays.asList(1, 4, 5), shortestPaths.getPath(1, 5).getVertexList());
         assertEquals(2.0, shortestPaths.getWeight(5, 1), 1e-9);
         assertEquals(Arrays.asList(5, 4, 1), shortestPaths.getPath(5, 1).getVertexList());
 
-
         assertEquals(4.0, shortestPaths.getWeight(1, 9), 1e-9);
         assertEquals(Arrays.asList(1, 4, 5, 6, 9), shortestPaths.getPath(1, 9).getVertexList());
         assertEquals(4.0, shortestPaths.getWeight(9, 1), 1e-9);
         assertEquals(Arrays.asList(9, 6, 5, 4, 1), shortestPaths.getPath(9, 1).getVertexList());
-
 
         assertEquals(2.0, shortestPaths.getWeight(5, 9), 1e-9);
         assertEquals(Arrays.asList(5, 6, 9), shortestPaths.getPath(5, 9).getVertexList());
@@ -220,17 +216,17 @@ public abstract class BaseManyToManyShortestPathsTest {
     }
 
     /**
-     * Test provided algorithm on the graph generated by {@code getMultigraph} using the same
-     * source and target vertices.
+     * Test provided algorithm on the graph generated by {@code getMultigraph} using the same source
+     * and target vertices.
      */
-    protected void testSourcesEqualTargetsMultigraph() {
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(getMultigraph());
+    protected void testSourcesEqualTargetsMultigraph()
+    {
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(getMultigraph());
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = algorithm.getManyToManyPaths(
-                new HashSet<>(Arrays.asList(2, 4, 6)),
-                new HashSet<>(Arrays.asList(2, 4, 6))
-        );
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths = algorithm.getManyToManyPaths(
+                new HashSet<>(Arrays.asList(2, 4, 6)), new HashSet<>(Arrays.asList(2, 4, 6)));
 
         assertEquals(0.0, shortestPaths.getWeight(2, 2), 1e-9);
         assertEquals(Collections.singletonList(2), shortestPaths.getPath(2, 2).getVertexList());
@@ -260,19 +256,20 @@ public abstract class BaseManyToManyShortestPathsTest {
     /**
      * Tests provided algorithm on randomly generated graphs.
      *
-     * @param numOfVertices          number of vertices in random graphs
-     * @param vertexDegree           vertex degree in random graphs
+     * @param numOfVertices number of vertices in random graphs
+     * @param vertexDegree vertex degree in random graphs
      * @param numOfSourcesAndTargets number of source and target vertices
-     * @param numOfIterations        number of test iterations for each random graph
+     * @param numOfIterations number of test iterations for each random graph
      */
-    protected void testOnRandomGraphs(int numOfVertices, int vertexDegree,
-                                      int[][] numOfSourcesAndTargets, int numOfIterations) {
+    protected void testOnRandomGraphs(
+        int numOfVertices, int vertexDegree, int[][] numOfSourcesAndTargets, int numOfIterations)
+    {
         Random random = new Random(SEED);
 
         for (int[] randomVertices : numOfSourcesAndTargets) {
             for (int i = 0; i < numOfIterations; i++) {
-                Graph<Integer, DefaultWeightedEdge> graph = generateRandomGraph(
-                        numOfVertices, vertexDegree * numOfVertices, random);
+                Graph<Integer, DefaultWeightedEdge> graph =
+                    generateRandomGraph(numOfVertices, vertexDegree * numOfVertices, random);
 
                 Set<Integer> sources = getRandomVertices(graph, randomVertices[0], random);
                 Set<Integer> targets = getRandomVertices(graph, randomVertices[1], random);
@@ -281,44 +278,49 @@ public abstract class BaseManyToManyShortestPathsTest {
         }
     }
 
-
     /**
      * Tests provided algorithm on {@code graph} using {@code sources} and {@code targets}.
      *
-     * @param graph   a test graph instance
+     * @param graph a test graph instance
      * @param sources source vertices
      * @param targets target vertices
      */
-    protected void testOnGraph(Graph<Integer, DefaultWeightedEdge> graph, Set<Integer> sources, Set<Integer> targets) {
-        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm = getAlgorithm(graph);
+    protected void testOnGraph(
+        Graph<Integer, DefaultWeightedEdge> graph, Set<Integer> sources, Set<Integer> targets)
+    {
+        ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> algorithm =
+            getAlgorithm(graph);
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> sourcesToTargetsPaths
-                = algorithm.getManyToManyPaths(sources, targets);
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> sourcesToTargetsPaths =
+                algorithm.getManyToManyPaths(sources, targets);
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> sourcesToSourcesPaths
-                = algorithm.getManyToManyPaths(sources, sources);
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> sourcesToSourcesPaths =
+                algorithm.getManyToManyPaths(sources, sources);
 
         assertCorrectPaths(graph, sourcesToTargetsPaths, sources, targets);
         assertCorrectPaths(graph, sourcesToSourcesPaths, sources, sources);
     }
 
-
     /**
-     * Generates a graph instance from the $G(n,M)$ random graphs model with {@code numOfVertices} vertices
-     * and {@code numOfEdges} edges.
+     * Generates a graph instance from the $G(n,M)$ random graphs model with {@code numOfVertices}
+     * vertices and {@code numOfEdges} edges.
      *
      * @param numOfVertices number of vertices in a graph
-     * @param numOfEdges    number of edges in a graph
-     * @param random        random generator
+     * @param numOfEdges number of edges in a graph
+     * @param random random generator
      * @return random graph
      */
-    protected Graph<Integer, DefaultWeightedEdge> generateRandomGraph(int numOfVertices, int numOfEdges, Random random) {
+    protected Graph<Integer, DefaultWeightedEdge> generateRandomGraph(
+        int numOfVertices, int numOfEdges, Random random)
+    {
         DirectedWeightedPseudograph<Integer, DefaultWeightedEdge> graph =
-                new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
+            new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
         graph.setVertexSupplier(SupplierUtil.createIntegerSupplier());
 
         GraphGenerator<Integer, DefaultWeightedEdge, Integer> generator =
-                new GnmRandomGraphGenerator<>(numOfVertices, numOfEdges - numOfVertices + 1, SEED);
+            new GnmRandomGraphGenerator<>(numOfVertices, numOfEdges - numOfVertices + 1, SEED);
         generator.generateGraph(graph);
         makeConnected(graph);
         addEdgeWeights(graph, random);
@@ -331,7 +333,8 @@ public abstract class BaseManyToManyShortestPathsTest {
      *
      * @param graph a graph
      */
-    protected void makeConnected(Graph<Integer, DefaultWeightedEdge> graph) {
+    protected void makeConnected(Graph<Integer, DefaultWeightedEdge> graph)
+    {
         Object[] vertices = graph.vertexSet().toArray();
         for (int i = 0; i < vertices.length - 1; ++i) {
             graph.addEdge((Integer) vertices[i], (Integer) vertices[i + 1]);
@@ -342,10 +345,11 @@ public abstract class BaseManyToManyShortestPathsTest {
     /**
      * Sets weight for every edge in the {@code graph}.
      *
-     * @param graph  a graph
+     * @param graph a graph
      * @param random random generator instance
      */
-    protected void addEdgeWeights(Graph<Integer, DefaultWeightedEdge> graph, Random random) {
+    protected void addEdgeWeights(Graph<Integer, DefaultWeightedEdge> graph, Random random)
+    {
         for (DefaultWeightedEdge edge : graph.edgeSet()) {
             graph.setEdgeWeight(edge, random.nextDouble());
         }
@@ -355,19 +359,22 @@ public abstract class BaseManyToManyShortestPathsTest {
      * Asserts that shortest paths stored in {@code paths} are correct. {@link DijkstraShortestPath}
      * algorithm is used a certificate of correctness.
      *
-     * @param graph   a graph
-     * @param paths   many-to-many shortest paths object
+     * @param graph a graph
+     * @param paths many-to-many shortest paths object
      * @param sources source vertices
      * @param targets target vertices
      */
-    protected void assertCorrectPaths(Graph<Integer, DefaultWeightedEdge> graph,
-                                      ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> paths,
-                                      Set<Integer> sources, Set<Integer> targets
-    ) {
-        ShortestPathAlgorithm<Integer, DefaultWeightedEdge> dijkstra = new DijkstraShortestPath<>(graph);
+    protected void assertCorrectPaths(
+        Graph<Integer, DefaultWeightedEdge> graph,
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> paths,
+        Set<Integer> sources, Set<Integer> targets)
+    {
+        ShortestPathAlgorithm<Integer, DefaultWeightedEdge> dijkstra =
+            new DijkstraShortestPath<>(graph);
         for (Integer source : sources) {
-            ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> expectedPaths
-                    = dijkstra.getPaths(source);
+            ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> expectedPaths =
+                dijkstra.getPaths(source);
             for (Integer target : targets) {
                 GraphPath<Integer, DefaultWeightedEdge> expected = expectedPaths.getPath(target);
                 GraphPath<Integer, DefaultWeightedEdge> actual = paths.getPath(source, target);
@@ -380,13 +387,14 @@ public abstract class BaseManyToManyShortestPathsTest {
     /**
      * Generates list of randomly selected vertices from the given {@code graph}.
      *
-     * @param graph               a graph
+     * @param graph a graph
      * @param numOfRandomVertices number of vertices to return
-     * @param random              random numbers generator
+     * @param random random numbers generator
      * @return list of random vertices
      */
     protected Set<Integer> getRandomVertices(
-            Graph<Integer, DefaultWeightedEdge> graph, int numOfRandomVertices, Random random) {
+        Graph<Integer, DefaultWeightedEdge> graph, int numOfRandomVertices, Random random)
+    {
         Set<Integer> result = new HashSet<>(numOfRandomVertices);
         Integer[] graphVertices = graph.vertexSet().toArray(new Integer[0]);
 
@@ -407,8 +415,10 @@ public abstract class BaseManyToManyShortestPathsTest {
      *
      * @return test graph
      */
-    protected Graph<Integer, DefaultWeightedEdge> getSimpleGraph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    protected Graph<Integer, DefaultWeightedEdge> getSimpleGraph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 3);
         Graphs.addEdgeWithVertices(graph, 1, 4, 1);
@@ -437,8 +447,10 @@ public abstract class BaseManyToManyShortestPathsTest {
      *
      * @return test graph
      */
-    protected Graph<Integer, DefaultWeightedEdge> getMultigraph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+    protected Graph<Integer, DefaultWeightedEdge> getMultigraph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 1);
         Graphs.addEdgeWithVertices(graph, 1, 2, 2);

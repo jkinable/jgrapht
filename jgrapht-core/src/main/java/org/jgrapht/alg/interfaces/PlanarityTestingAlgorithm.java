@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,11 +17,10 @@
  */
 package org.jgrapht.alg.interfaces;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
+import org.jgrapht.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 /**
  * Allows to check the planarity of the graph. A graph is defined to be
@@ -32,21 +31,23 @@ import java.util.stream.Collectors;
  * @param <E> the graph edge type
  * @author Timofey Chudakov
  */
-public interface PlanarityTestingAlgorithm<V, E> {
+public interface PlanarityTestingAlgorithm<V, E>
+{
 
     /**
-     * Tests the planarity of the {@code graph}. Returns true if the input graph is planar, false otherwise.
-     * If this method returns true, the combinatorial embedding of the {@code graph} is provided after the
-     * call to the {@link PlanarityTestingAlgorithm#getEmbedding()}. Otherwise, a Kuratowski subdivision
-     * is provided after the call to the {@link PlanarityTestingAlgorithm#getKuratowskiSubdivision()}.
+     * Tests the planarity of the {@code graph}. Returns true if the input graph is planar, false
+     * otherwise. If this method returns true, the combinatorial embedding of the {@code graph} is
+     * provided after the call to the {@link PlanarityTestingAlgorithm#getEmbedding()}. Otherwise, a
+     * Kuratowski subdivision is provided after the call to the
+     * {@link PlanarityTestingAlgorithm#getKuratowskiSubdivision()}.
      *
      * @return {@code true} if the {@code graph} is planar, false otherwise
      */
     boolean isPlanar();
 
     /**
-     * Computes combinatorial embedding of the input {@code graph}. This method will return
-     * a valid result only if the {@code graph} is planar. For more information on the combinatorial
+     * Computes combinatorial embedding of the input {@code graph}. This method will return a valid
+     * result only if the {@code graph} is planar. For more information on the combinatorial
      * embedding, see {@link PlanarityTestingAlgorithm.Embedding}
      *
      * @return combinatorial embedding of the input {@code graph}
@@ -56,24 +57,26 @@ public interface PlanarityTestingAlgorithm<V, E> {
     /**
      * Extracts a Kuratowski subdivision from the {@code graph}. The returned value certifies the
      * nonplanarity of the graph. The returned certificate can be verified through the call to the
-     * {@link org.jgrapht.GraphTests#isKuratowskiSubdivision(Graph)}. This method will return a valid
-     * result only if the {@code graph} is not planar.
+     * {@link org.jgrapht.GraphTests#isKuratowskiSubdivision(Graph)}. This method will return a
+     * valid result only if the {@code graph} is not planar.
      *
      * @return a Kuratowski subdivision from the {@code graph}
      */
     Graph<V, E> getKuratowskiSubdivision();
 
     /**
-     * A <a href="https://en.wikipedia.org/wiki/Graph_embedding#Combinatorial_embedding">combinatorial embedding</a>
-     * of the graph. It is represented as the edges ordered <b>clockwise</b> around the vertices. The edge order
-     * around the vertices is sufficient to embed the graph on a plane, i.e. assign coordinates to its vertices
-     * and draw its edges such that none of the cross.
+     * A
+     * <a href="https://en.wikipedia.org/wiki/Graph_embedding#Combinatorial_embedding">combinatorial
+     * embedding</a> of the graph. It is represented as the edges ordered <b>clockwise</b> around
+     * the vertices. The edge order around the vertices is sufficient to embed the graph on a plane,
+     * i.e. assign coordinates to its vertices and draw its edges such that none of the cross.
      *
      * @param <V> the graph vertex type
      * @param <E> the graph edge type
      * @author Timofey Chudakov
      */
-    interface Embedding<V, E> {
+    interface Embedding<V, E>
+    {
         /**
          * Returns the clockwise order of edges incident to the {@code vertex}
          *
@@ -96,7 +99,10 @@ public interface PlanarityTestingAlgorithm<V, E> {
      * @param <V> the graph vertex type
      * @param <E> the graph edge type
      */
-    class EmbeddingImpl<V, E> implements Embedding<V, E> {
+    class EmbeddingImpl<V, E>
+        implements
+        Embedding<V, E>
+    {
         /**
          * The underlying {@code graph}
          */
@@ -109,10 +115,11 @@ public interface PlanarityTestingAlgorithm<V, E> {
         /**
          * Creates new embedding of the {@code graph}
          *
-         * @param graph        the {@code graph}
+         * @param graph the {@code graph}
          * @param embeddingMap map from vertices of {@code graph} to the clockwise order of edges
          */
-        public EmbeddingImpl(Graph<V, E> graph, Map<V, List<E>> embeddingMap) {
+        public EmbeddingImpl(Graph<V, E> graph, Map<V, List<E>> embeddingMap)
+        {
             this.graph = graph;
             this.embeddingMap = embeddingMap;
         }
@@ -121,7 +128,8 @@ public interface PlanarityTestingAlgorithm<V, E> {
          * {@inheritDoc}
          */
         @Override
-        public List<E> getEdgesAround(V vertex) {
+        public List<E> getEdgesAround(V vertex)
+        {
             return embeddingMap.get(vertex);
         }
 
@@ -129,7 +137,8 @@ public interface PlanarityTestingAlgorithm<V, E> {
          * {@inheritDoc}
          */
         @Override
-        public Graph<V, E> getGraph() {
+        public Graph<V, E> getGraph()
+        {
             return graph;
         }
 
@@ -137,10 +146,18 @@ public interface PlanarityTestingAlgorithm<V, E> {
          * {@inheritDoc}
          */
         @Override
-        public String toString() {
+        public String toString()
+        {
             StringBuilder builder = new StringBuilder("[");
             for (Map.Entry<V, List<E>> entry : embeddingMap.entrySet()) {
-                builder.append(entry.getKey().toString()).append(" -> ").append(entry.getValue().stream().map(e -> Graphs.getOppositeVertex(graph, e, entry.getKey()).toString()).collect(Collectors.joining(", ", "[", "]"))).append(", ");
+                builder
+                    .append(entry.getKey().toString()).append(" -> ")
+                    .append(
+                        entry
+                            .getValue().stream()
+                            .map(e -> Graphs.getOppositeVertex(graph, e, entry.getKey()).toString())
+                            .collect(Collectors.joining(", ", "[", "]")))
+                    .append(", ");
             }
             return builder.append("]").toString();
         }

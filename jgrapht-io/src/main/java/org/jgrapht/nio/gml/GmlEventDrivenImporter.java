@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2017, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,30 +17,16 @@
  */
 package org.jgrapht.nio.gml;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.apache.commons.text.StringEscapeUtils;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
+import org.apache.commons.text.*;
 import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.nio.gml.GmlParser.GmlContext;
+import org.jgrapht.nio.*;
+import org.jgrapht.nio.gml.GmlParser.*;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * Imports a graph from a GML file (Graph Modeling Language).
@@ -358,10 +344,9 @@ public class GmlEventDrivenImporter
                 if (level == 2) {
                     stringBuffer.append(' ');
                     stringBuffer.append(']');
-                    attributes
-                        .put(
-                            key,
-                            new DefaultAttribute<>(stringBuffer.toString(), AttributeType.UNKNOWN));
+                    attributes.put(
+                        key,
+                        new DefaultAttribute<>(stringBuffer.toString(), AttributeType.UNKNOWN));
                     stringBuffer = null;
                 } else if (level >= 3) {
                     stringBuffer.append(' ');

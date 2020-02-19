@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2018, by Alexey Kudinkin and Contributors.
+ * (C) Copyright 2015-2020, by Alexey Kudinkin and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -196,9 +196,9 @@ public class PushRelabelMFImpl<V, E>
     }
 
     /**
-     * Sets current source to <code>source</code>, current sink to <code>sink</code>, then calculates
-     * maximum flow from <code>source</code> to <code>sink</code>. Note, that <code>source</code> and
-     * <code>sink</code> must be vertices of the <code>
+     * Sets current source to <code>source</code>, current sink to <code>sink</code>, then
+     * calculates maximum flow from <code>source</code> to <code>sink</code>. Note, that
+     * <code>source</code> and <code>sink</code> must be vertices of the <code>
      * network</code> passed to the constructor, and they must be different.
      *
      * @param source source vertex

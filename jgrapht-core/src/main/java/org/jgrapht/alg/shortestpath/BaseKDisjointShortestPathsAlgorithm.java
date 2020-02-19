@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Assaf Mizrachi and Contributors.
+ * (C) Copyright 2018-2020, by Assaf Mizrachi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -62,7 +62,6 @@ abstract class BaseKDisjointShortestPathsAlgorithm<V, E>
     protected Graph<V, E> workingGraph;
 
     protected List<List<E>> pathList;
-
 
     protected Graph<V, E> originalGraph;
     private Set<E> validEdges;
@@ -183,9 +182,10 @@ abstract class BaseKDisjointShortestPathsAlgorithm<V, E>
      * 
      * @return list of disjoint paths from start to end.
      */
-    private List<GraphPath<V, E>> buildPaths(V startVertex, V endVertex) {
-        Map<V, List<E>> sourceVertexToEdge = this.validEdges.stream()
-                .collect(Collectors.groupingBy(this::getEdgeSource));
+    private List<GraphPath<V, E>> buildPaths(V startVertex, V endVertex)
+    {
+        Map<V, List<E>> sourceVertexToEdge =
+            this.validEdges.stream().collect(Collectors.groupingBy(this::getEdgeSource));
         List<E> startEdges = sourceVertexToEdge.get(startVertex);
         List<GraphPath<V, E>> result = new ArrayList<>();
         for (E edge : startEdges) {
@@ -207,11 +207,12 @@ abstract class BaseKDisjointShortestPathsAlgorithm<V, E>
     }
 
     /**
-     * Iterate over all paths and remove all edges used an even number of times.
-     * The remaining edges forms the valid edge set, which is used in the buildPaths method to construct
-     * the k-shortest paths
+     * Iterate over all paths and remove all edges used an even number of times. The remaining edges
+     * forms the valid edge set, which is used in the buildPaths method to construct the k-shortest
+     * paths
      */
-    private void findValidEdges() {
+    private void findValidEdges()
+    {
         Map<UnorderedPair<V, V>, E> validEdges = new HashMap<>();
         for (List<E> path : pathList) {
             for (E e : path) {

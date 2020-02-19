@@ -17,17 +17,17 @@
  */
 package org.jgrapht.util;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import java.util.*;
-
 import org.jgrapht.util.DoublyLinkedList.*;
 import org.junit.*;
 import org.junit.rules.*;
 import org.junit.runner.*;
 import org.junit.runners.*;
 import org.junit.runners.Parameterized.*;
+
+import java.util.*;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for {@link DoublyLinkedList}.

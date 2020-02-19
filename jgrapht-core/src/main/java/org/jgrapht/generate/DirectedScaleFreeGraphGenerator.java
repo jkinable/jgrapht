@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Amr ALHOSSARY and Contributors.
+ * (C) Copyright 2019-2020, by Amr ALHOSSARY and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,14 +17,9 @@
  */
 package org.jgrapht.generate;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
+import org.jgrapht.*;
 
-import org.jgrapht.Graph;
+import java.util.*;
 
 /**
  * A generator for directed scale-free graphs.
@@ -247,9 +242,8 @@ public class DirectedScaleFreeGraphGenerator<V, E>
         }
         if (deltaIn < 0 || deltaOut < 0) {
             throw new IllegalArgumentException(
-                String
-                    .format(
-                        "deltaIn and deltaOut values of (%f, %f) are invalid", deltaIn, deltaOut));
+                String.format(
+                    "deltaIn and deltaOut values of (%f, %f) are invalid", deltaIn, deltaOut));
         }
         if (targetEdges < 0 && targetNodes < 0) {
             throw new IllegalArgumentException(

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Peter Harman and Contributors.
+ * (C) Copyright 2019-2020, by Peter Harman and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,35 +17,28 @@
  */
 package org.jgrapht.alg.tour;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Set;
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
+import org.jgrapht.*;
+
+import java.util.*;
 
 /**
  * The nearest neighbour heuristic algorithm for the TSP problem.
  *
  * <p>
- * The travelling salesman problem (TSP) asks the following question: "Given a
- * list of cities and the distances between each pair of cities, what is the
- * shortest possible route that visits each city exactly once and returns to the
- * origin city?".
+ * The travelling salesman problem (TSP) asks the following question: "Given a list of cities and
+ * the distances between each pair of cities, what is the shortest possible route that visits each
+ * city exactly once and returns to the origin city?".
  * </p>
  *
  * <p>
- * This is perhaps the simplest and most straightforward TSP heuristic. The key
- * to this algorithm is to always visit the nearest city.
+ * This is perhaps the simplest and most straightforward TSP heuristic. The key to this algorithm is
+ * to always visit the nearest city.
  * </p>
  *
  * <p>
  * The implementation of this class is based on: <br>
- * Nilsson, Christian. "Heuristics for the traveling salesman problem."
- * Linkoping University 38 (2003)
+ * Nilsson, Christian. "Heuristics for the traveling salesman problem." Linkoping University 38
+ * (2003)
  * </p>
  *
  * <p>
@@ -62,8 +55,9 @@ import org.jgrapht.GraphPath;
  * @author Peter Harman
  */
 public class NearestNeighborHeuristicTSP<V, E>
-        extends
-        HamiltonianCycleAlgorithmBase<V, E> {
+    extends
+    HamiltonianCycleAlgorithmBase<V, E>
+{
 
     private Random rng;
     private V first;
@@ -71,7 +65,8 @@ public class NearestNeighborHeuristicTSP<V, E>
     /**
      * Constructor. By default a random vertex is chosen to start.
      */
-    public NearestNeighborHeuristicTSP() {
+    public NearestNeighborHeuristicTSP()
+    {
         this(null, new Random());
     }
 
@@ -81,8 +76,10 @@ public class NearestNeighborHeuristicTSP<V, E>
      * @param first First vertex to visit, or null to choose at random
      * @throws NullPointerException if first is null
      */
-    public NearestNeighborHeuristicTSP(V first) {
-        this(Objects.requireNonNull(first, "Specified initial vertex cannot be null"), new Random());
+    public NearestNeighborHeuristicTSP(V first)
+    {
+        this(
+            Objects.requireNonNull(first, "Specified initial vertex cannot be null"), new Random());
     }
 
     /**
@@ -90,7 +87,8 @@ public class NearestNeighborHeuristicTSP<V, E>
      *
      * @param seed seed for the random number generator
      */
-    public NearestNeighborHeuristicTSP(long seed) {
+    public NearestNeighborHeuristicTSP(long seed)
+    {
         this(null, new Random(seed));
     }
 
@@ -100,7 +98,8 @@ public class NearestNeighborHeuristicTSP<V, E>
      * @param rng Random number generator
      * @throws NullPointerException if rng is null
      */
-    public NearestNeighborHeuristicTSP(Random rng) {
+    public NearestNeighborHeuristicTSP(Random rng)
+    {
         this(null, Objects.requireNonNull(rng, "Random number generator cannot be null"));
     }
 
@@ -110,7 +109,8 @@ public class NearestNeighborHeuristicTSP<V, E>
      * @param first First vertex to visit, or null to choose at random
      * @param rng Random number generator
      */
-    private NearestNeighborHeuristicTSP(V first, Random rng) {
+    private NearestNeighborHeuristicTSP(V first, Random rng)
+    {
         this.first = first;
         this.rng = rng;
     }
@@ -123,11 +123,11 @@ public class NearestNeighborHeuristicTSP<V, E>
      * @throws IllegalArgumentException if the graph is not undirected
      * @throws IllegalArgumentException if the graph is not complete
      * @throws IllegalArgumentException if the graph contains no vertices
-     * @throws IllegalArgumentException if the specified initial vertex is not
-     * in the graph
+     * @throws IllegalArgumentException if the specified initial vertex is not in the graph
      */
     @Override
-    public GraphPath<V, E> getTour(Graph<V, E> graph) {
+    public GraphPath<V, E> getTour(Graph<V, E> graph)
+    {
         // Check that graph is appropriate
         checkGraph(graph);
 
@@ -157,10 +157,10 @@ public class NearestNeighborHeuristicTSP<V, E>
      *
      * @param graph The graph
      * @return A suitable vertex to start
-     * @throws IllegalArgumentException if the specified initial vertex is not
-     * in the graph
+     * @throws IllegalArgumentException if the specified initial vertex is not in the graph
      */
-    private V first(Graph<V, E> graph) {
+    private V first(Graph<V, E> graph)
+    {
         if (first == null) {
             first = (V) graph.vertexSet().toArray()[rng.nextInt(graph.vertexSet().size())];
         } else if (!graph.vertexSet().contains(first)) {
@@ -177,7 +177,8 @@ public class NearestNeighborHeuristicTSP<V, E>
      * @param graph The graph
      * @return The closest available vertex
      */
-    private V nearest(V current, Set<V> unvisited, Graph<V, E> graph) {
+    private V nearest(V current, Set<V> unvisited, Graph<V, E> graph)
+    {
         Iterator<V> it = unvisited.iterator();
         V closest = it.next();
         double minDist = graph.getEdgeWeight(graph.getEdge(current, closest));

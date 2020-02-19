@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2006-2019, by Trevor Harmon and Contributors.
+ * (C) Copyright 2006-2020, by Trevor Harmon and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,27 +17,19 @@
  */
 package org.jgrapht.nio.graphml;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.nio.graphml.GraphMLExporter.*;
+import org.junit.*;
+import org.xmlunit.builder.*;
+import org.xmlunit.diff.*;
+
+import java.io.*;
+import java.util.*;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
-
-import java.io.ByteArrayOutputStream;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.graph.SimpleWeightedGraph;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.IntegerIdProvider;
-import org.jgrapht.nio.graphml.GraphMLExporter.AttributeCategory;
-import org.junit.Test;
-import org.xmlunit.builder.DiffBuilder;
-import org.xmlunit.diff.Diff;
 
 /**
  * Tests
@@ -470,25 +462,23 @@ public class GraphMLExporterTest
         g.setEdgeWeight(g.getEdge(V3, V1), 15.0);
 
         GraphMLExporter<String, DefaultWeightedEdge> exporter = new GraphMLExporter<>();
-        
+
         exporter.setEdgeIdProvider(new IntegerIdProvider<>());
 
         exporter.setVertexAttributeProvider((v) -> {
             Map<String, Attribute> map = new LinkedHashMap<>();
-            map
-                .put(
-                    "custom_vertex_label",
-                    DefaultAttribute.createAttribute("myvertex-" + String.valueOf(v)));
+            map.put(
+                "custom_vertex_label",
+                DefaultAttribute.createAttribute("myvertex-" + String.valueOf(v)));
             return map;
         });
         exporter.setVertexLabelAttributeName("custom_vertex_label");
 
         exporter.setEdgeAttributeProvider((e) -> {
             Map<String, Attribute> map = new LinkedHashMap<>();
-            map
-                .put(
-                    "custom_edge_label",
-                    DefaultAttribute.createAttribute("myedge-" + String.valueOf(e)));
+            map.put(
+                "custom_edge_label",
+                DefaultAttribute.createAttribute("myedge-" + String.valueOf(e)));
             return map;
         });
         exporter.setEdgeLabelAttributeName("custom_edge_label");
@@ -556,7 +546,7 @@ public class GraphMLExporterTest
         g.setEdgeWeight(g.getEdge(V1, V2), 3.0);
 
         GraphMLExporter<String, DefaultWeightedEdge> exporter = new GraphMLExporter<>();
-        
+
         exporter.setEdgeIdProvider(new IntegerIdProvider<>());
 
         exporter.setVertexAttributeProvider((v) -> {
@@ -592,12 +582,10 @@ public class GraphMLExporterTest
         });
 
         exporter.setExportEdgeWeights(true);
-        exporter
-            .registerAttribute(
-                "color", GraphMLExporter.AttributeCategory.NODE, AttributeType.STRING, "yellow");
-        exporter
-            .registerAttribute(
-                "name", GraphMLExporter.AttributeCategory.ALL, AttributeType.STRING, "johndoe");
+        exporter.registerAttribute(
+            "color", GraphMLExporter.AttributeCategory.NODE, AttributeType.STRING, "yellow");
+        exporter.registerAttribute(
+            "name", GraphMLExporter.AttributeCategory.ALL, AttributeType.STRING, "johndoe");
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
         String res = new String(os.toByteArray(), "UTF-8");
@@ -649,15 +637,13 @@ public class GraphMLExporterTest
         g.setEdgeWeight(g.getEdge(V1, V2), 3.0);
 
         GraphMLExporter<String, DefaultWeightedEdge> exporter = new GraphMLExporter<>();
-        
+
         exporter.setEdgeIdProvider(new IntegerIdProvider<>());
         exporter.setExportEdgeWeights(true);
-        exporter
-            .registerAttribute(
-                "color", GraphMLExporter.AttributeCategory.NODE, AttributeType.STRING, "yellow");
-        exporter
-            .registerAttribute(
-                "name", GraphMLExporter.AttributeCategory.ALL, AttributeType.STRING, "johndoe");
+        exporter.registerAttribute(
+            "color", GraphMLExporter.AttributeCategory.NODE, AttributeType.STRING, "yellow");
+        exporter.registerAttribute(
+            "name", GraphMLExporter.AttributeCategory.ALL, AttributeType.STRING, "johndoe");
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         exporter.exportGraph(g, os);
         String res = new String(os.toByteArray(), "UTF-8");

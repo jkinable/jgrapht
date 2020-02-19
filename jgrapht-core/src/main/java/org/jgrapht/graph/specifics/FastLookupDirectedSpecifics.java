@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2015-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -129,7 +129,7 @@ public class FastLookupDirectedSpecifics<V, E>
         addEdgeToTouchingVertices(sourceVertex, targetVertex, e);
         return e;
     }
-    
+
     @Override
     public void removeEdgeFromTouchingVertices(V sourceVertex, V targetVertex, E e)
     {

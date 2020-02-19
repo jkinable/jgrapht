@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Tim Shearouse and Contributors.
+ * (C) Copyright 2003-2020, by Tim Shearouse and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -42,8 +42,10 @@ public class CompleteGraphGenerator<V, E>
     /**
      * Construct a new CompleteGraphGenerator.
      *
-     * The generator will first add {@code size} nodes to the target graph when invoking {@link #generateGraph(Graph, Map)}.
-     * Next, a complete graph is generated on <i>all</i> nodes present in the target graph, including any nodes that were already present in the target graph.
+     * The generator will first add {@code size} nodes to the target graph when invoking
+     * {@link #generateGraph(Graph, Map)}. Next, a complete graph is generated on <i>all</i> nodes
+     * present in the target graph, including any nodes that were already present in the target
+     * graph.
      *
      * @param size number of vertices that will be added to the graph
      * @throws IllegalArgumentException if the specified size is negative
@@ -58,10 +60,12 @@ public class CompleteGraphGenerator<V, E>
     /**
      * Construct a new CompleteGraphGenerator.
      *
-     * A complete graph will be generated using the vertices already present in the target graph when invoking {@link #generateGraph(Graph, Map)}
+     * A complete graph will be generated using the vertices already present in the target graph
+     * when invoking {@link #generateGraph(Graph, Map)}
      */
-    public CompleteGraphGenerator(){
-        size=0;
+    public CompleteGraphGenerator()
+    {
+        size = 0;
     }
 
     /**
@@ -79,7 +83,7 @@ public class CompleteGraphGenerator<V, E>
         /*
          * Add vertices
          */
-        for(int i=0; i<size; i++)
+        for (int i = 0; i < size; i++)
             target.addVertex();
 
         /*

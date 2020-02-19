@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -34,7 +34,7 @@ import java.util.*;
  * @param <E> the graph edge type
  *
  * @author Dimitrios Michail
- * @deprecated Use {@link org.jgrapht.nio.lemon.LemonExporter} instead. 
+ * @deprecated Use {@link org.jgrapht.nio.lemon.LemonExporter} instead.
  */
 @Deprecated
 public class LemonExporter<V, E>

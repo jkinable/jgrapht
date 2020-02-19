@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2010-2019, by Michael Behrisch and Contributors.
+ * (C) Copyright 2010-2020, by Michael Behrisch and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,18 +17,11 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
+import java.io.*;
+import java.util.*;
 
 /**
  * A generic importer using consumers for DIMACS format.
@@ -126,7 +119,7 @@ public class DIMACSEventDrivenImporter
         }
 
         notifyImportEvent(ImportEvent.START);
-        
+
         // nodes
         final int size = readNodeCount(in);
         notifyVertexCount(size);
@@ -170,7 +163,7 @@ public class DIMACSEventDrivenImporter
             }
             cols = skipComments(in);
         }
-        
+
         notifyImportEvent(ImportEvent.END);
     }
 

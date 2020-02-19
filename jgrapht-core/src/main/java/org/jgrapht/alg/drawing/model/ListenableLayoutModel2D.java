@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,12 +17,9 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.function.BiConsumer;
+import java.util.*;
+import java.util.Map.*;
+import java.util.function.*;
 
 /**
  * A layout model wrapper which adds support for listeners.

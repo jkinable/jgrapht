@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,22 +17,14 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm;
-import org.jgrapht.generate.GnmRandomGraphGenerator;
-import org.jgrapht.generate.GraphGenerator;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.SimpleWeightedGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.jgrapht.alg.shortestpath.ContractionHierarchyPrecomputation.ContractionHierarchy;
 import static org.junit.Assert.assertEquals;
@@ -41,55 +33,66 @@ import static org.junit.Assert.assertNull;
 /**
  * Tests for the {@link ContractionHierarchyBidirectionalDijkstra}.
  */
-public class ContractionHierarchyBidirectionalDijkstraTest {
+public class ContractionHierarchyBidirectionalDijkstraTest
+{
     /**
      * Seed for random numbers generator used in tests.
      */
     private static final long SEED = 19L;
 
     /**
-     * This test asserts that not exception is thrown when
-     * an algorithm object is initialized with an empty graph.
+     * This test asserts that not exception is thrown when an algorithm object is initialized with
+     * an empty graph.
      */
     @Test
-    public void testEmptyGraph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
-        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra
-                = new ContractionHierarchyBidirectionalDijkstra<>(graph);
+    public void testEmptyGraph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra =
+            new ContractionHierarchyBidirectionalDijkstra<>(graph);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testSourceNotPresent() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testSourceNotPresent()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         graph.addVertex(2);
-        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra
-                = new ContractionHierarchyBidirectionalDijkstra<>(graph);
+        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra =
+            new ContractionHierarchyBidirectionalDijkstra<>(graph);
         dijkstra.getPath(1, 2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testTargetNotPresent() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testTargetNotPresent()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         graph.addVertex(1);
-        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra
-                = new ContractionHierarchyBidirectionalDijkstra<>(graph);
+        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra =
+            new ContractionHierarchyBidirectionalDijkstra<>(graph);
         dijkstra.getPath(1, 2);
     }
 
     @Test
-    public void testNoPath() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testNoPath()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         graph.addVertex(1);
         graph.addVertex(2);
-        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra
-                = new ContractionHierarchyBidirectionalDijkstra<>(graph);
+        ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra =
+            new ContractionHierarchyBidirectionalDijkstra<>(graph);
         GraphPath<Integer, DefaultWeightedEdge> path = dijkstra.getPath(1, 2);
         assertNull(path);
     }
 
     @Test
-    public void testSimpleGraph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testSimpleGraph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 3);
         Graphs.addEdgeWithVertices(graph, 1, 4, 1);
@@ -111,8 +114,7 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
         Graphs.addEdgeWithVertices(graph, 8, 9, 3);
 
         ContractionHierarchyBidirectionalDijkstra<Integer, DefaultWeightedEdge> dijkstra =
-                new ContractionHierarchyBidirectionalDijkstra<>(graph);
-
+            new ContractionHierarchyBidirectionalDijkstra<>(graph);
 
         assertEquals(Collections.singletonList(1), dijkstra.getPath(1, 1).getVertexList());
         assertEquals(Arrays.asList(1, 2), dijkstra.getPath(1, 2).getVertexList());
@@ -123,15 +125,18 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
     }
 
     @Test
-    public void testRingGraph() {
+    public void testRingGraph()
+    {
         int size = 100;
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
         fillRingGraph(graph, size);
         test(graph, 0);
     }
 
     @Test
-    public void testOnRandomGraphs() {
+    public void testOnRandomGraphs()
+    {
         int numOfVertices = 100;
         int vertexDegree = 5;
         int numOfIterations = 20;
@@ -143,13 +148,14 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
     }
 
     /**
-     * Creates a connected graph with {@code size} vertices in which
-     * every vertex is connected to only $2$ other vertices.
+     * Creates a connected graph with {@code size} vertices in which every vertex is connected to
+     * only $2$ other vertices.
      *
      * @param graph graph
-     * @param size  needed size
+     * @param size needed size
      */
-    private void fillRingGraph(Graph<Integer, DefaultWeightedEdge> graph, int size) {
+    private void fillRingGraph(Graph<Integer, DefaultWeightedEdge> graph, int size)
+    {
         Random random = new Random(SEED);
         for (int i = 0; i < size; ++i) {
             graph.addVertex(i);
@@ -161,40 +167,45 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
     }
 
     /**
-     * Test correctness of {@link ContractionHierarchyBidirectionalDijkstra} on
-     * {@code graph} starting at {@code source}.
+     * Test correctness of {@link ContractionHierarchyBidirectionalDijkstra} on {@code graph}
+     * starting at {@code source}.
      *
-     * @param graph  graph
+     * @param graph graph
      * @param source vertex in {@code graph}
      */
-    private void test(Graph<Integer, DefaultWeightedEdge> graph, Integer source) {
-        ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> dijkstraShortestPaths =
+    private void test(Graph<Integer, DefaultWeightedEdge> graph, Integer source)
+    {
+        ShortestPathAlgorithm.SingleSourcePaths<Integer,
+            DefaultWeightedEdge> dijkstraShortestPaths =
                 new DijkstraShortestPath<>(graph).getPaths(source);
 
-        ContractionHierarchy<Integer, DefaultWeightedEdge> data
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED)).computeContractionHierarchy();
+        ContractionHierarchy<Integer, DefaultWeightedEdge> data =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED))
+                .computeContractionHierarchy();
 
         ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> contractionDijkstra =
-                new ContractionHierarchyBidirectionalDijkstra<>(data).getPaths(source);
+            new ContractionHierarchyBidirectionalDijkstra<>(data).getPaths(source);
 
         assertEqualPaths(dijkstraShortestPaths, contractionDijkstra, graph.vertexSet());
     }
 
     /**
-     * Generates an instance or random graph with {@code numOfVertices} vertices
-     * and {@code numOfEdges} edges.
+     * Generates an instance or random graph with {@code numOfVertices} vertices and
+     * {@code numOfEdges} edges.
      *
      * @param numOfVertices number of vertices
-     * @param numOfEdges    number of edges
+     * @param numOfEdges number of edges
      * @return generated graph
      */
-    private Graph<Integer, DefaultWeightedEdge> generateRandomGraph(int numOfVertices, int numOfEdges, Random random) {
+    private Graph<Integer, DefaultWeightedEdge> generateRandomGraph(
+        int numOfVertices, int numOfEdges, Random random)
+    {
         DirectedWeightedPseudograph<Integer, DefaultWeightedEdge> graph =
-                new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
+            new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
         graph.setVertexSupplier(SupplierUtil.createIntegerSupplier());
 
         GraphGenerator<Integer, DefaultWeightedEdge, Integer> generator =
-                new GnmRandomGraphGenerator<>(numOfVertices, numOfEdges - numOfVertices + 1, SEED);
+            new GnmRandomGraphGenerator<>(numOfVertices, numOfEdges - numOfVertices + 1, SEED);
         generator.generateGraph(graph);
         makeConnected(graph);
         addEdgeWeights(graph, random);
@@ -207,7 +218,8 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
      *
      * @param graph graph
      */
-    private void makeConnected(Graph<Integer, DefaultWeightedEdge> graph) {
+    private void makeConnected(Graph<Integer, DefaultWeightedEdge> graph)
+    {
         Object[] vertices = graph.vertexSet().toArray();
         for (int i = 0; i < vertices.length - 1; ++i) {
             graph.addEdge((Integer) vertices[i], (Integer) vertices[i + 1]);
@@ -218,10 +230,11 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
     /**
      * Sets edge weights to edges in {@code graph}.
      *
-     * @param graph  graph
+     * @param graph graph
      * @param random random numbers generator
      */
-    private void addEdgeWeights(Graph<Integer, DefaultWeightedEdge> graph, Random random) {
+    private void addEdgeWeights(Graph<Integer, DefaultWeightedEdge> graph, Random random)
+    {
         for (DefaultWeightedEdge edge : graph.edgeSet()) {
             graph.setEdgeWeight(edge, random.nextDouble());
         }
@@ -230,14 +243,15 @@ public class ContractionHierarchyBidirectionalDijkstraTest {
     /**
      * Checks computed single source shortest paths tree for equality,
      *
-     * @param expected  expected paths
-     * @param actual    actual paths
+     * @param expected expected paths
+     * @param actual actual paths
      * @param vertexSet vertices
      */
     private void assertEqualPaths(
-            ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> expected,
-            ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> actual,
-            Set<Integer> vertexSet) {
+        ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> expected,
+        ShortestPathAlgorithm.SingleSourcePaths<Integer, DefaultWeightedEdge> actual,
+        Set<Integer> vertexSet)
+    {
         for (Integer sink : vertexSet) {
             GraphPath<Integer, DefaultWeightedEdge> expectedPath = expected.getPath(sink);
             GraphPath<Integer, DefaultWeightedEdge> actualPath = actual.getPath(sink);

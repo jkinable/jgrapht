@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2012-2018, by Vladimir Kostyukov and Contributors.
+ * (C) Copyright 2012-2020, by Vladimir Kostyukov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -283,8 +283,10 @@ public class EqualsAndHashCodeTest
         private static final long serialVersionUID = 1L;
         private String label;
 
-        public CustomEdge() {}
-        
+        public CustomEdge()
+        {
+        }
+
         public CustomEdge(String label)
         {
             this.label = label;

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2006-2019, by Trevor Harmon and Contributors.
+ * (C) Copyright 2006-2020, by Trevor Harmon and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,22 +17,14 @@
  */
 package org.jgrapht.nio.dot;
 
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Function;
-import java.util.regex.Matcher;
+import org.jgrapht.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.BaseExporter;
-import org.jgrapht.nio.ExportException;
-import org.jgrapht.nio.GraphExporter;
-import org.jgrapht.nio.IntegerIdProvider;
+import java.io.*;
+import java.util.*;
+import java.util.Map.*;
+import java.util.function.*;
+import java.util.regex.*;
 
 /**
  * Exports a graph into a DOT file.

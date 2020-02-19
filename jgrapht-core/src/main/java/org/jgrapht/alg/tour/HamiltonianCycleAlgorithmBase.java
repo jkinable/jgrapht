@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Peter Harman and Contributors.
+ * (C) Copyright 2019-2020, by Peter Harman and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,18 +17,12 @@
  */
 package org.jgrapht.alg.tour;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.GraphTests;
-import org.jgrapht.alg.interfaces.HamiltonianCycleAlgorithm;
-import org.jgrapht.graph.GraphWalk;
-import org.jgrapht.graph.MaskSubgraph;
-import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.traverse.*;
+
+import java.util.*;
 
 /**
  * Base class for TSP solver algorithms.
@@ -42,7 +36,10 @@ import org.jgrapht.traverse.DepthFirstIterator;
  *
  * @author Peter Harman
  */
-public abstract class HamiltonianCycleAlgorithmBase<V, E> implements HamiltonianCycleAlgorithm<V, E> {
+public abstract class HamiltonianCycleAlgorithmBase<V, E>
+    implements
+    HamiltonianCycleAlgorithm<V, E>
+{
 
     /**
      * Transform from a List representation to a graph path.
@@ -51,7 +48,8 @@ public abstract class HamiltonianCycleAlgorithmBase<V, E> implements Hamiltonian
      * @param graph the graph
      * @return a graph path
      */
-    protected GraphPath<V, E> vertexListToTour(List<V> tour, Graph<V, E> graph) {
+    protected GraphPath<V, E> vertexListToTour(List<V> tour, Graph<V, E> graph)
+    {
         List<E> edges = new ArrayList<>(tour.size() + 1);
         double tourWeight = 0d;
         Iterator<V> tourIterator = tour.iterator();
@@ -78,12 +76,13 @@ public abstract class HamiltonianCycleAlgorithmBase<V, E> implements Hamiltonian
      * @param graph the graph
      * @return a graph path
      */
-    protected GraphPath<V, E> edgeSetToTour(Set<E> tour, Graph<V, E> graph) {
+    protected GraphPath<V, E> edgeSetToTour(Set<E> tour, Graph<V, E> graph)
+    {
         List<V> vertices = new ArrayList<>(tour.size() + 1);
         List<E> edges = new ArrayList<>(tour.size());
         double tourWeight = 0d;
-        Iterator<V> tourIterator = new DepthFirstIterator<>(
-                new MaskSubgraph<>(graph, v -> false, e -> !tour.contains(e)));
+        Iterator<V> tourIterator =
+            new DepthFirstIterator<>(new MaskSubgraph<>(graph, v -> false, e -> !tour.contains(e)));
         V first = tourIterator.next();
         V u = first;
         while (tourIterator.hasNext()) {
@@ -108,11 +107,12 @@ public abstract class HamiltonianCycleAlgorithmBase<V, E> implements Hamiltonian
      * @param graph The graph
      * @return A tour with a single vertex
      */
-    protected GraphPath<V, E> getSingletonTour(Graph<V, E> graph) {
+    protected GraphPath<V, E> getSingletonTour(Graph<V, E> graph)
+    {
         assert graph.vertexSet().size() == 1;
         V start = graph.vertexSet().iterator().next();
         return new GraphWalk<>(
-                graph, start, start, Collections.singletonList(start), Collections.emptyList(), 0d);
+            graph, start, start, Collections.singletonList(start), Collections.emptyList(), 0d);
     }
 
     /**
@@ -123,7 +123,8 @@ public abstract class HamiltonianCycleAlgorithmBase<V, E> implements Hamiltonian
      * @throws IllegalArgumentException if graph is not complete
      * @throws IllegalArgumentException if graph contains no vertices
      */
-    protected void checkGraph(Graph<V, E> graph) {
+    protected void checkGraph(Graph<V, E> graph)
+    {
         graph = GraphTests.requireUndirected(graph);
         if (!GraphTests.isComplete(graph)) {
             throw new IllegalArgumentException("Graph is not complete");

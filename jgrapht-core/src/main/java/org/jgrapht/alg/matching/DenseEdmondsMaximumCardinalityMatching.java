@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2018, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -155,7 +155,8 @@ public class DenseEdmondsMaximumCardinalityMatching<V, E>
      * @param initializer heuristic matching algorithm used to quickly generate a (near optimal)
      *        initial feasible solution.
      */
-    public DenseEdmondsMaximumCardinalityMatching(Graph<V, E> graph, MatchingAlgorithm<V, E> initializer)
+    public DenseEdmondsMaximumCardinalityMatching(
+        Graph<V, E> graph, MatchingAlgorithm<V, E> initializer)
     {
         this.graph = GraphTests.requireUndirected(graph);
         this.initializer = initializer;

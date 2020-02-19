@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2013-2017, by Nikolay Ognyanov and Contributors.
+ * (C) Copyright 2013-2020, by Nikolay Ognyanov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,13 +17,11 @@
  */
 package org.jgrapht.alg.cycle;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -35,10 +33,12 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Edwin Ouwehand
  */
-public class HawickJamesSimpleCyclesTest {
+public class HawickJamesSimpleCyclesTest
+{
 
     @Test
-    public void noCyclesCount() {
+    public void noCyclesCount()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -50,7 +50,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void reflexiveCycleCount() {
+    public void reflexiveCycleCount()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addEdge("A", "A");
@@ -58,7 +59,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void singleDirectCycleCount() {
+    public void singleDirectCycleCount()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -69,7 +71,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void indirectCycleCount() {
+    public void indirectCycleCount()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -82,7 +85,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void noCyclesFind() {
+    public void noCyclesFind()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -94,7 +98,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void reflexiveCycleFind() {
+    public void reflexiveCycleFind()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addEdge("A", "A");
@@ -105,7 +110,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void singleDirectFind() {
+    public void singleDirectFind()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -119,7 +125,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void indirectCycleFind() {
+    public void indirectCycleFind()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -135,7 +142,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void twoCycles() {
+    public void twoCycles()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -154,14 +162,15 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void twoSharingEdge() {
+    public void twoSharingEdge()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
         graph.addVertex("C");
         graph.addVertex("D");
 
-        graph.addEdge("B", "C"); //Shared
+        graph.addEdge("B", "C"); // Shared
         graph.addEdge("A", "B");
         graph.addEdge("C", "A");
         graph.addEdge("D", "B");
@@ -175,7 +184,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void simplestCycles() {
+    public void simplestCycles()
+    {
         // We do NOT want to find A -> B, B -> B, B -> A as an additional cycle here,
         // nor B -> A, A -> A, A -> B for that matter. Only the most simple ones.
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
@@ -195,7 +205,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void complexGraph() {
+    public void complexGraph()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         Graphs.addAllVertices(graph, asList("A", "B", "C", "D", "E", "F"));
         graph.addEdge("A", "B");
@@ -218,7 +229,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void consecutiveRuns() {
+    public void consecutiveRuns()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -239,7 +251,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void limitPaths1() {
+    public void limitPaths1()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -254,7 +267,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void limitPaths2() {
+    public void limitPaths2()
+    {
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");
         graph.addVertex("B");
@@ -271,7 +285,8 @@ public class HawickJamesSimpleCyclesTest {
     }
 
     @Test
-    public void limitPathsTwoCycles() {
+    public void limitPathsTwoCycles()
+    {
         // Two smaller cycles are still found
         Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
         graph.addVertex("A");

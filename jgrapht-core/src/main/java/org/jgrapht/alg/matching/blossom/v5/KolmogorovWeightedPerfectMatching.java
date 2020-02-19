@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -43,8 +43,8 @@ import static org.jgrapht.alg.matching.blossom.v5.ObjectiveSense.MINIMIZE;
  * two vertices can belong to the matching in the corresponding optimization problems. Currently,
  * users are responsible for doing this reduction themselves before invoking the algorithm.
  * <p>
- * Note that if the graph is unweighted and dense, {@link SparseEdmondsMaximumCardinalityMatching} may be
- * a better choice.
+ * Note that if the graph is unweighted and dense, {@link SparseEdmondsMaximumCardinalityMatching}
+ * may be a better choice.
  * <p>
  * For more information about the algorithm see the following paper: <i>Kolmogorov, V. Math. Prog.
  * Comp. (2009) 1: 43. https://doi.org/10.1007/s12532-009-0002-8</i>, and the original

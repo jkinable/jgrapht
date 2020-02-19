@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,8 @@
  */
 package org.jgrapht.opt.graph.sparse;
 
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.stream.IntStream;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * An integer set containing all numbers from 0 to n-1.

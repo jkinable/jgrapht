@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2019, by Trevor Harmon and Contributors.
+ * (C) Copyright 2003-2020, by Trevor Harmon and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,29 +17,16 @@
  */
 package org.jgrapht.nio.dot;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.nio.*;
+import org.junit.*;
+
+import java.io.*;
+import java.util.*;
+
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayOutputStream;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.Multigraph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.AttributeType;
-import org.jgrapht.nio.DefaultAttribute;
-import org.jgrapht.nio.ExportException;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Tests
@@ -178,7 +165,7 @@ public class DOTExporterTest
     public void testQuotedNodeIDs()
     {
         DOTExporter<String, DefaultEdge> exporter = new DOTExporter<>(x -> String.valueOf(x));
-        
+
         exporter.setVertexAttributeProvider((v) -> {
             Map<String, Attribute> map = new LinkedHashMap<>();
             map.put("label", DefaultAttribute.createAttribute(v));

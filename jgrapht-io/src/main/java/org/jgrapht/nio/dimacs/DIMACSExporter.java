@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2017-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,17 +17,12 @@
  */
 package org.jgrapht.nio.dimacs;
 
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Function;
+import org.jgrapht.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.nio.BaseExporter;
-import org.jgrapht.nio.GraphExporter;
-import org.jgrapht.nio.IntegerIdProvider;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Exports a graph into DIMACS format.
@@ -109,9 +104,8 @@ public class DIMACSExporter<V, E>
         out.println("c");
         out.println("c SOURCE: " + HEADER);
         out.println("c");
-        out
-            .println(
-                "p " + format.getProblem() + " " + g.vertexSet().size() + " " + g.edgeSet().size());
+        out.println(
+            "p " + format.getProblem() + " " + g.vertexSet().size() + " " + g.edgeSet().size());
 
         boolean exportEdgeWeights = parameters.contains(Parameter.EXPORT_EDGE_WEIGHTS);
 

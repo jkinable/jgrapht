@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by CHEN Kui and Contributors.
+ * (C) Copyright 2018-2020, by CHEN Kui and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -587,8 +587,8 @@ public class AsSynchronizedGraph<V, E>
      * Set the cache strategy for <code>edgesOf</code>, <code>incomingEdgesOf</code> and
      * <code>outgoingEdgesOf</code> methods.
      *
-     * @param cacheEnabled a flag whether to use cache for those methods, if <code>true</code>, cache
-     *        will be used for those methods, otherwise cache will not be used.
+     * @param cacheEnabled a flag whether to use cache for those methods, if <code>true</code>,
+     *        cache will be used for those methods, otherwise cache will not be used.
      * @return the AsSynchronizedGraph
      */
     public AsSynchronizedGraph<V, E> setCache(boolean cacheEnabled)
@@ -1467,7 +1467,8 @@ public class AsSynchronizedGraph<V, E>
         /**
          * Return whether a cache will be used for the synchronized graph being built.
          *
-         * @return <code>true</code> if cache will be used, <code>false</code> if cache will not be used
+         * @return <code>true</code> if cache will be used, <code>false</code> if cache will not be
+         *         used
          */
         public boolean isCacheEnable()
         {

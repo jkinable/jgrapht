@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2015-2019, by Wil Selwood and Contributors.
+ * (C) Copyright 2015-2020, by Wil Selwood and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,25 +17,17 @@
  */
 package org.jgrapht.nio.dot;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+
+import java.io.*;
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedMultigraph;
-import org.jgrapht.graph.Multigraph;
-import org.jgrapht.nio.Attribute;
-import org.jgrapht.nio.ExportException;
-import org.jgrapht.nio.GraphImporter;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
 
 /**
  * 1st part of tests for DOTImporter. See also {@link DOTImporter2Test}.

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,21 +17,14 @@
  */
 package org.jgrapht.nio.csv;
 
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
+
+import java.io.*;
+import java.util.function.*;
+
 import static org.junit.Assert.assertEquals;
-
-import java.io.StringWriter;
-import java.util.function.Function;
-
-import org.jgrapht.Graph;
-import org.jgrapht.graph.AsWeightedGraph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedPseudograph;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.SimpleDirectedGraph;
-import org.jgrapht.graph.SimpleGraph;
-import org.junit.Test;
 
 /**
  * Tests for {@link CSVExporter}.

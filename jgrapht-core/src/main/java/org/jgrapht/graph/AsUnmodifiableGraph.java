@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -30,8 +30,8 @@ import java.util.*;
  *
  * <p>
  * This graph does <i>not</i> pass the hashCode and equals operations through to the backing graph,
- * but relies on <code>Object</code>'s <code>equals</code> and <code>hashCode</code> methods. This graph will be
- * serializable if the backing graph is serializable.
+ * but relies on <code>Object</code>'s <code>equals</code> and <code>hashCode</code> methods. This
+ * graph will be serializable if the backing graph is serializable.
  * </p>
  *
  * @param <V> the graph vertex type

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -58,8 +58,8 @@ public abstract class BaseBidirectionalShortestPathAlgorithm<V, E>
      * @return shortest path between source and sink
      */
     protected GraphPath<V, E> createPath(
-        BaseSearchFrontier<V, E> forwardFrontier, BaseSearchFrontier<V, E> backwardFrontier, double weight,
-        V source, V commonVertex, V sink)
+        BaseSearchFrontier<V, E> forwardFrontier, BaseSearchFrontier<V, E> backwardFrontier,
+        double weight, V source, V commonVertex, V sink)
     {
         LinkedList<E> edgeList = new LinkedList<>();
         LinkedList<V> vertexList = new LinkedList<>();

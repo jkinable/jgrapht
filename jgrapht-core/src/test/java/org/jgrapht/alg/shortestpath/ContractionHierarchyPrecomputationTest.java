@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,57 +17,44 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.generate.GnpRandomGraphGenerator;
-import org.jgrapht.generate.GraphGenerator;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultUndirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedWeightedPseudograph;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
-import org.jgrapht.graph.SimpleWeightedGraph;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.util.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-import static org.jgrapht.alg.shortestpath.ContractionHierarchyPrecomputation.ContractionEdge;
-import static org.jgrapht.alg.shortestpath.ContractionHierarchyPrecomputation.ContractionHierarchy;
-import static org.jgrapht.alg.shortestpath.ContractionHierarchyPrecomputation.ContractionVertex;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.jgrapht.alg.shortestpath.ContractionHierarchyPrecomputation.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests for the {@link ContractionHierarchyPrecomputation}.
  */
-public class ContractionHierarchyPrecomputationTest {
+public class ContractionHierarchyPrecomputationTest
+{
     /**
      * Seed for random numbers generator used in tests.
      */
     private static final long SEED = 19L;
 
     @Test
-    public void testEmptyGraph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+    public void testEmptyGraph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph
-                = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertNotNull(contractionGraph);
         assertNotNull(contractionMapping);
@@ -77,23 +64,26 @@ public class ContractionHierarchyPrecomputationTest {
         assertTrue(contractionMapping.keySet().isEmpty());
     }
 
-
     @Test
-    public void testDirectedGraph1() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testDirectedGraph1()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 1);
         Graphs.addEdgeWithVertices(graph, 2, 3, 1);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph
-                = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -101,13 +91,17 @@ public class ContractionHierarchyPrecomputationTest {
         assertEquals(3, contractionGraph.vertexSet().size());
         assertEquals(2, contractionGraph.edgeSet().size());
 
-        assertTrue(contractionGraph.containsEdge(contractionMapping.get(1), contractionMapping.get(2)));
-        assertTrue(contractionGraph.containsEdge(contractionMapping.get(2), contractionMapping.get(3)));
+        assertTrue(
+            contractionGraph.containsEdge(contractionMapping.get(1), contractionMapping.get(2)));
+        assertTrue(
+            contractionGraph.containsEdge(contractionMapping.get(2), contractionMapping.get(3)));
     }
 
     @Test
-    public void testDirectedGraph2() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testDirectedGraph2()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 1);
         Graphs.addEdgeWithVertices(graph, 2, 1, 1);
@@ -116,13 +110,15 @@ public class ContractionHierarchyPrecomputationTest {
         Graphs.addEdgeWithVertices(graph, 3, 1, 1);
         Graphs.addEdgeWithVertices(graph, 1, 3, 1);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -132,8 +128,10 @@ public class ContractionHierarchyPrecomputationTest {
     }
 
     @Test
-    public void testDirectedGraph3() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testDirectedGraph3()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 3, 1);
         Graphs.addEdgeWithVertices(graph, 2, 3, 1);
@@ -141,14 +139,17 @@ public class ContractionHierarchyPrecomputationTest {
         Graphs.addEdgeWithVertices(graph, 3, 4, 1);
         Graphs.addEdgeWithVertices(graph, 3, 5, 1);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -156,37 +157,37 @@ public class ContractionHierarchyPrecomputationTest {
         assertEquals(5, contractionGraph.vertexSet().size());
         assertEquals(4, contractionGraph.edgeSet().size());
 
-        List<Pair<Integer, Integer>> vertexPairs = Arrays.asList(
-                Pair.of(1, 3),
-                Pair.of(2, 3),
-                Pair.of(3, 4),
-                Pair.of(3, 5)
-        );
+        List<Pair<Integer, Integer>> vertexPairs =
+            Arrays.asList(Pair.of(1, 3), Pair.of(2, 3), Pair.of(3, 4), Pair.of(3, 5));
 
         for (Pair<Integer, Integer> pair : vertexPairs) {
-            assertTrue(contractionGraph.containsEdge(
+            assertTrue(
+                contractionGraph.containsEdge(
                     contractionMapping.get(pair.getFirst()),
-                    contractionMapping.get(pair.getSecond())
-            ));
+                    contractionMapping.get(pair.getSecond())));
         }
     }
 
-
     @Test
-    public void testUndirectedGraph1() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testUndirectedGraph1()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 1);
         Graphs.addEdgeWithVertices(graph, 2, 3, 1);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -194,36 +195,36 @@ public class ContractionHierarchyPrecomputationTest {
         assertEquals(3, contractionGraph.vertexSet().size());
         assertEquals(4, contractionGraph.edgeSet().size());
 
-        List<Pair<Integer, Integer>> vertexPairs = Arrays.asList(
-                Pair.of(1, 2),
-                Pair.of(2, 1),
-                Pair.of(2, 3),
-                Pair.of(3, 2)
-        );
+        List<Pair<Integer, Integer>> vertexPairs =
+            Arrays.asList(Pair.of(1, 2), Pair.of(2, 1), Pair.of(2, 3), Pair.of(3, 2));
 
         for (Pair<Integer, Integer> pair : vertexPairs) {
-            assertTrue(contractionGraph.containsEdge(
+            assertTrue(
+                contractionGraph.containsEdge(
                     contractionMapping.get(pair.getFirst()),
-                    contractionMapping.get(pair.getSecond())
-            ));
+                    contractionMapping.get(pair.getSecond())));
         }
     }
 
     @Test
-    public void testUndirectedGraph2() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testUndirectedGraph2()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 1);
         Graphs.addEdgeWithVertices(graph, 2, 3, 1);
         Graphs.addEdgeWithVertices(graph, 3, 1, 1);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
 
         assertEquals(3, graph.vertexSet().size());
 
@@ -235,8 +236,10 @@ public class ContractionHierarchyPrecomputationTest {
     }
 
     @Test
-    public void testUndirectedGraph3() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testUndirectedGraph3()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DefaultUndirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 3, 1);
         Graphs.addEdgeWithVertices(graph, 2, 3, 1);
@@ -244,14 +247,17 @@ public class ContractionHierarchyPrecomputationTest {
         Graphs.addEdgeWithVertices(graph, 3, 4, 1);
         Graphs.addEdgeWithVertices(graph, 3, 5, 1);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -260,27 +266,22 @@ public class ContractionHierarchyPrecomputationTest {
         assertEquals(8, contractionGraph.edgeSet().size());
 
         List<Pair<Integer, Integer>> vertexPairs = Arrays.asList(
-                Pair.of(1, 3),
-                Pair.of(3, 1),
-                Pair.of(2, 3),
-                Pair.of(3, 2),
-                Pair.of(3, 4),
-                Pair.of(4, 3),
-                Pair.of(3, 5),
-                Pair.of(5, 3)
-        );
+            Pair.of(1, 3), Pair.of(3, 1), Pair.of(2, 3), Pair.of(3, 2), Pair.of(3, 4),
+            Pair.of(4, 3), Pair.of(3, 5), Pair.of(5, 3));
 
         for (Pair<Integer, Integer> pair : vertexPairs) {
-            assertTrue(contractionGraph.containsEdge(
+            assertTrue(
+                contractionGraph.containsEdge(
                     contractionMapping.get(pair.getFirst()),
-                    contractionMapping.get(pair.getSecond())
-            ));
+                    contractionMapping.get(pair.getSecond())));
         }
     }
 
     @Test
-    public void testUndirectedGraph4() {
-        Graph<Integer, DefaultWeightedEdge> graph = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
+    public void testUndirectedGraph4()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 3);
         Graphs.addEdgeWithVertices(graph, 1, 4, 1);
@@ -301,15 +302,17 @@ public class ContractionHierarchyPrecomputationTest {
         Graphs.addEdgeWithVertices(graph, 7, 8, 3);
         Graphs.addEdgeWithVertices(graph, 8, 9, 3);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph
-                = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -318,46 +321,27 @@ public class ContractionHierarchyPrecomputationTest {
         assertEquals(24, contractionGraph.edgeSet().size());
 
         List<Pair<Integer, Integer>> vertexPairs = Arrays.asList(
-                Pair.of(1, 2),
-                Pair.of(2, 1),
-                Pair.of(1, 4),
-                Pair.of(4, 1),
-                Pair.of(2, 3),
-                Pair.of(3, 2),
-                Pair.of(2, 5),
-                Pair.of(5, 2),
-                Pair.of(3, 6),
-                Pair.of(6, 3),
+            Pair.of(1, 2), Pair.of(2, 1), Pair.of(1, 4), Pair.of(4, 1), Pair.of(2, 3),
+            Pair.of(3, 2), Pair.of(2, 5), Pair.of(5, 2), Pair.of(3, 6), Pair.of(6, 3),
 
-                Pair.of(4, 5),
-                Pair.of(5, 4),
-                Pair.of(4, 7),
-                Pair.of(7, 4),
-                Pair.of(5, 6),
-                Pair.of(6, 5),
-                Pair.of(5, 8),
-                Pair.of(8, 5),
-                Pair.of(6, 9),
-                Pair.of(9, 6),
+            Pair.of(4, 5), Pair.of(5, 4), Pair.of(4, 7), Pair.of(7, 4), Pair.of(5, 6),
+            Pair.of(6, 5), Pair.of(5, 8), Pair.of(8, 5), Pair.of(6, 9), Pair.of(9, 6),
 
-                Pair.of(7, 8),
-                Pair.of(8, 7),
-                Pair.of(8, 9),
-                Pair.of(9, 8)
-        );
+            Pair.of(7, 8), Pair.of(8, 7), Pair.of(8, 9), Pair.of(9, 8));
 
         for (Pair<Integer, Integer> pair : vertexPairs) {
-            assertTrue(contractionGraph.containsEdge(
+            assertTrue(
+                contractionGraph.containsEdge(
                     contractionMapping.get(pair.getFirst()),
-                    contractionMapping.get(pair.getSecond())
-            ));
+                    contractionMapping.get(pair.getSecond())));
         }
     }
 
-
     @Test
-    public void testPseudograph() {
-        Graph<Integer, DefaultWeightedEdge> graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
+    public void testPseudograph()
+    {
+        Graph<Integer, DefaultWeightedEdge> graph =
+            new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
 
         Graphs.addEdgeWithVertices(graph, 1, 2, 1);
         Graphs.addEdgeWithVertices(graph, 1, 2, 2);
@@ -369,15 +353,17 @@ public class ContractionHierarchyPrecomputationTest {
         Graphs.addEdgeWithVertices(graph, 2, 2, 1);
         Graphs.addEdgeWithVertices(graph, 2, 2, 2);
 
-        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor
-                = new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
-        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy = contractor.computeContractionHierarchy();
+        ContractionHierarchyPrecomputation<Integer, DefaultWeightedEdge> contractor =
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED));
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
+            contractor.computeContractionHierarchy();
 
         assertNotNull(hierarchy);
 
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph
-                = hierarchy.getContractionGraph();
-        Map<Integer, ContractionVertex<Integer>> contractionMapping = hierarchy.getContractionMapping();
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
+        Map<Integer, ContractionVertex<Integer>> contractionMapping =
+            hierarchy.getContractionMapping();
 
         assertTrue(contractionGraph.getType().isDirected());
         assertTrue(contractionGraph.getType().isSimple());
@@ -385,34 +371,39 @@ public class ContractionHierarchyPrecomputationTest {
         assertEquals(2, contractionGraph.vertexSet().size());
         assertEquals(2, contractionGraph.edgeSet().size());
 
-        assertTrue(contractionGraph.containsEdge(contractionMapping.get(1), contractionMapping.get(2)));
-        assertTrue(contractionGraph.containsEdge(contractionMapping.get(2), contractionMapping.get(1)));
+        assertTrue(
+            contractionGraph.containsEdge(contractionMapping.get(1), contractionMapping.get(2)));
+        assertTrue(
+            contractionGraph.containsEdge(contractionMapping.get(2), contractionMapping.get(1)));
 
-        assertEquals(1, contractionGraph.getEdgeWeight(contractionGraph.getEdge(
-                contractionMapping.get(1),
-                contractionMapping.get(2)
-        )), 1e-9);
-        assertEquals(1, contractionGraph.getEdgeWeight(contractionGraph.getEdge(
-                contractionMapping.get(2),
-                contractionMapping.get(1)
-        )), 1e-9);
+        assertEquals(
+            1,
+            contractionGraph.getEdgeWeight(
+                contractionGraph.getEdge(contractionMapping.get(1), contractionMapping.get(2))),
+            1e-9);
+        assertEquals(
+            1,
+            contractionGraph.getEdgeWeight(
+                contractionGraph.getEdge(contractionMapping.get(2), contractionMapping.get(1))),
+            1e-9);
     }
 
-
     @Test
-    public void testOnRandomGraphs() {
+    public void testOnRandomGraphs()
+    {
         int numOfGraphs = 20;
         int numOfVertices = 30;
         double probability = 0.2;
 
         for (int i = 0; i < numOfGraphs; ++i) {
-            DirectedWeightedPseudograph<Integer, DefaultWeightedEdge> graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
+            DirectedWeightedPseudograph<Integer, DefaultWeightedEdge> graph =
+                new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
             graph.setVertexSupplier(SupplierUtil.createIntegerSupplier());
 
             generateRandomGraph(graph, numOfVertices, probability);
 
             ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
-                    new ContractionHierarchyPrecomputation<>(graph).computeContractionHierarchy();
+                new ContractionHierarchyPrecomputation<>(graph).computeContractionHierarchy();
 
             assertCorrectMapping(graph, hierarchy);
             assertNoEdgesRemoved(graph, hierarchy);
@@ -422,16 +413,18 @@ public class ContractionHierarchyPrecomputationTest {
     }
 
     /**
-     * Asserts that {@code mapping} includes all vertices in {@code graph} as keys,
-     * all vertices in {@code contractionGraph} as values and the values in {@code mapping}
-     * are unique.
+     * Asserts that {@code mapping} includes all vertices in {@code graph} as keys, all vertices in
+     * {@code contractionGraph} as values and the values in {@code mapping} are unique.
      *
-     * @param graph     graph
+     * @param graph graph
      * @param hierarchy contraction hierarchy
      */
-    private void assertCorrectMapping(Graph<Integer, DefaultWeightedEdge> graph,
-                                      ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy) {
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
+    private void assertCorrectMapping(
+        Graph<Integer, DefaultWeightedEdge> graph,
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy)
+    {
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
         Map<Integer, ContractionVertex<Integer>> mapping = hierarchy.getContractionMapping();
 
         assertEquals(graph.vertexSet(), mapping.keySet());
@@ -441,15 +434,18 @@ public class ContractionHierarchyPrecomputationTest {
     }
 
     /**
-     * Asserts that for every edge in {@code graph} between $s$ and $t$ there exists
-     * an edge in {@code contractionGraph} between contracted $s$ and $t$.
+     * Asserts that for every edge in {@code graph} between $s$ and $t$ there exists an edge in
+     * {@code contractionGraph} between contracted $s$ and $t$.
      *
-     * @param graph     graph
+     * @param graph graph
      * @param hierarchy contraction hierarchy
      */
-    private void assertNoEdgesRemoved(Graph<Integer, DefaultWeightedEdge> graph,
-                                      ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy) {
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
+    private void assertNoEdgesRemoved(
+        Graph<Integer, DefaultWeightedEdge> graph,
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy)
+    {
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
         Map<Integer, ContractionVertex<Integer>> mapping = hierarchy.getContractionMapping();
 
         for (DefaultWeightedEdge edge : graph.edgeSet()) {
@@ -464,12 +460,15 @@ public class ContractionHierarchyPrecomputationTest {
      * Asserts that every edge in {@code graph} between $s$ and $t$ has greater or equal weight than
      * an edge in {@code contractedGraph} between the contracted $s$ and $t$.
      *
-     * @param graph     graph
+     * @param graph graph
      * @param hierarchy contraction hierarchy
      */
-    private void assertCorrectEdgeWeights(Graph<Integer, DefaultWeightedEdge> graph,
-                                          ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy) {
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
+    private void assertCorrectEdgeWeights(
+        Graph<Integer, DefaultWeightedEdge> graph,
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy)
+    {
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
         Map<Integer, ContractionVertex<Integer>> mapping = hierarchy.getContractionMapping();
 
         for (DefaultWeightedEdge edge : graph.edgeSet()) {
@@ -479,24 +478,28 @@ public class ContractionHierarchyPrecomputationTest {
             ContractionVertex<Integer> contractedTarget = mapping.get(target);
 
             double oldWeight = graph.getEdgeWeight(edge);
-            double newWeight = contractionGraph.getEdgeWeight(
-                    contractionGraph.getEdge(contractedSource, contractedTarget));
+            double newWeight = contractionGraph
+                .getEdgeWeight(contractionGraph.getEdge(contractedSource, contractedTarget));
             assertTrue(oldWeight >= newWeight);
         }
     }
 
     /**
-     * Asserts for every edge $e1$ in {@code contractionGraph} which is not a shortcuts and contains an edge $e2$
-     * of the original {@code graph} that weight og $e1$ is equal to the weight of $e2$. Secondly for vertices in the
-     * {@code graph} which correspond to source $s$ and target $t$ of $e1$ asserts that there is an edge $e2$ between
-     * them and the weight of $e2$ is minimum among all edges between $s$ and $t$.
+     * Asserts for every edge $e1$ in {@code contractionGraph} which is not a shortcuts and contains
+     * an edge $e2$ of the original {@code graph} that weight og $e1$ is equal to the weight of
+     * $e2$. Secondly for vertices in the {@code graph} which correspond to source $s$ and target
+     * $t$ of $e1$ asserts that there is an edge $e2$ between them and the weight of $e2$ is minimum
+     * among all edges between $s$ and $t$.
      *
-     * @param graph     graph
+     * @param graph graph
      * @param hierarchy contraction hierarchy
      */
-    private void assertCorrectContractionEdges(Graph<Integer, DefaultWeightedEdge> graph,
-                                               ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy) {
-        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph = hierarchy.getContractionGraph();
+    private void assertCorrectContractionEdges(
+        Graph<Integer, DefaultWeightedEdge> graph,
+        ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy)
+    {
+        Graph<ContractionVertex<Integer>, ContractionEdge<DefaultWeightedEdge>> contractionGraph =
+            hierarchy.getContractionGraph();
         Map<Integer, ContractionVertex<Integer>> mapping = hierarchy.getContractionMapping();
 
         Map<ContractionVertex<Integer>, Integer> inverseMapping = new HashMap<>();
@@ -509,8 +512,10 @@ public class ContractionHierarchyPrecomputationTest {
                 double edgeWeight = graph.getEdgeWeight(contractionEdge.edge);
                 assertEquals(edgeWeight, contractionGraph.getEdgeWeight(contractionEdge), 1e-9);
 
-                ContractionVertex<Integer> contractedSource = contractionGraph.getEdgeSource(contractionEdge);
-                ContractionVertex<Integer> contractedTarget = contractionGraph.getEdgeTarget(contractionEdge);
+                ContractionVertex<Integer> contractedSource =
+                    contractionGraph.getEdgeSource(contractionEdge);
+                ContractionVertex<Integer> contractedTarget =
+                    contractionGraph.getEdgeTarget(contractionEdge);
 
                 Integer source = inverseMapping.get(contractedSource);
                 Integer target = inverseMapping.get(contractedTarget);
@@ -527,18 +532,18 @@ public class ContractionHierarchyPrecomputationTest {
         }
     }
 
-
     /**
      * Generates random graph from the $G(n, p)$ model.
      *
      * @param graph graph instance for the generator
-     * @param n     the number of nodes
-     * @param p     the edge probability
+     * @param n the number of nodes
+     * @param p the edge probability
      */
-    private void generateRandomGraph(Graph<Integer, DefaultWeightedEdge> graph, int n, double p) {
+    private void generateRandomGraph(Graph<Integer, DefaultWeightedEdge> graph, int n, double p)
+    {
         Random random = new Random(SEED);
         GraphGenerator<Integer, DefaultWeightedEdge, Integer> generator =
-                new GnpRandomGraphGenerator<>(n, p, SEED);
+            new GnpRandomGraphGenerator<>(n, p, SEED);
         generator.generateGraph(graph);
 
         graph.edgeSet().forEach(e -> graph.setEdgeWeight(e, random.nextDouble()));

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Amr ALHOSSARY and Contributors.
+ * (C) Copyright 2019-2020, by Amr ALHOSSARY and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,9 @@
  */
 package org.jgrapht.io;
 
-import static org.junit.Assert.*;
+import org.junit.*;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for IntegerComponentNameProvider
@@ -44,7 +44,7 @@ public class IntegerComponentNameProviderTest
         assertEquals("0", id1);
         id2 = provider.getName(new Object());
         assertEquals("1", id2);
-    
+
     }
 
     @Test

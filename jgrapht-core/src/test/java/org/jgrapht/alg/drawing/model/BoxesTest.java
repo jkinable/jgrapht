@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,12 +17,10 @@
  */
 package org.jgrapht.alg.drawing.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.jgrapht.alg.util.*;
+import org.junit.*;
 
-import org.jgrapht.alg.util.Pair;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Test {@link Boxes}.

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2013-2018, by Leo Crawford and Contributors.
+ * (C) Copyright 2013-2020, by Leo Crawford and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -20,7 +20,6 @@ package org.jgrapht.alg.lca;
 import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 
-import java.lang.reflect.*;
 import java.util.*;
 
 /**
@@ -109,9 +108,9 @@ public class NaiveLCAFinder<V, E>
     {
         checkNodes(a, b);
         Set<V> lcaSet = getLCASet(a, b);
-        if(lcaSet.isEmpty()){
+        if (lcaSet.isEmpty()) {
             return null;
-        }else{
+        } else {
             return lcaSet.iterator().next();
         }
     }
@@ -165,7 +164,8 @@ public class NaiveLCAFinder<V, E>
      */
     private List<Set<V>> doubleBfs(V a, V b)
     {
-        List<Queue<V>> queues = new ArrayList<>(Arrays.asList(new ArrayDeque<>(), new ArrayDeque<>()));
+        List<Queue<V>> queues =
+            new ArrayList<>(Arrays.asList(new ArrayDeque<>(), new ArrayDeque<>()));
         List<Set<V>> visitedSets = new ArrayList<>(Arrays.asList(new HashSet<>(), new HashSet<>()));
 
         queues.get(0).add(a);
@@ -200,7 +200,8 @@ public class NaiveLCAFinder<V, E>
      * @param a first node
      * @param b second node
      */
-    private void checkNodes(V a, V b){
+    private void checkNodes(V a, V b)
+    {
         if (!graph.containsVertex(a))
             throw new IllegalArgumentException("invalid vertex: " + a);
 

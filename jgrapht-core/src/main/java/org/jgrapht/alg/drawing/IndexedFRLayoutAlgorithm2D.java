@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,19 +17,12 @@
  */
 package org.jgrapht.alg.drawing;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import org.jgrapht.*;
+import org.jgrapht.alg.drawing.FRQuadTree.*;
+import org.jgrapht.alg.drawing.model.*;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.drawing.FRQuadTree.Node;
-import org.jgrapht.alg.drawing.model.Box2D;
-import org.jgrapht.alg.drawing.model.LayoutModel2D;
-import org.jgrapht.alg.drawing.model.Point2D;
-import org.jgrapht.alg.drawing.model.Points;
-import org.jgrapht.alg.util.ToleranceDoubleComparator;
+import java.util.*;
 
 /**
  * Fruchterman and Reingold Force-Directed Placement Algorithm using the

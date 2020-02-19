@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Peter Harman and Contributors.
+ * (C) Copyright 2019-2020, by Peter Harman and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,52 +17,53 @@
  */
 package org.jgrapht.alg.tour;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PrimitiveIterator.OfDouble;
-import java.util.Random;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.SlowTests;
-import org.jgrapht.alg.interfaces.HamiltonianCycleAlgorithm;
+import org.apache.commons.math3.geometry.euclidean.twod.*;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.graph.builder.*;
+import org.junit.*;
+import org.junit.experimental.categories.*;
+import org.junit.runner.*;
+import org.junit.runners.*;
+
+import java.util.*;
+import java.util.PrimitiveIterator.*;
+
 import static org.jgrapht.alg.tour.TwoApproxMetricTSPTest.assertHamiltonian;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.builder.GraphBuilder;
-import org.jgrapht.graph.builder.GraphTypeBuilder;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
 /**
- * Tests of Travelling Salesman Problem algorithms based on a random set of 2D
- * points, with graphs of increasing size
+ * Tests of Travelling Salesman Problem algorithms based on a random set of 2D points, with graphs
+ * of increasing size
  *
  * @author Peter Harman
  */
 @Category(SlowTests.class)
 @RunWith(Parameterized.class)
-public class GeometricTSPTest {
+public class GeometricTSPTest
+{
 
     private static final OfDouble RNG = new Random().doubles(0.0, 100.0).iterator();
     private final Graph<Vector2D, DefaultWeightedEdge> graph;
 
-    public GeometricTSPTest(Graph<Vector2D, DefaultWeightedEdge> graph, Integer size) {
+    public GeometricTSPTest(Graph<Vector2D, DefaultWeightedEdge> graph, Integer size)
+    {
         this.graph = graph;
     }
 
     @Parameterized.Parameters(name = "{1} Points")
-    public static Object[][] graphs() {
+    public static Object[][] graphs()
+    {
         List<Object[]> graphs = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             int size = (int) Math.pow(10, i);
-            graphs.add(new Object[]{generate(size), size});
+            graphs.add(new Object[] { generate(size), size });
         }
         return graphs.toArray(new Object[0][]);
     }
 
-    static Graph<Vector2D, DefaultWeightedEdge> generate(int n) {
+    static Graph<Vector2D, DefaultWeightedEdge> generate(int n)
+    {
         Vector2D[] points = new Vector2D[n];
         for (int i = 0; i < n; i++) {
             points[i] = new Vector2D(RNG.next(), RNG.next());
@@ -70,12 +71,12 @@ public class GeometricTSPTest {
         return generate(points);
     }
 
-    static Graph<Vector2D, DefaultWeightedEdge> generate(Vector2D[] points) {
-        GraphBuilder<Vector2D, DefaultWeightedEdge, Graph<Vector2D, DefaultWeightedEdge>> builder = GraphTypeBuilder.undirected()
-                .vertexClass(Vector2D.class)
-                .edgeClass(DefaultWeightedEdge.class)
-                .weighted(true)
-                .buildGraphBuilder();
+    static Graph<Vector2D, DefaultWeightedEdge> generate(Vector2D[] points)
+    {
+        GraphBuilder<Vector2D, DefaultWeightedEdge,
+            Graph<Vector2D, DefaultWeightedEdge>> builder = GraphTypeBuilder
+                .undirected().vertexClass(Vector2D.class).edgeClass(DefaultWeightedEdge.class)
+                .weighted(true).buildGraphBuilder();
         for (Vector2D point : points) {
             builder.addVertex(point);
         }
@@ -87,43 +88,55 @@ public class GeometricTSPTest {
         return builder.build();
     }
 
-    void testWith(String description, HamiltonianCycleAlgorithm<Vector2D, DefaultWeightedEdge> algorithm) {
+    void testWith(
+        String description, HamiltonianCycleAlgorithm<Vector2D, DefaultWeightedEdge> algorithm)
+    {
         GraphPath<Vector2D, DefaultWeightedEdge> tour = algorithm.getTour(graph);
         assertHamiltonian(graph, tour);
     }
 
     @Test
-    public void testGreedy() {
+    public void testGreedy()
+    {
         testWith("Greedy", new GreedyHeuristicTSP<>());
     }
 
     @Test
-    public void testNearestInsertionHeuristic() {
-        testWith("Nearest insertion starting from shortest edge", new NearestInsertionHeuristicTSP<>());
+    public void testNearestInsertionHeuristic()
+    {
+        testWith(
+            "Nearest insertion starting from shortest edge", new NearestInsertionHeuristicTSP<>());
     }
 
     @Test
-    public void testNearestNeighbourHeuristic() {
+    public void testNearestNeighbourHeuristic()
+    {
         testWith("Nearest neighbour", new NearestNeighborHeuristicTSP<>());
     }
 
     @Test
-    public void testRandom() {
+    public void testRandom()
+    {
         testWith("Random", new RandomTourTSP<>());
     }
 
     @Test
-    public void testTwoOptNearestNeighbour() {
-        testWith("Two-opt of nearest neighbour", new TwoOptHeuristicTSP<>(new NearestNeighborHeuristicTSP<>()));
+    public void testTwoOptNearestNeighbour()
+    {
+        testWith(
+            "Two-opt of nearest neighbour",
+            new TwoOptHeuristicTSP<>(new NearestNeighborHeuristicTSP<>()));
     }
 
     @Test
-    public void testTwoOpt1() {
+    public void testTwoOpt1()
+    {
         testWith("Two-opt, 1 attempt from random", new TwoOptHeuristicTSP<>(1));
     }
 
     @Test
-    public void testChristofides() {
+    public void testChristofides()
+    {
         testWith("Christofides", new ChristofidesThreeHalvesApproxMetricTSP<>());
     }
 

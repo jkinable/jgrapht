@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Joris Kinable and Contributors.
+ * (C) Copyright 2017-2020, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,27 +17,19 @@
  */
 package org.jgrapht.nio.graph6;
 
+import org.jgrapht.*;
+import org.jgrapht.generate.*;
+import org.jgrapht.graph.*;
+import org.jgrapht.nio.*;
+import org.jgrapht.util.*;
+import org.junit.*;
+
+import java.io.*;
+import java.nio.charset.*;
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-
-import org.jgrapht.Graph;
-import org.jgrapht.GraphMetrics;
-import org.jgrapht.Graphs;
-import org.jgrapht.generate.GnpRandomGraphGenerator;
-import org.jgrapht.generate.NamedGraphGenerator;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.Pseudograph;
-import org.jgrapht.graph.SimpleGraph;
-import org.jgrapht.nio.ExportException;
-import org.jgrapht.nio.ImportException;
-import org.jgrapht.util.SupplierUtil;
-import org.junit.Test;
 
 /**
  * Tests for Graph6Sparse6Exporter
@@ -239,7 +231,8 @@ public class Graph6Sparse6ExporterTest
     private Graph<Integer, DefaultEdge> importGraph(String g6)
         throws ImportException
     {
-        Graph<Integer, DefaultEdge> g = new Pseudograph<>(SupplierUtil.createIntegerSupplier(), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+        Graph<Integer, DefaultEdge> g = new Pseudograph<>(
+            SupplierUtil.createIntegerSupplier(), SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
         Graph6Sparse6Importer<Integer, DefaultEdge> importer = new Graph6Sparse6Importer<>();
         importer.importGraph(g, new ByteArrayInputStream(g6.getBytes(StandardCharsets.UTF_8)));
         return g;

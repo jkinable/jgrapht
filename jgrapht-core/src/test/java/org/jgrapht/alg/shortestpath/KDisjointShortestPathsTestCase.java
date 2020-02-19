@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Assaf Mizrachi and Contributors.
+ * (C) Copyright 2018-2020, by Assaf Mizrachi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -21,12 +21,12 @@ import org.jgrapht.*;
 import org.jgrapht.alg.interfaces.*;
 import org.jgrapht.generate.*;
 import org.jgrapht.graph.*;
-import org.jgrapht.graph.builder.GraphBuilder;
+import org.jgrapht.graph.builder.*;
 import org.jgrapht.util.*;
 import org.junit.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
 
 import static org.junit.Assert.*;
 
@@ -961,8 +961,11 @@ public abstract class KDisjointShortestPathsTestCase
      *
      */
     @Test
-    public void testThreeDisjointPathsWithMultiHitsOnEdge() {
-        GraphBuilder<Integer, DefaultWeightedEdge, ? extends SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge>> builder = SimpleDirectedWeightedGraph.createBuilder(DefaultWeightedEdge.class);
+    public void testThreeDisjointPathsWithMultiHitsOnEdge()
+    {
+        GraphBuilder<Integer, DefaultWeightedEdge,
+            ? extends SimpleDirectedWeightedGraph<Integer, DefaultWeightedEdge>> builder =
+                SimpleDirectedWeightedGraph.createBuilder(DefaultWeightedEdge.class);
         builder.addEdge(1, 3, 1);
         builder.addEdge(1, 4, 1);
         builder.addEdge(1, 5, 1);
@@ -982,20 +985,20 @@ public abstract class KDisjointShortestPathsTestCase
         KShortestPathAlgorithm<Integer, DefaultWeightedEdge> ksp = getKShortestPathAlgorithm(graph);
         List<GraphPath<Integer, DefaultWeightedEdge>> paths = ksp.getPaths(1, 2, 3);
 
-        int[] p1 = {1, 3, 7, 2};
-        int[] p2 = {1, 4, 6, 2};
-        int[] p3 = {1, 5, 8, 2};
+        int[] p1 = { 1, 3, 7, 2 };
+        int[] p2 = { 1, 4, 6, 2 };
+        int[] p3 = { 1, 5, 8, 2 };
 
         List<int[]> expectedPaths = Arrays.asList(p1, p2, p3);
 
-        List<int[]> resultPaths = paths.stream()
-                .map(GraphPath::getVertexList)
-                .map(vlist -> vlist.stream().mapToInt(i -> i).toArray())
-                .collect(Collectors.toList());
+        List<int[]> resultPaths = paths
+            .stream().map(GraphPath::getVertexList)
+            .map(vlist -> vlist.stream().mapToInt(i -> i).toArray()).collect(Collectors.toList());
 
         Assert.assertEquals(expectedPaths.size(), resultPaths.size());
         for (int[] expectedPath : expectedPaths) {
-            boolean isIncluded = resultPaths.stream().anyMatch(result -> Arrays.equals(result, expectedPath));
+            boolean isIncluded =
+                resultPaths.stream().anyMatch(result -> Arrays.equals(result, expectedPath));
             Assert.assertTrue(isIncluded);
         }
     }

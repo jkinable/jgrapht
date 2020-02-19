@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,19 +17,14 @@
  */
 package org.jgrapht.alg.drawing;
 
+import org.jgrapht.alg.drawing.FRQuadTree.*;
+import org.jgrapht.alg.drawing.model.*;
+import org.junit.*;
+
+import java.util.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
-import java.util.Random;
-
-import org.jgrapht.alg.drawing.FRQuadTree.Node;
-import org.jgrapht.alg.drawing.model.Box2D;
-import org.jgrapht.alg.drawing.model.Point2D;
-import org.jgrapht.alg.drawing.model.Points;
-import org.junit.Test;
 
 /**
  * Test {@link FRQuadTree}.

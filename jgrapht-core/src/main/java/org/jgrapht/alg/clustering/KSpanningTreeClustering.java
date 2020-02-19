@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,19 +17,13 @@
  */
 package org.jgrapht.alg.clustering;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm.*;
+import org.jgrapht.alg.spanning.*;
+import org.jgrapht.alg.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphTests;
-import org.jgrapht.alg.interfaces.ClusteringAlgorithm;
-import org.jgrapht.alg.interfaces.SpanningTreeAlgorithm.SpanningTree;
-import org.jgrapht.alg.spanning.PrimMinimumSpanningTree;
-import org.jgrapht.alg.util.UnionFind;
+import java.util.*;
 
 /**
  * The k spanning tree clustering algorithm.

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,18 +17,12 @@
  */
 package org.jgrapht.opt.graph.sparse;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.graph.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphType;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.graph.AbstractGraph;
-import org.jgrapht.graph.DefaultGraphType;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Sparse undirected graph.

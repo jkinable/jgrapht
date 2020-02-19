@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Amr ALHOSSARY and Contributors.
+ * (C) Copyright 2019-2020, by Amr ALHOSSARY and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,9 +17,9 @@
  */
 package org.jgrapht.nio;
 
-import static org.junit.Assert.*;
+import org.junit.*;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests
@@ -28,7 +28,7 @@ import org.junit.Test;
  */
 public class IntegerIdProviderTest
 {
-    
+
     @Test
     public void testDefaultConstructor()
     {

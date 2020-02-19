@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2003-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -307,11 +307,11 @@ public class GraphWalkTest
     public void testFirstEmptyWalkEquality()
     {
         Graph<Integer, DefaultEdge> graph1 = new SimpleGraph<>(DefaultEdge.class);
-        GraphWalk<Integer,DefaultEdge> gw1 = GraphWalk.emptyWalk(graph1);
+        GraphWalk<Integer, DefaultEdge> gw1 = GraphWalk.emptyWalk(graph1);
 
         Graph<Integer, DefaultEdge> graph2 = new SimpleGraph<>(DefaultEdge.class);
         graph2.addVertex(0);
-        GraphWalk<Integer,DefaultEdge> gw2 = GraphWalk.singletonWalk(graph2, 0);
+        GraphWalk<Integer, DefaultEdge> gw2 = GraphWalk.singletonWalk(graph2, 0);
         Assert.assertNotEquals(gw1, gw2);
     }
 

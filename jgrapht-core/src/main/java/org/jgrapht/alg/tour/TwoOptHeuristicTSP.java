@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -34,11 +34,11 @@ import java.util.*;
  * 
  * <p>
  * This is an implementation of the 2-opt improvement heuristic algorithm. The algorithm generates k
- * initial tours and then iteratively improves the tours until a local minimum is reached. In each 
+ * initial tours and then iteratively improves the tours until a local minimum is reached. In each
  * iteration it applies the best possible 2-opt move which means to find the best pair of edges
  * $(i,i+1)$ and $(j,j+1)$ such that replacing them with $(i,j)$ and $(i+1,j+1)$ minimizes the tour
  * length. The default initial tours use RandomTour, however an alternative algorithm can be
- * provided to create the initial tour. Initial tours generated using NearestNeighborHeuristicTSP 
+ * provided to create the initial tour. Initial tours generated using NearestNeighborHeuristicTSP
  * give good results and performance.
  * </p>
  * 
@@ -120,13 +120,14 @@ public class TwoOptHeuristicTSP<V, E>
     {
         this(k, new RandomTourTSP<>(rng), minCostImprovement);
     }
-    
+
     /**
      * Constructor
      * 
      * @param initializer Algorithm to generate initial tour
      */
-    public TwoOptHeuristicTSP(HamiltonianCycleAlgorithm<V, E> initializer) {
+    public TwoOptHeuristicTSP(HamiltonianCycleAlgorithm<V, E> initializer)
+    {
         this(1, initializer);
     }
 
@@ -136,10 +137,11 @@ public class TwoOptHeuristicTSP<V, E>
      * @param k how many initial tours to check
      * @param initializer Algorithm to generate initial tour
      */
-    public TwoOptHeuristicTSP(int k, HamiltonianCycleAlgorithm<V, E> initializer) {
+    public TwoOptHeuristicTSP(int k, HamiltonianCycleAlgorithm<V, E> initializer)
+    {
         this(k, initializer, 1e-8);
     }
-    
+
     /**
      * Constructor
      * 
@@ -147,12 +149,15 @@ public class TwoOptHeuristicTSP<V, E>
      * @param initializer Algorithm to generate initial tours
      * @param minCostImprovement Minimum cost improvement per iteration
      */
-    public TwoOptHeuristicTSP(int k, HamiltonianCycleAlgorithm<V, E> initializer, double minCostImprovement) {
+    public TwoOptHeuristicTSP(
+        int k, HamiltonianCycleAlgorithm<V, E> initializer, double minCostImprovement)
+    {
         if (k < 1) {
             throw new IllegalArgumentException("k must be at least one");
         }
         this.k = k;
-        this.initializer = Objects.requireNonNull(initializer, "Initial solver algorithm cannot be null");
+        this.initializer =
+            Objects.requireNonNull(initializer, "Initial solver algorithm cannot be null");
         this.minCostImprovement = Math.abs(minCostImprovement);
     }
 
@@ -292,7 +297,7 @@ public class TwoOptHeuristicTSP<V, E>
                 }
             }
             if (mini != -1 && minj != -1) {
-                // apply move                
+                // apply move
                 int a = 0;
                 for (int k = 0; k <= mini; k++) {
                     newTour[a++] = tour[k];

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors. 
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors. 
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,16 +17,13 @@
  */
 package org.jgrapht.nio.graph6;
 
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
+import org.jgrapht.*;
+import org.jgrapht.alg.util.*;
+import org.jgrapht.nio.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.util.Pair;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.GraphImporter;
-import org.jgrapht.nio.ImportException;
+import java.io.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Importer which reads graphs in graph6 or sparse6 format.

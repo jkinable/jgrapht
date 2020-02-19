@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2017-2017, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2017-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,7 +17,7 @@
  */
 package org.jgrapht.nio;
 
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * Default implementation of an attribute.

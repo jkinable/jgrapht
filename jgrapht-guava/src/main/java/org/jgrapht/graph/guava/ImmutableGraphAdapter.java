@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2018-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,8 +17,8 @@
  */
 package org.jgrapht.graph.guava;
 
-import com.google.common.graph.*;
 import com.google.common.graph.Graphs;
+import com.google.common.graph.*;
 import org.jgrapht.Graph;
 import org.jgrapht.*;
 import org.jgrapht.util.*;

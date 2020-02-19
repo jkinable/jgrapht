@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2005-2019, by Charles Fry and Contributors.
+ * (C) Copyright 2005-2020, by Charles Fry and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,17 +17,11 @@
  */
 package org.jgrapht.io;
 
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.jgrapht.*;
+import org.jgrapht.util.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
-import org.jgrapht.util.ModifiableInteger;
+import java.io.*;
+import java.util.*;
 
 /**
  * Exports a graph to a plain text matrix format, which can be processed by matrix manipulation

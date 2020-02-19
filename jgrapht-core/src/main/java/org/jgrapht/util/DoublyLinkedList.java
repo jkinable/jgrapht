@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2018, by Timofey Chudakov and Contributors.
+ * (C) Copyright 2018-2020, by Timofey Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,10 +17,10 @@
  */
 package org.jgrapht.util;
 
+import org.jgrapht.alg.util.*;
+
 import java.util.*;
 import java.util.function.*;
-
-import org.jgrapht.alg.util.*;
 
 /**
  * {@code DoublyLinkedList} implements a doubly linked {@link List} data structure, that exposes its

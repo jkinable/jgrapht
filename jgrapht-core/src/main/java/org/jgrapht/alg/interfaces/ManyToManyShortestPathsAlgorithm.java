@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,10 +17,9 @@
  */
 package org.jgrapht.alg.interfaces;
 
-import org.jgrapht.GraphPath;
+import org.jgrapht.*;
 
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An algorithm which computes shortest paths from all sources to all targets.
@@ -29,11 +28,14 @@ import java.util.Set;
  * @param <E> the graph edge type
  * @author Semen Chudakov
  */
-public interface ManyToManyShortestPathsAlgorithm<V, E> extends ShortestPathAlgorithm<V, E> {
+public interface ManyToManyShortestPathsAlgorithm<V, E>
+    extends
+    ShortestPathAlgorithm<V, E>
+{
 
     /**
-     * Computes shortest paths from all vertices in {@code sources}
-     * to all vertices in {@code targets}.
+     * Computes shortest paths from all vertices in {@code sources} to all vertices in
+     * {@code targets}.
      *
      * @param sources list of sources vertices
      * @param targets list of target vertices
@@ -47,27 +49,28 @@ public interface ManyToManyShortestPathsAlgorithm<V, E> extends ShortestPathAlgo
      * @param <V> the graph vertices type
      * @param <E> the graph edge type
      */
-    interface ManyToManyShortestPaths<V, E> {
+    interface ManyToManyShortestPaths<V, E>
+    {
 
         /**
-         * Returns the set of source vertices for which this many-to-many shortest paths
-         * were computed.
+         * Returns the set of source vertices for which this many-to-many shortest paths were
+         * computed.
          *
          * @return the set of source vertices
          */
         Set<V> getSources();
 
         /**
-         * Returns the set of target vertices for which this many-to-many shortest paths
-         * were computed.
+         * Returns the set of target vertices for which this many-to-many shortest paths were
+         * computed.
          *
          * @return the set of target vertices
          */
         Set<V> getTargets();
 
         /**
-         * Return the path from the {@code source} vertex to the {@code target} vertex.
-         * If no such path exists, null is returned.
+         * Return the path from the {@code source} vertex to the {@code target} vertex. If no such
+         * path exists, null is returned.
          *
          * @param source source vertex
          * @param target target vertex
@@ -83,7 +86,7 @@ public interface ManyToManyShortestPathsAlgorithm<V, E> extends ShortestPathAlgo
          * @param source source vertex
          * @param target target vertex
          * @return the weight of the path between source and sink vertices or
-         * {@link Double#POSITIVE_INFINITY} in case no such path exists
+         *         {@link Double#POSITIVE_INFINITY} in case no such path exists
          */
         double getWeight(V source, V target);
     }
@@ -94,7 +97,10 @@ public interface ManyToManyShortestPathsAlgorithm<V, E> extends ShortestPathAlgo
      * @param <V> the graph vertex type
      * @param <E> the graph edge type
      */
-    abstract class BaseManyToManyShortestPathsImpl<V, E> implements ManyToManyShortestPaths<V, E> {
+    abstract class BaseManyToManyShortestPathsImpl<V, E>
+        implements
+        ManyToManyShortestPaths<V, E>
+    {
         /**
          * Set of source vertices.
          */
@@ -105,12 +111,14 @@ public interface ManyToManyShortestPathsAlgorithm<V, E> extends ShortestPathAlgo
         private final Set<V> targets;
 
         @Override
-        public Set<V> getSources() {
+        public Set<V> getSources()
+        {
             return sources;
         }
 
         @Override
-        public Set<V> getTargets() {
+        public Set<V> getTargets()
+        {
             return targets;
         }
 
@@ -120,24 +128,27 @@ public interface ManyToManyShortestPathsAlgorithm<V, E> extends ShortestPathAlgo
          * @param sources source vertices
          * @param targets target vertices
          */
-        protected BaseManyToManyShortestPathsImpl(Set<V> sources, Set<V> targets) {
+        protected BaseManyToManyShortestPathsImpl(Set<V> sources, Set<V> targets)
+        {
             this.sources = sources;
             this.targets = targets;
         }
 
         /**
-         * Checks that {@code source} and {@code target} are not null and are
-         * present in the {@code graph}.
+         * Checks that {@code source} and {@code target} are not null and are present in the
+         * {@code graph}.
          *
          * @param source a source vertex
          * @param target a target vertex
          */
-        protected void assertCorrectSourceAndTarget(V source, V target) {
+        protected void assertCorrectSourceAndTarget(V source, V target)
+        {
             Objects.requireNonNull(source, "source should not be null!");
             Objects.requireNonNull(target, "target should not be null!");
 
             if (!sources.contains(source) || !targets.contains(target)) {
-                throw new IllegalArgumentException("paths between " + source + " and " + target + " is not computed");
+                throw new IllegalArgumentException(
+                    "paths between " + source + " and " + target + " is not computed");
             }
         }
     }

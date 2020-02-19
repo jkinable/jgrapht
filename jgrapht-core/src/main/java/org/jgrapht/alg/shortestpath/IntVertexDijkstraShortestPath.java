@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2019-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,21 +17,16 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.function.Supplier;
+import org.jgrapht.*;
+import org.jgrapht.graph.*;
+import org.jheaps.*;
+import org.jheaps.AddressableHeap.*;
+import org.jheaps.array.*;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.Graphs;
-import org.jgrapht.graph.GraphWalk;
-import org.jheaps.AddressableHeap;
-import org.jheaps.AddressableHeap.Handle;
-import org.jheaps.array.DaryArrayAddressableHeap;
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.*;
+import java.util.function.*;
 
 /**
  * Dijkstra Shortest Path implementation specialized for graphs with integer vertices.

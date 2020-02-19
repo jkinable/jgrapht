@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2018, by Barak Naveh and Contributors.
+ * (C) Copyright 2016-2020, by Barak Naveh and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -194,7 +194,8 @@ public class NaiveLCAFinderTest
     }
 
     @Test
-    public void testLcaIsOneOfTheNodes(){
+    public void testLcaIsOneOfTheNodes()
+    {
         Graph<Integer, DefaultEdge> g = new DefaultDirectedGraph<>(DefaultEdge.class);
 
         g.addVertex(0);

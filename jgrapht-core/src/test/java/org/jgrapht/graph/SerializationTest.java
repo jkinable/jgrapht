@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2003-2018, by John V Sichi and Contributors.
+ * (C) Copyright 2003-2020, by John V Sichi and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -578,11 +578,12 @@ public class SerializationTest
 
     /**
      * Test Serialization of {@link AsGraphUnion}
+     * 
      * @throws Exception
      */
     @Test
     public void testAsGraphUnion()
-            throws Exception
+        throws Exception
     {
         Graph<String, DefaultEdge> graph1 = new DirectedPseudograph<>(DefaultEdge.class);
         Graph<String, DefaultEdge> graph2 = new DirectedPseudograph<>(DefaultEdge.class);

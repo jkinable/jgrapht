@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2019-2019, by Semen Chudakov and Contributors.
+ * (C) Copyright 2019-2020, by Semen Chudakov and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,15 +17,12 @@
  */
 package org.jgrapht.alg.shortestpath;
 
-import org.jgrapht.Graph;
-import org.jgrapht.alg.interfaces.ManyToManyShortestPathsAlgorithm;
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.junit.Test;
+import org.jgrapht.*;
+import org.jgrapht.alg.interfaces.*;
+import org.jgrapht.graph.*;
+import org.junit.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 import static org.jgrapht.alg.shortestpath.ContractionHierarchyPrecomputation.ContractionHierarchy;
 import static org.junit.Assert.assertEquals;
@@ -35,61 +32,73 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Semen Chudakov
  */
-public class CHManyToManyShortestPathsTest extends BaseManyToManyShortestPathsTest {
+public class CHManyToManyShortestPathsTest
+    extends
+    BaseManyToManyShortestPathsTest
+{
 
     @Test
-    public void testEmptyGraph() {
+    public void testEmptyGraph()
+    {
         super.testEmptyGraph();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testSourcesIsNull() {
+    public void testSourcesIsNull()
+    {
         super.testSourcesIsNull();
     }
 
     @Test(expected = NullPointerException.class)
-    public void testTargetsIsNull() {
+    public void testTargetsIsNull()
+    {
         super.testTargetsIsNull();
     }
 
     @Test
-    public void testNoPath() {
+    public void testNoPath()
+    {
         super.testNoPath();
     }
 
     @Test
-    public void testDifferentSourcesAndTargetsSimpleGraph() {
+    public void testDifferentSourcesAndTargetsSimpleGraph()
+    {
         super.testDifferentSourcesAndTargetsSimpleGraph();
     }
 
     @Test
-    public void testDifferentSourcesAndTargetsMultigraph() {
+    public void testDifferentSourcesAndTargetsMultigraph()
+    {
         super.testDifferentSourcesAndTargetsMultigraph();
     }
 
     @Test
-    public void testSourcesEqualTargetsSimpleGraph() {
+    public void testSourcesEqualTargetsSimpleGraph()
+    {
         super.testSourcesEqualTargetsSimpleGraph();
     }
 
     @Test
-    public void testSourcesEqualTargetsMultigraph() {
+    public void testSourcesEqualTargetsMultigraph()
+    {
         super.testSourcesEqualTargetsMultigraph();
     }
 
     @Test
-    public void testMoreSourcesThanTargets1() {
+    public void testMoreSourcesThanTargets1()
+    {
         Graph<Integer, DefaultWeightedEdge> graph = getSimpleGraph();
 
         ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
-                new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED)).computeContractionHierarchy();
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED))
+                .computeContractionHierarchy();
 
-
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = new CHManyToManyShortestPaths<>(hierarchy).getManyToManyPaths(
-                new HashSet<>(Arrays.asList(1, 3, 7, 9)),
-                new HashSet<>(Collections.singletonList(5))
-        );
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths =
+                new CHManyToManyShortestPaths<>(hierarchy).getManyToManyPaths(
+                    new HashSet<>(Arrays.asList(1, 3, 7, 9)),
+                    new HashSet<>(Collections.singletonList(5)));
 
         assertEquals(2.0, shortestPaths.getWeight(1, 5), 1e-9);
         assertEquals(Arrays.asList(1, 4, 5), shortestPaths.getPath(1, 5).getVertexList());
@@ -105,17 +114,19 @@ public class CHManyToManyShortestPathsTest extends BaseManyToManyShortestPathsTe
     }
 
     @Test
-    public void testMoreSourcesThanTargets2() {
+    public void testMoreSourcesThanTargets2()
+    {
         Graph<Integer, DefaultWeightedEdge> graph = getMultigraph();
 
         ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
-                new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED)).computeContractionHierarchy();
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED))
+                .computeContractionHierarchy();
 
-        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer, DefaultWeightedEdge> shortestPaths
-                = new CHManyToManyShortestPaths<>(hierarchy).getManyToManyPaths(
-                new HashSet<>(Arrays.asList(2, 3, 4, 5, 6)),
-                new HashSet<>(Collections.singletonList(1))
-        );
+        ManyToManyShortestPathsAlgorithm.ManyToManyShortestPaths<Integer,
+            DefaultWeightedEdge> shortestPaths =
+                new CHManyToManyShortestPaths<>(hierarchy).getManyToManyPaths(
+                    new HashSet<>(Arrays.asList(2, 3, 4, 5, 6)),
+                    new HashSet<>(Collections.singletonList(1)));
 
         assertEquals(3.0, shortestPaths.getWeight(2, 1), 1e-9);
         assertEquals(Arrays.asList(2, 1), shortestPaths.getPath(2, 1).getVertexList());
@@ -134,16 +145,18 @@ public class CHManyToManyShortestPathsTest extends BaseManyToManyShortestPathsTe
     }
 
     @Test
-    public void testOnRandomGraphs() {
-        super.testOnRandomGraphs(40, 5,
-                new int[][]{{10, 15}, {10, 10}, {15, 10}}, 10);
+    public void testOnRandomGraphs()
+    {
+        super.testOnRandomGraphs(40, 5, new int[][] { { 10, 15 }, { 10, 10 }, { 15, 10 } }, 10);
     }
 
     @Override
     protected ManyToManyShortestPathsAlgorithm<Integer, DefaultWeightedEdge> getAlgorithm(
-            Graph<Integer, DefaultWeightedEdge> graph) {
+        Graph<Integer, DefaultWeightedEdge> graph)
+    {
         ContractionHierarchy<Integer, DefaultWeightedEdge> hierarchy =
-                new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED)).computeContractionHierarchy();
+            new ContractionHierarchyPrecomputation<>(graph, () -> new Random(SEED))
+                .computeContractionHierarchy();
         return new CHManyToManyShortestPaths<>(hierarchy);
     }
 }

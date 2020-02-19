@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2016-2019, by Dimitrios Michail and Contributors.
+ * (C) Copyright 2016-2020, by Dimitrios Michail and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -17,27 +17,14 @@
  */
 package org.jgrapht.nio.csv;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.*;
+import org.antlr.v4.runtime.tree.*;
 import org.jgrapht.alg.util.Triple;
-import org.jgrapht.nio.BaseEventDrivenImporter;
-import org.jgrapht.nio.EventDrivenImporter;
-import org.jgrapht.nio.ImportEvent;
-import org.jgrapht.nio.ImportException;
+import org.jgrapht.nio.*;
+
+import java.io.*;
+import java.util.*;
 
 /**
  * Imports a graph from a CSV Format or any other Delimiter-separated value format.
@@ -417,10 +404,9 @@ public class CSVEventDrivenImporter
                     } else {
                         if (assumeEdgeWeights) {
                             notifyEdge(
-                                Triple
-                                    .of(
-                                        currentVertexName, columnIndex.get(target),
-                                        Double.valueOf(entryAsInteger)));
+                                Triple.of(
+                                    currentVertexName, columnIndex.get(target),
+                                    Double.valueOf(entryAsInteger)));
                         } else {
                             notifyEdge(Triple.of(currentVertexName, columnIndex.get(target), null));
                         }

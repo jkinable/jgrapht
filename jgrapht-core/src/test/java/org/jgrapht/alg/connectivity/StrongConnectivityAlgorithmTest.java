@@ -59,6 +59,7 @@ public class StrongConnectivityAlgorithmTest
             this.testStronglyConnected2(strongConnectivityAlgorithm);
             this.testStronglyConnected3(strongConnectivityAlgorithm);
             this.testStronglyConnected4(strongConnectivityAlgorithm);
+            this.randomGraphTest(strongConnectivityAlgorithm);
         }
     }
 
@@ -284,6 +285,33 @@ public class StrongConnectivityAlgorithmTest
         assertEquals(
             "([([v3, v4], [(v3,v4), (v4,v3)]), ([v1, v2], [(v1,v2), (v2,v1)])], [(([v1, v2], [(v1,v2), (v2,v1)]),([v3, v4], [(v3,v4), (v4,v3)]))])",
             condensation.toString());
+    }
+
+    public void randomGraphTest(Class<?> strongConnectivityAlgorithm){
+        GraphGenerator<Integer, DefaultEdge, Integer> rgg =
+                new GnmRandomGraphGenerator<>(
+                        100, 1000, 0);
+
+        for (int i = 0; i < 10; i++) {
+            Graph<Integer,
+                    DefaultEdge> g = new SimpleDirectedGraph<>(
+                    SupplierUtil.createIntegerSupplier(0),
+                    SupplierUtil.DEFAULT_EDGE_SUPPLIER, false);
+            rgg.generateGraph(g);
+
+            StrongConnectivityAlgorithm<Integer, DefaultEdge> inspector =
+                    this.getStrongConnectivityInspector(g, strongConnectivityAlgorithm);
+            StrongConnectivityAlgorithm<Integer, DefaultEdge> otherInspector=
+                    this.getStrongConnectivityInspector(g, strongConnectivityAlgorithm == GabowStrongConnectivityInspector.class ? KosarajuStrongConnectivityInspector.class : GabowStrongConnectivityInspector.class);
+
+            List<Set<Integer>> sccs1=inspector.stronglyConnectedSets();
+            Set<Set<Integer>> sccs2=new HashSet<>();
+            sccs2.addAll(otherInspector.stronglyConnectedSets());
+
+            assertEquals(sccs1.size(), sccs2.size());
+            for(Set<Integer> component : sccs1)
+                assertTrue(sccs2.contains(component));
+        }
     }
 
     private <V, E> StrongConnectivityAlgorithm<V, E> getStrongConnectivityInspector(

@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2013-2020, by Sarah Komla-Ebri and Contributors.
+ * (C) Copyright 2021-2021, by Joris Kinable and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *
@@ -18,35 +18,30 @@
 package org.jgrapht.alg.connectivity;
 
 import org.jgrapht.*;
-import org.jgrapht.util.*;
 
 import java.util.*;
 
 /**
- * Computes the strongly connected components of a directed graph. The implemented algorithm follows
- * Cheriyan-Mehlhorn/Gabow's algorithm presented in Path-based depth-first search for strong and
- * biconnected components by Gabow (2000). The running time is order of $O(|V|+|E|)$.
+ * Computes the strongly connected components of a directed graph using Gabow's algorithm. The algorithm is described in:
+ * Gabow, Harold N. Path-based depth-first search for strong and biconnected components, Information Processing Letters, 74 (3–4): 107–114, 2000
+ * The runtime complexity of this algorithm is $O(|V|+|E|)$.
  *
  * @param <V> the graph vertex type
  * @param <E> the graph edge type
  *
- * @author Sarah Komla-Ebri
+ * @author Joris Kinable
  */
 public class GabowStrongConnectivityInspector<V, E>
     extends
     AbstractStrongConnectivityInspector<V, E>
 {
-    // stores the vertices
-    private Deque<VertexNumber<V>> stack = new ArrayDeque<>();
 
-    // maps vertices to their VertexNumber object
-    private Map<V, VertexNumber<V>> vertexToVertexNumber;
-
-    // store the numbers
-    private Deque<Integer> B = new ArrayDeque<>();
-
-    // number of vertices
-    private int c;
+    private Set<V> visited;        // Set of vertices which have been visited
+    private Set<V> assigned; // Set of vertices which have been assigned to a strongly connected component
+    private Map<V,Integer> preorder;          // Maps a vertex to its pre-order traversal number
+    private int pre;                 // preorder number counter
+    private Stack<V> stackS; // Stack S contains all the vertices that have not yet been assigned to a strongly connected component
+    private Stack<V> stackB; // Stack P contains vertices that have not yet been determined to belong to different strongly connected components from each other
 
     /**
      * Constructor
@@ -63,106 +58,105 @@ public class GabowStrongConnectivityInspector<V, E>
     public List<Set<V>> stronglyConnectedSets()
     {
         if (stronglyConnectedSets == null) {
-            stronglyConnectedSets = new Vector<>();
+            stronglyConnectedSets = new LinkedList<>();
 
-            // create VertexData objects for all vertices, store them
-            createVertexNumber();
+            //Initialize data structures
+            visited = new HashSet<>();
+            assigned = new HashSet<>();
+            stackS = new Stack<V>();
+            stackB = new Stack<V>();
+            preorder = new HashMap<>();
+            graph.vertexSet().forEach(v -> preorder.put(v,0));
 
             // perform DFS
-            for (VertexNumber<V> data : vertexToVertexNumber.values()) {
-                if (data.getNumber() == 0) {
-                    dfsVisit(graph, data);
-                }
+            for (V v : graph.vertexSet()) {
+                if (!visited.contains(v)) dfs(v);
             }
 
-            vertexToVertexNumber = null;
-            stack = null;
-            B = null;
+            //Return memory
+            visited=null;
+            assigned=null;
+            preorder=null;
         }
 
         return stronglyConnectedSets;
     }
 
-    /*
-     * Creates a VertexNumber object for every vertex in the graph and stores them in a HashMap.
-     */
+    private void dfs(V root) {
 
-    private void createVertexNumber()
-    {
-        c = graph.vertexSet().size();
-        vertexToVertexNumber = CollectionUtil.newHashMapWithExpectedSize(c);
+        //Iterative DFS
+        Stack<V> dfsStack=new Stack<>();
+        dfsStack.push(root);
+        visited.add(root);
+        preorder.put(root,pre++);
+        stackS.push(root);
+        stackB.push(root);
 
-        for (V vertex : graph.vertexSet()) {
-            vertexToVertexNumber.put(vertex, new VertexNumber<>(vertex, 0));
-        }
+        while(!dfsStack.isEmpty()){
+            V v = dfsStack.peek(); // Peek
 
-        stack = new ArrayDeque<>(c);
-        B = new ArrayDeque<>(c);
-    }
-
-    /*
-     * The subroutine of DFS.
-     */
-    private void dfsVisit(Graph<V, E> visitedGraph, VertexNumber<V> v)
-    {
-        VertexNumber<V> w;
-        stack.add(v);
-        B.add(v.setNumber(stack.size() - 1));
-
-        // follow all edges
-
-        for (E edge : visitedGraph.outgoingEdgesOf(v.getVertex())) {
-            w = vertexToVertexNumber.get(visitedGraph.getEdgeTarget(edge));
-
-            if (w.getNumber() == 0) {
-                dfsVisit(graph, w);
-            } else { /* contract if necessary */
-                while (w.getNumber() < B.getLast()) {
-                    B.removeLast();
+            boolean visitedAllNeighbors = true;
+            // Determine whether there are any unvisited neighbors of v. Seems quite expensive, we might want to track
+            // unvisited neighbors instead of looping over all neighbors each time we see v on the stack
+            for (E e : graph.outgoingEdgesOf(v)) {
+                V w = Graphs.getOppositeVertex(graph, e, v);
+                if (!visited.contains(w)) {
+                    visitedAllNeighbors = false;         // vertex v is not the tail of our DFS tree since we haven't visited w yet.
+                    dfsStack.push(w);
+                    visited.add(w);         //Pre-order phase
+                    preorder.put(w,pre++);
+                    stackS.push(w);
+                    stackB.push(w);
+                    break;
+                } else if (!assigned.contains(w)){
+                    while (preorder.get(stackB.peek()) > preorder.get(w))
+                        stackB.pop();
+                }
+            }
+            // We visited all neighbors of v. Perform post-order phase.
+            if(visitedAllNeighbors){
+                dfsStack.pop();
+                if (stackB.peek() == v) {
+                    Set<V> component = new HashSet<>();
+                    stackB.pop();
+                    V w;
+                    do {
+                        w = stackS.pop();
+                        component.add(w);
+                    } while (w != v);
+                    this.stronglyConnectedSets.add(component);
+                    assigned.addAll(component);
                 }
             }
         }
-        Set<V> L = new HashSet<>();
-        if (v.getNumber() == (B.getLast())) {
-            /*
-             * number vertices of the next strong component
-             */
-            B.removeLast();
 
-            c++;
-            while (v.getNumber() <= (stack.size() - 1)) {
-                VertexNumber<V> r = stack.removeLast();
-                L.add(r.getVertex());
-                r.setNumber(c);
-            }
-            stronglyConnectedSets.add(L);
-        }
     }
 
-    private static final class VertexNumber<V>
-    {
-        V vertex;
-        int number;
-
-        private VertexNumber(V vertex, int number)
-        {
-            this.vertex = vertex;
-            this.number = number;
-        }
-
-        int getNumber()
-        {
-            return number;
-        }
-
-        V getVertex()
-        {
-            return vertex;
-        }
-
-        Integer setNumber(int n)
-        {
-            return number = n;
-        }
-    }
+//    private void dfs(V v) {
+//        visited.add(v);
+//        preorder.put(v,pre++);
+//        stack1.push(v);
+//        stack2.push(v);
+//        for (E e : graph.outgoingEdgesOf(v)) {
+//            V w = Graphs.getOppositeVertex(graph, e, v);
+//            if (!visited.contains(w)) dfs(w);
+//            else if (!assigned.contains(w)){
+//                while (preorder.get(stack2.peek()) > preorder.get(w))
+//                    stack2.pop();
+//            }
+//        }
+//
+//        // found strong component containing v
+//        if (stack2.peek() == v) {
+//            Set<V> component = new HashSet<>();
+//            stack2.pop();
+//            V w;
+//            do {
+//                w = stack1.pop();
+//                component.add(w);
+//            } while (w != v);
+//            this.stronglyConnectedSets.add(component);
+//            assigned.addAll(component);
+//        }
+//    }
 }

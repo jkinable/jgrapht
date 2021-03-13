@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2013-2020, by Leo Crawford and Contributors.
+ * (C) Copyright 2013-2021, by Leo Crawford and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *

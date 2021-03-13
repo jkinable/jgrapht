@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018-2020, by Oliver Feith and Contributors.
+ * (C) Copyright 2018-2021, by Oliver Feith and Contributors.
  *
  * JGraphT : a free Java graph-theory library
  *

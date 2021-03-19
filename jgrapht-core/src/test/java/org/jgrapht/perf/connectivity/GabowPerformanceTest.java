@@ -105,7 +105,7 @@ public class GabowPerformanceTest
     }
 
     @Test
-    public void testMaximalCliqueRandomGraphBenchmark()
+    public void testGabowRandomGraphBenchmark()
             throws RunnerException
     {
         Options opt = new OptionsBuilder()
